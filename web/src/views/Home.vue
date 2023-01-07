@@ -6,10 +6,17 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import axios from 'axios';
 
 export default defineComponent({
-  name: 'HomeView',
-  components: {
-  },
+  name: 'Home',
+  setup() {
+    console.log("setup");
+    axios.get("http://localhost:8880/downloadList/list?name=资料2").then(
+        (response) => {
+          console.log(response);
+        }
+    )
+  }
 });
 </script>
