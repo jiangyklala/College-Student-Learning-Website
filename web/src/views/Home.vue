@@ -61,7 +61,7 @@ export default defineComponent({
     ];
 
     onMounted(() => {
-      axios.get("http://localhost:8880/downloadList/list").then(
+      axios.get("/downloadList/list").then(
           (response) => {
             const data = response.data;
             listData.value = data.content;
