@@ -8,6 +8,7 @@ import com.jxm.yiti.resp.DownloadListResp;
 import com.jxm.yiti.utils.CopyUtil;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 
@@ -20,7 +21,9 @@ public class DownloadListService {
     public List<DownloadListResp> list(DownloadListReq req) {
         DownloadListExample downloadListExample = new DownloadListExample();
         DownloadListExample.Criteria criteria = downloadListExample.createCriteria();
-        criteria.andNameLike("%" + req.getName() + "%");  // 模糊匹配条件
+        if (!ObjectUtils.isEmpty(req.getName())) {  // 动态 SQL
+            criteria.andNameLike("%" + req.getName() + "%");  // 模糊匹配条件
+        }
 
         return CopyUtil.copyList(downloadListMapper.selectByExample(downloadListExample), DownloadListResp.class);
 

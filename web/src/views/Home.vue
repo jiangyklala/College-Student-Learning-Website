@@ -1,18 +1,18 @@
 <template>
-  <a-layout-content style="padding: 0 50px">
+  <a-layout-content style="padding: 0 250px">
     <a-list
         item-layout="horizontal"
         :data-source="listData"
         :pagination="pagination"
     >
       <template #renderItem="{ item }">
-        <a-list-item key="item.title">
+        <a-list-item key="item.name">
           <template #actions>
             <span v-for="{ type, text } in actions" :key="type">
             <component :is="type" style="margin-right: 8px"/>
             {{ text }}
             </span>
-            <a-button type="primary" shape="round" :size="size">
+            <a-button type="primary" shape="round">
               <template #icon>
                 <DownloadOutlined />
               </template>
@@ -20,7 +20,7 @@
           </template>
           <a-list-item-meta >
             <template #title>
-              <a :href="item.href">{{ item.title }}</a>
+              <a :href="item.href">{{ item.name }}</a>
             </template>
           </a-list-item-meta>
           {{ item.description }}
@@ -31,19 +31,9 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted} from 'vue';
+import {defineComponent, onMounted, ref} from 'vue';
 import {EyeTwoTone, ThunderboltTwoTone, DownloadOutlined} from '@ant-design/icons-vue';
-
-const listData : Record<string, string>[] = [];
-
-for (let i = 0; i < 23; i++) {
-  listData.push({
-    href: 'https://www.antdv.com',
-    title: `ant design vue part ${i}`,
-    description:
-      'soifjasoifj osjf oijasifjosajfoi ajsojo',
-  });
-}
+import axios from 'axios';
 
 export default defineComponent({
   components: {
@@ -55,13 +45,15 @@ export default defineComponent({
   setup() {
     // console.log("setup");
     // const downloadList = ref();
+    const listData = ref();
 
     const pagination = {
       onChange: (page: number) => {
         console.log(page);
       },
-      pageSize: 10,
+      pageSize: 3,
     };
+
     const actions: Record<string, string>[] = [
 
       { type: 'EyeTwoTone', text: '156' },
@@ -69,23 +61,19 @@ export default defineComponent({
     ];
 
     onMounted(() => {
-      // console.log("onMounted");
-      // axios.get("http://localhost:8880/downloadList/list?name=资料2").then(
-      //     (response) => {
-      //       const data = response.data;
-      //       downloadList.value = data.content;
-      //       console.log(response);
-      //     }
-      // )
+      axios.get("http://localhost:8880/downloadList/list").then(
+          (response) => {
+            const data = response.data;
+            listData.value = data.content;
+            console.log(response);
+          }
+      )
     });
 
-
-
     return {
-      // downloadList,listData,
+      listData,
       pagination,
       actions,
-      listData,
     };
   },
 });
