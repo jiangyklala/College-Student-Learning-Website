@@ -48,9 +48,9 @@ export default defineComponent({
     const listData = ref();
 
     const pagination = {
-      onChange: (page: number) => {
-        console.log(page);
-      },
+      // onChange: (page: number) => {
+      //   console.log(page);
+      // },
       pageSize: 3,
     };
 
