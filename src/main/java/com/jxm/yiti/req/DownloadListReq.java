@@ -1,6 +1,6 @@
 package com.jxm.yiti.req;
 
-public class DownloadListReq {
+public class DownloadListReq extends PageReq {
     private Long id;
 
     private String name;

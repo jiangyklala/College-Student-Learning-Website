@@ -3,6 +3,7 @@ package com.jxm.yiti.controller;
 import com.jxm.yiti.req.DownloadListReq;
 import com.jxm.yiti.resp.CommonResp;
 import com.jxm.yiti.resp.DownloadListResp;
+import com.jxm.yiti.resp.PageResp;
 import com.jxm.yiti.service.DownloadListService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
@@ -22,9 +23,11 @@ public class DownloadListController {
     @GetMapping("/list")
     @ResponseBody
     public CommonResp list(DownloadListReq req) {
-        CommonResp<List<DownloadListResp>> resp = new CommonResp<>();
-        List<DownloadListResp> list = downloadListService.list(req);
+        PageResp<DownloadListResp> list = downloadListService.list(req);
+
+        CommonResp<PageResp<DownloadListResp>> resp = new CommonResp<>();
         resp.setContent(list);
+
         return resp;
     }
 
