@@ -7,19 +7,20 @@
         :columns="columns"
         :data-source="listData"
         :row-key="record => record.id"
-        :pagination="pagination"
+        :pagination="pagination" @change="handleTableChange"
         :loading="Loading"
-        @change="handleTableChange"
         bordered>
-      <template v-slot:action="{ text, record }">
-        <a-space size="small">
-          <a-button type="link">
-            编辑
-          </a-button>
-          <a-button type="link">
-            删除
-          </a-button>
-        </a-space>
+      <template v-slot:bodyCell="{ column, record, index }">
+        <template v-if="column.dataIndex === 'action'">
+          <a-space size="small">
+            <a-button type="link">
+              编辑
+            </a-button>
+            <a-button type="link">
+              删除
+            </a-button>
+          </a-space>
+        </template>
       </template>
     </a-table>
   </a-layout-content>
@@ -28,7 +29,6 @@
 <script lang="ts">
 import {defineComponent, onMounted, ref} from "vue";
 import axios from 'axios';
-import {DownloadOutlined, EyeTwoTone, ThunderboltTwoTone} from "@ant-design/icons-vue";
 
 export default defineComponent({
   components: {},
@@ -71,36 +71,44 @@ export default defineComponent({
       },
       {
         title: '操作',
-        slots: {customRender: 'action'}
+        dataIndex: 'action',
       },
     ];
 
     /**
      * 数据查询
-     * @param params
+     * @param p
      */
-    const handleQuery = (params: any) => {
+    const handleQuery = (p: any) => {
       loading.value = true;
-      axios.get("/downloadList/list", params).then((response) => {
+      axios.get("/downloadList/list", {
+        params: {
+          page: p.current,
+          size: p.pageSize,
+        }
+      }).then((response) => {
         loading.value = false;
-        const data = response.data;
-        listData.value = data.content;
+        listData.value = response.data.content.list;
 
         // 重置分页按钮
-        pagination.value.current = params.page;
+        pagination.value.current = p.current;
+        pagination.value.total = response.data.content.total;
       })
     }
 
     const handleTableChange = (pagination: any) => {
-      console.log("pagination:" + pagination);
+      // console.log("pagination:" + pagination);
       handleQuery({
-        page: pagination.current,
-        size: pagination.pageSize
+        current: pagination.current,
+        pageSize: pagination.pageSize,
       });
     };
 
     onMounted(() => {
-      handleQuery({});
+      handleQuery({
+        current: pagination.value.current,
+        pageSize: pagination.value.pageSize,
+      });
     });
 
     return {

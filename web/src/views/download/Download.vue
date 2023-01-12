@@ -3,7 +3,6 @@
     <a-list
         item-layout="horizontal"
         :data-source="listData"
-        :pagination="pagination"
     >
       <template #renderItem="{ item }">
         <a-list-item key="item.name">
@@ -26,13 +25,18 @@
           {{ item.description }}
         </a-list-item>
       </template>
+      <a-pagination
+          v-model:current="pagination.current"
+          v-model:pageSize="pagination.pageSize"
+          :total="pagination.total"
+          @change="handleListChange"/>
     </a-list>
   </a-layout-content>
 </template>
 
 <script lang="ts">
 import {defineComponent, onMounted, ref} from 'vue';
-import {EyeTwoTone, ThunderboltTwoTone, DownloadOutlined} from '@ant-design/icons-vue';
+import {DownloadOutlined, EyeTwoTone, ThunderboltTwoTone} from '@ant-design/icons-vue';
 import axios from 'axios';
 
 export default defineComponent({
@@ -41,39 +45,55 @@ export default defineComponent({
     ThunderboltTwoTone,
     DownloadOutlined,
   },
-  name: 'Home',
+  name: 'Download',
   setup() {
-    // console.log("setup");
-    // const downloadList = ref();
     const listData = ref();
-
-    const pagination = {
-      // onChange: (page: number) => {
-      //   console.log(page);
-      // },
-      pageSize: 3,
-    };
+    const pagination = ref({
+      current: 1,
+      pageSize: 2,
+      total: 0,
+    });
 
     const actions: Record<string, string>[] = [
-
       {type: 'EyeTwoTone', text: '156'},
       {type: 'ThunderboltTwoTone', text: '355'},
     ];
 
+    const handleQuery = (p: any) => {
+      axios.get("/downloadList/list", {
+        params: {
+          page: p.current,
+          size: p.pageSize,
+        }
+      }).then((response) => {
+        listData.value = response.data.content.list;
+        // console.log(response);
+
+        pagination.value.current = p.current;
+        pagination.value.total = response.data.content.total;
+      })
+    }
+
+    const handleListChange = (current: any) => {
+      console.log("pagination:" + current);
+      handleQuery({
+        current: current,
+        pageSize: pagination.value.pageSize,
+      });
+    };
+
     onMounted(() => {
-      axios.get("/downloadList/list").then(
-          (response) => {
-            const data = response.data;
-            listData.value = data.content;
-            console.log(response);
-          }
-      )
+      handleQuery({
+        current: pagination.value.current,
+        pageSize: pagination.value.pageSize,
+      });
     });
 
     return {
       listData,
       pagination,
       actions,
+      handleListChange,
     };
   },
 });
