@@ -20,9 +20,17 @@
             <a-button type="link" @click="buttonEdit(record)">
               编辑
             </a-button>
-            <a-button type="link">
-              删除
-            </a-button>
+            <a-popconfirm
+                title="确认删除吗"
+                ok-text="确认"
+                cancel-text="取消"
+                @confirm="buttonDelete(record.id)"
+            >
+              <a-button type="link">
+                删除
+              </a-button>
+            </a-popconfirm>
+
           </a-space>
         </template>
       </template>
@@ -180,6 +188,23 @@ export default defineComponent({
       downloadList.value = record;
     };
 
+    /**
+     * 表格的删除按钮
+     */
+    const buttonDelete = (id: number) => {
+      axios.delete("/downloadList/delete/" + id).then((response) => {
+        const data = response.data;
+
+        if (data.success) {
+          // 重新加载列表
+          handleQuery({
+            current: pagination.value.current,
+            pageSize: pagination.value.pageSize,
+          });
+        }
+      })
+    };
+
     onMounted(() => {
       handleQuery({
         current: pagination.value.current,
@@ -196,6 +221,7 @@ export default defineComponent({
 
       buttonEdit,
       addDownloadItem,
+      buttonDelete,
 
       downloadList,
       modalVisible,

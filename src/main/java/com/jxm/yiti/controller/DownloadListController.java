@@ -17,6 +17,12 @@ public class DownloadListController {
     @Resource
     private DownloadListService downloadListService;
 
+    /**
+     * 查询下载列表的所有数据
+     *
+     * @param req 查询参数
+     * @return CommonResq
+     */
     @GetMapping("/list")
     @ResponseBody
     public CommonResp list(DownloadListQueryReq req) {
@@ -28,6 +34,12 @@ public class DownloadListController {
         return resp;
     }
 
+    /**
+     * 新增或者更新一个下载项
+     *
+     * @param req 保存参数
+     * @return CommonResp
+     */
     @PostMapping("/save")
     @ResponseBody
     public CommonResp save(@RequestBody DownloadListSaveReq req) {  // 以 json 方式提交
@@ -35,7 +47,26 @@ public class DownloadListController {
 
         if (downloadListService.save(req) != 1) {
             resp.setSuccess(false);
-            resp.setMessage("保存下载列表的信息失败");
+            resp.setMessage("保存下载项失败");
+        }
+
+        return resp;
+    }
+
+    /**
+     * 删除一个下载项
+     *
+     * @param id 所删除下载项的 id
+     * @return CommonResp
+     */
+    @DeleteMapping("/delete/{id}")
+    @ResponseBody
+    public CommonResp delete(@PathVariable Long id) {  // 拿到 "/delete/{id}" 里的 id
+        CommonResp resp = new CommonResp();
+
+        if (downloadListService.delete(id) != 1) {
+            resp.setSuccess(false);
+            resp.setMessage("删除下载项失败");
         }
 
         return resp;

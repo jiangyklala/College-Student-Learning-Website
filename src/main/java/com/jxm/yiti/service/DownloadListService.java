@@ -27,6 +27,9 @@ public class DownloadListService {
 
     private static final Logger LOG = LoggerFactory.getLogger(DownloadListService.class);
 
+    /**
+     * 查询下载列表的所有数据, 带有模糊匹配功能
+     */
     public PageResp<DownloadListQueryResp> list(DownloadListQueryReq req) {
         DownloadListExample downloadListExample = new DownloadListExample();
         DownloadListExample.Criteria criteria = downloadListExample.createCriteria();
@@ -47,6 +50,9 @@ public class DownloadListService {
 
     }
 
+    /**
+     * 新增或者更新一个下载项
+     */
     public int save(DownloadListSaveReq req) {
         SnowFlakeIdWorker snowFlakeIdWorker = new SnowFlakeIdWorker(0, 0);
         DownloadList res = CopyUtil.copy(req, DownloadList.class);
@@ -56,5 +62,12 @@ public class DownloadListService {
         } else {
             return downloadListMapper.updateByPrimaryKey(res);
         }
+    }
+
+    /**
+     * 删除一个下载项
+     */
+    public int delete(Long id) {
+        return downloadListMapper.deleteByPrimaryKey(id);
     }
 }
