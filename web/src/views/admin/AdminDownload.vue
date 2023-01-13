@@ -1,7 +1,11 @@
 <template>
   <a-layout-content style="padding: 0 250px">
     <div class="title">
-      <h1>下载列表管理</h1>
+      <p>
+        <a-button type="primary" @click="addDownloadItem">
+          新增
+        </a-button>
+      </p>
     </div>
     <a-table
         :columns="columns"
@@ -120,6 +124,17 @@ export default defineComponent({
       })
     }
 
+    //-------------页面--------------
+    /**
+     * 新增按钮
+     * 注: 这里不需要写具体的新增逻辑, 已经在对话框的"确认"按钮的逻辑中写过了
+     */
+    const addDownloadItem = () => {
+      modalVisible.value = true;
+      downloadList.value = {};  // 清空当前的数据信息
+    }
+
+    //-------------分页--------------
     /**
      * 分页的跳转页面处理
      * @param pagination
@@ -180,11 +195,12 @@ export default defineComponent({
       handleTableChange,
 
       buttonEdit,
+      addDownloadItem,
+
+      downloadList,
       modalVisible,
       modalLoading,
       handleModalOk,
-
-      downloadList,
     };
 
   },

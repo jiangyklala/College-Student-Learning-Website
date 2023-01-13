@@ -7,9 +7,10 @@ import com.jxm.yiti.domain.DownloadListExample;
 import com.jxm.yiti.mapper.DownloadListMapper;
 import com.jxm.yiti.req.DownloadListQueryReq;
 import com.jxm.yiti.req.DownloadListSaveReq;
-import com.jxm.yiti.resp.DownloadListResp;
+import com.jxm.yiti.resp.DownloadListQueryResp;
 import com.jxm.yiti.resp.PageResp;
 import com.jxm.yiti.utils.CopyUtil;
+import com.jxm.yiti.utils.SnowFlakeIdWorker;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +27,7 @@ public class DownloadListService {
 
     private static final Logger LOG = LoggerFactory.getLogger(DownloadListService.class);
 
-    public PageResp<DownloadListResp> list(DownloadListQueryReq req) {
+    public PageResp<DownloadListQueryResp> list(DownloadListQueryReq req) {
         DownloadListExample downloadListExample = new DownloadListExample();
         DownloadListExample.Criteria criteria = downloadListExample.createCriteria();
         if (!ObjectUtils.isEmpty(req.getName())) {  // 动态 SQL
@@ -38,8 +39,8 @@ public class DownloadListService {
         PageInfo<DownloadList> downloadListPageInfo = new PageInfo<>(downloadLists); // 记得这里需要初始化
         LOG.info("当前页: " + downloadListPageInfo.getPageNum() + ", 总页数: " + downloadListPageInfo.getPages() + " , 总记录数: " + downloadListPageInfo.getTotal()); //        + " , 总页数: " + downloadListPageInfo.getTotal()
 
-        PageResp<DownloadListResp> resp = new PageResp<>();
-        resp.setList(CopyUtil.copyList(downloadLists, DownloadListResp.class));
+        PageResp<DownloadListQueryResp> resp = new PageResp<>();
+        resp.setList(CopyUtil.copyList(downloadLists, DownloadListQueryResp.class));
         resp.setTotal(downloadListPageInfo.getTotal());
 
         return resp;
@@ -47,10 +48,13 @@ public class DownloadListService {
     }
 
     public int save(DownloadListSaveReq req) {
+        SnowFlakeIdWorker snowFlakeIdWorker = new SnowFlakeIdWorker(0, 0);
+        DownloadList res = CopyUtil.copy(req, DownloadList.class);
         if (ObjectUtils.isEmpty(req.getId())) {
-            return downloadListMapper.insert(CopyUtil.copy(req, DownloadList.class));
+            res.setId(snowFlakeIdWorker.nextId());
+            return downloadListMapper.insert(res);
         } else {
-            return downloadListMapper.updateByPrimaryKey(CopyUtil.copy(req, DownloadList.class));
+            return downloadListMapper.updateByPrimaryKey(res);
         }
     }
 }

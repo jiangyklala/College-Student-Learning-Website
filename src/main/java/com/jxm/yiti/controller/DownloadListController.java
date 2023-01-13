@@ -3,7 +3,7 @@ package com.jxm.yiti.controller;
 import com.jxm.yiti.req.DownloadListQueryReq;
 import com.jxm.yiti.req.DownloadListSaveReq;
 import com.jxm.yiti.resp.CommonResp;
-import com.jxm.yiti.resp.DownloadListResp;
+import com.jxm.yiti.resp.DownloadListQueryResp;
 import com.jxm.yiti.resp.PageResp;
 import com.jxm.yiti.service.DownloadListService;
 import jakarta.annotation.Resource;
@@ -20,9 +20,9 @@ public class DownloadListController {
     @GetMapping("/list")
     @ResponseBody
     public CommonResp list(DownloadListQueryReq req) {
-        CommonResp<PageResp<DownloadListResp>> resp = new CommonResp<>();
+        CommonResp<PageResp<DownloadListQueryResp>> resp = new CommonResp<>();
 
-        PageResp<DownloadListResp> list = downloadListService.list(req);
+        PageResp<DownloadListQueryResp> list = downloadListService.list(req);
 
         resp.setContent(list);
         return resp;
