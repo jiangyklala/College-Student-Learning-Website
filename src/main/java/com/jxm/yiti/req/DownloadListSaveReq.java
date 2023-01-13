@@ -1,10 +1,7 @@
-package com.jxm.yiti.resp;
+package com.jxm.yiti.req;
 
-/**
- * 不直接返回 DownloadList, 防止其中含有敏感字段
- */
-public class DownloadListResp {
-    private Long id;
+public class DownloadListSaveReq {
+    private Long id;  // 有值时为更新, 没值时为新增
 
     private String name;
 

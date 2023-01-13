@@ -1,3 +1,20 @@
 GET http://localhost:8880/downloadList/list?page=1&size=4
 
 ###
+
+POST http://localhost:8880/downloadList/save
+Content-Type: application/json
+
+
+{
+  "id": 1,
+  "name": "资料1",
+  "categoryId1": "1",
+  "categoryId2": null,
+  "description": "萨法扫了烦啊赛",
+  "downloadCount": 0,
+  "size": "1.00MB"
+}
+
+
+###

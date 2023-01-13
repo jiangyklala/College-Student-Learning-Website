@@ -5,12 +5,12 @@ import com.github.pagehelper.PageInfo;
 import com.jxm.yiti.domain.DownloadList;
 import com.jxm.yiti.domain.DownloadListExample;
 import com.jxm.yiti.mapper.DownloadListMapper;
-import com.jxm.yiti.req.DownloadListReq;
+import com.jxm.yiti.req.DownloadListQueryReq;
+import com.jxm.yiti.req.DownloadListSaveReq;
 import com.jxm.yiti.resp.DownloadListResp;
 import com.jxm.yiti.resp.PageResp;
 import com.jxm.yiti.utils.CopyUtil;
 import jakarta.annotation.Resource;
-import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ public class DownloadListService {
 
     private static final Logger LOG = LoggerFactory.getLogger(DownloadListService.class);
 
-    public PageResp<DownloadListResp> list(DownloadListReq req) {
+    public PageResp<DownloadListResp> list(DownloadListQueryReq req) {
         DownloadListExample downloadListExample = new DownloadListExample();
         DownloadListExample.Criteria criteria = downloadListExample.createCriteria();
         if (!ObjectUtils.isEmpty(req.getName())) {  // 动态 SQL
@@ -44,5 +44,13 @@ public class DownloadListService {
 
         return resp;
 
+    }
+
+    public int save(DownloadListSaveReq req) {
+        if (ObjectUtils.isEmpty(req.getId())) {
+            return downloadListMapper.insert(CopyUtil.copy(req, DownloadList.class));
+        } else {
+            return downloadListMapper.updateByPrimaryKey(CopyUtil.copy(req, DownloadList.class));
+        }
     }
 }
