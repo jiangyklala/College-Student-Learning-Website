@@ -170,18 +170,21 @@ export default defineComponent({
       modalLoading.value = true;
 
       axios.post("/downloadList/save", downloadList.value).then((response) => {
-        console.log(response);
+        // console.log(response);
         const data = response.data;
+        modalLoading.value = false;
+
 
         if (data.success) {
           modalVisible.value = false;
-          modalLoading.value = false;
 
           // 重新加载列表
           handleQuery({
             current: pagination.value.current,
             pageSize: pagination.value.pageSize,
           });
+        } else {
+          message.error(response.data.message);
         }
       })
 

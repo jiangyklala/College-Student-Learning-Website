@@ -1,10 +1,15 @@
 package com.jxm.yiti.req;
 
+import jakarta.validation.constraints.NotNull;
+
 public class DownloadListSaveReq {
+
     private Long id;  // 有值时为更新, 没值时为新增
 
+    @NotNull(message = "[名称] 不能为空")
     private String name;
 
+    @NotNull(message = "[分类一] 不能为空")
     private Long categoryId1;
 
     private Long categoryId2;

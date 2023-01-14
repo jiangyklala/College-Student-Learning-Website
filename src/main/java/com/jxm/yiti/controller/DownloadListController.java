@@ -43,7 +43,7 @@ public class DownloadListController {
      */
     @PostMapping("/save")
     @ResponseBody
-    public CommonResp save(@RequestBody DownloadListSaveReq req) {  // 以 json 方式提交
+    public CommonResp save(@RequestBody @Valid DownloadListSaveReq req) {  // 以 json 方式提交
         CommonResp resp = new CommonResp();
 
         if (downloadListService.save(req) != 1) {

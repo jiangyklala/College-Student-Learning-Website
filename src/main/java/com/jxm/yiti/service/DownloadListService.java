@@ -15,9 +15,11 @@ import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 @Service
@@ -57,11 +59,17 @@ public class DownloadListService {
     public int save(DownloadListSaveReq req) {
         SnowFlakeIdWorker snowFlakeIdWorker = new SnowFlakeIdWorker(0, 0);
         DownloadList res = CopyUtil.copy(req, DownloadList.class);
-        if (ObjectUtils.isEmpty(req.getId())) {
-            res.setId(snowFlakeIdWorker.nextId());
-            return downloadListMapper.insert(res);
-        } else {
-            return downloadListMapper.updateByPrimaryKey(res);
+
+        try {
+            if (ObjectUtils.isEmpty(req.getId())) {
+                res.setId(snowFlakeIdWorker.nextId());
+                return downloadListMapper.insert(res);
+            } else {
+                return downloadListMapper.updateByPrimaryKey(res);
+            }
+        } catch (DataIntegrityViolationException e) {
+            LOG.info("错误: 插入或更新错误");
+            return -1;
         }
     }
 
