@@ -3,6 +3,7 @@
     <a-list
         item-layout="horizontal"
         :data-source="listData"
+        :loading="loading"
     >
       <template #renderItem="{ item }">
         <a-list-item key="item.name">
@@ -38,6 +39,7 @@
 import {defineComponent, onMounted, ref} from 'vue';
 import {DownloadOutlined, EyeTwoTone, ThunderboltTwoTone} from '@ant-design/icons-vue';
 import axios from 'axios';
+import {message} from "ant-design-vue";
 
 export default defineComponent({
   components: {
@@ -47,6 +49,7 @@ export default defineComponent({
   },
   name: 'Download',
   setup() {
+    const loading = ref(true);
     const listData = ref();
     const pagination = ref({
       current: 1,
@@ -66,11 +69,17 @@ export default defineComponent({
           size: p.pageSize,
         }
       }).then((response) => {
-        listData.value = response.data.content.list;
-        // console.log(response);
 
-        pagination.value.current = p.current;
-        pagination.value.total = response.data.content.total;
+        if (response.data.success) {  // 判断后端接口返回是否出错
+          loading.value = false;
+          listData.value = response.data.content.list;
+
+          // 重置分页按钮
+          pagination.value.current = p.current;
+          pagination.value.total = response.data.content.total;
+        } else {
+          message.error(response.data.message);
+        }
       })
     }
 
@@ -90,6 +99,7 @@ export default defineComponent({
     });
 
     return {
+      loading,
       listData,
       pagination,
       actions,
