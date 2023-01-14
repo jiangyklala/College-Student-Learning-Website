@@ -12,7 +12,7 @@
         :data-source="listData"
         :row-key="record => record.id"
         :pagination="pagination" @change="handleTableChange"
-        :loading="Loading"
+        :loading="loading"
         bordered>
       <template v-slot:bodyCell="{ column, record, index }">
         <template v-if="column.dataIndex === 'action'">
@@ -64,12 +64,14 @@
 
 <script lang="ts">
 import {defineComponent, onMounted, ref} from "vue";
+import {message} from 'ant-design-vue';
 import axios from 'axios';
 
 export default defineComponent({
   components: {},
   name: "AdminDownload",
   setup() {
+    const loading = ref(true);
     const listData = ref();
     const pagination = ref({
       current: 1,
@@ -77,7 +79,6 @@ export default defineComponent({
       total: 0
     });
 
-    const loading = ref(false);
 
     const columns = [
       {
@@ -116,19 +117,25 @@ export default defineComponent({
      * @param p
      */
     const handleQuery = (p: any) => {
-      loading.value = true;
       axios.get("/downloadList/list", {
         params: {
           page: p.current,
           size: p.pageSize,
         }
       }).then((response) => {
-        loading.value = false;
-        listData.value = response.data.content.list;
 
-        // 重置分页按钮
-        pagination.value.current = p.current;
-        pagination.value.total = response.data.content.total;
+        if (response.data.success) {  // 判断后端接口返回是否出错
+          loading.value = false;
+          listData.value = response.data.content.list;
+
+          // 重置分页按钮
+          pagination.value.current = p.current;
+          pagination.value.total = response.data.content.total;
+        } else {
+          message.error(response.data.message);
+        }
+
+
       })
     }
 
@@ -213,10 +220,10 @@ export default defineComponent({
     });
 
     return {
+      loading,
       listData,
       pagination,
       columns,
-      loading,
       handleTableChange,
 
       buttonEdit,

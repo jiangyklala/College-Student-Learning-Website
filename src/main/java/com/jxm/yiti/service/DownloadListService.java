@@ -12,6 +12,7 @@ import com.jxm.yiti.resp.PageResp;
 import com.jxm.yiti.utils.CopyUtil;
 import com.jxm.yiti.utils.SnowFlakeIdWorker;
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

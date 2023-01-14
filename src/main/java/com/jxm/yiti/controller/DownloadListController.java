@@ -7,6 +7,7 @@ import com.jxm.yiti.resp.DownloadListQueryResp;
 import com.jxm.yiti.resp.PageResp;
 import com.jxm.yiti.service.DownloadListService;
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,7 @@ public class DownloadListController {
      */
     @GetMapping("/list")
     @ResponseBody
-    public CommonResp list(DownloadListQueryReq req) {
+    public CommonResp list(@Valid DownloadListQueryReq req) {
         CommonResp<PageResp<DownloadListQueryResp>> resp = new CommonResp<>();
 
         PageResp<DownloadListQueryResp> list = downloadListService.list(req);
