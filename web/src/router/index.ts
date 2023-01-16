@@ -2,6 +2,7 @@ import {createRouter, createWebHistory, RouteRecordRaw} from 'vue-router'
 import Home from "@/views/Home.vue";
 import Download from "@/views/download/Download.vue";
 import AdminDownload from "@/views/admin/AdminDownload.vue";
+import AdminCategory from "@/views/admin/AdminCategory.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -24,6 +25,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/admin/AdminDownload',
     name: 'AdminDownload',
     component: AdminDownload
+  },
+  {
+    path: '/admin/AdminCategory',
+    name: 'AdminCategory',
+    component: AdminCategory
   },
 ]
 

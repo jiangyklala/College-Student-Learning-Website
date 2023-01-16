@@ -1,10 +1,10 @@
 package com.jxm.yiti.req;
 
-public class DownloadListQueryReq extends PageReq {
+public class CategoryQueryReq extends PageReq {
+
     private Long id;
 
     private String name;
-
 
     public Long getId() {
         return id;
@@ -25,7 +25,7 @@ public class DownloadListQueryReq extends PageReq {
 
     @Override
     public String toString() {
-        return "DownloadListQueryReq{" +
+        return "CategoryQueryReq{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 "} " + super.toString();
