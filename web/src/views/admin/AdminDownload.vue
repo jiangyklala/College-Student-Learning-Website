@@ -1,11 +1,17 @@
 <template>
   <a-layout-content style="padding: 0 250px">
-    <div class="title">
-      <p>
+    <div class="body">
+      <a-space direction="horizontal" size="large">
+        <a-input-search
+            placeholder="输入待搜索名称"
+            enter-button="Search"
+            size="large"
+            @search="onSearch"
+        />
         <a-button type="primary" @click="addDownloadItem">
           新增
         </a-button>
-      </p>
+      </a-space>
     </div>
     <a-table
         :columns="columns"
@@ -112,6 +118,26 @@ export default defineComponent({
       },
     ];
 
+
+    //-------------搜索框--------------]
+    const onSearch = (searchValue: string) => {
+      handleQuery({
+        current: 1,
+        pageSize: pagination.value.pageSize,
+        name: searchValue,
+      })
+    };
+
+    //-------------页面--------------
+    /**
+     * 新增按钮
+     * 注: 这里不需要写具体的新增逻辑, 已经在对话框的"确认"按钮的逻辑中写过了
+     */
+    const addDownloadItem = () => {
+      modalVisible.value = true;
+      downloadList.value = {};  // 清空当前的数据信息
+    };
+
     /**
      * 数据查询
      * @param p
@@ -121,12 +147,13 @@ export default defineComponent({
         params: {
           page: p.current,
           size: p.pageSize,
+          name: p.name,
         }
       }).then((response) => {
 
         if (response.data.success) {  // 判断后端接口返回是否出错
           loading.value = false;
-          listData.value = response.data.content.list;
+          listData.value = response.data.content.list;  // 显示内容
 
           // 重置分页按钮
           pagination.value.current = p.current;
@@ -137,16 +164,6 @@ export default defineComponent({
 
 
       })
-    }
-
-    //-------------页面--------------
-    /**
-     * 新增按钮
-     * 注: 这里不需要写具体的新增逻辑, 已经在对话框的"确认"按钮的逻辑中写过了
-     */
-    const addDownloadItem = () => {
-      modalVisible.value = true;
-      downloadList.value = {};  // 清空当前的数据信息
     }
 
     //-------------分页--------------
@@ -237,6 +254,8 @@ export default defineComponent({
       modalVisible,
       modalLoading,
       handleModalOk,
+
+      onSearch,
     };
 
   },
