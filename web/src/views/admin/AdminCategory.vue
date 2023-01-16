@@ -9,7 +9,7 @@
     </div>
     <a-table
         :columns="columns"
-        :data-source="listData"
+        :data-source="tableData"
         :row-key="record => record.id"
         :loading="loading"
         :pagination="false"
@@ -70,6 +70,7 @@ export default defineComponent({
   setup: function () {
     const loading = ref(true);
     const listData = ref();
+    const tableData = ref();
 
 
 
@@ -111,13 +112,14 @@ export default defineComponent({
 
     /**
      * 数据查询
-     * @param p
      */
     const handleQuery = () => {
       axios.get("/category/selectAll").then((response) => {
 
         if (response.data.success) {  // 判断后端接口返回是否出错
           loading.value = false;
+          // tableData.value = [];
+          tableData.value = Tool.array2Tree(response.data.content, 0)
           listData.value = response.data.content;  // 显示内容
 
         } else {
@@ -183,6 +185,7 @@ export default defineComponent({
 
     return {
       loading,
+      tableData,
       listData,
       columns,
 
