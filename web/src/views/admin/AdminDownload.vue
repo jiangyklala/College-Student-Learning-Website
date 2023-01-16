@@ -72,11 +72,12 @@
 import {defineComponent, onMounted, ref} from "vue";
 import {message} from 'ant-design-vue';
 import axios from 'axios';
+import {Tool} from "@/utils/tool";
 
 export default defineComponent({
   components: {},
   name: "AdminDownload",
-  setup() {
+  setup: function () {
     const loading = ref(true);
     const listData = ref();
     const pagination = ref({
@@ -212,7 +213,7 @@ export default defineComponent({
      */
     const buttonEdit = (record: any) => {
       modalVisible.value = true;
-      downloadList.value = record;
+      downloadList.value = Tool.copy(record);
     };
 
     /**
