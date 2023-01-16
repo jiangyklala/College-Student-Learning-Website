@@ -50,6 +50,17 @@
       </a-form-item>
       <a-form-item label="父分类">
         <a-input v-model:value="category.parent"/>
+        <a-select
+            ref="select"
+            v-model:value="category.parent"
+        >
+          <a-select-option value="0">
+            无
+          </a-select-option>
+          <a-select-option v-for="i in tableData" :key="i.id" :value="i.id" :disabled="category.id === i.id">
+            {{ i.name }}
+          </a-select-option>
+        </a-select>
       </a-form-item>
       <a-form-item label="排序">
         <a-input v-model:value="category.sort"/>
@@ -114,13 +125,13 @@ export default defineComponent({
      * 数据查询
      */
     const handleQuery = () => {
+      loading.value = true;
       axios.get("/category/selectAll").then((response) => {
 
         if (response.data.success) {  // 判断后端接口返回是否出错
           loading.value = false;
           // tableData.value = [];
           tableData.value = Tool.array2Tree(response.data.content, 0)
-          listData.value = response.data.content;  // 显示内容
 
         } else {
           message.error(response.data.message);
@@ -136,6 +147,7 @@ export default defineComponent({
     const category = ref({});
     const modalVisible = ref(false);
     const modalLoading = ref(false);
+
     const handleModalOk = () => {
       modalLoading.value = true;
 
