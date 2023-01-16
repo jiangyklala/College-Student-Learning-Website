@@ -11,6 +11,8 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/category")
 public class CategoryController {
@@ -30,6 +32,20 @@ public class CategoryController {
         CommonResp<PageResp<CategoryQueryResp>> resp = new CommonResp<>();
 
         PageResp<CategoryQueryResp> list = categoryService.list(req);
+
+        resp.setContent(list);
+        return resp;
+    }
+
+    /**
+     * 查询下载列表的所有数据
+     */
+    @GetMapping("/selectAll")
+    @ResponseBody
+    public CommonResp selectAll() {
+        CommonResp<List<CategoryQueryResp>> resp = new CommonResp<>();
+
+        List<CategoryQueryResp> list = categoryService.selectAll();
 
         resp.setContent(list);
         return resp;

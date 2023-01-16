@@ -2,12 +2,6 @@
   <a-layout-content style="padding: 0 250px">
     <div class="body">
       <a-space direction="horizontal" size="large">
-        <a-input-search
-            placeholder="输入待搜索名称"
-            enter-button="Search"
-            size="large"
-            @search="onSearch"
-        />
         <a-button type="primary" @click="addCategoryItem">
           新增
         </a-button>
@@ -17,8 +11,8 @@
         :columns="columns"
         :data-source="listData"
         :row-key="record => record.id"
-        :pagination="pagination" @change="handleTableChange"
         :loading="loading"
+        :pagination="false"
         bordered>
       <template v-slot:bodyCell="{ column, record, index }">
         <template v-if="column.dataIndex === 'action'">
@@ -76,11 +70,7 @@ export default defineComponent({
   setup: function () {
     const loading = ref(true);
     const listData = ref();
-    const pagination = ref({
-      current: 1,
-      pageSize: 2,
-      total: 0
-    });
+
 
 
     const columns = [
@@ -107,14 +97,7 @@ export default defineComponent({
     ];
 
 
-    //-------------搜索框--------------]
-    const onSearch = (searchValue: string) => {
-      handleQuery({
-        current: 1,
-        pageSize: pagination.value.pageSize,
-        name: searchValue,
-      })
-    };
+
 
     //-------------页面--------------
     /**
@@ -130,22 +113,13 @@ export default defineComponent({
      * 数据查询
      * @param p
      */
-    const handleQuery = (p: any) => {
-      axios.get("/category/list", {
-        params: {
-          page: p.current,
-          size: p.pageSize,
-          name: p.name,
-        }
-      }).then((response) => {
+    const handleQuery = () => {
+      axios.get("/category/selectAll").then((response) => {
 
         if (response.data.success) {  // 判断后端接口返回是否出错
           loading.value = false;
-          listData.value = response.data.content.list;  // 显示内容
+          listData.value = response.data.content;  // 显示内容
 
-          // 重置分页按钮
-          pagination.value.current = p.current;
-          pagination.value.total = response.data.content.total;
         } else {
           message.error(response.data.message);
         }
@@ -154,18 +128,7 @@ export default defineComponent({
       })
     }
 
-    //-------------分页--------------
-    /**
-     * 分页的跳转页面处理
-     * @param pagination
-     */
-    const handleTableChange = (pagination: any) => {
-      // console.log("pagination:" + pagination);
-      handleQuery({
-        current: pagination.current,
-        pageSize: pagination.pageSize,
-      });
-    };
+
 
     //-------------表单--------------
     const category = ref({});
@@ -184,10 +147,7 @@ export default defineComponent({
           modalVisible.value = false;
 
           // 重新加载列表
-          handleQuery({
-            current: pagination.value.current,
-            pageSize: pagination.value.pageSize,
-          });
+          handleQuery();
         } else {
           message.error(response.data.message);
         }
@@ -212,27 +172,19 @@ export default defineComponent({
 
         if (data.success) {
           // 重新加载列表
-          handleQuery({
-            current: pagination.value.current,
-            pageSize: pagination.value.pageSize,
-          });
+          handleQuery();
         }
       })
     };
 
     onMounted(() => {
-      handleQuery({
-        current: pagination.value.current,
-        pageSize: pagination.value.pageSize,
-      });
+      handleQuery();
     });
 
     return {
       loading,
       listData,
-      pagination,
       columns,
-      handleTableChange,
 
       buttonEdit,
       addCategoryItem,
@@ -243,7 +195,6 @@ export default defineComponent({
       modalLoading,
       handleModalOk,
 
-      onSearch,
     };
 
   },

@@ -33,6 +33,7 @@ public class CategoryService {
      */
     public PageResp<CategoryQueryResp> list(CategoryQueryReq req) {
         CategoryExample categoryExample = new CategoryExample();
+        categoryExample.setOrderByClause("sort asc");
         CategoryExample.Criteria criteria = categoryExample.createCriteria();
         if (!ObjectUtils.isEmpty(req.getName())) {  // 动态 SQL
             criteria.andNameLike("%" + req.getName() + "%");  // 模糊匹配条件
@@ -76,5 +77,18 @@ public class CategoryService {
      */
     public int delete(Long id) {
         return categoryMapper.deleteByPrimaryKey(id);
+    }
+
+    /**
+     * 查询分类表的所有数据, 不带分页功能, 并按 sort 字段排序
+     */
+    public List<CategoryQueryResp> selectAll() {
+        CategoryExample categoryExample = new CategoryExample();
+        categoryExample.setOrderByClause("sort asc");  //  按 sort 这个字段, asc
+        List<Category> categorys = categoryMapper.selectByExample(null);
+
+        return CopyUtil.copyList(categorys, CategoryQueryResp.class);
+
+
     }
 }
