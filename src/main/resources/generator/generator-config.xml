@@ -41,8 +41,8 @@
                              type="XMLMAPPER"/>
 
         <!--                <table tableName="record_log" domainObjectName="RecordLog"/>-->
-        <table tableName="category"/>
-        <!--                <table tableName="download_list"/>-->
+        <!--        <table tableName="category"/>-->
+        <table tableName="download_list"/>
         <!--                <table tableName="demo" domainObjectName="Demo"/>-->
         <!--                <table tableName="disallow_word" domainObjectName="Disallow_word"/>-->
     </context>

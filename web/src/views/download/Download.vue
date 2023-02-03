@@ -6,31 +6,40 @@
         :loading="loading"
     >
       <template #renderItem="{ item }">
-        <a-list-item key="item.name">
-          <template #actions>
-            <span v-for="{ type, text } in actions" :key="type">
-            <component :is="type" style="margin-right: 8px"/>
-            {{ text }}
-            </span>
-            <a-button type="primary" shape="round">
-              <template #icon>
-                <DownloadOutlined/>
-              </template>
-            </a-button>
-          </template>
+        <a-list-item class="each-item" key="item.name">
           <a-list-item-meta>
             <template #title>
               <a :href="item.href">{{ item.name }}</a>
             </template>
           </a-list-item-meta>
-          {{ item.description }}
+          <template #actions>
+            <span v-for="{ type, text } in actions" :key="type">
+              <component :is="type" style="margin-right: 8px"/>
+                {{ text }}
+            </span>
+            <a-button class="download-button" type="primary" shape="round">
+              <template #icon>
+                <DownloadOutlined/>
+              </template>
+            </a-button>
+          </template>
         </a-list-item>
+
+        <a-modal v-model:visible="downloadModalVis" @ok="downloadModalOK">
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+        </a-modal>
+
       </template>
+
       <a-pagination
           v-model:current="pagination.current"
           v-model:pageSize="pagination.pageSize"
           :total="pagination.total"
-          @change="handleListChange"/>
+          @change="handleListChange"
+      />
+
     </a-list>
   </a-layout-content>
 </template>
@@ -49,11 +58,12 @@ export default defineComponent({
   },
   name: 'Download',
   setup() {
+    const downloadModalVis = ref(false);
     const loading = ref(true);
     const listData = ref();
     const pagination = ref({
       current: 1,
-      pageSize: 2,
+      pageSize: 10,
       total: 0,
     });
 
@@ -91,6 +101,10 @@ export default defineComponent({
       });
     };
 
+    const downloadModalOK = () => {
+      downloadModalVis.value = false;
+    }
+
     onMounted(() => {
       handleQuery({
         current: pagination.value.current,
@@ -104,10 +118,25 @@ export default defineComponent({
       pagination,
       actions,
       handleListChange,
+
+      downloadModalOK,
+      downloadModalVis,
     };
   },
 });
 </script>
 
 <style scoped>
+
+.each-item {
+  background: white;
+  padding: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.download-button {
+
+}
+
 </style>

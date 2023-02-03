@@ -9,11 +9,11 @@ public class DownloadList {
 
     private Long categoryId2;
 
-    private String description;
-
     private Integer downloadCount;
 
     private String size;
+
+    private String share;
 
     public Long getId() {
         return id;
@@ -47,14 +47,6 @@ public class DownloadList {
         this.categoryId2 = categoryId2;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public Integer getDownloadCount() {
         return downloadCount;
     }
@@ -71,6 +63,14 @@ public class DownloadList {
         this.size = size;
     }
 
+    public String getShare() {
+        return share;
+    }
+
+    public void setShare(String share) {
+        this.share = share;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -81,9 +81,9 @@ public class DownloadList {
         sb.append(", name=").append(name);
         sb.append(", categoryId1=").append(categoryId1);
         sb.append(", categoryId2=").append(categoryId2);
-        sb.append(", description=").append(description);
         sb.append(", downloadCount=").append(downloadCount);
         sb.append(", size=").append(size);
+        sb.append(", share=").append(share);
         sb.append("]");
         return sb.toString();
     }
