@@ -1,8 +1,7 @@
 <template>
-  <a-layout-header>
-    <div class="logo" />
+  <a-layout-header class="header">
     <a-menu
-        theme="dark"
+        theme="light"
         mode="horizontal"
         :style="{ lineHeight: '64px' }"
     >
@@ -35,3 +34,11 @@ export default defineComponent({
   // } // 父子组件间传递数据
 });
 </script>
+
+<style>
+
+.header {
+  background: white;
+}
+
+</style>
