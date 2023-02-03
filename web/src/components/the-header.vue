@@ -38,7 +38,9 @@ export default defineComponent({
 <style>
 
 .header {
-  background: white;
+  color: white !important;
+  background: white !important;
+  padding-left: 30px !important;
 }
 
 </style>
