@@ -1,5 +1,5 @@
 <template>
-  <a-layout-content style="padding: 0 250px">
+  <a-layout-content style="padding: 0px 250px">
     <div class="body">
       <a-space direction="horizontal" size="large">
         <a-button type="primary" @click="addCategoryItem">
@@ -49,7 +49,6 @@
         <a-input v-model:value="category.name"/>
       </a-form-item>
       <a-form-item label="父分类">
-        <a-input v-model:value="category.parent"/>
         <a-select
             ref="select"
             v-model:value="category.parent"

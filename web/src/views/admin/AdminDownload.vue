@@ -55,14 +55,11 @@
       <a-form-item label="名称">
         <a-input v-model:value="downloadList.name"/>
       </a-form-item>
-      <a-form-item label="分类一">
-        <a-input v-model:value="downloadList.categoryId1"/>
-      </a-form-item>
-      <a-form-item label="分类二">
-        <a-input v-model:value="downloadList.categoryId2"/>
-      </a-form-item>
-      <a-form-item label="描述" type="text">
-        <a-input v-model:value="downloadList.description"/>
+      <a-form-item label="分类">
+        <a-cascader
+            v-model:value="categoryIds"
+            :field-names="{ label: 'name', value: 'id', children: 'children' }"
+            :options="categoryData"/>
       </a-form-item>
     </a-form>
   </a-modal>
@@ -99,12 +96,7 @@ export default defineComponent({
         width: '65%',
       },
       {
-        title: '分类一',
-        dataIndex: 'categoryId1',
-        width: '10%',
-      },
-      {
-        title: '分类二',
+        title: '分类',
         dataIndex: 'categoryId2',
         width: '10%',
       },
@@ -140,7 +132,7 @@ export default defineComponent({
     };
 
     /**
-     * 数据查询
+     * 下载列表数据查询
      * @param p
      */
     const handleQuery = (p: any) => {
@@ -181,11 +173,16 @@ export default defineComponent({
     };
 
     //-------------表单--------------
-    const downloadList = ref({});
+    const downloadList = ref();
     const modalVisible = ref(false);
     const modalLoading = ref(false);
+    const categoryIds = ref();
+    const categoryData = ref();
+
     const handleModalOk = () => {
       modalLoading.value = true;
+      downloadList.value.categoryId1 = categoryIds.value[0];  // 保存之前先把两个分类从表单中提取出来
+      downloadList.value.categoryId2 = categoryIds.value[1];
 
       axios.post("/downloadList/save", downloadList.value).then((response) => {
         // console.log(response);
@@ -214,6 +211,7 @@ export default defineComponent({
     const buttonEdit = (record: any) => {
       modalVisible.value = true;
       downloadList.value = Tool.copy(record);
+      categoryIds.value = [downloadList.value.categoryId1, downloadList.value.categoryId2];  // 编辑时表单的分类显示需要再从 downloadList 中提取出来
     };
 
     /**
@@ -233,7 +231,24 @@ export default defineComponent({
       })
     };
 
+    /**
+     * 分类数据查询
+     */
+    const handleQueryCategory = () => {
+      loading.value = true;
+      axios.get("/category/selectAll").then((response) => {
+        loading.value = false;
+        if (response.data.success) {  // 判断后端接口返回是否出错
+          categoryData.value = Tool.array2Tree(response.data.content, 0);
+
+        } else {
+          message.error(response.data.message);
+        }
+      })
+    }
+
     onMounted(() => {
+      handleQueryCategory();
       handleQuery({
         current: pagination.value.current,
         pageSize: pagination.value.pageSize,
@@ -257,6 +272,9 @@ export default defineComponent({
       handleModalOk,
 
       onSearch,
+
+      categoryIds,
+      categoryData,
     };
 
   },

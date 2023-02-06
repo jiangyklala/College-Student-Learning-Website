@@ -1,5 +1,5 @@
 <template>
-  <a-layout-content style="padding: 0 250px">
+  <a-layout-content class="layout-content">
     <a-list
         item-layout="horizontal"
         :data-source="listData"
@@ -7,11 +7,13 @@
     >
       <template #renderItem="{ item }">
         <a-list-item class="each-item" key="item.name">
+
           <a-list-item-meta>
             <template #title>
               <a :href="item.href">{{ item.name }}</a>
             </template>
           </a-list-item-meta>
+
           <template #actions>
             <span v-for="{ type, text } in actions" :key="type">
               <component :is="type" style="margin-right: 8px"/>
@@ -34,6 +36,7 @@
       </template>
 
       <a-pagination
+          class="pagination"
           v-model:current="pagination.current"
           v-model:pageSize="pagination.pageSize"
           :total="pagination.total"
@@ -135,8 +138,14 @@ export default defineComponent({
   margin-bottom: 5px;
 }
 
-.download-button {
-
+.pagination {
+  text-align: center;
 }
+
+.layout-content {
+  padding: 10px 250px;
+}
+
+
 
 </style>
