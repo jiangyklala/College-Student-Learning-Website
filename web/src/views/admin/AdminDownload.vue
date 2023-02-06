@@ -13,6 +13,8 @@
         </a-button>
       </a-space>
     </div>
+
+    <!--    下载管理表格-->
     <a-table
         :columns="columns"
         :data-source="listData"
@@ -42,6 +44,8 @@
       </template>
     </a-table>
   </a-layout-content>
+
+  <!--  操作弹窗-->
   <a-modal
       title="下载表单"
       v-model:visible="modalVisible"
@@ -88,16 +92,11 @@ export default defineComponent({
       {
         title: '名称',
         dataIndex: 'name',
-        width: '10%',
-      },
-      {
-        title: '描述',
-        dataIndex: 'description',
-        width: '65%',
+        width: '60%',
       },
       {
         title: '分类',
-        dataIndex: 'categoryId2',
+        dataIndex: 'categoryId1',
         width: '10%',
       },
       {
@@ -106,8 +105,14 @@ export default defineComponent({
         width: '10%',
       },
       {
+        title: '点赞数',
+        dataIndex: 'downloadCount',
+        width: '15%',
+      },
+      {
         title: '操作',
         dataIndex: 'action',
+        width: '30%',
       },
     ];
 

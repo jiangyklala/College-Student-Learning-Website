@@ -12,7 +12,7 @@
         <router-link to="/download/Download">下载</router-link>
       </a-menu-item>
       <a-menu-item key="3">
-        <router-link to="/admin/AdminDownload">电子书管理</router-link>
+        <router-link to="/admin/AdminDownload">下载管理</router-link>
       </a-menu-item>
       <a-menu-item key="4">
         <router-link to="/admin/AdminCategory">分类管理</router-link>
