@@ -22,6 +22,10 @@
         :pagination="pagination" @change="handleTableChange"
         :loading="loading"
         bordered>
+      <template v-slot:category="{ text, record }">
+        <span>{{ getCategoryNameById(record.categoryId1) }} / {{ getCategoryNameById(record.categoryId2) }}</span>
+
+      </template>
       <template v-slot:bodyCell="{ column, record, index }">
         <template v-if="column.dataIndex === 'action'">
           <a-space size="small">
@@ -38,7 +42,6 @@
                 删除
               </a-button>
             </a-popconfirm>
-
           </a-space>
         </template>
       </template>
@@ -83,7 +86,7 @@ export default defineComponent({
     const listData = ref();
     const pagination = ref({
       current: 1,
-      pageSize: 2,
+      pageSize: 10,
       total: 0
     });
 
@@ -92,12 +95,12 @@ export default defineComponent({
       {
         title: '名称',
         dataIndex: 'name',
-        width: '60%',
+        width: '20%',
       },
       {
         title: '分类',
-        dataIndex: 'categoryId1',
-        width: '10%',
+        slots: {customRender: 'category'},
+        width: '40%',
       },
       {
         title: '大小',
@@ -225,7 +228,6 @@ export default defineComponent({
     const buttonDelete = (id: number) => {
       axios.delete("/downloadList/delete/" + id).then((response) => {
         const data = response.data;
-
         if (data.success) {
           // 重新加载列表
           handleQuery({
@@ -239,17 +241,33 @@ export default defineComponent({
     /**
      * 分类数据查询
      */
+    let categorys: any;
     const handleQueryCategory = () => {
       loading.value = true;
       axios.get("/category/selectAll").then((response) => {
         loading.value = false;
         if (response.data.success) {  // 判断后端接口返回是否出错
+          categorys = response.data.content;
           categoryData.value = Tool.array2Tree(response.data.content, 0);
 
         } else {
           message.error(response.data.message);
         }
       })
+    }
+
+    /**
+     * 根据 id 返回具体的分类名称
+     */
+    const getCategoryNameById = (cid: number) => {
+      let result = "";
+      categorys.forEach((item: any) => {
+        if (item.id === cid) {
+          // 这里直接 return item.name 不起作用
+          result = item.name;
+        }
+      });
+      return result;
     }
 
     onMounted(() => {
@@ -266,6 +284,7 @@ export default defineComponent({
       pagination,
       columns,
       handleTableChange,
+      getCategoryNameById,
 
       buttonEdit,
       addDownloadItem,
