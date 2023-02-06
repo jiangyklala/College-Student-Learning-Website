@@ -18,6 +18,7 @@ public class DownloadListController {
     @Resource
     private DownloadListService downloadListService;
 
+
     /**
      * 查询下载列表的所有数据
      *
@@ -70,6 +71,20 @@ public class DownloadListController {
             resp.setMessage("删除下载项失败");
         }
 
+        return resp;
+    }
+
+    /**
+     * 根据分类id查出对应的下载项, [-1] --- 查出全部下载项
+     */
+    @GetMapping("/selectByCategoryId")
+    @ResponseBody
+    public CommonResp selectByCategoryId(DownloadListQueryReq req) {
+        CommonResp<PageResp<DownloadListQueryResp>> resp = new CommonResp<>();
+
+        PageResp<DownloadListQueryResp> list = downloadListService.selectByCategoryId(req);
+
+        resp.setContent(list);
         return resp;
     }
 

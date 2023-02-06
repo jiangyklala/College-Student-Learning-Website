@@ -5,6 +5,7 @@ public class DownloadListQueryReq extends PageReq {
 
     private String name;
 
+    private Long categoryId;
 
     public Long getId() {
         return id;
@@ -22,12 +23,20 @@ public class DownloadListQueryReq extends PageReq {
         this.name = name;
     }
 
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
 
     @Override
     public String toString() {
         return "DownloadListQueryReq{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", categoryId=" + categoryId +
                 "} " + super.toString();
     }
 }

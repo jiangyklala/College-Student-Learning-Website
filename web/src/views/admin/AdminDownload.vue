@@ -66,7 +66,7 @@
         <a-cascader
             v-model:value="categoryIds"
             :field-names="{ label: 'name', value: 'id', children: 'children' }"
-            :options="categoryData"/>
+            :options="categoryTree"/>
       </a-form-item>
     </a-form>
   </a-modal>
@@ -185,7 +185,7 @@ export default defineComponent({
     const modalVisible = ref(false);
     const modalLoading = ref(false);
     const categoryIds = ref();
-    const categoryData = ref();
+    const categoryTree = ref();
 
     const handleModalOk = () => {
       modalLoading.value = true;
@@ -243,13 +243,15 @@ export default defineComponent({
      */
     let categorys: any;
     const handleQueryCategory = () => {
-      loading.value = true;
       axios.get("/category/selectAll").then((response) => {
-        loading.value = false;
         if (response.data.success) {  // 判断后端接口返回是否出错
           categorys = response.data.content;
-          categoryData.value = Tool.array2Tree(response.data.content, 0);
+          categoryTree.value = Tool.array2Tree(response.data.content, 0);
 
+          handleQuery({   // 下载列表的显示需要用到分类的信息, 由于 axios 是异步的, 所以必须在分类查询完成后再进行下载列表的查询显示
+            current: pagination.value.current,
+            pageSize: pagination.value.pageSize,
+          });
         } else {
           message.error(response.data.message);
         }
@@ -272,10 +274,7 @@ export default defineComponent({
 
     onMounted(() => {
       handleQueryCategory();
-      handleQuery({
-        current: pagination.value.current,
-        pageSize: pagination.value.pageSize,
-      });
+
     });
 
     return {
@@ -298,7 +297,7 @@ export default defineComponent({
       onSearch,
 
       categoryIds,
-      categoryData,
+      categoryTree,
     };
 
   },

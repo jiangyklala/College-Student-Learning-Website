@@ -79,4 +79,23 @@ public class DownloadListService {
     public int delete(Long id) {
         return downloadListMapper.deleteByPrimaryKey(id);
     }
+
+    public PageResp<DownloadListQueryResp> selectByCategoryId(DownloadListQueryReq req) {
+        DownloadListExample downloadListExample = new DownloadListExample();
+        if (req.getCategoryId() != -1) {
+            DownloadListExample.Criteria criteria = downloadListExample.createCriteria();
+            criteria.andCategoryId2EqualTo(req.getCategoryId());  // 匹配目录Id相同的的下载项
+        }
+
+        PageHelper.startPage(req.getPage(), req.getSize(), true);
+        List<DownloadList> downloadLists = downloadListMapper.selectByExample(downloadListExample);
+        PageInfo<DownloadList> downloadListPageInfo = new PageInfo<>(downloadLists); // 记得这里需要初始化
+        LOG.info("当前页: " + downloadListPageInfo.getPageNum() + ", 总页数: " + downloadListPageInfo.getPages() + " , 总记录数: " + downloadListPageInfo.getTotal()); //        + " , 总页数: " + downloadListPageInfo.getTotal()
+
+        PageResp<DownloadListQueryResp> resp = new PageResp<>();
+        resp.setList(CopyUtil.copyList(downloadLists, DownloadListQueryResp.class));
+        resp.setTotal(downloadListPageInfo.getTotal());
+
+        return resp;
+    }
 }
