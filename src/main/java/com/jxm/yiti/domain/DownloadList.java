@@ -13,7 +13,7 @@ public class DownloadList {
 
     private String size;
 
-    private String share;
+    private String downloadLink;
 
     public Long getId() {
         return id;
@@ -63,12 +63,12 @@ public class DownloadList {
         this.size = size;
     }
 
-    public String getShare() {
-        return share;
+    public String getDownloadLink() {
+        return downloadLink;
     }
 
-    public void setShare(String share) {
-        this.share = share;
+    public void setDownloadLink(String downloadLink) {
+        this.downloadLink = downloadLink;
     }
 
     @Override
@@ -83,7 +83,7 @@ public class DownloadList {
         sb.append(", categoryId2=").append(categoryId2);
         sb.append(", downloadCount=").append(downloadCount);
         sb.append(", size=").append(size);
-        sb.append(", share=").append(share);
+        sb.append(", downloadLink=").append(downloadLink);
         sb.append("]");
         return sb.toString();
     }

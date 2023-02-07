@@ -484,73 +484,73 @@ public class DownloadListExample {
             return (Criteria) this;
         }
 
-        public Criteria andShareIsNull() {
-            addCriterion("`share` is null");
+        public Criteria andDownloadLinkIsNull() {
+            addCriterion("download_link is null");
             return (Criteria) this;
         }
 
-        public Criteria andShareIsNotNull() {
-            addCriterion("`share` is not null");
+        public Criteria andDownloadLinkIsNotNull() {
+            addCriterion("download_link is not null");
             return (Criteria) this;
         }
 
-        public Criteria andShareEqualTo(String value) {
-            addCriterion("`share` =", value, "share");
+        public Criteria andDownloadLinkEqualTo(String value) {
+            addCriterion("download_link =", value, "downloadLink");
             return (Criteria) this;
         }
 
-        public Criteria andShareNotEqualTo(String value) {
-            addCriterion("`share` <>", value, "share");
+        public Criteria andDownloadLinkNotEqualTo(String value) {
+            addCriterion("download_link <>", value, "downloadLink");
             return (Criteria) this;
         }
 
-        public Criteria andShareGreaterThan(String value) {
-            addCriterion("`share` >", value, "share");
+        public Criteria andDownloadLinkGreaterThan(String value) {
+            addCriterion("download_link >", value, "downloadLink");
             return (Criteria) this;
         }
 
-        public Criteria andShareGreaterThanOrEqualTo(String value) {
-            addCriterion("`share` >=", value, "share");
+        public Criteria andDownloadLinkGreaterThanOrEqualTo(String value) {
+            addCriterion("download_link >=", value, "downloadLink");
             return (Criteria) this;
         }
 
-        public Criteria andShareLessThan(String value) {
-            addCriterion("`share` <", value, "share");
+        public Criteria andDownloadLinkLessThan(String value) {
+            addCriterion("download_link <", value, "downloadLink");
             return (Criteria) this;
         }
 
-        public Criteria andShareLessThanOrEqualTo(String value) {
-            addCriterion("`share` <=", value, "share");
+        public Criteria andDownloadLinkLessThanOrEqualTo(String value) {
+            addCriterion("download_link <=", value, "downloadLink");
             return (Criteria) this;
         }
 
-        public Criteria andShareLike(String value) {
-            addCriterion("`share` like", value, "share");
+        public Criteria andDownloadLinkLike(String value) {
+            addCriterion("download_link like", value, "downloadLink");
             return (Criteria) this;
         }
 
-        public Criteria andShareNotLike(String value) {
-            addCriterion("`share` not like", value, "share");
+        public Criteria andDownloadLinkNotLike(String value) {
+            addCriterion("download_link not like", value, "downloadLink");
             return (Criteria) this;
         }
 
-        public Criteria andShareIn(List<String> values) {
-            addCriterion("`share` in", values, "share");
+        public Criteria andDownloadLinkIn(List<String> values) {
+            addCriterion("download_link in", values, "downloadLink");
             return (Criteria) this;
         }
 
-        public Criteria andShareNotIn(List<String> values) {
-            addCriterion("`share` not in", values, "share");
+        public Criteria andDownloadLinkNotIn(List<String> values) {
+            addCriterion("download_link not in", values, "downloadLink");
             return (Criteria) this;
         }
 
-        public Criteria andShareBetween(String value1, String value2) {
-            addCriterion("`share` between", value1, value2, "share");
+        public Criteria andDownloadLinkBetween(String value1, String value2) {
+            addCriterion("download_link between", value1, value2, "downloadLink");
             return (Criteria) this;
         }
 
-        public Criteria andShareNotBetween(String value1, String value2) {
-            addCriterion("`share` not between", value1, value2, "share");
+        public Criteria andDownloadLinkNotBetween(String value1, String value2) {
+            addCriterion("download_link not between", value1, value2, "downloadLink");
             return (Criteria) this;
         }
     }

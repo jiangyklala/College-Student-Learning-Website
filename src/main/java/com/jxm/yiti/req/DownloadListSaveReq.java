@@ -14,11 +14,11 @@ public class DownloadListSaveReq {
 
     private Long categoryId2;
 
-    private String description;
-
     private Integer downloadCount;
 
     private String size;
+
+    private String downloadLink;
 
     public Long getId() {
         return id;
@@ -52,14 +52,6 @@ public class DownloadListSaveReq {
         this.categoryId2 = categoryId2;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public Integer getDownloadCount() {
         return downloadCount;
     }
@@ -76,20 +68,24 @@ public class DownloadListSaveReq {
         this.size = size;
     }
 
+    public String getDownloadLink() {
+        return downloadLink;
+    }
+
+    public void setDownloadLink(String downloadLink) {
+        this.downloadLink = downloadLink;
+    }
+
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", name=").append(name);
-        sb.append(", categoryId1=").append(categoryId1);
-        sb.append(", categoryId2=").append(categoryId2);
-        sb.append(", description=").append(description);
-        sb.append(", downloadCount=").append(downloadCount);
-        sb.append(", size=").append(size);
-        sb.append("]");
-        return sb.toString();
+        return "DownloadListSaveReq{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", categoryId1=" + categoryId1 +
+                ", categoryId2=" + categoryId2 +
+                ", downloadCount=" + downloadCount +
+                ", size='" + size + '\'' +
+                ", downloadLink='" + downloadLink + '\'' +
+                '}';
     }
 }

@@ -8,7 +8,7 @@
     <result column="category_id2" jdbcType="BIGINT" property="categoryId2" />
     <result column="download_count" jdbcType="INTEGER" property="downloadCount" />
     <result column="size" jdbcType="VARCHAR" property="size" />
-    <result column="share" jdbcType="VARCHAR" property="share"/>
+    <result column="download_link" jdbcType="VARCHAR" property="downloadLink"/>
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -70,7 +70,7 @@
   </sql>
   <sql id="Base_Column_List">
       id
-      , `name`, category_id1, category_id2, download_count, `size`, `share`
+      , `name`, category_id1, category_id2, download_count, `size`, download_link
   </sql>
   <select id="selectByExample" parameterType="com.jxm.yiti.domain.DownloadListExample" resultMap="BaseResultMap">
     select
@@ -105,59 +105,59 @@
   <insert id="insert" parameterType="com.jxm.yiti.domain.DownloadList">
       insert into download_list (id, `name`, category_id1,
                                  category_id2, download_count, `size`,
-                                 `share`)
+                                 download_link)
       values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{categoryId1,jdbcType=BIGINT},
               #{categoryId2,jdbcType=BIGINT}, #{downloadCount,jdbcType=INTEGER}, #{size,jdbcType=VARCHAR},
-              #{share,jdbcType=VARCHAR})
+              #{downloadLink,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.jxm.yiti.domain.DownloadList">
     insert into download_list
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="name != null">
-        `name`,
-      </if>
-      <if test="categoryId1 != null">
-        category_id1,
-      </if>
-        <if test="categoryId2 != null">
-            category_id2,
-        </if>
-        <if test="downloadCount != null">
-            download_count,
-        </if>
-        <if test="size != null">
-            `size`,
-        </if>
-        <if test="share != null">
-            `share`,
-        </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=BIGINT},
-      </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="categoryId1 != null">
-        #{categoryId1,jdbcType=BIGINT},
-      </if>
-        <if test="categoryId2 != null">
-            #{categoryId2,jdbcType=BIGINT},
-        </if>
-        <if test="downloadCount != null">
-            #{downloadCount,jdbcType=INTEGER},
-        </if>
-        <if test="size != null">
-            #{size,jdbcType=VARCHAR},
-        </if>
-        <if test="share != null">
-            #{share,jdbcType=VARCHAR},
-        </if>
-    </trim>
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="id != null">
+              id,
+          </if>
+          <if test="name != null">
+              `name`,
+          </if>
+          <if test="categoryId1 != null">
+              category_id1,
+          </if>
+          <if test="categoryId2 != null">
+              category_id2,
+          </if>
+          <if test="downloadCount != null">
+              download_count,
+          </if>
+          <if test="size != null">
+              `size`,
+          </if>
+          <if test="downloadLink != null">
+              download_link,
+          </if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides=",">
+          <if test="id != null">
+              #{id,jdbcType=BIGINT},
+          </if>
+          <if test="name != null">
+              #{name,jdbcType=VARCHAR},
+          </if>
+          <if test="categoryId1 != null">
+              #{categoryId1,jdbcType=BIGINT},
+          </if>
+          <if test="categoryId2 != null">
+              #{categoryId2,jdbcType=BIGINT},
+          </if>
+          <if test="downloadCount != null">
+              #{downloadCount,jdbcType=INTEGER},
+          </if>
+          <if test="size != null">
+              #{size,jdbcType=VARCHAR},
+          </if>
+          <if test="downloadLink != null">
+              #{downloadLink,jdbcType=VARCHAR},
+          </if>
+      </trim>
   </insert>
   <select id="countByExample" parameterType="com.jxm.yiti.domain.DownloadListExample" resultType="java.lang.Long">
     select count(*) from download_list
@@ -167,68 +167,68 @@
   </select>
   <update id="updateByExampleSelective" parameterType="map">
     update download_list
-    <set>
-      <if test="record.id != null">
-        id = #{record.id,jdbcType=BIGINT},
-      </if>
-      <if test="record.name != null">
-        `name` = #{record.name,jdbcType=VARCHAR},
-      </if>
-      <if test="record.categoryId1 != null">
-          category_id1 = #{record.categoryId1,jdbcType=BIGINT},
-      </if>
-        <if test="record.categoryId2 != null">
-            category_id2 = #{record.categoryId2,jdbcType=BIGINT},
-        </if>
-        <if test="record.downloadCount != null">
-            download_count = #{record.downloadCount,jdbcType=INTEGER},
-        </if>
-        <if test="record.size != null">
-            `size` = #{record.size,jdbcType=VARCHAR},
-        </if>
-        <if test="record.share != null">
-            `share` = #{record.share,jdbcType=VARCHAR},
-        </if>
-    </set>
+      <set>
+          <if test="record.id != null">
+              id = #{record.id,jdbcType=BIGINT},
+          </if>
+          <if test="record.name != null">
+              `name` = #{record.name,jdbcType=VARCHAR},
+          </if>
+          <if test="record.categoryId1 != null">
+              category_id1 = #{record.categoryId1,jdbcType=BIGINT},
+          </if>
+          <if test="record.categoryId2 != null">
+              category_id2 = #{record.categoryId2,jdbcType=BIGINT},
+          </if>
+          <if test="record.downloadCount != null">
+              download_count = #{record.downloadCount,jdbcType=INTEGER},
+          </if>
+          <if test="record.size != null">
+              `size` = #{record.size,jdbcType=VARCHAR},
+          </if>
+          <if test="record.downloadLink != null">
+              download_link = #{record.downloadLink,jdbcType=VARCHAR},
+          </if>
+      </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map">
-      update download_list
-      set id = #{record.id,jdbcType=BIGINT},
-      `name` = #{record.name,jdbcType=VARCHAR},
-      category_id1 = #{record.categoryId1,jdbcType=BIGINT},
-      category_id2 = #{record.categoryId2,jdbcType=BIGINT},
-      download_count = #{record.downloadCount,jdbcType=INTEGER},
-      `size` = #{record.size,jdbcType=VARCHAR},
-      `share` = #{record.share,jdbcType=VARCHAR}
-      <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
+    <update id="updateByExample" parameterType="map">
+        update download_list
+        set id = #{record.id,jdbcType=BIGINT},
+        `name` = #{record.name,jdbcType=VARCHAR},
+        category_id1 = #{record.categoryId1,jdbcType=BIGINT},
+        category_id2 = #{record.categoryId2,jdbcType=BIGINT},
+        download_count = #{record.downloadCount,jdbcType=INTEGER},
+        `size` = #{record.size,jdbcType=VARCHAR},
+        download_link = #{record.downloadLink,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.jxm.yiti.domain.DownloadList">
     update download_list
-    <set>
-      <if test="name != null">
-        `name` = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="categoryId1 != null">
-        category_id1 = #{categoryId1,jdbcType=BIGINT},
-      </if>
-        <if test="categoryId2 != null">
-            category_id2 = #{categoryId2,jdbcType=BIGINT},
-        </if>
-        <if test="downloadCount != null">
-            download_count = #{downloadCount,jdbcType=INTEGER},
-        </if>
-        <if test="size != null">
-            `size` = #{size,jdbcType=VARCHAR},
-        </if>
-        <if test="share != null">
-            `share` = #{share,jdbcType=VARCHAR},
-        </if>
-    </set>
+      <set>
+          <if test="name != null">
+              `name` = #{name,jdbcType=VARCHAR},
+          </if>
+          <if test="categoryId1 != null">
+              category_id1 = #{categoryId1,jdbcType=BIGINT},
+          </if>
+          <if test="categoryId2 != null">
+              category_id2 = #{categoryId2,jdbcType=BIGINT},
+          </if>
+          <if test="downloadCount != null">
+              download_count = #{downloadCount,jdbcType=INTEGER},
+          </if>
+          <if test="size != null">
+              `size` = #{size,jdbcType=VARCHAR},
+          </if>
+          <if test="downloadLink != null">
+              download_link = #{downloadLink,jdbcType=VARCHAR},
+          </if>
+      </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.jxm.yiti.domain.DownloadList">
@@ -238,7 +238,7 @@
           category_id2   = #{categoryId2,jdbcType=BIGINT},
           download_count = #{downloadCount,jdbcType=INTEGER},
           `size`         = #{size,jdbcType=VARCHAR},
-          `share`        = #{share,jdbcType=VARCHAR}
+          download_link  = #{downloadLink,jdbcType=VARCHAR}
       where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>
