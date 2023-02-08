@@ -63,10 +63,14 @@
         <a-input v-model:value="downloadList.name"/>
       </a-form-item>
       <a-form-item label="分类">
+        <!--        级联选择-->
         <a-cascader
             v-model:value="categoryIds"
             :field-names="{ label: 'name', value: 'id', children: 'children' }"
             :options="categoryTree"/>
+      </a-form-item>
+      <a-form-item label="下载链接">
+        <a-input v-model:value="downloadList.downloadLink"/>
       </a-form-item>
     </a-form>
   </a-modal>
@@ -162,8 +166,6 @@ export default defineComponent({
         } else {
           message.error(response.data.message);
         }
-
-
       })
     }
 

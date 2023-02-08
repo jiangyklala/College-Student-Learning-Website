@@ -37,23 +37,23 @@
           </a-list-item-meta>
 
           <template #actions>
-            <span v-for="{ type, text } in actions" :key="type">
-              <component :is="type" style="margin-right: 8px"/>
-                {{ text }}
+            <span class="thunderbolt">
+              <thunderbolt-two-tone/>
+              {{ item.downloadCount }}
             </span>
-            <a-button class="download-button" type="primary" shape="round">
+            <a-button
+                class="download-button"
+                type="primary"
+                shape="round"
+                v-bind:href="item.downloadLink"
+                @click="downloadBtnClick(item)"
+            >
               <template #icon>
                 <DownloadOutlined/>
               </template>
             </a-button>
           </template>
         </a-list-item>
-
-        <a-modal v-model:visible="downloadModalVis" @ok="downloadModalOK">
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-        </a-modal>
 
       </template>
 
@@ -85,7 +85,7 @@ export default defineComponent({
   name: 'Download',
   setup() {
     const downloadModalVis = ref(false);
-    const loading = ref(true);
+    const mainLoading = ref(true);
     const listData = ref();
     const pagination = ref({
       current: 1,
@@ -94,8 +94,7 @@ export default defineComponent({
     });
 
     const actions: Record<string, string>[] = [
-      {type: 'EyeTwoTone', text: '156'},
-      {type: 'ThunderboltTwoTone', text: '355'},
+      {type: 'ThunderboltTwoTone', text: 'item.downloadCount'},
     ];
 
     //-------------数据查询--------------
@@ -109,7 +108,7 @@ export default defineComponent({
       }).then((response) => {
 
         if (response.data.success) {  // 判断后端接口返回是否出错
-          loading.value = false;
+          mainLoading.value = false;
           listData.value = response.data.content.list;
 
           // 重置分页按钮
@@ -145,16 +144,16 @@ export default defineComponent({
      * @param p
      */
     const selectByCategory = (p: any) => {
-      loading.value = true;
+      mainLoading.value = true;
       axios.get("/downloadList/selectByCategoryId", {
         params: {
-          page: pagination.value.current,
+          page: p.current,
           size: pagination.value.pageSize,
           categoryId: p.item.key,
         }
       }).then((response) => {
         if (response.data.success) {
-          loading.value = false;
+          mainLoading.value = false;
           listData.value = response.data.content.list;
           console.log("response.data.content.total:" + response.data.content.total);
 
@@ -176,7 +175,7 @@ export default defineComponent({
      * 分类导航栏点击
      * @param item
      */
-    let meunItem: any;
+    let meunItem: any;  // 分页模块需要使用当前选择的导航分类
     const handleMeunClick = (item: any) => {
       paginationNum = 1;
       meunItem = item;
@@ -187,6 +186,26 @@ export default defineComponent({
       });
     }
 
+    const downloadBtnClick = (item: any) => {
+      mainLoading.value = true;
+      ++item.downloadCount;
+      console.log(item);
+      axios.post("/downloadList/save", item).then((response) => {
+
+        const data = response.data;
+
+        if (data.success) {
+          mainLoading.value = false;
+          // 重新加载列表
+          handleQuery({
+            current: pagination.value.current,
+            pageSize: pagination.value.pageSize,
+          });
+        } else {
+          message.error(response.data.message);
+        }
+      })
+    }
 
     //-------------分页--------------
 
@@ -226,7 +245,7 @@ export default defineComponent({
     });
 
     return {
-      loading,
+      loading: mainLoading,
       listData,
       pagination,
       actions,
@@ -234,6 +253,7 @@ export default defineComponent({
 
       downloadModalOK,
       downloadModalVis,
+      downloadBtnClick,
 
       categoryTree,
       handleMeunClick,
@@ -257,6 +277,12 @@ export default defineComponent({
 
 .layout-content {
   padding: 10px 250px;
+}
+
+.thunderbolt {
+  display: block;
+  width: 50px;
+  text-align: left;
 }
 
 
