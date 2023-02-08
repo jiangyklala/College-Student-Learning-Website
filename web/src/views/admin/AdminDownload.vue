@@ -24,7 +24,6 @@
         bordered>
       <template v-slot:category="{ text, record }">
         <span>{{ getCategoryNameById(record.categoryId1) }} / {{ getCategoryNameById(record.categoryId2) }}</span>
-
       </template>
       <template v-slot:bodyCell="{ column, record, index }">
         <template v-if="column.dataIndex === 'action'">
@@ -261,7 +260,7 @@ export default defineComponent({
     }
 
     /**
-     * 根据 id 返回具体的分类名称
+     * 根据目录id返回具体的分类名称
      */
     const getCategoryNameById = (cid: number) => {
       let result = "";

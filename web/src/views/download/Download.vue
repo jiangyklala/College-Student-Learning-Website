@@ -36,6 +36,10 @@
             </template>
           </a-list-item-meta>
 
+          <span class="itemCategorySpan">
+            {{ getCategoryNameById(item.categoryId1) }} / {{ getCategoryNameById(item.categoryId2) }}
+          </span>
+
           <template #actions>
             <span class="thunderbolt">
               <thunderbolt-two-tone/>
@@ -166,6 +170,20 @@ export default defineComponent({
       })
     }
 
+    /**
+     * 根据目录id返回具体的分类名称
+     **/
+    const getCategoryNameById = (cid: number) => {
+      let result = "";
+      categorys.forEach((item: any) => {
+        if (item.id === cid) {
+          // 这里直接 return item.name 不起作用
+          result = item.name;
+        }
+      });
+      return result;
+    }
+
     //-------------按钮--------------
     const downloadModalOK = () => {
       downloadModalVis.value = false;
@@ -254,6 +272,7 @@ export default defineComponent({
       downloadModalOK,
       downloadModalVis,
       downloadBtnClick,
+      getCategoryNameById,
 
       categoryTree,
       handleMeunClick,
@@ -282,6 +301,12 @@ export default defineComponent({
 .thunderbolt {
   display: block;
   width: 50px;
+  text-align: left;
+}
+
+.itemCategorySpan {
+  display: block;
+  width: 200px;
   text-align: left;
 }
 
