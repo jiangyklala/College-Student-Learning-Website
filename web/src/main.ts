@@ -1,4 +1,4 @@
-import { createApp } from 'vue'
+import {createApp} from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
@@ -6,11 +6,13 @@ import Antd from 'ant-design-vue';
 import 'ant-design-vue/dist/antd.css';
 import * as Icons from '@ant-design/icons-vue';
 import axios from "axios";
+import VideoPlayer from '@videojs-player/vue';
+import 'video.js/dist/video-js.css'
 
 axios.defaults.baseURL = process.env.VUE_APP_SERVER;
 
 const app = createApp(App);
-app.use(store).use(router).use(Antd).mount('#app');
+app.use(store).use(router).use(Antd).use(VideoPlayer).mount('#app');
 
 
 // 全局使用图标

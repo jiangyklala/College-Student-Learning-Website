@@ -1,6 +1,7 @@
 <template>
   <a-layout-content style="padding: 0 250px">
     <p>欢迎</p>
+
   </a-layout-content>
 </template>
 

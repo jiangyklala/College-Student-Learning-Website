@@ -3,6 +3,7 @@ import Home from "@/views/Home.vue";
 import Download from "@/views/download/Download.vue";
 import AdminDownload from "@/views/admin/AdminDownload.vue";
 import AdminCategory from "@/views/admin/AdminCategory.vue";
+import VideosPlayer from "@/views/videos/VideosPlayer.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -20,6 +21,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/download/Download',
     name: 'download',
     component: Download
+  },
+  {
+    path: '/videos/VideosPlayer',
+    name: 'VideosPlayer',
+    component: VideosPlayer
   },
   {
     path: '/admin/AdminDownload',
