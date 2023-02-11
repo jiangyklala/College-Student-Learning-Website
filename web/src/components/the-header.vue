@@ -40,7 +40,7 @@ export default defineComponent({
 .header {
   color: white !important;
   background: white !important;
-  padding-left: 30px !important;
+  text-align: center !important;
 }
 
 </style>

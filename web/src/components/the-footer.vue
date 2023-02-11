@@ -15,8 +15,7 @@ export default defineComponent({
 <style>
 
 .footer {
-  position: absolute;
-  bottom: 0px;
+  text-align: center;
 }
 
 </style>
