@@ -2,22 +2,20 @@ package com.jxm.yiti.controller;
 
 
 import com.jxm.yiti.req.CourseListQueryReq;
-import com.jxm.yiti.req.DownloadListQueryReq;
+import com.jxm.yiti.req.CourseListSaveReq;
+import com.jxm.yiti.req.DownloadListSaveReq;
 import com.jxm.yiti.resp.CommonResp;
 import com.jxm.yiti.resp.CourseListQueryResp;
-import com.jxm.yiti.resp.DownloadListQueryResp;
 import com.jxm.yiti.resp.PageResp;
 import com.jxm.yiti.service.CourseListService;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/course")
-public class CourseController {
+@RequestMapping("/courseList")
+public class CourseListController {
 
     @Resource
     private CourseListService courseListService;
@@ -35,6 +33,25 @@ public class CourseController {
         PageResp<CourseListQueryResp> list = courseListService.list(req);
 
         resp.setContent(list);
+        return resp;
+    }
+
+    /**
+     * 新增或者更新一个下载项
+     *
+     * @param req 保存参数
+     * @return CommonResp
+     */
+    @PostMapping("/save")
+    @ResponseBody
+    public CommonResp save(@RequestBody @Valid CourseListSaveReq req) {  // 以 json 方式提交
+        CommonResp resp = new CommonResp();
+
+        if (courseListService.save(req) != 1) {
+            resp.setSuccess(false);
+            resp.setMessage("保存下载项失败");
+        }
+
         return resp;
     }
 

@@ -11,11 +11,11 @@ public class CourseListQueryResp {
 
     private Long categoryId2;
 
-    private Integer downloadCount;
+    private Integer clickCount;
 
-    private String size;
+    private String videoSize;
 
-    private String downloadLink;
+    private String videoLink;
 
     private String description;
 
@@ -51,30 +51,6 @@ public class CourseListQueryResp {
         this.categoryId2 = categoryId2;
     }
 
-    public Integer getDownloadCount() {
-        return downloadCount;
-    }
-
-    public void setDownloadCount(Integer downloadCount) {
-        this.downloadCount = downloadCount;
-    }
-
-    public String getSize() {
-        return size;
-    }
-
-    public void setSize(String size) {
-        this.size = size;
-    }
-
-    public String getDownloadLink() {
-        return downloadLink;
-    }
-
-    public void setDownloadLink(String downloadLink) {
-        this.downloadLink = downloadLink;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -91,6 +67,30 @@ public class CourseListQueryResp {
         this.avatar = avatar;
     }
 
+    public Integer getClickCount() {
+        return clickCount;
+    }
+
+    public void setClickCount(Integer clickCount) {
+        this.clickCount = clickCount;
+    }
+
+    public String getVideoSize() {
+        return videoSize;
+    }
+
+    public void setVideoSize(String videoSize) {
+        this.videoSize = videoSize;
+    }
+
+    public String getVideoLink() {
+        return videoLink;
+    }
+
+    public void setVideoLink(String videoLink) {
+        this.videoLink = videoLink;
+    }
+
     @Override
     public String toString() {
         return "CourseListQueryResp{" +
@@ -99,9 +99,9 @@ public class CourseListQueryResp {
                 ", avatar='" + avatar + '\'' +
                 ", categoryId1=" + categoryId1 +
                 ", categoryId2=" + categoryId2 +
-                ", downloadCount=" + downloadCount +
-                ", size='" + size + '\'' +
-                ", downloadLink='" + downloadLink + '\'' +
+                ", clickCount=" + clickCount +
+                ", videoSize='" + videoSize + '\'' +
+                ", videoLink='" + videoLink + '\'' +
                 ", description='" + description + '\'' +
                 '}';
     }

@@ -424,203 +424,203 @@ public class CourseListExample {
             return (Criteria) this;
         }
 
-        public Criteria andDownloadCountIsNull() {
-            addCriterion("download_count is null");
+        public Criteria andClickCountIsNull() {
+            addCriterion("click_count is null");
             return (Criteria) this;
         }
 
-        public Criteria andDownloadCountIsNotNull() {
-            addCriterion("download_count is not null");
+        public Criteria andClickCountIsNotNull() {
+            addCriterion("click_count is not null");
             return (Criteria) this;
         }
 
-        public Criteria andDownloadCountEqualTo(Integer value) {
-            addCriterion("download_count =", value, "downloadCount");
+        public Criteria andClickCountEqualTo(Integer value) {
+            addCriterion("click_count =", value, "clickCount");
             return (Criteria) this;
         }
 
-        public Criteria andDownloadCountNotEqualTo(Integer value) {
-            addCriterion("download_count <>", value, "downloadCount");
+        public Criteria andClickCountNotEqualTo(Integer value) {
+            addCriterion("click_count <>", value, "clickCount");
             return (Criteria) this;
         }
 
-        public Criteria andDownloadCountGreaterThan(Integer value) {
-            addCriterion("download_count >", value, "downloadCount");
+        public Criteria andClickCountGreaterThan(Integer value) {
+            addCriterion("click_count >", value, "clickCount");
             return (Criteria) this;
         }
 
-        public Criteria andDownloadCountGreaterThanOrEqualTo(Integer value) {
-            addCriterion("download_count >=", value, "downloadCount");
+        public Criteria andClickCountGreaterThanOrEqualTo(Integer value) {
+            addCriterion("click_count >=", value, "clickCount");
             return (Criteria) this;
         }
 
-        public Criteria andDownloadCountLessThan(Integer value) {
-            addCriterion("download_count <", value, "downloadCount");
+        public Criteria andClickCountLessThan(Integer value) {
+            addCriterion("click_count <", value, "clickCount");
             return (Criteria) this;
         }
 
-        public Criteria andDownloadCountLessThanOrEqualTo(Integer value) {
-            addCriterion("download_count <=", value, "downloadCount");
+        public Criteria andClickCountLessThanOrEqualTo(Integer value) {
+            addCriterion("click_count <=", value, "clickCount");
             return (Criteria) this;
         }
 
-        public Criteria andDownloadCountIn(List<Integer> values) {
-            addCriterion("download_count in", values, "downloadCount");
+        public Criteria andClickCountIn(List<Integer> values) {
+            addCriterion("click_count in", values, "clickCount");
             return (Criteria) this;
         }
 
-        public Criteria andDownloadCountNotIn(List<Integer> values) {
-            addCriterion("download_count not in", values, "downloadCount");
+        public Criteria andClickCountNotIn(List<Integer> values) {
+            addCriterion("click_count not in", values, "clickCount");
             return (Criteria) this;
         }
 
-        public Criteria andDownloadCountBetween(Integer value1, Integer value2) {
-            addCriterion("download_count between", value1, value2, "downloadCount");
+        public Criteria andClickCountBetween(Integer value1, Integer value2) {
+            addCriterion("click_count between", value1, value2, "clickCount");
             return (Criteria) this;
         }
 
-        public Criteria andDownloadCountNotBetween(Integer value1, Integer value2) {
-            addCriterion("download_count not between", value1, value2, "downloadCount");
+        public Criteria andClickCountNotBetween(Integer value1, Integer value2) {
+            addCriterion("click_count not between", value1, value2, "clickCount");
             return (Criteria) this;
         }
 
-        public Criteria andSizeIsNull() {
-            addCriterion("`size` is null");
+        public Criteria andVideoSizeIsNull() {
+            addCriterion("video_size is null");
             return (Criteria) this;
         }
 
-        public Criteria andSizeIsNotNull() {
-            addCriterion("`size` is not null");
+        public Criteria andVideoSizeIsNotNull() {
+            addCriterion("video_size is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSizeEqualTo(String value) {
-            addCriterion("`size` =", value, "size");
+        public Criteria andVideoSizeEqualTo(String value) {
+            addCriterion("video_size =", value, "videoSize");
             return (Criteria) this;
         }
 
-        public Criteria andSizeNotEqualTo(String value) {
-            addCriterion("`size` <>", value, "size");
+        public Criteria andVideoSizeNotEqualTo(String value) {
+            addCriterion("video_size <>", value, "videoSize");
             return (Criteria) this;
         }
 
-        public Criteria andSizeGreaterThan(String value) {
-            addCriterion("`size` >", value, "size");
+        public Criteria andVideoSizeGreaterThan(String value) {
+            addCriterion("video_size >", value, "videoSize");
             return (Criteria) this;
         }
 
-        public Criteria andSizeGreaterThanOrEqualTo(String value) {
-            addCriterion("`size` >=", value, "size");
+        public Criteria andVideoSizeGreaterThanOrEqualTo(String value) {
+            addCriterion("video_size >=", value, "videoSize");
             return (Criteria) this;
         }
 
-        public Criteria andSizeLessThan(String value) {
-            addCriterion("`size` <", value, "size");
+        public Criteria andVideoSizeLessThan(String value) {
+            addCriterion("video_size <", value, "videoSize");
             return (Criteria) this;
         }
 
-        public Criteria andSizeLessThanOrEqualTo(String value) {
-            addCriterion("`size` <=", value, "size");
+        public Criteria andVideoSizeLessThanOrEqualTo(String value) {
+            addCriterion("video_size <=", value, "videoSize");
             return (Criteria) this;
         }
 
-        public Criteria andSizeLike(String value) {
-            addCriterion("`size` like", value, "size");
+        public Criteria andVideoSizeLike(String value) {
+            addCriterion("video_size like", value, "videoSize");
             return (Criteria) this;
         }
 
-        public Criteria andSizeNotLike(String value) {
-            addCriterion("`size` not like", value, "size");
+        public Criteria andVideoSizeNotLike(String value) {
+            addCriterion("video_size not like", value, "videoSize");
             return (Criteria) this;
         }
 
-        public Criteria andSizeIn(List<String> values) {
-            addCriterion("`size` in", values, "size");
+        public Criteria andVideoSizeIn(List<String> values) {
+            addCriterion("video_size in", values, "videoSize");
             return (Criteria) this;
         }
 
-        public Criteria andSizeNotIn(List<String> values) {
-            addCriterion("`size` not in", values, "size");
+        public Criteria andVideoSizeNotIn(List<String> values) {
+            addCriterion("video_size not in", values, "videoSize");
             return (Criteria) this;
         }
 
-        public Criteria andSizeBetween(String value1, String value2) {
-            addCriterion("`size` between", value1, value2, "size");
+        public Criteria andVideoSizeBetween(String value1, String value2) {
+            addCriterion("video_size between", value1, value2, "videoSize");
             return (Criteria) this;
         }
 
-        public Criteria andSizeNotBetween(String value1, String value2) {
-            addCriterion("`size` not between", value1, value2, "size");
+        public Criteria andVideoSizeNotBetween(String value1, String value2) {
+            addCriterion("video_size not between", value1, value2, "videoSize");
             return (Criteria) this;
         }
 
-        public Criteria andDownloadLinkIsNull() {
-            addCriterion("download_link is null");
+        public Criteria andVideoLinkIsNull() {
+            addCriterion("video_link is null");
             return (Criteria) this;
         }
 
-        public Criteria andDownloadLinkIsNotNull() {
-            addCriterion("download_link is not null");
+        public Criteria andVideoLinkIsNotNull() {
+            addCriterion("video_link is not null");
             return (Criteria) this;
         }
 
-        public Criteria andDownloadLinkEqualTo(String value) {
-            addCriterion("download_link =", value, "downloadLink");
+        public Criteria andVideoLinkEqualTo(String value) {
+            addCriterion("video_link =", value, "videoLink");
             return (Criteria) this;
         }
 
-        public Criteria andDownloadLinkNotEqualTo(String value) {
-            addCriterion("download_link <>", value, "downloadLink");
+        public Criteria andVideoLinkNotEqualTo(String value) {
+            addCriterion("video_link <>", value, "videoLink");
             return (Criteria) this;
         }
 
-        public Criteria andDownloadLinkGreaterThan(String value) {
-            addCriterion("download_link >", value, "downloadLink");
+        public Criteria andVideoLinkGreaterThan(String value) {
+            addCriterion("video_link >", value, "videoLink");
             return (Criteria) this;
         }
 
-        public Criteria andDownloadLinkGreaterThanOrEqualTo(String value) {
-            addCriterion("download_link >=", value, "downloadLink");
+        public Criteria andVideoLinkGreaterThanOrEqualTo(String value) {
+            addCriterion("video_link >=", value, "videoLink");
             return (Criteria) this;
         }
 
-        public Criteria andDownloadLinkLessThan(String value) {
-            addCriterion("download_link <", value, "downloadLink");
+        public Criteria andVideoLinkLessThan(String value) {
+            addCriterion("video_link <", value, "videoLink");
             return (Criteria) this;
         }
 
-        public Criteria andDownloadLinkLessThanOrEqualTo(String value) {
-            addCriterion("download_link <=", value, "downloadLink");
+        public Criteria andVideoLinkLessThanOrEqualTo(String value) {
+            addCriterion("video_link <=", value, "videoLink");
             return (Criteria) this;
         }
 
-        public Criteria andDownloadLinkLike(String value) {
-            addCriterion("download_link like", value, "downloadLink");
+        public Criteria andVideoLinkLike(String value) {
+            addCriterion("video_link like", value, "videoLink");
             return (Criteria) this;
         }
 
-        public Criteria andDownloadLinkNotLike(String value) {
-            addCriterion("download_link not like", value, "downloadLink");
+        public Criteria andVideoLinkNotLike(String value) {
+            addCriterion("video_link not like", value, "videoLink");
             return (Criteria) this;
         }
 
-        public Criteria andDownloadLinkIn(List<String> values) {
-            addCriterion("download_link in", values, "downloadLink");
+        public Criteria andVideoLinkIn(List<String> values) {
+            addCriterion("video_link in", values, "videoLink");
             return (Criteria) this;
         }
 
-        public Criteria andDownloadLinkNotIn(List<String> values) {
-            addCriterion("download_link not in", values, "downloadLink");
+        public Criteria andVideoLinkNotIn(List<String> values) {
+            addCriterion("video_link not in", values, "videoLink");
             return (Criteria) this;
         }
 
-        public Criteria andDownloadLinkBetween(String value1, String value2) {
-            addCriterion("download_link between", value1, value2, "downloadLink");
+        public Criteria andVideoLinkBetween(String value1, String value2) {
+            addCriterion("video_link between", value1, value2, "videoLink");
             return (Criteria) this;
         }
 
-        public Criteria andDownloadLinkNotBetween(String value1, String value2) {
-            addCriterion("download_link not between", value1, value2, "downloadLink");
+        public Criteria andVideoLinkNotBetween(String value1, String value2) {
+            addCriterion("video_link not between", value1, value2, "videoLink");
             return (Criteria) this;
         }
 

@@ -63,7 +63,7 @@ export default defineComponent({
     //-------------数据查询--------------
 
     const handleQuery = (p: any) => {
-      axios.get("/course/list", {
+      axios.get("/courseList/list", {
         params: {
           page: p.current,
           size: p.pageSize,

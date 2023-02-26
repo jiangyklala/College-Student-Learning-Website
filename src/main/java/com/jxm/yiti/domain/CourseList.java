@@ -11,11 +11,11 @@ public class CourseList {
 
     private Long categoryId2;
 
-    private Integer downloadCount;
+    private Integer clickCount;
 
-    private String size;
+    private String videoSize;
 
-    private String downloadLink;
+    private String videoLink;
 
     private String description;
 
@@ -59,28 +59,28 @@ public class CourseList {
         this.categoryId2 = categoryId2;
     }
 
-    public Integer getDownloadCount() {
-        return downloadCount;
+    public Integer getClickCount() {
+        return clickCount;
     }
 
-    public void setDownloadCount(Integer downloadCount) {
-        this.downloadCount = downloadCount;
+    public void setClickCount(Integer clickCount) {
+        this.clickCount = clickCount;
     }
 
-    public String getSize() {
-        return size;
+    public String getVideoSize() {
+        return videoSize;
     }
 
-    public void setSize(String size) {
-        this.size = size;
+    public void setVideoSize(String videoSize) {
+        this.videoSize = videoSize;
     }
 
-    public String getDownloadLink() {
-        return downloadLink;
+    public String getVideoLink() {
+        return videoLink;
     }
 
-    public void setDownloadLink(String downloadLink) {
-        this.downloadLink = downloadLink;
+    public void setVideoLink(String videoLink) {
+        this.videoLink = videoLink;
     }
 
     public String getDescription() {
@@ -102,9 +102,9 @@ public class CourseList {
         sb.append(", avatar=").append(avatar);
         sb.append(", categoryId1=").append(categoryId1);
         sb.append(", categoryId2=").append(categoryId2);
-        sb.append(", downloadCount=").append(downloadCount);
-        sb.append(", size=").append(size);
-        sb.append(", downloadLink=").append(downloadLink);
+        sb.append(", clickCount=").append(clickCount);
+        sb.append(", videoSize=").append(videoSize);
+        sb.append(", videoLink=").append(videoLink);
         sb.append(", description=").append(description);
         sb.append("]");
         return sb.toString();

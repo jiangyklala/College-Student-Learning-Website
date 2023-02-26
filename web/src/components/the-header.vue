@@ -11,16 +11,19 @@
       <a-menu-item key="2">
         <router-link to="/download/Download">下载</router-link>
       </a-menu-item>
-      <a-menu-item key="2">
+      <a-menu-item key="3">
         <router-link to="/course/Course">课程</router-link>
       </a-menu-item>
-      <a-menu-item key="3">
+      <a-menu-item key="4">
         <router-link to="/admin/AdminDownload">下载管理</router-link>
       </a-menu-item>
-      <a-menu-item key="4">
+      <a-menu-item key="5">
+        <router-link to="/admin/AdminCourse">课程管理</router-link>
+      </a-menu-item>
+      <a-menu-item key="6">
         <router-link to="/admin/AdminCategory">分类管理</router-link>
       </a-menu-item>
-      <a-menu-item key="5">
+      <a-menu-item key="57">
         <router-link to="/About">关于</router-link>
       </a-menu-item>
     </a-menu>

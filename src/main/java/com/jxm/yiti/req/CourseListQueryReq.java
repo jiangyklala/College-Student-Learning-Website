@@ -1,7 +1,6 @@
 package com.jxm.yiti.req;
 
 public class CourseListQueryReq extends PageReq {
-    private Long id;
 
     private String name;
 
@@ -11,15 +10,13 @@ public class CourseListQueryReq extends PageReq {
 
     private Long categoryId2;
 
-    private Integer downloadCount;
+    private Integer clickCount;
 
-    public Long getId() {
-        return id;
-    }
+    private String videoSize;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private String videoLink;
+
+    private String description;
 
     public String getName() {
         return name;
@@ -27,6 +24,14 @@ public class CourseListQueryReq extends PageReq {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public Long getCategoryId1() {
@@ -45,31 +50,49 @@ public class CourseListQueryReq extends PageReq {
         this.categoryId2 = categoryId2;
     }
 
-    public Integer getDownloadCount() {
-        return downloadCount;
+    public Integer getClickCount() {
+        return clickCount;
     }
 
-    public void setDownloadCount(Integer downloadCount) {
-        this.downloadCount = downloadCount;
+    public void setClickCount(Integer clickCount) {
+        this.clickCount = clickCount;
     }
 
-    public String getAvatar() {
-        return avatar;
+    public String getVideoSize() {
+        return videoSize;
     }
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
+    public void setVideoSize(String videoSize) {
+        this.videoSize = videoSize;
+    }
+
+    public String getVideoLink() {
+        return videoLink;
+    }
+
+    public void setVideoLink(String videoLink) {
+        this.videoLink = videoLink;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override
     public String toString() {
         return "CourseListQueryReq{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 ", avatar='" + avatar + '\'' +
                 ", categoryId1=" + categoryId1 +
                 ", categoryId2=" + categoryId2 +
-                ", downloadCount=" + downloadCount +
+                ", clickCount=" + clickCount +
+                ", videoSize='" + videoSize + '\'' +
+                ", videoLink='" + videoLink + '\'' +
+                ", description='" + description + '\'' +
                 "} " + super.toString();
     }
 }

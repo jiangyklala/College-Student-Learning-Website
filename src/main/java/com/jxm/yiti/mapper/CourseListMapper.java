@@ -2,9 +2,7 @@ package com.jxm.yiti.mapper;
 
 import com.jxm.yiti.domain.CourseList;
 import com.jxm.yiti.domain.CourseListExample;
-
 import java.util.List;
-
 import org.apache.ibatis.annotations.Param;
 
 public interface CourseListMapper {

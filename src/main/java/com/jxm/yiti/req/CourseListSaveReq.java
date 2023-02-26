@@ -14,11 +14,11 @@ public class CourseListSaveReq {
 
     private Long categoryId2;
 
-    private Integer downloadCount;
+    private Integer clickCount;
 
-    private String size;
+    private String videoSize;
 
-    private String downloadLink;
+    private String videoLink;
 
     private String description;
 
@@ -54,28 +54,28 @@ public class CourseListSaveReq {
         this.categoryId2 = categoryId2;
     }
 
-    public Integer getDownloadCount() {
-        return downloadCount;
+    public String getVideoSize() {
+        return videoSize;
     }
 
-    public void setDownloadCount(Integer downloadCount) {
-        this.downloadCount = downloadCount;
+    public void setVideoSize(String videoSize) {
+        this.videoSize = videoSize;
     }
 
-    public String getSize() {
-        return size;
+    public Integer getClickCount() {
+        return clickCount;
     }
 
-    public void setSize(String size) {
-        this.size = size;
+    public void setClickCount(Integer clickCount) {
+        this.clickCount = clickCount;
     }
 
-    public String getDownloadLink() {
-        return downloadLink;
+    public String getVideoLink() {
+        return videoLink;
     }
 
-    public void setDownloadLink(String downloadLink) {
-        this.downloadLink = downloadLink;
+    public void setVideoLink(String videoLink) {
+        this.videoLink = videoLink;
     }
 
     public String getDescription() {
@@ -102,9 +102,9 @@ public class CourseListSaveReq {
                 ", avatar='" + avatar + '\'' +
                 ", categoryId1=" + categoryId1 +
                 ", categoryId2=" + categoryId2 +
-                ", downloadCount=" + downloadCount +
-                ", size='" + size + '\'' +
-                ", downloadLink='" + downloadLink + '\'' +
+                ", clickCount=" + clickCount +
+                ", videoSize='" + videoSize + '\'' +
+                ", videoLink='" + videoLink + '\'' +
                 ", description='" + description + '\'' +
                 '}';
     }

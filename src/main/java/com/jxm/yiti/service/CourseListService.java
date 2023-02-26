@@ -4,15 +4,23 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jxm.yiti.domain.CourseList;
 import com.jxm.yiti.domain.CourseListExample;
+import com.jxm.yiti.domain.CourseList;
+import com.jxm.yiti.domain.CourseListExample;
 import com.jxm.yiti.mapper.CourseListMapper;
-import com.jxm.yiti.mapper.DownloadListMapper;
+import com.jxm.yiti.mapper.CourseListMapper;
 import com.jxm.yiti.req.CourseListQueryReq;
+import com.jxm.yiti.req.CourseListSaveReq;
+import com.jxm.yiti.req.CourseListQueryReq;
+import com.jxm.yiti.req.CourseListSaveReq;
+import com.jxm.yiti.resp.CourseListQueryResp;
 import com.jxm.yiti.resp.CourseListQueryResp;
 import com.jxm.yiti.resp.PageResp;
 import com.jxm.yiti.utils.CopyUtil;
+import com.jxm.yiti.utils.SnowFlakeIdWorker;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -48,6 +56,33 @@ public class CourseListService {
 
         return resp;
 
+    }
+
+    /**
+     * 新增或者更新一个下载项
+     */
+    public int save(CourseListSaveReq req) {
+        SnowFlakeIdWorker snowFlakeIdWorker = new SnowFlakeIdWorker(0, 0);
+        CourseList res = CopyUtil.copy(req, CourseList.class);
+
+        try {
+            if (ObjectUtils.isEmpty(req.getId())) {
+                res.setId(snowFlakeIdWorker.nextId());
+                return courseListMapper.insert(res);
+            } else {
+                return courseListMapper.updateByPrimaryKey(res);
+            }
+        } catch (DataIntegrityViolationException e) {
+            LOG.info("错误: 插入或更新错误");
+            return -1;
+        }
+    }
+
+    /**
+     * 删除一个下载项
+     */
+    public int delete(Long id) {
+        return courseListMapper.deleteByPrimaryKey(id);
     }
 
 }
