@@ -156,7 +156,7 @@ export default defineComponent({
         params: {
           page: p.current,
           size: pagination.value.pageSize,
-          categoryId: p.item.key,
+          categoryId: p.curCategoryItem.key,
         }
       }).then((response) => {
         if (response.data.success) {
@@ -196,12 +196,12 @@ export default defineComponent({
      * 分类导航栏点击
      * @param item
      */
-    let meunItem: any;  // 分页模块需要使用当前选择的导航分类
+    let curCategoryItem: any;  // 分页模块需要使用当前选择的导航分类
     const handleMeunClick = (item: any) => {
       paginationNum = 1;
-      meunItem = item;
+      curCategoryItem = item;
       selectByCategory({
-        item: meunItem,
+        curCategoryItem: curCategoryItem,
         current: 1,
         pageSize: pagination.value.pageSize,
       });
@@ -235,7 +235,7 @@ export default defineComponent({
     function btn(item: any) {
       console.log(item);
       const routeData = router.resolve({
-        path: "/videos/VideosPlayer",
+        path: "/course/VideosPlayer",
         query: {
           id: item.id,
         }
@@ -257,6 +257,10 @@ export default defineComponent({
       }
     }
 
+    /**
+     * 对"全部"进行分页
+     * @param current
+     */
     const handleListChange = (current: any) => {
       // console.log("pagination:" + current);
       handleQuery({
@@ -265,10 +269,14 @@ export default defineComponent({
       });
     };
 
+    /**
+     * 对某个分类下的数据进行分页
+     * @param current.item 当前所选的分类
+     */
     const handleCategoryChange = (current: any) => {
       // console.log("pagination:" + current);
       selectByCategory({
-        item: meunItem,
+        curCategoryItem: curCategoryItem,
         current: current,
         pageSize: pagination.value.pageSize,
       })

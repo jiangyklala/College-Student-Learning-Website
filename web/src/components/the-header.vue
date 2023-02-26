@@ -11,6 +11,9 @@
       <a-menu-item key="2">
         <router-link to="/download/Download">下载</router-link>
       </a-menu-item>
+      <a-menu-item key="2">
+        <router-link to="/course/Course">课程</router-link>
+      </a-menu-item>
       <a-menu-item key="3">
         <router-link to="/admin/AdminDownload">下载管理</router-link>
       </a-menu-item>
