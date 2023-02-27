@@ -12,14 +12,12 @@ import com.jxm.yiti.resp.PageResp;
 import com.jxm.yiti.utils.CopyUtil;
 import com.jxm.yiti.utils.SnowFlakeIdWorker;
 import jakarta.annotation.Resource;
-import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 @Service
@@ -80,16 +78,19 @@ public class DownloadListService {
         return downloadListMapper.deleteByPrimaryKey(id);
     }
 
+    /**
+     * 根据 categoryId2 查询在统一分类下的下载项
+     */
     public PageResp<DownloadListQueryResp> selectByCategoryId(DownloadListQueryReq req) {
         DownloadListExample downloadListExample = new DownloadListExample();
         if (req.getCategoryId() != -1) {
             DownloadListExample.Criteria criteria = downloadListExample.createCriteria();
-            criteria.andCategoryId2EqualTo(req.getCategoryId());  // 匹配目录Id相同的的下载项
+            criteria.andCategoryId2EqualTo(req.getCategoryId());  // 匹配 categoryId2 相同的的下载项
         }
 
         PageHelper.startPage(req.getPage(), req.getSize(), true);
         List<DownloadList> downloadLists = downloadListMapper.selectByExample(downloadListExample);
-        PageInfo<DownloadList> downloadListPageInfo = new PageInfo<>(downloadLists); // 记得这里需要初始化
+        PageInfo<DownloadList> downloadListPageInfo = new PageInfo<>(downloadLists);
         LOG.info("当前页: " + downloadListPageInfo.getPageNum() + ", 总页数: " + downloadListPageInfo.getPages() + " , 总记录数: " + downloadListPageInfo.getTotal()); //        + " , 总页数: " + downloadListPageInfo.getTotal()
 
         PageResp<DownloadListQueryResp> resp = new PageResp<>();

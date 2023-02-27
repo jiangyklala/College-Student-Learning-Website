@@ -147,7 +147,7 @@ export default defineComponent({
     }
 
     /**
-     * 根据目录id查询下载项
+     * 根据 categoryId2 查询在统一分类下的下载项
      * @param p
      */
     const selectByCategory = (p: any) => {
