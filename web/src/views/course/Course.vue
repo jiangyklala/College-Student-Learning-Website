@@ -1,13 +1,19 @@
 <template>
   <a-layout-content class="layout-content">
-    <a-list
-        item-layout="vertical"
-        size="large"
-        :data-source="listData"
-        :loading="mainLoading"
-        :grid="{ gutter: 50, column: 3}"
-    >
-      <template #renderItem="{ item }">
+    <span v-for="list in listData" v-bind:key="list">
+      <div class="mainTagsDiv">
+        <tag-two-tone/>
+        {{ getCategoryNameById(list[0].categoryId2) }}
+      </div>
+      <a-list
+          item-layout="vertical"
+          size="middle"
+          :data-source="list"
+          :loading="mainLoading"
+          :grid="{ gutter: 50, column: 3}"
+      >
+
+        <template #renderItem="{ item }">
         <a-list-item key="item.name">
           <template #actions>
           <span v-for="{ type, text } in actions" :key="type">
@@ -27,15 +33,10 @@
         </a-list-item>
       </template>
 
-      <a-pagination
-          class="pagination"
-          v-model:current="pagination.current"
-          v-model:pageSize="pagination.pageSize"
-          :total="pagination.total"
-          @change="paginationChange"
-      />
-
     </a-list>
+
+    </span>
+
   </a-layout-content>
 </template>
 
@@ -55,28 +56,22 @@ export default defineComponent({
     const listData = ref();
     const pagination = ref({
       current: 1,
-      pageSize: 3,
+      pageSize: 300,
       total: 0,
     });
 
 
     //-------------数据查询--------------
 
-    const handleQuery = (p: any) => {
-      axios.get("/courseList/list", {
-        params: {
-          page: p.current,
-          size: p.pageSize,
-        }
-      }).then((response) => {
+    const handleQuery = () => {
+      axios.get("/courseList/selectAllGpByCgId2", {}).then((response) => {
 
-        if (response.data.success) {  // 判断后端接口返回是否出错
+        if (response.data.success) {
           mainLoading.value = false;
-          listData.value = response.data.content.list;
+          listData.value = response.data.content;
 
-          // 重置分页按钮
-          pagination.value.current = p.current;
-          pagination.value.total = response.data.content.total;
+          console.log(listData);
+
         } else {
           message.error(response.data.message);
         }
@@ -96,6 +91,8 @@ export default defineComponent({
           categorys = response.data.content;
           categoryTree.value = Tool.array2Tree(response.data.content, 0);
 
+          handleQuery();
+
         } else {
           message.error(response.data.message);
         }
@@ -104,18 +101,25 @@ export default defineComponent({
 
     const paginationChange = (current: any) => {
       // console.log("pagination:" + current);
-      handleQuery({
-        current: current,
-        pageSize: pagination.value.pageSize,
-      });
+      handleQuery();
     };
+
+    /**
+     * 根据目录id返回具体的分类名称
+     */
+    const getCategoryNameById = (cid: number) => {
+      let result = "";
+      categorys.forEach((item: any) => {
+        if (item.id === cid) {
+          // 这里直接 return item.name 不起作用
+          result = item.name;
+        }
+      });
+      return result;
+    }
 
     onMounted(() => {
       handleQueryCategory();
-      handleQuery({
-        current: pagination.value.current,
-        pageSize: pagination.value.pageSize,
-      });
     });
 
     return {
@@ -125,6 +129,7 @@ export default defineComponent({
       // actions,
 
       paginationChange,
+      getCategoryNameById,
     };
 
 
@@ -136,6 +141,20 @@ export default defineComponent({
 
 .layout-content {
   padding: 30px 150px;
+  width: 1200px;
+  height: 1200px;
+  min-height: 200px;
+  margin: 20px auto 100px;
+  overflow: hidden;
+  background: #fff;
 }
+
+.mainTagsDiv {
+  width: 300px;
+  height: 70px;
+  font-weight: 700;
+  font-size: 25px;
+}
+
 
 </style>

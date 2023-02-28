@@ -61,7 +61,7 @@ public class CategoryService {
 
         try {
             if (ObjectUtils.isEmpty(req.getId())) {
-                res.setId(snowFlakeIdWorker.nextId());
+                res.setId(Long.valueOf(res.getSort()));
                 return categoryMapper.insert(res);
             } else {
                 return categoryMapper.updateByPrimaryKey(res);

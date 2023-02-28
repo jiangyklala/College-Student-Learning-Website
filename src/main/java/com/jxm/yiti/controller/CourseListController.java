@@ -1,6 +1,7 @@
 package com.jxm.yiti.controller;
 
 
+import com.jxm.yiti.domain.CourseList;
 import com.jxm.yiti.req.CourseListQueryReq;
 import com.jxm.yiti.req.CourseListSaveReq;
 import com.jxm.yiti.req.DownloadListSaveReq;
@@ -12,6 +13,8 @@ import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/courseList")
@@ -31,6 +34,20 @@ public class CourseListController {
         CommonResp<PageResp<CourseListQueryResp>> resp = new CommonResp<>();
 
         PageResp<CourseListQueryResp> list = courseListService.list(req);
+
+        resp.setContent(list);
+        return resp;
+    }
+
+    /**
+     * 查询所有课程, 按 categoryId2 分组, 按 categoryId2 升序排序
+     */
+    @GetMapping("/selectAllGpByCgId2")
+    @ResponseBody
+    public CommonResp selectAllGpByCgId2() {
+        CommonResp<List<List<CourseListQueryResp>>> resp = new CommonResp<>();
+
+        List<List<CourseListQueryResp>> list = courseListService.selectAllGpByCgId2();
 
         resp.setContent(list);
         return resp;
