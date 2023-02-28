@@ -126,6 +126,12 @@ export default defineComponent({
 
 .layout-content {
   padding: 20px 20px 30px 80px;
+  width: 1200px;
+  height: 1200px;
+  min-height: 200px;
+  margin: 20px auto 100px;
+  overflow: hidden;
+  background: #fff;
 }
 
 .video-player {
@@ -133,8 +139,8 @@ export default defineComponent({
 }
 
 .table-category {
-  margin-left: 10px;
-  width: 400px !important;
+  margin-left: 50px;
+  width: 350px !important;
 }
 
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <a-layout-content class="layout-content">
+  <a-layout-content class="layout-content" id="layout-content">
     <span v-for="list in listData" v-bind:key="list">
       <div class="mainTagsDiv">
         <tag-two-tone/>
@@ -10,27 +10,21 @@
           size="middle"
           :data-source="list"
           :loading="mainLoading"
-          :grid="{ gutter: 50, column: 3}"
+          :grid="{ gutter: 50, column: 2}"
       >
 
         <template #renderItem="{ item }">
-        <a-list-item key="item.name">
-          <template #actions>
-          <span v-for="{ type, text } in actions" :key="type">
-            <component :is="type" style="margin-right: 8px"/>
-            {{ text }}
-          </span>
-          </template>
-          <a-list-item-meta :description="item.description">
-            <template #title>
-              <a :href="item.id">{{ item.name }}</a>
-            </template>
-            <template #avatar>
-              <a-avatar :src="item.avatar"/>
-            </template>
-          </a-list-item-meta>
-          {{ item.size }}
-        </a-list-item>
+          <a-list-item key="item.name" class="listItem">
+            <a-list-item-meta :description="item.description">
+              <template #title>
+                <a class="titleA">{{ item.name }}</a>
+              </template>
+              <template #avatar>
+                <a-avatar :src="item.avatar" class="itemAvatar"/>
+              </template>
+            </a-list-item-meta>
+            {{ item.size }}
+          </a-list-item>
       </template>
 
     </a-list>
@@ -41,10 +35,23 @@
 </template>
 
 <script lang="ts">
+function courseItemOnClick(item: any) {
+  console.log(item);
+  const routeData = router.resolve({
+    path: "/course/VideosPlayer",
+    query: {
+      id: item.id,
+    }
+  });
+
+  window.open(routeData.href, '课程播放');
+}
+
 import {defineComponent, onMounted, ref} from 'vue';
 import {message} from "ant-design-vue";
 import axios from "axios";
 import {Tool} from "@/utils/tool";
+import router from "@/router";
 
 const listData = [];
 
@@ -62,7 +69,6 @@ export default defineComponent({
 
 
     //-------------数据查询--------------
-
     const handleQuery = () => {
       axios.get("/courseList/selectAllGpByCgId2", {}).then((response) => {
 
@@ -72,10 +78,23 @@ export default defineComponent({
 
           console.log(listData);
 
+          autoLayoutHeight();
+
         } else {
           message.error(response.data.message);
         }
       })
+    }
+
+    function autoLayoutHeight() {
+      let tagsNum = listData.value.length;
+      let courseRowNum = 0;
+      for (let i = 0; i < listData.value.length; ++i) {
+        courseRowNum += (listData.value[i].length + 1) / 2;
+      }
+
+      var lala = document.getElementById("layout-content");
+      if (lala != null) lala.style.height = tagsNum * 80 + courseRowNum * 210 + 'px';
     }
 
     /**
@@ -118,6 +137,18 @@ export default defineComponent({
       return result;
     }
 
+    const courseItemOnClick = (item: any) => {
+      console.log(item);
+      const routeData = router.resolve({
+        path: "/course/VideosPlayer",
+        query: {
+          id: item.id,
+        }
+      });
+
+      window.open(routeData.href, '课程播放');
+    }
+
     onMounted(() => {
       handleQueryCategory();
     });
@@ -130,6 +161,7 @@ export default defineComponent({
 
       paginationChange,
       getCategoryNameById,
+      courseItemOnClick,
     };
 
 
@@ -142,7 +174,6 @@ export default defineComponent({
 .layout-content {
   padding: 30px 150px;
   width: 1200px;
-  height: 1200px;
   min-height: 200px;
   margin: 20px auto 100px;
   overflow: hidden;
@@ -150,11 +181,35 @@ export default defineComponent({
 }
 
 .mainTagsDiv {
+  padding-top: 20px;
   width: 300px;
-  height: 70px;
+  height: 80px;
   font-weight: 700;
   font-size: 25px;
 }
 
+.ant-list-item-meta {
+  display: flex;
+  flex: 1;
+  align-items: flex-start;
+  max-width: 100%;
+  width: 700px;
+  background-color: rgb(244, 244, 244);
+}
+
+.itemAvatar {
+  width: 200px;
+  height: 200px;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-bottom: 10px;
+  border-radius: 8%;
+}
+
+.titleA {
+  padding-top: 10px;
+  display: block;
+  width: 100px !important;
+}
 
 </style>

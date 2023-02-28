@@ -1,10 +1,8 @@
 package com.jxm.yiti.controller;
 
 
-import com.jxm.yiti.domain.CourseList;
 import com.jxm.yiti.req.CourseListQueryReq;
 import com.jxm.yiti.req.CourseListSaveReq;
-import com.jxm.yiti.req.DownloadListSaveReq;
 import com.jxm.yiti.resp.CommonResp;
 import com.jxm.yiti.resp.CourseListQueryResp;
 import com.jxm.yiti.resp.PageResp;
@@ -67,6 +65,25 @@ public class CourseListController {
         if (courseListService.save(req) != 1) {
             resp.setSuccess(false);
             resp.setMessage("保存下载项失败");
+        }
+
+        return resp;
+    }
+
+    /**
+     * 删除一个课程项
+     *
+     * @param id 所删除课程项的 id
+     * @return CommonResp
+     */
+    @DeleteMapping("/delete/{id}")
+    @ResponseBody
+    public CommonResp delete(@PathVariable Long id) {  // 拿到 "/delete/{id}" 里的 id
+        CommonResp resp = new CommonResp();
+
+        if (courseListService.delete(id) != 1) {
+            resp.setSuccess(false);
+            resp.setMessage("删除下载项失败");
         }
 
         return resp;
