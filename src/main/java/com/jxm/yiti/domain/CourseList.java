@@ -13,8 +13,6 @@ public class CourseList {
 
     private Integer clickCount;
 
-    private String videoSize;
-
     private String videoLink;
 
     private String description;
@@ -67,14 +65,6 @@ public class CourseList {
         this.clickCount = clickCount;
     }
 
-    public String getVideoSize() {
-        return videoSize;
-    }
-
-    public void setVideoSize(String videoSize) {
-        this.videoSize = videoSize;
-    }
-
     public String getVideoLink() {
         return videoLink;
     }
@@ -103,7 +93,6 @@ public class CourseList {
         sb.append(", categoryId1=").append(categoryId1);
         sb.append(", categoryId2=").append(categoryId2);
         sb.append(", clickCount=").append(clickCount);
-        sb.append(", videoSize=").append(videoSize);
         sb.append(", videoLink=").append(videoLink);
         sb.append(", description=").append(description);
         sb.append("]");

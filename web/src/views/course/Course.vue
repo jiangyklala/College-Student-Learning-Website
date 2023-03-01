@@ -1,7 +1,7 @@
 <template>
   <a-layout-content class="layout-content" id="layout-content">
     <span v-for="list in listData" v-bind:key="list">
-      <div class="mainTagsDiv">
+      <div class="mainTags-div">
         <tag-two-tone/>
         {{ getCategoryNameById(list[0].categoryId2) }}
       </div>
@@ -14,17 +14,18 @@
       >
 
         <template #renderItem="{ item }">
-          <a-list-item key="item.name" class="listItem">
+          <div class="courseItem-div" @click="courseItemOnClick(item)">
+            <a-list-item key="item.name" class="listItem">
             <a-list-item-meta :description="item.description">
               <template #title>
                 <a class="titleA">{{ item.name }}</a>
               </template>
               <template #avatar>
-                <a-avatar :src="item.avatar" class="itemAvatar"/>
+                <a-avatar :src="item.avatar" class="item-avatar"/>
               </template>
             </a-list-item-meta>
-            {{ item.size }}
           </a-list-item>
+          </div>
       </template>
 
     </a-list>
@@ -35,17 +36,6 @@
 </template>
 
 <script lang="ts">
-function courseItemOnClick(item: any) {
-  console.log(item);
-  const routeData = router.resolve({
-    path: "/course/VideosPlayer",
-    query: {
-      id: item.id,
-    }
-  });
-
-  window.open(routeData.href, '课程播放');
-}
 
 import {defineComponent, onMounted, ref} from 'vue';
 import {message} from "ant-design-vue";
@@ -86,6 +76,9 @@ export default defineComponent({
       })
     }
 
+    /**
+     * 自动调节"课程页"布局高度
+     */
     function autoLayoutHeight() {
       let tagsNum = listData.value.length;
       let courseRowNum = 0;
@@ -137,14 +130,17 @@ export default defineComponent({
       return result;
     }
 
+    /**
+     * 点击课程跳转的播放界面
+     * @param item
+     */
     const courseItemOnClick = (item: any) => {
       console.log(item);
       const routeData = router.resolve({
         path: "/course/VideosPlayer",
-        query: {
-          id: item.id,
-        }
       });
+
+      sessionStorage.setItem("CourseItem", JSON.stringify(item));  // 临时存储
 
       window.open(routeData.href, '课程播放');
     }
@@ -180,7 +176,7 @@ export default defineComponent({
   background: #fff;
 }
 
-.mainTagsDiv {
+.mainTags-div {
   padding-top: 20px;
   width: 300px;
   height: 80px;
@@ -197,7 +193,7 @@ export default defineComponent({
   background-color: rgb(244, 244, 244);
 }
 
-.itemAvatar {
+.item-avatar {
   width: 200px;
   height: 200px;
   padding-top: 10px;

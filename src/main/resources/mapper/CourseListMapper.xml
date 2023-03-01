@@ -8,7 +8,6 @@
         <result column="category_id1" jdbcType="BIGINT" property="categoryId1"/>
         <result column="category_id2" jdbcType="BIGINT" property="categoryId2"/>
         <result column="click_count" jdbcType="INTEGER" property="clickCount"/>
-        <result column="video_size" jdbcType="VARCHAR" property="videoSize"/>
         <result column="video_link" jdbcType="VARCHAR" property="videoLink"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
     </resultMap>
@@ -74,8 +73,7 @@
     </sql>
     <sql id="Base_Column_List">
         id
-        , `name`, avatar, category_id1, category_id2, click_count, video_size, video_link,
-    description
+        , `name`, avatar, category_id1, category_id2, click_count, video_link, description
     </sql>
     <select id="selectByExample" parameterType="com.jxm.yiti.domain.CourseListExample" resultMap="BaseResultMap">
         select
@@ -111,10 +109,10 @@
     <insert id="insert" parameterType="com.jxm.yiti.domain.CourseList">
         insert into course_list (id, `name`, avatar,
                                  category_id1, category_id2, click_count,
-                                 video_size, video_link, description)
+                                 video_link, description)
         values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR},
                 #{categoryId1,jdbcType=BIGINT}, #{categoryId2,jdbcType=BIGINT}, #{clickCount,jdbcType=INTEGER},
-                #{videoSize,jdbcType=VARCHAR}, #{videoLink,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR})
+                #{videoLink,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.jxm.yiti.domain.CourseList">
         insert into course_list
@@ -136,9 +134,6 @@
             </if>
             <if test="clickCount != null">
                 click_count,
-            </if>
-            <if test="videoSize != null">
-                video_size,
             </if>
             <if test="videoLink != null">
                 video_link,
@@ -165,9 +160,6 @@
             </if>
             <if test="clickCount != null">
                 #{clickCount,jdbcType=INTEGER},
-            </if>
-            <if test="videoSize != null">
-                #{videoSize,jdbcType=VARCHAR},
             </if>
             <if test="videoLink != null">
                 #{videoLink,jdbcType=VARCHAR},
@@ -204,9 +196,6 @@
             <if test="record.clickCount != null">
                 click_count = #{record.clickCount,jdbcType=INTEGER},
             </if>
-            <if test="record.videoSize != null">
-                video_size = #{record.videoSize,jdbcType=VARCHAR},
-            </if>
             <if test="record.videoLink != null">
                 video_link = #{record.videoLink,jdbcType=VARCHAR},
             </if>
@@ -226,7 +215,6 @@
         category_id1 = #{record.categoryId1,jdbcType=BIGINT},
         category_id2 = #{record.categoryId2,jdbcType=BIGINT},
         click_count = #{record.clickCount,jdbcType=INTEGER},
-        video_size = #{record.videoSize,jdbcType=VARCHAR},
         video_link = #{record.videoLink,jdbcType=VARCHAR},
         description = #{record.description,jdbcType=VARCHAR}
         <if test="_parameter != null">
@@ -251,9 +239,6 @@
             <if test="clickCount != null">
                 click_count = #{clickCount,jdbcType=INTEGER},
             </if>
-            <if test="videoSize != null">
-                video_size = #{videoSize,jdbcType=VARCHAR},
-            </if>
             <if test="videoLink != null">
                 video_link = #{videoLink,jdbcType=VARCHAR},
             </if>
@@ -270,7 +255,6 @@
             category_id1 = #{categoryId1,jdbcType=BIGINT},
             category_id2 = #{categoryId2,jdbcType=BIGINT},
             click_count  = #{clickCount,jdbcType=INTEGER},
-            video_size   = #{videoSize,jdbcType=VARCHAR},
             video_link   = #{videoLink,jdbcType=VARCHAR},
             description  = #{description,jdbcType=VARCHAR}
         where id = #{id,jdbcType=BIGINT}

@@ -113,3 +113,6 @@ insert into `course_list` (id, name, avatar, category_id1, category_id2, click_c
                            description)
 values (5, '视频5', 'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png', 000, 0, 15, '3MB',
         'https://yiti-download-1309630359.cos.ap-shanghai.myqcloud.com/4097_1667126621.mp4', '人马森是哦阿森');
+
+alter table course_list
+    drop column video_size;

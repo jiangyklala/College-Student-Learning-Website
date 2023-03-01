@@ -35,13 +35,13 @@ public class CategoryService {
         CategoryExample categoryExample = new CategoryExample();
         categoryExample.setOrderByClause("sort asc");
         CategoryExample.Criteria criteria = categoryExample.createCriteria();
-        if (!ObjectUtils.isEmpty(req.getName())) {  // 动态 SQL
-            criteria.andNameLike("%" + req.getName() + "%");  // 模糊匹配条件
+        if (!ObjectUtils.isEmpty(req.getName())) { // 动态 SQL
+            criteria.andNameLike("%" + req.getName() + "%"); // 模糊匹配条件
         }
 
         PageHelper.startPage(req.getPage(), req.getSize(), true);
         List<Category> categorys = categoryMapper.selectByExample(categoryExample);
-        PageInfo<Category> categoryPageInfo = new PageInfo<>(categorys); // 记得这里需要初始化
+        PageInfo<Category> categoryPageInfo = new PageInfo<>(categorys);                       // 记得这里需要初始化
         LOG.info("当前页: " + categoryPageInfo.getPageNum() + ", 总页数: " + categoryPageInfo.getPages() + " , 总记录数: " + categoryPageInfo.getTotal()); //        + " , 总页数: " + categoryPageInfo.getTotal()
 
         PageResp<CategoryQueryResp> resp = new PageResp<>();
