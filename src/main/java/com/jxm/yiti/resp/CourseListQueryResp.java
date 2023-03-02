@@ -1,21 +1,18 @@
 package com.jxm.yiti.resp;
 
 public class CourseListQueryResp {
+
     private Long id;
 
     private String name;
 
-    private String avatar;
+    private String avatarLink;
 
     private Long categoryId1;
 
     private Long categoryId2;
 
     private Integer clickCount;
-
-    private String videoSize;
-
-    private String videoLink;
 
     private String description;
 
@@ -35,6 +32,14 @@ public class CourseListQueryResp {
         this.name = name;
     }
 
+    public String getAvatarLink() {
+        return avatarLink;
+    }
+
+    public void setAvatarLink(String avatarLink) {
+        this.avatarLink = avatarLink;
+    }
+
     public Long getCategoryId1() {
         return categoryId1;
     }
@@ -51,22 +56,6 @@ public class CourseListQueryResp {
         this.categoryId2 = categoryId2;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
     public Integer getClickCount() {
         return clickCount;
     }
@@ -75,20 +64,12 @@ public class CourseListQueryResp {
         this.clickCount = clickCount;
     }
 
-    public String getVideoSize() {
-        return videoSize;
+    public String getDescription() {
+        return description;
     }
 
-    public void setVideoSize(String videoSize) {
-        this.videoSize = videoSize;
-    }
-
-    public String getVideoLink() {
-        return videoLink;
-    }
-
-    public void setVideoLink(String videoLink) {
-        this.videoLink = videoLink;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override
@@ -96,12 +77,10 @@ public class CourseListQueryResp {
         return "CourseListQueryResp{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", avatar='" + avatar + '\'' +
+                ", avatarLink='" + avatarLink + '\'' +
                 ", categoryId1=" + categoryId1 +
                 ", categoryId2=" + categoryId2 +
                 ", clickCount=" + clickCount +
-                ", videoSize='" + videoSize + '\'' +
-                ", videoLink='" + videoLink + '\'' +
                 ", description='" + description + '\'' +
                 '}';
     }

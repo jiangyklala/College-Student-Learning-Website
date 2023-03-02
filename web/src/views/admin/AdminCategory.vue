@@ -200,7 +200,7 @@ export default defineComponent({
       listData,
       columns,
 
-      buttonEdit,
+      btnEdit: buttonEdit,
       addCategoryItem,
       buttonDelete,
 

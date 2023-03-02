@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jxm.yiti.mapper.CourseListMapper">
-    <resultMap id="BaseResultMap" type="com.jxm.yiti.domain.CourseList">
+<mapper namespace="com.jxm.yiti.mapper.CourseItemMapper">
+    <resultMap id="BaseResultMap" type="com.jxm.yiti.domain.CourseItem">
         <id column="id" jdbcType="BIGINT" property="id"/>
-        <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="avatar_link" jdbcType="VARCHAR" property="avatarLink"/>
-        <result column="category_id1" jdbcType="BIGINT" property="categoryId1"/>
-        <result column="category_id2" jdbcType="BIGINT" property="categoryId2"/>
-        <result column="click_count" jdbcType="INTEGER" property="clickCount"/>
-        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="course" jdbcType="VARCHAR" property="course"/>
+        <result column="sort" jdbcType="INTEGER" property="sort"/>
+        <result column="video_link" jdbcType="VARCHAR" property="videoLink"/>
     </resultMap>
     <sql id="Example_Where_Clause">
         <where>
@@ -72,15 +69,15 @@
     </sql>
     <sql id="Base_Column_List">
         id
-        , `name`, avatar_link, category_id1, category_id2, click_count, description
+        , course, sort, video_link
     </sql>
-    <select id="selectByExample" parameterType="com.jxm.yiti.domain.CourseListExample" resultMap="BaseResultMap">
+    <select id="selectByExample" parameterType="com.jxm.yiti.domain.CourseItemExample" resultMap="BaseResultMap">
         select
         <if test="distinct">
             distinct
         </if>
         <include refid="Base_Column_List"/>
-        from course_list
+        from course_item
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>
         </if>
@@ -91,106 +88,77 @@
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from course_list
+        from course_item
         where id = #{id,jdbcType=BIGINT}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete
-        from course_list
+        from course_item
         where id = #{id,jdbcType=BIGINT}
     </delete>
-    <delete id="deleteByExample" parameterType="com.jxm.yiti.domain.CourseListExample">
-        delete from course_list
+    <delete id="deleteByExample" parameterType="com.jxm.yiti.domain.CourseItemExample">
+        delete from course_item
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>
         </if>
     </delete>
-    <insert id="insert" parameterType="com.jxm.yiti.domain.CourseList">
-        insert into course_list (id, `name`, avatar_link,
-                                 category_id1, category_id2, click_count,
-                                 description)
-        values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{avatarLink,jdbcType=VARCHAR},
-                #{categoryId1,jdbcType=BIGINT}, #{categoryId2,jdbcType=BIGINT}, #{clickCount,jdbcType=INTEGER},
-                #{description,jdbcType=VARCHAR})
+    <insert id="insert" parameterType="com.jxm.yiti.domain.CourseItem">
+        insert into course_item (id, course, sort,
+                                 video_link)
+        values (#{id,jdbcType=BIGINT}, #{course,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER},
+                #{videoLink,jdbcType=VARCHAR})
     </insert>
-    <insert id="insertSelective" parameterType="com.jxm.yiti.domain.CourseList">
-        insert into course_list
+    <insert id="insertSelective" parameterType="com.jxm.yiti.domain.CourseItem">
+        insert into course_item
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
             </if>
-            <if test="name != null">
-                `name`,
+            <if test="course != null">
+                course,
             </if>
-            <if test="avatarLink != null">
-                avatar_link,
+            <if test="sort != null">
+                sort,
             </if>
-            <if test="categoryId1 != null">
-                category_id1,
-            </if>
-            <if test="categoryId2 != null">
-                category_id2,
-            </if>
-            <if test="clickCount != null">
-                click_count,
-            </if>
-            <if test="description != null">
-                description,
+            <if test="videoLink != null">
+                video_link,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 #{id,jdbcType=BIGINT},
             </if>
-            <if test="name != null">
-                #{name,jdbcType=VARCHAR},
+            <if test="course != null">
+                #{course,jdbcType=VARCHAR},
             </if>
-            <if test="avatarLink != null">
-                #{avatarLink,jdbcType=VARCHAR},
+            <if test="sort != null">
+                #{sort,jdbcType=INTEGER},
             </if>
-            <if test="categoryId1 != null">
-                #{categoryId1,jdbcType=BIGINT},
-            </if>
-            <if test="categoryId2 != null">
-                #{categoryId2,jdbcType=BIGINT},
-            </if>
-            <if test="clickCount != null">
-                #{clickCount,jdbcType=INTEGER},
-            </if>
-            <if test="description != null">
-                #{description,jdbcType=VARCHAR},
+            <if test="videoLink != null">
+                #{videoLink,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
-    <select id="countByExample" parameterType="com.jxm.yiti.domain.CourseListExample" resultType="java.lang.Long">
-        select count(*) from course_list
+    <select id="countByExample" parameterType="com.jxm.yiti.domain.CourseItemExample" resultType="java.lang.Long">
+        select count(*) from course_item
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>
         </if>
     </select>
     <update id="updateByExampleSelective" parameterType="map">
-        update course_list
+        update course_item
         <set>
             <if test="record.id != null">
                 id = #{record.id,jdbcType=BIGINT},
             </if>
-            <if test="record.name != null">
-                `name` = #{record.name,jdbcType=VARCHAR},
+            <if test="record.course != null">
+                course = #{record.course,jdbcType=VARCHAR},
             </if>
-            <if test="record.avatarLink != null">
-                avatar_link = #{record.avatarLink,jdbcType=VARCHAR},
+            <if test="record.sort != null">
+                sort = #{record.sort,jdbcType=INTEGER},
             </if>
-            <if test="record.categoryId1 != null">
-                category_id1 = #{record.categoryId1,jdbcType=BIGINT},
-            </if>
-            <if test="record.categoryId2 != null">
-                category_id2 = #{record.categoryId2,jdbcType=BIGINT},
-            </if>
-            <if test="record.clickCount != null">
-                click_count = #{record.clickCount,jdbcType=INTEGER},
-            </if>
-            <if test="record.description != null">
-                description = #{record.description,jdbcType=VARCHAR},
+            <if test="record.videoLink != null">
+                video_link = #{record.videoLink,jdbcType=VARCHAR},
             </if>
         </set>
         <if test="_parameter != null">
@@ -198,50 +166,35 @@
         </if>
     </update>
     <update id="updateByExample" parameterType="map">
-        update course_list
+        update course_item
         set id = #{record.id,jdbcType=BIGINT},
-        `name` = #{record.name,jdbcType=VARCHAR},
-        avatar_link = #{record.avatarLink,jdbcType=VARCHAR},
-        category_id1 = #{record.categoryId1,jdbcType=BIGINT},
-        category_id2 = #{record.categoryId2,jdbcType=BIGINT},
-        click_count = #{record.clickCount,jdbcType=INTEGER},
-        description = #{record.description,jdbcType=VARCHAR}
+        course = #{record.course,jdbcType=VARCHAR},
+        sort = #{record.sort,jdbcType=INTEGER},
+        video_link = #{record.videoLink,jdbcType=VARCHAR}
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
         </if>
     </update>
-    <update id="updateByPrimaryKeySelective" parameterType="com.jxm.yiti.domain.CourseList">
-        update course_list
+    <update id="updateByPrimaryKeySelective" parameterType="com.jxm.yiti.domain.CourseItem">
+        update course_item
         <set>
-            <if test="name != null">
-                `name` = #{name,jdbcType=VARCHAR},
+            <if test="course != null">
+                course = #{course,jdbcType=VARCHAR},
             </if>
-            <if test="avatarLink != null">
-                avatar_link = #{avatarLink,jdbcType=VARCHAR},
+            <if test="sort != null">
+                sort = #{sort,jdbcType=INTEGER},
             </if>
-            <if test="categoryId1 != null">
-                category_id1 = #{categoryId1,jdbcType=BIGINT},
-            </if>
-            <if test="categoryId2 != null">
-                category_id2 = #{categoryId2,jdbcType=BIGINT},
-            </if>
-            <if test="clickCount != null">
-                click_count = #{clickCount,jdbcType=INTEGER},
-            </if>
-            <if test="description != null">
-                description = #{description,jdbcType=VARCHAR},
+            <if test="videoLink != null">
+                video_link = #{videoLink,jdbcType=VARCHAR},
             </if>
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.jxm.yiti.domain.CourseList">
-        update course_list
-        set `name`       = #{name,jdbcType=VARCHAR},
-            avatar_link  = #{avatarLink,jdbcType=VARCHAR},
-            category_id1 = #{categoryId1,jdbcType=BIGINT},
-            category_id2 = #{categoryId2,jdbcType=BIGINT},
-            click_count  = #{clickCount,jdbcType=INTEGER},
-            description  = #{description,jdbcType=VARCHAR}
+    <update id="updateByPrimaryKey" parameterType="com.jxm.yiti.domain.CourseItem">
+        update course_item
+        set course     = #{course,jdbcType=VARCHAR},
+            sort       = #{sort,jdbcType=INTEGER},
+            video_link = #{videoLink,jdbcType=VARCHAR}
         where id = #{id,jdbcType=BIGINT}
     </update>
 </mapper>

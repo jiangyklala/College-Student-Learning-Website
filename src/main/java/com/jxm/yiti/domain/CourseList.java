@@ -5,15 +5,13 @@ public class CourseList {
 
     private String name;
 
-    private String avatar;
+    private String avatarLink;
 
     private Long categoryId1;
 
     private Long categoryId2;
 
     private Integer clickCount;
-
-    private String videoLink;
 
     private String description;
 
@@ -33,12 +31,12 @@ public class CourseList {
         this.name = name;
     }
 
-    public String getAvatar() {
-        return avatar;
+    public String getAvatarLink() {
+        return avatarLink;
     }
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
+    public void setAvatarLink(String avatarLink) {
+        this.avatarLink = avatarLink;
     }
 
     public Long getCategoryId1() {
@@ -65,14 +63,6 @@ public class CourseList {
         this.clickCount = clickCount;
     }
 
-    public String getVideoLink() {
-        return videoLink;
-    }
-
-    public void setVideoLink(String videoLink) {
-        this.videoLink = videoLink;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -89,11 +79,10 @@ public class CourseList {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", name=").append(name);
-        sb.append(", avatar=").append(avatar);
+        sb.append(", avatarLink=").append(avatarLink);
         sb.append(", categoryId1=").append(categoryId1);
         sb.append(", categoryId2=").append(categoryId2);
         sb.append(", clickCount=").append(clickCount);
-        sb.append(", videoLink=").append(videoLink);
         sb.append(", description=").append(description);
         sb.append("]");
         return sb.toString();

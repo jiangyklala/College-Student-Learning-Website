@@ -1,41 +1,94 @@
 <template>
-  <a-layout-content style="padding: 0 250px">
+  <a-layout-content style="padding: 0 250px" class="layout-content">
     <div class="body">
       <a-space direction="horizontal" size="large">
+        <div class="course-list-info">
+          课程管理
+        </div>
         <a-input-search
-            placeholder="输入待搜索名称"
+            placeholder="输入待搜索 [课程] 名称"
             enter-button="Search"
             size="large"
             @search="onSearch"
         />
-        <a-button type="primary" @click="addCourseItem">
+        <a-button type="primary" size="large" @click="btnAddCourse">
           新增
         </a-button>
       </a-space>
     </div>
 
-    <!--    下载管理表格-->
+    <!--    [课程] 管理表格-->
     <a-table
-        :columns="columns"
-        :data-source="listData"
+        :columns="courseListColumns"
+        :data-source="courseList"
         :row-key="record => record.id"
-        :pagination="pagination" @change="handleTableChange"
-        :loading="loading"
-        bordered>
+        :pagination="courseListPagination" @change="courseTableChange"
+        :loading="courseListLoading"
+        bordered
+        class="course-list-table"
+    >
       <template v-slot:category="{ text, record }">
         <span>{{ getCategoryNameById(record.categoryId1) }} / {{ getCategoryNameById(record.categoryId2) }}</span>
       </template>
       <template v-slot:bodyCell="{ column, record, index }">
         <template v-if="column.dataIndex === 'action'">
           <a-space size="small">
-            <a-button type="link" @click="buttonEdit(record)">
+            <a-button type="link" @click="btnEdit(record)">
               编辑
             </a-button>
             <a-popconfirm
                 title="确认删除吗"
                 ok-text="确认"
                 cancel-text="取消"
-                @confirm="buttonDelete(record.id)"
+                @confirm="btnDeleteCourse(record.id)"
+            >
+              <a-button type="link">
+                删除
+              </a-button>
+            </a-popconfirm>
+          </a-space>
+        </template>
+      </template>
+    </a-table>
+
+    <div class="body">
+      <a-space direction="horizontal" size="large">
+        <div class="course-list-info">
+          视频管理
+        </div>
+        <a-input-search
+            placeholder="输入待搜索 [视频] 名称"
+            enter-button="Search"
+            size="large"
+            @search="onSearch"
+        />
+        <a-button type="primary" size="large" @click="btnAddItem">
+          新增
+        </a-button>
+      </a-space>
+    </div>
+
+    <!--    [视频] 管理表格-->
+    <a-table
+        :columns="courseItemColumns"
+        :data-source="courseItems"
+        :row-key="record => record.id"
+        :pagination="courseItemPagination" @change="itemTableChange"
+        :loading="courseListLoading"
+        bordered
+        class="course-item-table"
+    >
+      <template v-slot:bodyCell="{ column, record, index }">
+        <template v-if="column.dataIndex === 'action'">
+          <a-space size="small">
+            <a-button type="link" @click="btnEditItem(record)">
+              编辑
+            </a-button>
+            <a-popconfirm
+                title="确认删除吗"
+                ok-text="确认"
+                cancel-text="取消"
+                @confirm="btnDeleteItem(record.id)"
             >
               <a-button type="link">
                 删除
@@ -49,17 +102,17 @@
 
   <!--  操作弹窗-->
   <a-modal
-      title="下载表单"
-      v-model:visible="modalVisible"
-      :confirm-loading="modalLoading"
-      @ok="handleModalOk"
+      title="课程表单"
+      v-model:visible="editModalVisible"
+      :confirm-loading="editModalLoading"
+      @ok="editModalOK"
   >
     <a-form
-        :model="courseList"
+        :model="courseInModal"
         :label-col="{ span : 4 }"
     >
-      <a-form-item label="名称">
-        <a-input v-model:value="courseList.name"/>
+      <a-form-item label="课程名">
+        <a-input v-model:value="courseInModal.name"/>
       </a-form-item>
       <a-form-item label="分类">
         <!--        级联选择-->
@@ -69,13 +122,32 @@
             :options="categoryTree"/>
       </a-form-item>
       <a-form-item label="视频封面">
-        <a-input v-model:value="courseList.avatar"/>
-      </a-form-item>
-      <a-form-item label="视频链接">
-        <a-input v-model:value="courseList.videoLink"/>
+        <a-input v-model:value="courseInModal.avatarLink"/>
       </a-form-item>
       <a-form-item label="描述">
-        <a-input v-model:value="courseList.description"/>
+        <a-input v-model:value="courseInModal.description"/>
+      </a-form-item>
+    </a-form>
+  </a-modal>
+
+  <a-modal
+      title="添加视频表单"
+      v-model:visible="editItemModalVisible"
+      :confirm-loading="editItemModalLoading"
+      @ok="editItemModalOK"
+  >
+    <a-form
+        :model="courseItemInModal"
+        :label-col="{ span : 3 }"
+    >
+      <a-form-item label="所属课程名">
+        <a-input v-model:value="courseItemInModal.course"/>
+      </a-form-item>
+      <a-form-item label="排序">
+        <a-input v-model:value="courseItemInModal.sort"/>
+      </a-form-item>
+      <a-form-item label="视频连接">
+        <a-input v-model:value="courseItemInModal.videoLink"/>
       </a-form-item>
     </a-form>
   </a-modal>
@@ -91,16 +163,15 @@ export default defineComponent({
   components: {},
   name: "AdminCourse",
   setup: function () {
-    const loading = ref(true);
-    const listData = ref();
-    const pagination = ref({
+    const courseListLoading = ref(true);
+    const courseList = ref();
+    const courseListPagination = ref({
       current: 1,
-      pageSize: 10,
+      pageSize: 5,
       total: 0
     });
 
-
-    const columns = [
+    const courseListColumns = [
       {
         title: '名称',
         dataIndex: 'name',
@@ -110,11 +181,6 @@ export default defineComponent({
         title: '分类',
         slots: {customRender: 'category'},
         width: '40%',
-      },
-      {
-        title: '大小',
-        dataIndex: 'videoSize',
-        width: '10%',
       },
       {
         title: '点击量',
@@ -128,28 +194,39 @@ export default defineComponent({
       },
     ];
 
+    const courseItemColumns = [
+      {
+        title: '所属课程',
+        dataIndex: 'course',
+        width: '30%',
+      },
+      {
+        title: '排序',
+        dataIndex: 'sort',
+        width: '20%',
+      },
+      {
+        title: '操作',
+        dataIndex: 'action',
+        width: '30%',
+      },
+    ];
+
 
     //-------------搜索框--------------]
     const onSearch = (searchValue: string) => {
       handleQuery({
         current: 1,
-        pageSize: pagination.value.pageSize,
+        pageSize: courseListPagination.value.pageSize,
         name: searchValue,
       })
     };
 
     //-------------页面--------------
-    /**
-     * 新增按钮
-     * 注: 这里不需要写具体的新增逻辑, 已经在对话框的"确认"按钮的逻辑中写过了
-     */
-    const addCourseItem = () => {
-      modalVisible.value = true;
-      courseList.value = {};  // 清空当前的数据信息
-    };
+
 
     /**
-     * 下载列表数据查询
+     * 课程列表数据查询
      * @param p
      */
     const handleQuery = (p: any) => {
@@ -162,12 +239,47 @@ export default defineComponent({
       }).then((response) => {
 
         if (response.data.success) {  // 判断后端接口返回是否出错
-          loading.value = false;
-          listData.value = response.data.content.list;  // 显示内容
+          courseListLoading.value = false;
+          courseList.value = response.data.content.list;  // 显示内容
 
           // 重置分页按钮
-          pagination.value.current = p.current;
-          pagination.value.total = response.data.content.total;
+          courseListPagination.value.current = p.current;
+          courseListPagination.value.total = response.data.content.total;
+        } else {
+          message.error(response.data.message);
+        }
+      })
+    }
+
+
+    /**
+     * 课程视频查询
+     * @param p
+     */
+    const courseItems = ref();
+    const courseItemLoading = ref(true);
+    const courseItemPagination = ref({
+      current: 1,
+      pageSize: 5,
+      total: 0
+    });
+
+    const courseItemQuery = (p: any) => {
+      axios.get("/courseItem/selectAll", {
+        params: {
+          page: p.current,
+          size: p.pageSize,
+          name: p.name,
+        }
+      }).then((response) => {
+
+        if (response.data.success) {  // 判断后端接口返回是否出错
+          courseItemLoading.value = false;
+          courseItems.value = response.data.content.list;  // 显示内容
+
+          // 重置分页按钮
+          courseItemPagination.value.current = p.current;
+          courseItemPagination.value.total = response.data.content.total;
         } else {
           message.error(response.data.message);
         }
@@ -176,10 +288,9 @@ export default defineComponent({
 
     //-------------分页--------------
     /**
-     * 分页的跳转页面处理
-     * @param pagination
+     * 课程分页的跳转页面处理
      */
-    const handleTableChange = (pagination: any) => {
+    const courseTableChange = (pagination: any) => {
       // console.log("pagination:" + pagination);
       handleQuery({
         current: pagination.current,
@@ -187,64 +298,149 @@ export default defineComponent({
       });
     };
 
-    //-------------表单--------------
-    const courseList = ref();
-    const modalVisible = ref(false);
-    const modalLoading = ref(false);
+    /**
+     * 视频分页的跳转页面处理
+     */
+    const itemTableChange = (pagination: any) => {
+      // console.log("pagination:" + pagination);
+      courseItemQuery({
+        current: pagination.current,
+        pageSize: pagination.pageSize,
+      });
+    };
+
+    //-------------课程表单--------------
+    const courseInModal = ref();
+    const editModalVisible = ref(false);
+    const editModalLoading = ref(false);
     const categoryIds = ref();
     const categoryTree = ref();
 
-    const handleModalOk = () => {
-      modalLoading.value = true;
-      courseList.value.categoryId1 = categoryIds.value[0];  // 保存之前先把两个分类从表单中提取出来
-      courseList.value.categoryId2 = categoryIds.value[1];
+    /**
+     * 课程表单确认按钮
+     */
+    const editModalOK = () => {
+      editModalLoading.value = true;
+      courseInModal.value.categoryId1 = categoryIds.value[0];  // 保存之前先把两个分类从表单中提取出来
+      courseInModal.value.categoryId2 = categoryIds.value[1];
 
-      axios.post("/courseList/save", courseList.value).then((response) => {
+      axios.post("/courseList/save", courseInModal.value).then((response) => {
         // console.log(response);
         const data = response.data;
-        modalLoading.value = false;
+        editModalLoading.value = false;
 
 
         if (data.success) {
-          modalVisible.value = false;
+          editModalVisible.value = false;
 
           // 重新加载列表
           handleQuery({
-            current: pagination.value.current,
-            pageSize: pagination.value.pageSize,
+            current: courseListPagination.value.current,
+            pageSize: courseListPagination.value.pageSize,
           });
         } else {
           message.error(response.data.message);
         }
       })
-
     };
 
     /**
-     * 表格的编辑按钮
+     * 课程表格的编辑按钮
      */
-    const buttonEdit = (record: any) => {
-      modalVisible.value = true;
-      courseList.value = Tool.copy(record);
-      categoryIds.value = [courseList.value.categoryId1, courseList.value.categoryId2];  // 编辑时表单的分类显示需要再从 courseList 中提取出来
+    const btnEdit = (record: any) => {
+      editModalVisible.value = true;
+      courseInModal.value = Tool.copy(record);
+      categoryIds.value = [courseInModal.value.categoryId1, courseInModal.value.categoryId2];  // 编辑时表单的分类显示需要再从 courseInModal 中提取出来
     };
 
     /**
-     * 表格的删除按钮
+     * 课程表格的删除按钮
      */
-    const buttonDelete = (id: number) => {
+    const btnDeleteCourse = (id: number) => {
       axios.delete("/courseList/delete/" + id).then((response) => {
         const data = response.data;
         if (data.success) {
           // 重新加载列表
           handleQuery({
-            current: pagination.value.current,
-            pageSize: pagination.value.pageSize,
+            current: courseListPagination.value.current,
+            pageSize: courseListPagination.value.pageSize,
           });
         }
       })
     };
 
+    /**
+     * 新增课程按钮
+     * 注: 这里不需要写具体的新增逻辑, 已经在对话框的"确认"按钮的逻辑中写过了
+     */
+    const btnAddCourse = () => {
+      editModalVisible.value = true;
+      courseInModal.value = {};  // 清空当前的数据信息
+    };
+
+    //-------------视频表单--------------
+    const courseItemInModal = ref();
+    const editItemModalVisible = ref(false);
+    const editItemModalLoading = ref(false);
+
+    /**
+     * 视频表格的编辑按钮
+     */
+    const btnEditItem = (record: any) => {
+      editItemModalVisible.value = true;
+      courseItemInModal.value = Tool.copy(record);
+    };
+
+    /**
+     * 视频表单的确定按钮
+     */
+    const editItemModalOK = () => {
+      editItemModalLoading.value = true;
+
+      axios.post("/courseItem/save", courseItemInModal.value).then((response) => {
+        const data = response.data;
+
+        if (data.success) {
+          editItemModalLoading.value = false;
+          editItemModalVisible.value = false;
+
+          // 重新加载列表
+          courseItemQuery({
+            current: courseItemPagination.value.current,
+            pageSize: courseItemPagination.value.pageSize,
+          });
+        } else {
+          message.error(response.data.message);
+        }
+      })
+    };
+
+    /**
+     * 课程表格的删除按钮
+     */
+    const btnDeleteItem = (id: number) => {
+      axios.delete("/courseItem/delete/" + id).then((response) => {
+        const data = response.data;
+        if (data.success) {
+          // 重新加载列表
+          courseItemQuery({
+            current: courseItemPagination.value.current,
+            pageSize: courseItemPagination.value.pageSize,
+          });
+        }
+      })
+    };
+
+    /**
+     * 新增视频按钮
+     * 注: 这里不需要写具体的新增逻辑, 已经在对话框的"确认"按钮的逻辑中写过了
+     */
+    const btnAddItem = () => {
+      editItemModalVisible.value = true;
+      courseItemInModal.value = {};  // 清空当前的数据信息
+    };
+
+    //-------------[分类]模块--------------
     /**
      * 分类数据查询
      */
@@ -256,8 +452,8 @@ export default defineComponent({
           categoryTree.value = Tool.array2Tree(response.data.content, 0);
 
           handleQuery({   // 下载列表的显示需要用到分类的信息, 由于 axios 是异步的, 所以必须在分类查询完成后再进行下载列表的查询显示
-            current: pagination.value.current,
-            pageSize: pagination.value.pageSize,
+            current: courseListPagination.value.current,
+            pageSize: courseListPagination.value.pageSize,
           });
         } else {
           message.error(response.data.message);
@@ -281,25 +477,39 @@ export default defineComponent({
 
     onMounted(() => {
       handleQueryCategory();
-
+      courseItemQuery({
+        current: courseItemPagination.value.current,
+        pageSize: courseItemPagination.value.pageSize,
+      });
     });
 
     return {
-      loading,
-      listData,
-      pagination,
-      columns,
-      handleTableChange,
-      getCategoryNameById,
-
-      buttonEdit,
-      addCourseItem,
-      buttonDelete,
-
+      courseListLoading,
       courseList,
-      modalVisible,
-      modalLoading,
-      handleModalOk,
+      courseListPagination,
+      courseListColumns,
+      courseItemPagination,
+      courseItemColumns,
+      courseItems,
+
+      btnEdit,
+      btnAddCourse,
+      btnDeleteCourse,
+      btnEditItem,
+      courseTableChange,
+      itemTableChange,
+      getCategoryNameById,
+      btnDeleteItem,
+      btnAddItem,
+
+      courseInModal,
+      courseItemInModal,
+      editModalVisible,
+      editModalLoading,
+      editItemModalVisible,
+      editItemModalLoading,
+      editModalOK,
+      editItemModalOK,
 
       onSearch,
 
@@ -312,5 +522,29 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.layout-content {
+  padding: 30px 150px;
+  width: 1200px;
+  height: 1020px;
+  min-height: 200px;
+  margin: 20px auto 100px;
+  overflow: hidden;
+  background: rgb(244, 244, 244);
+}
+
+.course-list-table {
+  height: 455px;
+  padding-top: 10px;
+}
+
+.course-item-table {
+  height: 455px;
+  padding-top: 10px;
+}
+
+.course-list-info {
+  font-size: 30px;
+  padding-bottom: 10px;
+}
 
 </style>

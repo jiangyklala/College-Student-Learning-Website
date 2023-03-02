@@ -234,73 +234,73 @@ public class CourseListExample {
             return (Criteria) this;
         }
 
-        public Criteria andAvatarIsNull() {
-            addCriterion("avatar is null");
+        public Criteria andAvatarLinkIsNull() {
+            addCriterion("avatar_link is null");
             return (Criteria) this;
         }
 
-        public Criteria andAvatarIsNotNull() {
-            addCriterion("avatar is not null");
+        public Criteria andAvatarLinkIsNotNull() {
+            addCriterion("avatar_link is not null");
             return (Criteria) this;
         }
 
-        public Criteria andAvatarEqualTo(String value) {
-            addCriterion("avatar =", value, "avatar");
+        public Criteria andAvatarLinkEqualTo(String value) {
+            addCriterion("avatar_link =", value, "avatarLink");
             return (Criteria) this;
         }
 
-        public Criteria andAvatarNotEqualTo(String value) {
-            addCriterion("avatar <>", value, "avatar");
+        public Criteria andAvatarLinkNotEqualTo(String value) {
+            addCriterion("avatar_link <>", value, "avatarLink");
             return (Criteria) this;
         }
 
-        public Criteria andAvatarGreaterThan(String value) {
-            addCriterion("avatar >", value, "avatar");
+        public Criteria andAvatarLinkGreaterThan(String value) {
+            addCriterion("avatar_link >", value, "avatarLink");
             return (Criteria) this;
         }
 
-        public Criteria andAvatarGreaterThanOrEqualTo(String value) {
-            addCriterion("avatar >=", value, "avatar");
+        public Criteria andAvatarLinkGreaterThanOrEqualTo(String value) {
+            addCriterion("avatar_link >=", value, "avatarLink");
             return (Criteria) this;
         }
 
-        public Criteria andAvatarLessThan(String value) {
-            addCriterion("avatar <", value, "avatar");
+        public Criteria andAvatarLinkLessThan(String value) {
+            addCriterion("avatar_link <", value, "avatarLink");
             return (Criteria) this;
         }
 
-        public Criteria andAvatarLessThanOrEqualTo(String value) {
-            addCriterion("avatar <=", value, "avatar");
+        public Criteria andAvatarLinkLessThanOrEqualTo(String value) {
+            addCriterion("avatar_link <=", value, "avatarLink");
             return (Criteria) this;
         }
 
-        public Criteria andAvatarLike(String value) {
-            addCriterion("avatar like", value, "avatar");
+        public Criteria andAvatarLinkLike(String value) {
+            addCriterion("avatar_link like", value, "avatarLink");
             return (Criteria) this;
         }
 
-        public Criteria andAvatarNotLike(String value) {
-            addCriterion("avatar not like", value, "avatar");
+        public Criteria andAvatarLinkNotLike(String value) {
+            addCriterion("avatar_link not like", value, "avatarLink");
             return (Criteria) this;
         }
 
-        public Criteria andAvatarIn(List<String> values) {
-            addCriterion("avatar in", values, "avatar");
+        public Criteria andAvatarLinkIn(List<String> values) {
+            addCriterion("avatar_link in", values, "avatarLink");
             return (Criteria) this;
         }
 
-        public Criteria andAvatarNotIn(List<String> values) {
-            addCriterion("avatar not in", values, "avatar");
+        public Criteria andAvatarLinkNotIn(List<String> values) {
+            addCriterion("avatar_link not in", values, "avatarLink");
             return (Criteria) this;
         }
 
-        public Criteria andAvatarBetween(String value1, String value2) {
-            addCriterion("avatar between", value1, value2, "avatar");
+        public Criteria andAvatarLinkBetween(String value1, String value2) {
+            addCriterion("avatar_link between", value1, value2, "avatarLink");
             return (Criteria) this;
         }
 
-        public Criteria andAvatarNotBetween(String value1, String value2) {
-            addCriterion("avatar not between", value1, value2, "avatar");
+        public Criteria andAvatarLinkNotBetween(String value1, String value2) {
+            addCriterion("avatar_link not between", value1, value2, "avatarLink");
             return (Criteria) this;
         }
 
@@ -481,76 +481,6 @@ public class CourseListExample {
 
         public Criteria andClickCountNotBetween(Integer value1, Integer value2) {
             addCriterion("click_count not between", value1, value2, "clickCount");
-            return (Criteria) this;
-        }
-
-        public Criteria andVideoLinkIsNull() {
-            addCriterion("video_link is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andVideoLinkIsNotNull() {
-            addCriterion("video_link is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andVideoLinkEqualTo(String value) {
-            addCriterion("video_link =", value, "videoLink");
-            return (Criteria) this;
-        }
-
-        public Criteria andVideoLinkNotEqualTo(String value) {
-            addCriterion("video_link <>", value, "videoLink");
-            return (Criteria) this;
-        }
-
-        public Criteria andVideoLinkGreaterThan(String value) {
-            addCriterion("video_link >", value, "videoLink");
-            return (Criteria) this;
-        }
-
-        public Criteria andVideoLinkGreaterThanOrEqualTo(String value) {
-            addCriterion("video_link >=", value, "videoLink");
-            return (Criteria) this;
-        }
-
-        public Criteria andVideoLinkLessThan(String value) {
-            addCriterion("video_link <", value, "videoLink");
-            return (Criteria) this;
-        }
-
-        public Criteria andVideoLinkLessThanOrEqualTo(String value) {
-            addCriterion("video_link <=", value, "videoLink");
-            return (Criteria) this;
-        }
-
-        public Criteria andVideoLinkLike(String value) {
-            addCriterion("video_link like", value, "videoLink");
-            return (Criteria) this;
-        }
-
-        public Criteria andVideoLinkNotLike(String value) {
-            addCriterion("video_link not like", value, "videoLink");
-            return (Criteria) this;
-        }
-
-        public Criteria andVideoLinkIn(List<String> values) {
-            addCriterion("video_link in", values, "videoLink");
-            return (Criteria) this;
-        }
-
-        public Criteria andVideoLinkNotIn(List<String> values) {
-            addCriterion("video_link not in", values, "videoLink");
-            return (Criteria) this;
-        }
-
-        public Criteria andVideoLinkBetween(String value1, String value2) {
-            addCriterion("video_link between", value1, value2, "videoLink");
-            return (Criteria) this;
-        }
-
-        public Criteria andVideoLinkNotBetween(String value1, String value2) {
-            addCriterion("video_link not between", value1, value2, "videoLink");
             return (Criteria) this;
         }
 

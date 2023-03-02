@@ -21,7 +21,7 @@
                 <a class="titleA">{{ item.name }}</a>
               </template>
               <template #avatar>
-                <a-avatar :src="item.avatar" class="item-avatar"/>
+                <a-avatar :src="item.avatarLink" class="item-avatar"/>
               </template>
             </a-list-item-meta>
           </a-list-item>

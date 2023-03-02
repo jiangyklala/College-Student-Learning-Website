@@ -40,9 +40,10 @@ public class DownloadListService {
 
         PageHelper.startPage(req.getPage(), req.getSize(), true);
         List<DownloadList> downloadLists = downloadListMapper.selectByExample(downloadListExample);
-        PageInfo<DownloadList> downloadListPageInfo = new PageInfo<>(downloadLists); // 记得这里需要初始化
-        LOG.info("当前页: " + downloadListPageInfo.getPageNum() + ", 总页数: " + downloadListPageInfo.getPages() + " , 总记录数: " + downloadListPageInfo.getTotal()); //        + " , 总页数: " + downloadListPageInfo.getTotal()
+        System.out.println(downloadLists.toString());
 
+        PageInfo<DownloadList> downloadListPageInfo = new PageInfo<>(downloadLists); // 记得这里需要初始化
+        LOG.info("当前页: " + downloadListPageInfo.getPageNum() + ", 总页数: " + downloadListPageInfo.getPages() + " , 总记录数: " + downloadListPageInfo.getTotal());
         PageResp<DownloadListQueryResp> resp = new PageResp<>();
         resp.setList(CopyUtil.copyList(downloadLists, DownloadListQueryResp.class));
         resp.setTotal(downloadListPageInfo.getTotal());

@@ -8,17 +8,13 @@ public class CourseListSaveReq {
     @NotNull(message = "[名称] 不能为空")
     private String name;
 
-    private String avatar;
+    private String avatarLink;
 
     private Long categoryId1;
 
     private Long categoryId2;
 
     private Integer clickCount;
-
-    private String videoSize;
-
-    private String videoLink;
 
     private String description;
 
@@ -38,6 +34,14 @@ public class CourseListSaveReq {
         this.name = name;
     }
 
+    public String getAvatarLink() {
+        return avatarLink;
+    }
+
+    public void setAvatarLink(String avatarLink) {
+        this.avatarLink = avatarLink;
+    }
+
     public Long getCategoryId1() {
         return categoryId1;
     }
@@ -54,28 +58,12 @@ public class CourseListSaveReq {
         this.categoryId2 = categoryId2;
     }
 
-    public String getVideoSize() {
-        return videoSize;
-    }
-
-    public void setVideoSize(String videoSize) {
-        this.videoSize = videoSize;
-    }
-
     public Integer getClickCount() {
         return clickCount;
     }
 
     public void setClickCount(Integer clickCount) {
         this.clickCount = clickCount;
-    }
-
-    public String getVideoLink() {
-        return videoLink;
-    }
-
-    public void setVideoLink(String videoLink) {
-        this.videoLink = videoLink;
     }
 
     public String getDescription() {
@@ -86,25 +74,15 @@ public class CourseListSaveReq {
         this.description = description;
     }
 
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
     @Override
     public String toString() {
         return "CourseListSaveReq{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", avatar='" + avatar + '\'' +
+                ", avatarLink='" + avatarLink + '\'' +
                 ", categoryId1=" + categoryId1 +
                 ", categoryId2=" + categoryId2 +
                 ", clickCount=" + clickCount +
-                ", videoSize='" + videoSize + '\'' +
-                ", videoLink='" + videoLink + '\'' +
                 ", description='" + description + '\'' +
                 '}';
     }

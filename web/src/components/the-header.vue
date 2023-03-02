@@ -18,7 +18,7 @@
         <router-link to="/admin/AdminDownload">下载管理</router-link>
       </a-menu-item>
       <a-menu-item key="5">
-        <router-link to="/admin/AdminCourse">课程管理</router-link>
+        <router-link to="/admin/AdminCourse">课程及视频管理</router-link>
       </a-menu-item>
       <a-menu-item key="6">
         <router-link to="/admin/AdminCategory">分类管理</router-link>
