@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jxm.yiti.mapper.CourseItemMapper">
     <resultMap id="BaseResultMap" type="com.jxm.yiti.domain.CourseItem">
-        <id column="id" jdbcType="BIGINT" property="id"/>
-        <result column="course" jdbcType="VARCHAR" property="course"/>
-        <result column="sort" jdbcType="INTEGER" property="sort"/>
+        <id column="course" jdbcType="VARCHAR" property="course"/>
+        <id column="sort" jdbcType="INTEGER" property="sort"/>
+        <result column="id" jdbcType="BIGINT" property="id"/>
         <result column="video_link" jdbcType="VARCHAR" property="videoLink"/>
     </resultMap>
     <sql id="Example_Where_Clause">
@@ -68,8 +68,8 @@
         </where>
     </sql>
     <sql id="Base_Column_List">
-        id
-        , course, sort, video_link
+        course
+        , sort, id, video_link
     </sql>
     <select id="selectByExample" parameterType="com.jxm.yiti.domain.CourseItemExample" resultMap="BaseResultMap">
         select
@@ -85,16 +85,18 @@
             order by ${orderByClause}
         </if>
     </select>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from course_item
-        where id = #{id,jdbcType=BIGINT}
+        where course = #{course,jdbcType=VARCHAR}
+        and sort = #{sort,jdbcType=INTEGER}
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <delete id="deleteByPrimaryKey" parameterType="map">
         delete
         from course_item
-        where id = #{id,jdbcType=BIGINT}
+        where course = #{course,jdbcType=VARCHAR}
+          and sort = #{sort,jdbcType=INTEGER}
     </delete>
     <delete id="deleteByExample" parameterType="com.jxm.yiti.domain.CourseItemExample">
         delete from course_item
@@ -103,36 +105,36 @@
         </if>
     </delete>
     <insert id="insert" parameterType="com.jxm.yiti.domain.CourseItem">
-        insert into course_item (id, course, sort,
+        insert into course_item (course, sort, id,
                                  video_link)
-        values (#{id,jdbcType=BIGINT}, #{course,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER},
+        values (#{course,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, #{id,jdbcType=BIGINT},
                 #{videoLink,jdbcType=VARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.jxm.yiti.domain.CourseItem">
         insert into course_item
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                id,
-            </if>
             <if test="course != null">
                 course,
             </if>
             <if test="sort != null">
                 sort,
             </if>
+            <if test="id != null">
+                id,
+            </if>
             <if test="videoLink != null">
                 video_link,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id,jdbcType=BIGINT},
-            </if>
             <if test="course != null">
                 #{course,jdbcType=VARCHAR},
             </if>
             <if test="sort != null">
                 #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
             </if>
             <if test="videoLink != null">
                 #{videoLink,jdbcType=VARCHAR},
@@ -148,14 +150,14 @@
     <update id="updateByExampleSelective" parameterType="map">
         update course_item
         <set>
-            <if test="record.id != null">
-                id = #{record.id,jdbcType=BIGINT},
-            </if>
             <if test="record.course != null">
                 course = #{record.course,jdbcType=VARCHAR},
             </if>
             <if test="record.sort != null">
                 sort = #{record.sort,jdbcType=INTEGER},
+            </if>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=BIGINT},
             </if>
             <if test="record.videoLink != null">
                 video_link = #{record.videoLink,jdbcType=VARCHAR},
@@ -167,9 +169,9 @@
     </update>
     <update id="updateByExample" parameterType="map">
         update course_item
-        set id = #{record.id,jdbcType=BIGINT},
-        course = #{record.course,jdbcType=VARCHAR},
+        set course = #{record.course,jdbcType=VARCHAR},
         sort = #{record.sort,jdbcType=INTEGER},
+        id = #{record.id,jdbcType=BIGINT},
         video_link = #{record.videoLink,jdbcType=VARCHAR}
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
@@ -178,23 +180,21 @@
     <update id="updateByPrimaryKeySelective" parameterType="com.jxm.yiti.domain.CourseItem">
         update course_item
         <set>
-            <if test="course != null">
-                course = #{course,jdbcType=VARCHAR},
-            </if>
-            <if test="sort != null">
-                sort = #{sort,jdbcType=INTEGER},
+            <if test="id != null">
+                id = #{id,jdbcType=BIGINT},
             </if>
             <if test="videoLink != null">
                 video_link = #{videoLink,jdbcType=VARCHAR},
             </if>
         </set>
-        where id = #{id,jdbcType=BIGINT}
+        where course = #{course,jdbcType=VARCHAR}
+        and sort = #{sort,jdbcType=INTEGER}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.jxm.yiti.domain.CourseItem">
         update course_item
-        set course     = #{course,jdbcType=VARCHAR},
-            sort       = #{sort,jdbcType=INTEGER},
+        set id         = #{id,jdbcType=BIGINT},
             video_link = #{videoLink,jdbcType=VARCHAR}
-        where id = #{id,jdbcType=BIGINT}
+        where course = #{course,jdbcType=VARCHAR}
+          and sort = #{sort,jdbcType=INTEGER}
     </update>
 </mapper>

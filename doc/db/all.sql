@@ -115,17 +115,22 @@ create table `course_item`
     `course`     varchar(25)  not null comment '课程名称',
     `sort`       int          not null comment '排序',
     `video_link` varchar(100) not null comment '视频链接',
-    primary key (`id`)
+    primary key (`course`, `sort`),
+    index idx_course (`course`)
+
 ) engine = innodb
   default charset = utf8mb4 comment ='课程视频表';
 
 insert into `course_item` (id, course, sort, video_link)
 values (1, '视频1', 101, 'https://yiti-download-1309630359.cos.ap-shanghai.myqcloud.com/4097_1667126621.mp4');
 insert into `course_item` (id, course, sort, video_link)
-values (2, '视频2', 102, 'https://yiti-download-1309630359.cos.ap-shanghai.myqcloud.com/4097_1667126621.mp4');
+values (2, '视频1', 102, 'https://yiti-download-1309630359.cos.ap-shanghai.myqcloud.com/4097_1667126621.mp4');
 insert into `course_item` (id, course, sort, video_link)
 values (3, '视频3', 201, 'https://yiti-download-1309630359.cos.ap-shanghai.myqcloud.com/4097_1667126621.mp4');
 insert into `course_item` (id, course, sort, video_link)
 values (4, '视频4', 301, 'https://yiti-download-1309630359.cos.ap-shanghai.myqcloud.com/4097_1667126621.mp4');
 insert into `course_item` (id, course, sort, video_link)
 values (5, '视频5', 401, 'https://yiti-download-1309630359.cos.ap-shanghai.myqcloud.com/4097_1667126621.mp4');
+
+alter table course_item
+    add index idx_id (`id`);

@@ -2,9 +2,7 @@ package com.jxm.yiti.mapper;
 
 import com.jxm.yiti.domain.CourseItem;
 import com.jxm.yiti.domain.CourseItemExample;
-
 import java.util.List;
-
 import org.apache.ibatis.annotations.Param;
 
 public interface CourseItemMapper {
@@ -12,7 +10,7 @@ public interface CourseItemMapper {
 
     int deleteByExample(CourseItemExample example);
 
-    int deleteByPrimaryKey(Long id);
+    int deleteByPrimaryKey(@Param("course") String course, @Param("sort") Integer sort);
 
     int insert(CourseItem record);
 
@@ -20,7 +18,7 @@ public interface CourseItemMapper {
 
     List<CourseItem> selectByExample(CourseItemExample example);
 
-    CourseItem selectByPrimaryKey(Long id);
+    CourseItem selectByPrimaryKey(@Param("course") String course, @Param("sort") Integer sort);
 
     int updateByExampleSelective(@Param("record") CourseItem record, @Param("example") CourseItemExample example);
 

@@ -14,10 +14,16 @@
           <a-table
               class="table-category"
               :columns="columns"
-              :data-source="data"
+              :data-source="categoryData"
               :scroll="{ x: 0 , y: 200 }"
               :pagination="false"
-          ></a-table>
+          >
+            <template #bodyCell="{ column, text, record }">
+              <template v-if="column.dataIndex === 'name'">
+                <a @click="categoryItemClick(record)">{{ text }}</a>
+              </template>
+            </template>
+          </a-table>
         </div>
         <div class="courseInfo-div">
           <div class="courseName-div">
@@ -40,6 +46,7 @@ import {VideoPlayer} from "vue-video-player";
 import axios from "axios";
 import {message} from "ant-design-vue";
 import "video.js/dist/video-js.css";
+import {Tool} from "@/utils/tool";
 
 
 export default defineComponent({
@@ -54,36 +61,43 @@ export default defineComponent({
     const isLive = ref(false);
 
     const columns = [
-      {title: '课程目录', width: 100, dataIndex: 'name', key: 'name', fixed: 'left'},
+      {title: '课程目录', width: 300, dataIndex: 'name', key: 'name', fixed: 'left'},
       {title: '', width: 0},
     ];
 
-    const data = [
-      {
-        key: '1',
-        name: 'John Brown',
-      },
-      {
-        key: '2',
-        name: 'Jim Green',
-      },
-      {
-        key: '2',
-        name: 'Jim Green',
-      },
-      {
-        key: '2',
-        name: 'Jim Green',
-      },
-      {
-        key: '2',
-        name: 'Jim Green',
-      },
-      {
-        key: '2',
-        name: 'Jim Green',
+    let categoryData = ref([]);
+
+    const itemsToCategoryTree = (courseItem: any) => {
+      if (Tool.isEmpty(courseItem)) {
+        return [];
       }
-    ];
+
+      const chars: string[] = ["一", "二", "三", "四", "五", "六", "七", "八", "九"]
+      const res: any = [];
+      let preSort = 0;
+      console.log(courseItem);
+      for (let i = 0; i < courseItem.length; ++i) {
+        // console.log(courseItem[i].id);
+        if ((Math.floor(courseItem[i].sort / 100)) === preSort) {
+          res[res.length - 1].children.push({
+            name: "第" + chars[courseItem[i].sort % 100 - 1] + "节",
+            videoLink: courseItem[i].videoLink,
+          });
+        } else {
+          res.push({
+            name: "第" + chars[Math.floor(courseItem[i].sort / 100) - 1] + "章",
+            children: [],
+          });
+          res[res.length - 1].children.push({
+            name: "第" + chars[courseItem[i].sort % 100 - 1] + "节",
+            videoLink: courseItem[i].videoLink,
+          });
+          preSort = Math.floor(courseItem[i].sort / 100);
+        }
+      }
+      console.log(res);
+      return res;
+    }
 
     /**
      * 视频播放配置
@@ -112,6 +126,7 @@ export default defineComponent({
 
     };
 
+
     const getCourseItemByCourse = (itemCourse: any) => {
       axios.get("/courseItem/select", {
         params: {
@@ -124,12 +139,15 @@ export default defineComponent({
         if (response.data.success) {
           courseItem.value = response.data.content.list;                 // 获取当前课程目录下的所有视频
 
+          console.log(courseItem.value);
+
           videoOptions.sources[0].src = courseItem.value[0].videoLink;   // 播放其中的第一个视频
           isLive.value = false;
           nextTick(() => {
             isLive.value = true;
           })
 
+          categoryData.value = itemsToCategoryTree(courseItem.value);
 
         } else {
           message.error(response.data.message);
@@ -151,6 +169,15 @@ export default defineComponent({
       getCourseItemByCourse(itemCourse);
     }
 
+    const categoryItemClick = (record: any) => {
+      videoOptions.sources[0].src = record.videoLink;   // 播放其中的第一个视频
+      isLive.value = false;
+      nextTick(() => {
+        isLive.value = true;
+      })
+      // console.log(record);
+    }
+
     onMounted(() => {
       initData();
     });
@@ -158,10 +185,11 @@ export default defineComponent({
     return {
       courseItem,
       videoOptions,
-      data,
+      categoryData,
       columns,
       courseItemInfo,
       isLive,
+      categoryItemClick,
     };
   },
 });

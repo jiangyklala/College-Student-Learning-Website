@@ -27,6 +27,7 @@
         :data-source="listData"
         :loading="loading"
     >
+
       <template #renderItem="{ item }">
         <a-list-item class="each-item" key="item.name">
 
@@ -94,7 +95,7 @@ export default defineComponent({
     const listData = ref();
     const pagination = ref({
       current: 1,
-      pageSize: 2,
+      pageSize: 6,
       total: 0,
     });
 
@@ -160,7 +161,7 @@ export default defineComponent({
         if (response.data.success) {
           mainLoading.value = false;
           listData.value = response.data.content.list;
-          console.log("response.data.content.total:" + response.data.content.total);
+          // console.log("response.data.content.total:" + response.data.content.total);
 
           // 重置分页按钮
           pagination.value.current = p.current;
@@ -298,6 +299,16 @@ export default defineComponent({
 </script>
 
 <style scoped>
+
+.layout-content {
+  padding: 30px 150px;
+  width: 1200px;
+  height: 600px;
+  min-height: 200px;
+  margin: 20px auto 100px;
+  overflow: hidden;
+  background: rgb(244, 244, 244);
+}
 
 .each-item {
   background: white;

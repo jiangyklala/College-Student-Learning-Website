@@ -2,11 +2,8 @@ package com.jxm.yiti.controller;
 
 import com.jxm.yiti.req.CourseItemQueryReq;
 import com.jxm.yiti.req.CourseItemSaveReq;
-import com.jxm.yiti.req.CourseListQueryReq;
-import com.jxm.yiti.req.CourseListSaveReq;
 import com.jxm.yiti.resp.CommonResp;
 import com.jxm.yiti.resp.CourseItemQueryResp;
-import com.jxm.yiti.resp.CourseListQueryResp;
 import com.jxm.yiti.resp.PageResp;
 import com.jxm.yiti.service.CourseItemService;
 import jakarta.annotation.Resource;
@@ -31,7 +28,7 @@ public class CourseItemController {
     public CommonResp list(@Valid CourseItemQueryReq req) {
         CommonResp<PageResp<CourseItemQueryResp>> resp = new CommonResp<>();
 
-        PageResp<CourseItemQueryResp> list = courseItemService.selectAll(req);
+        PageResp<CourseItemQueryResp> list = courseItemService.select(req);
 
         resp.setContent(list);
         return resp;

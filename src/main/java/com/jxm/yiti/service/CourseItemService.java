@@ -30,7 +30,7 @@ public class CourseItemService {
 
     private static final Logger LOG = LoggerFactory.getLogger(CourseItemService.class);
 
-    public PageResp<CourseItemQueryResp> selectAll(CourseItemQueryReq req) {
+    public PageResp<CourseItemQueryResp> select(CourseItemQueryReq req) {
         CourseItemExample courseItemExample = new CourseItemExample();
         CourseItemExample.Criteria criteria = courseItemExample.createCriteria();
         if (!ObjectUtils.isEmpty(req.getCourse())) {                                    // 动态 SQL
@@ -58,25 +58,34 @@ public class CourseItemService {
     public int save(CourseItemSaveReq req) {
         SnowFlakeIdWorker snowFlakeIdWorker = new SnowFlakeIdWorker(0, 0);
         CourseItem res = CopyUtil.copy(req, CourseItem.class);
+        CourseItemExample courseItemExample = new CourseItemExample();
+        CourseItemExample.Criteria criteria = courseItemExample.createCriteria();
 
         try {
             if (ObjectUtils.isEmpty(req.getId())) {
                 res.setId(snowFlakeIdWorker.nextId());
                 return courseItemMapper.insert(res);
             } else {
-                return courseItemMapper.updateByPrimaryKey(res);
+                criteria.andIdEqualTo(req.getId());
+                return courseItemMapper.updateByExample(res, courseItemExample);
             }
         } catch (DataIntegrityViolationException e) {
             LOG.info("错误: 插入或更新错误");
+            e.printStackTrace();
             return -1;
         }
     }
 
+
     /**
-     * 删除一个课程视频
+     * 删除一个课程视频, 需要用到 id 列
      */
     public int delete(Long id) {
-        return courseItemMapper.deleteByPrimaryKey(id);
+        CourseItemExample courseItemExample = new CourseItemExample();
+        CourseItemExample.Criteria criteria = courseItemExample.createCriteria();
+        criteria.andIdEqualTo(id);
+
+        return courseItemMapper.deleteByExample(courseItemExample);
     }
 
 }

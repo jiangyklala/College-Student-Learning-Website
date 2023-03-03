@@ -1,21 +1,13 @@
 package com.jxm.yiti.domain;
 
 public class CourseItem {
-    private Long id;
-
     private String course;
 
     private Integer sort;
 
+    private Long id;
+
     private String videoLink;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getCourse() {
         return course;
@@ -33,6 +25,14 @@ public class CourseItem {
         this.sort = sort;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getVideoLink() {
         return videoLink;
     }
@@ -47,9 +47,9 @@ public class CourseItem {
         sb.append(getClass().getSimpleName());
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
         sb.append(", course=").append(course);
         sb.append(", sort=").append(sort);
+        sb.append(", id=").append(id);
         sb.append(", videoLink=").append(videoLink);
         sb.append("]");
         return sb.toString();
