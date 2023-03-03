@@ -265,7 +265,7 @@ export default defineComponent({
     });
 
     const courseItemQuery = (p: any) => {
-      axios.get("/courseItem/selectAll", {
+      axios.get("/courseItem/select", {
         params: {
           page: p.current,
           size: p.pageSize,

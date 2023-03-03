@@ -140,7 +140,9 @@ export default defineComponent({
         path: "/course/VideosPlayer",
       });
 
-      sessionStorage.setItem("CourseItem", JSON.stringify(item));  // 临时存储
+      console.log("item==" + item.name);
+      sessionStorage.setItem("CourseItem", item.name);                   // 临时存储
+      sessionStorage.setItem("CourseItemInfo", JSON.stringify(item));
 
       window.open(routeData.href, '课程播放');
     }

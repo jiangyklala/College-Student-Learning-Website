@@ -4,7 +4,8 @@
       <span class="mainSpan">
         <div class="video-js-div">
           <video-player
-              class="video-player"
+              v-if="isLive"
+              class="video-player vjs-big-play-centered"
               :options="videoOptions"
           >
           </video-player>
@@ -20,11 +21,11 @@
         </div>
         <div class="courseInfo-div">
           <div class="courseName-div">
-            {{ courseName }} <br>
+            {{ courseItemInfo.name }}
           </div>
           <a-divider style="height: 18px; font-size: 25px">课程概述</a-divider>
           <div class="courseDes-div">
-            {{ courseDes }}
+            {{ courseItemInfo.description }}
           </div>
         </div>
       </span>
@@ -34,8 +35,12 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, ref} from "vue";
+import {defineComponent, nextTick, onMounted, ref} from "vue";
 import {VideoPlayer} from "vue-video-player";
+import axios from "axios";
+import {message} from "ant-design-vue";
+import "video.js/dist/video-js.css";
+
 
 export default defineComponent({
   components: {
@@ -43,10 +48,10 @@ export default defineComponent({
   },
   name: 'VideosPlayer',
   setup() {
-    let courseItem = ref();
-    let courseName = ref();
-    let courseDes = ref();
-    let courseClickCount = ref();
+    let itemCourse: any;
+    const courseItemInfo = ref("");
+    const courseItem = ref();
+    const isLive = ref(false);
 
     const columns = [
       {title: '课程目录', width: 100, dataIndex: 'name', key: 'name', fixed: 'left'},
@@ -80,6 +85,9 @@ export default defineComponent({
       }
     ];
 
+    /**
+     * 视频播放配置
+     */
     const videoOptions = {
       playbackRates: [0.5, 1.0, 1.5, 1.75, 2.0],        //播放速度
       autoplay: false,
@@ -91,8 +99,7 @@ export default defineComponent({
       notSupportedMessage: '此视频暂无法播放，请稍后再试',   // 允许覆盖Video.js无法播放媒体源时显示的默认信息。
       sources: [
         {
-          src:
-              'https://yiti-download-1309630359.cos.ap-shanghai.myqcloud.com/wrwerw.mp4',
+          src: '',
           type: 'video/mp4'
         }
       ],
@@ -103,33 +110,58 @@ export default defineComponent({
         fullscreenToggle: true,                       // 是否显示全屏按钮
       },
 
+    };
+
+    const getCourseItemByCourse = (itemCourse: any) => {
+      axios.get("/courseItem/select", {
+        params: {
+          page: 1,
+          size: 100,          // 全查
+          course: itemCourse,
+        }
+      }).then((response) => {
+
+        if (response.data.success) {
+          courseItem.value = response.data.content.list;                 // 获取当前课程目录下的所有视频
+
+          videoOptions.sources[0].src = courseItem.value[0].videoLink;   // 播放其中的第一个视频
+          isLive.value = false;
+          nextTick(() => {
+            isLive.value = true;
+          })
+
+
+        } else {
+          message.error(response.data.message);
+        }
+      })
     }
 
-
-    const init = () => {
-      let courseItemJSON = sessionStorage.getItem("CourseItem");
-      if (courseItemJSON != null) courseItem.value = JSON.parse(courseItemJSON);
-      console.log(courseItem);
-
-      videoOptions.sources[0].src = courseItem.value.videoLink;
-      courseName.value = courseItem.value.name;
-      courseDes.value = courseItem.value.description;
-      courseClickCount.value = courseItem.value.clickCount;
+    /**
+     * 页面初始化
+     */
+    const initData = () => {
+      let courseItemInfoJSON: any;
+      itemCourse = sessionStorage.getItem("CourseItem");
+      courseItemInfoJSON = sessionStorage.getItem("CourseItemInfo");
+      if (courseItemInfoJSON != null) {
+        courseItemInfo.value = JSON.parse(courseItemInfoJSON);
+        // console.log(courseItemInfo.value);
+      }
+      getCourseItemByCourse(itemCourse);
     }
 
     onMounted(() => {
-      init();
-
+      initData();
     });
 
     return {
       courseItem,
-      courseName,
-      courseDes,
-      courseClickCount,
       videoOptions,
       data,
       columns,
+      courseItemInfo,
+      isLive,
     };
   },
 });
@@ -144,6 +176,25 @@ export default defineComponent({
   margin: 20px auto 100px;
   overflow: hidden;
   background: #fff;
+}
+
+.vjs-big-play-button {
+  font-size: 3em;
+  line-height: 1.5em;
+  height: 1.63332em;
+  width: 3em;
+  display: block;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 0;
+  cursor: pointer;
+  opacity: 1;
+  border: 0.06666em solid #fff;
+  background-color: #2B333F;
+  background-color: rgba(43, 51, 63, 0.7);
+  border-radius: 0.3em;
+  transition: all 0.4s;
 }
 
 .mainSpan {

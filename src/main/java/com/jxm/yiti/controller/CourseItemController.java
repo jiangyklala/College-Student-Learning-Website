@@ -26,7 +26,7 @@ public class CourseItemController {
      *
      * @param req 查询参数
      */
-    @GetMapping("/selectAll")
+    @GetMapping("/select")
     @ResponseBody
     public CommonResp list(@Valid CourseItemQueryReq req) {
         CommonResp<PageResp<CourseItemQueryResp>> resp = new CommonResp<>();

@@ -56,7 +56,6 @@
                 <DownloadOutlined/>
               </template>
             </a-button>
-              <a-button type="primary" @click="btn(item)">Primary Button</a-button>
           </template>
         </a-list-item>
 
@@ -80,7 +79,6 @@ import {DownloadOutlined, EyeTwoTone, ThunderboltTwoTone} from '@ant-design/icon
 import axios from 'axios';
 import {message} from "ant-design-vue";
 import {Tool} from "@/utils/tool";
-import router from '@/router';
 
 
 export default defineComponent({
@@ -232,19 +230,6 @@ export default defineComponent({
       })
     }
 
-    function btn(item: any) {
-      console.log(item);
-      const routeData = router.resolve({
-        path: "/course/VideosPlayer",
-        query: {
-          id: item.id,
-        }
-      });
-
-      window.open(routeData.href, '_blank');
-    }
-
-
     //-------------分页--------------
 
     // 分页选择器
@@ -301,7 +286,6 @@ export default defineComponent({
       downloadModalVis,
       downloadBtnClick,
       getCategoryNameById,
-      btn,
 
       categoryTree,
       handleMeunClick,

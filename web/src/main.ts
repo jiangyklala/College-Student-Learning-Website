@@ -7,8 +7,6 @@ import 'ant-design-vue/dist/antd.css';
 import * as Icons from '@ant-design/icons-vue';
 import axios from "axios";
 import VideoPlayer from '@videojs-player/vue';
-import 'video.js/dist/video-js.css'
-
 axios.defaults.baseURL = process.env.VUE_APP_SERVER;
 
 const app = createApp(App);
@@ -55,3 +53,4 @@ axios.interceptors.response.use(function (response) {
 
 console.log('环境:', process.env.NODE_ENV);
 console.log('服务端:', process.env.VUE_APP_SERVER);
+
