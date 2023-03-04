@@ -16,7 +16,7 @@ create table `download_list`(
                                 `category_id2`   bigint comment '分类2',
                                 `download_count` int comment '下载量',
                                 `size`           varchar(25) comment '大小',
-                                `download_link`  varchar(100) comment '下载链接',
+                                `download_link`  varchar(500) comment '下载链接',
                                 primary key (`id`)
 ) engine = innodb
   default charset = utf8mb4 comment ='下载列表';
