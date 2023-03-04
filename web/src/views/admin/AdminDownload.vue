@@ -69,7 +69,7 @@
             :options="categoryTree"/>
       </a-form-item>
       <a-form-item label="下载链接">
-        <a-input v-model:value="downloadList.downloadLink"/>
+        <a-textarea v-model:value="downloadList.downloadLink"/>
       </a-form-item>
     </a-form>
   </a-modal>

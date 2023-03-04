@@ -9,6 +9,8 @@ public class CourseItem {
 
     private String videoLink;
 
+    private String description;
+
     public String getCourse() {
         return course;
     }
@@ -41,6 +43,14 @@ public class CourseItem {
         this.videoLink = videoLink;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -51,6 +61,7 @@ public class CourseItem {
         sb.append(", sort=").append(sort);
         sb.append(", id=").append(id);
         sb.append(", videoLink=").append(videoLink);
+        sb.append(", description=").append(description);
         sb.append("]");
         return sb.toString();
     }

@@ -8,6 +8,8 @@ public class CourseItemQueryReq extends PageReq {
 
     private String videoLink;
 
+    private String description;
+
     public String getCourse() {
         return course;
     }
@@ -32,6 +34,14 @@ public class CourseItemQueryReq extends PageReq {
         this.videoLink = videoLink;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -41,6 +51,7 @@ public class CourseItemQueryReq extends PageReq {
         sb.append(", course=").append(course);
         sb.append(", sort=").append(sort);
         sb.append(", videoLink=").append(videoLink);
+        sb.append(", description=").append(description);
         sb.append("]");
         return sb.toString();
     }

@@ -101,6 +101,7 @@
   </a-layout-content>
 
   <!--  操作弹窗-->
+  <!-- [课程] 表单-->
   <a-modal
       title="课程表单"
       v-model:visible="editModalVisible"
@@ -122,23 +123,25 @@
             :options="categoryTree"/>
       </a-form-item>
       <a-form-item label="视频封面">
-        <a-input v-model:value="courseInModal.avatarLink"/>
+        <a-textarea v-model:value="courseInModal.avatarLink"/>
       </a-form-item>
       <a-form-item label="描述">
-        <a-input v-model:value="courseInModal.description"/>
+        <a-textarea v-model:value="courseInModal.description"/>
       </a-form-item>
     </a-form>
   </a-modal>
 
+  <!--  视频表单-->
   <a-modal
-      title="添加视频表单"
+      title="视频表单"
       v-model:visible="editItemModalVisible"
       :confirm-loading="editItemModalLoading"
       @ok="editItemModalOK"
   >
     <a-form
         :model="courseItemInModal"
-        :label-col="{ span : 3 }"
+        :label-col="{ span : 7 }"
+        class="item-modal-form"
     >
       <a-form-item label="所属课程名">
         <a-input v-model:value="courseItemInModal.course"/>
@@ -147,7 +150,10 @@
         <a-input v-model:value="courseItemInModal.sort"/>
       </a-form-item>
       <a-form-item label="视频连接">
-        <a-input v-model:value="courseItemInModal.videoLink"/>
+        <a-textarea v-model:value="courseItemInModal.videoLink"/>
+      </a-form-item>
+      <a-form-item label="视频信息/名称">
+        <a-textarea v-model:value="courseItemInModal.description"/>
       </a-form-item>
     </a-form>
   </a-modal>
@@ -545,6 +551,10 @@ export default defineComponent({
 .course-list-info {
   font-size: 30px;
   padding-bottom: 10px;
+}
+
+.item-modal-form {
+  width: 400px;
 }
 
 </style>

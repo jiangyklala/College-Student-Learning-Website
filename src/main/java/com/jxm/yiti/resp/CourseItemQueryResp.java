@@ -9,6 +9,8 @@ public class CourseItemQueryResp {
 
     private String videoLink;
 
+    private String description;
+
     public Long getId() {
         return id;
     }
@@ -41,17 +43,22 @@ public class CourseItemQueryResp {
         this.videoLink = videoLink;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", course=").append(course);
-        sb.append(", sort=").append(sort);
-        sb.append(", videoLink=").append(videoLink);
-        sb.append("]");
-        return sb.toString();
+        return "CourseItemQueryResp{" +
+                "id=" + id +
+                ", course='" + course + '\'' +
+                ", sort=" + sort +
+                ", videoLink='" + videoLink + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

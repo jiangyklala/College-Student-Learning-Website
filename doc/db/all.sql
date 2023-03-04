@@ -111,26 +111,24 @@ values (5, '视频5', 'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyD
 drop table if exists `course_item`;
 create table `course_item`
 (
-    `id`         bigint       not null comment 'id',
-    `course`     varchar(25)  not null comment '课程名称',
-    `sort`       int          not null comment '排序',
-    `video_link` varchar(100) not null comment '视频链接',
+    `id`          bigint       not null comment 'id',
+    `course`      varchar(25)  not null comment '所属课程名称',
+    `sort`        int          not null comment '排序',
+    `video_link`  varchar(500) not null comment '视频链接',
+    `description` varchar(50) default '' comment '这节课的描述信息',
     primary key (`course`, `sort`),
-    index idx_course (`course`)
-
+    index idx_course (`course`),
+    index idx_id (`id`)
 ) engine = innodb
   default charset = utf8mb4 comment ='课程视频表';
 
 insert into `course_item` (id, course, sort, video_link)
-values (1, '视频1', 101, 'https://yiti-download-1309630359.cos.ap-shanghai.myqcloud.com/4097_1667126621.mp4');
+values (1, '视频1', 101, 'https://yiti-download-1309630359.cos.ap-shanghai.myqcloud.com/1231223123123.mp4');
 insert into `course_item` (id, course, sort, video_link)
-values (2, '视频1', 102, 'https://yiti-download-1309630359.cos.ap-shanghai.myqcloud.com/4097_1667126621.mp4');
+values (2, '视频1', 102, 'https://yiti-download-1309630359.cos.ap-shanghai.myqcloud.com/wrwerw.mp4');
 insert into `course_item` (id, course, sort, video_link)
 values (3, '视频3', 201, 'https://yiti-download-1309630359.cos.ap-shanghai.myqcloud.com/4097_1667126621.mp4');
 insert into `course_item` (id, course, sort, video_link)
 values (4, '视频4', 301, 'https://yiti-download-1309630359.cos.ap-shanghai.myqcloud.com/4097_1667126621.mp4');
 insert into `course_item` (id, course, sort, video_link)
 values (5, '视频5', 401, 'https://yiti-download-1309630359.cos.ap-shanghai.myqcloud.com/4097_1667126621.mp4');
-
-alter table course_item
-    add index idx_id (`id`);

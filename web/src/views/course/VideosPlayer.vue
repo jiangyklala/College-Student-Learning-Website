@@ -15,12 +15,12 @@
               class="table-category"
               :columns="columns"
               :data-source="categoryData"
-              :scroll="{ x: 0 , y: 200 }"
+              :scroll="{ x: 0 , y: 400 }"
               :pagination="false"
           >
             <template #bodyCell="{ column, text, record }">
-              <template v-if="column.dataIndex === 'name'">
-                <a @click="categoryItemClick(record)">{{ text }}</a>
+              <template v-if="column.dataIndex === 'name' && record.name[2] === '节'">
+                  <a @click="categoryItemClick(record)">{{ text }} {{ record.description }}</a>
               </template>
             </template>
           </a-table>
@@ -82,15 +82,18 @@ export default defineComponent({
           res[res.length - 1].children.push({
             name: "第" + chars[courseItem[i].sort % 100 - 1] + "节",
             videoLink: courseItem[i].videoLink,
+            description: courseItem[i].description,
           });
         } else {
           res.push({
+            key: i,           // 注意需要设置 key, 默认多个章节的 key 是一样的
             name: "第" + chars[Math.floor(courseItem[i].sort / 100) - 1] + "章",
             children: [],
           });
           res[res.length - 1].children.push({
             name: "第" + chars[courseItem[i].sort % 100 - 1] + "节",
             videoLink: courseItem[i].videoLink,
+            description: courseItem[i].description,
           });
           preSort = Math.floor(courseItem[i].sort / 100);
         }
@@ -178,6 +181,26 @@ export default defineComponent({
       // console.log(record);
     }
 
+    interface DataItem {
+      key: number;
+      name: string;
+      children?: DataItem[];
+    }
+
+    //
+    // const rowSelection = ref({
+    //   checkStrictly: false,
+    //   onChange: (selectedRowKeys: (string | number)[], selectedRows: DataItem[]) => {
+    //     console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+    //   },
+    //   onSelect: (record: DataItem, selected: boolean, selectedRows: DataItem[]) => {
+    //     console.log(record, selected, selectedRows);
+    //   },
+    //   onSelectAll: (selected: boolean, selectedRows: DataItem[], changeRows: DataItem[]) => {
+    //     console.log(selected, selectedRows, changeRows);
+    //   },
+    // });
+
     onMounted(() => {
       initData();
     });
@@ -190,6 +213,7 @@ export default defineComponent({
       courseItemInfo,
       isLive,
       categoryItemClick,
+      // rowSelection,
     };
   },
 });
@@ -239,11 +263,13 @@ export default defineComponent({
 
 .category-div {
   float: right;
+
 }
 
 .table-category {
   margin-left: 50px;
   width: 350px !important;
+
 }
 
 .courseInfo-div {
