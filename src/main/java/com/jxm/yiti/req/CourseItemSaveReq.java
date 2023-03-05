@@ -8,6 +8,7 @@ public class CourseItemSaveReq {
     @NotNull(message = "[所属课程] 不能为空")
     private String course;
 
+    @NotNull(message = "[排序] 不能为空")
     private Integer sort;
 
     private String videoLink;

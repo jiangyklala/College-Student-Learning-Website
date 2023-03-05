@@ -26,12 +26,12 @@ public class CourseListController {
      *
      * @param req 查询参数
      */
-    @GetMapping("/list")
+    @GetMapping("/selectAll")
     @ResponseBody
     public CommonResp list(@Valid CourseListQueryReq req) {
         CommonResp<PageResp<CourseListQueryResp>> resp = new CommonResp<>();
 
-        PageResp<CourseListQueryResp> list = courseListService.list(req);
+        PageResp<CourseListQueryResp> list = courseListService.selectAll(req);
 
         resp.setContent(list);
         return resp;

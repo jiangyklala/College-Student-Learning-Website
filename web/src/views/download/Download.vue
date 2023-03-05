@@ -89,24 +89,22 @@ export default defineComponent({
   },
   name: 'Download',
   setup() {
-    const downloadModalVis = ref(false);
-    const mainLoading = ref(true);
-    const listData = ref();
-    const pagination = ref({
-      current: 1,
-      pageSize: 6,
-      total: 0,
-    });
-
 
     const actions: Record<string, string>[] = [
       {type: 'ThunderboltTwoTone', text: 'item.downloadCount'},
     ];
 
-    //-------------数据查询--------------
+    //-------------页面--------------
 
-    const handleQuery = (p: any) => {
-      axios.get("/downloadList/list", {
+    const downloadModalVis = ref(false);
+    const mainLoading = ref(true);
+    const listData = ref();
+
+    /**
+     * 下载列表数据查询
+     */
+    const downloadListAllQuery = (p: any) => {
+      axios.get("/downloadList/selectAll", {
         params: {
           page: p.current,
           size: p.pageSize,
@@ -133,7 +131,7 @@ export default defineComponent({
     const categoryTree = ref();
 
     const handleQueryCategory = () => {
-      axios.get("/category/selectAll").then((response) => {
+      axios.get("/category/selectAllOBSort").then((response) => {
         // loading.value = false;
         if (response.data.success) {  // 判断后端接口返回是否出错
           categorys = response.data.content;
@@ -172,24 +170,7 @@ export default defineComponent({
       })
     }
 
-    /**
-     * 根据目录id返回具体的分类名称
-     **/
-    const getCategoryNameById = (cid: number) => {
-      let result = "";
-      categorys.forEach((item: any) => {
-        if (item.id === cid) {
-          // 这里直接 return item.name 不起作用
-          result = item.name;
-        }
-      });
-      return result;
-    }
-
-    //-------------按钮--------------
-    const downloadModalOK = () => {
-      downloadModalVis.value = false;
-    }
+    //-------------列表--------------
 
     /**
      * 分类导航栏点击
@@ -221,7 +202,7 @@ export default defineComponent({
         if (data.success) {
           mainLoading.value = false;
           // 重新加载列表
-          handleQuery({
+          downloadListAllQuery({
             current: pagination.value.current,
             pageSize: pagination.value.pageSize,
           });
@@ -231,7 +212,14 @@ export default defineComponent({
       })
     }
 
+
     //-------------分页--------------
+
+    const pagination = ref({
+      current: 1,
+      pageSize: 6,
+      total: 0,
+    });
 
     // 分页选择器
     let paginationNum = 0;
@@ -249,7 +237,7 @@ export default defineComponent({
      */
     const handleListChange = (current: any) => {
       // console.log("pagination:" + current);
-      handleQuery({
+      downloadListAllQuery({
         current: current,
         pageSize: pagination.value.pageSize,
       });
@@ -268,9 +256,27 @@ export default defineComponent({
       })
     };
 
+
+    //-------------其它--------------
+
+    /**
+     * 根据目录id返回具体的分类名称
+     **/
+    const getCategoryNameById = (cid: number) => {
+      let result = "";
+      categorys.forEach((item: any) => {
+        if (item.id === cid) {
+          // 这里直接 return item.name 不起作用
+          result = item.name;
+        }
+      });
+      return result;
+    }
+
+
     onMounted(() => {
       handleQueryCategory();
-      handleQuery({
+      downloadListAllQuery({
         current: pagination.value.current,
         pageSize: pagination.value.pageSize,
       });
@@ -283,7 +289,6 @@ export default defineComponent({
       actions,
       paginationChange,
 
-      downloadModalOK,
       downloadModalVis,
       downloadBtnClick,
       getCategoryNameById,

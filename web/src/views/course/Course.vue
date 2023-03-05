@@ -49,17 +49,16 @@ export default defineComponent({
   components: {},
   name: 'Course',
   setup() {
+
+    //-------------页面--------------
+
     const mainLoading = ref();
     const listData = ref();
-    const pagination = ref({
-      current: 1,
-      pageSize: 300,
-      total: 0,
-    });
 
-
-    //-------------数据查询--------------
-    const handleQuery = () => {
+    /**
+     * 课程列表查询
+     */
+    const courseListAllGpByCgId2Query = () => {
       axios.get("/courseList/selectAllGpByCgId2", {}).then((response) => {
 
         if (response.data.success) {
@@ -68,26 +67,12 @@ export default defineComponent({
 
           console.log(listData);
 
-          autoLayoutHeight();
+          autoLayoutHeight();   // 自动调整布局
 
         } else {
           message.error(response.data.message);
         }
       })
-    }
-
-    /**
-     * 自动调节"课程页"布局高度
-     */
-    function autoLayoutHeight() {
-      let tagsNum = listData.value.length;
-      let courseRowNum = 0;
-      for (let i = 0; i < listData.value.length; ++i) {
-        courseRowNum += (listData.value[i].length + 1) / 2;
-      }
-
-      var lala = document.getElementById("layout-content");
-      if (lala != null) lala.style.height = tagsNum * 80 + courseRowNum * 210 + 'px';
     }
 
     /**
@@ -97,13 +82,13 @@ export default defineComponent({
     const categoryTree = ref();
 
     const handleQueryCategory = () => {
-      axios.get("/category/selectAll").then((response) => {
+      axios.get("/category/selectAllOBSort").then((response) => {
         // loading.value = false;
         if (response.data.success) {  // 判断后端接口返回是否出错
           categorys = response.data.content;
           categoryTree.value = Tool.array2Tree(response.data.content, 0);
 
-          handleQuery();
+          courseListAllGpByCgId2Query();
 
         } else {
           message.error(response.data.message);
@@ -111,24 +96,7 @@ export default defineComponent({
       })
     }
 
-    const paginationChange = (current: any) => {
-      // console.log("pagination:" + current);
-      handleQuery();
-    };
-
-    /**
-     * 根据目录id返回具体的分类名称
-     */
-    const getCategoryNameById = (cid: number) => {
-      let result = "";
-      categorys.forEach((item: any) => {
-        if (item.id === cid) {
-          // 这里直接 return item.name 不起作用
-          result = item.name;
-        }
-      });
-      return result;
-    }
+    //-------------课程点击--------------
 
     /**
      * 点击课程跳转的播放界面
@@ -146,6 +114,54 @@ export default defineComponent({
 
       window.open(routeData.href, '课程播放');
     }
+
+
+    //-------------分页--------------
+
+    const pagination = ref({
+      current: 1,
+      pageSize: 300,
+      total: 0,
+    });
+
+    /**
+     * 分页点击跳转
+     */
+    const paginationChange = (current: any) => {
+      // console.log("pagination:" + current);
+      courseListAllGpByCgId2Query();
+    };
+
+    //-------------其它--------------
+
+    /**
+     * 自动调节"课程页"布局高度
+     */
+    function autoLayoutHeight() {
+      let tagsNum = listData.value.length;
+      let courseRowNum = 0;
+      for (let i = 0; i < listData.value.length; ++i) {
+        courseRowNum += (listData.value[i].length + 1) / 2;
+      }
+
+      var lala = document.getElementById("layout-content");
+      if (lala != null) lala.style.height = tagsNum * 80 + courseRowNum * 210 + 'px';
+    }
+
+    /**
+     * 根据目录id返回具体的分类名称
+     */
+    const getCategoryNameById = (cid: number) => {
+      let result = "";
+      categorys.forEach((item: any) => {
+        if (item.id === cid) {
+          // 这里直接 return item.name 不起作用
+          result = item.name;
+        }
+      });
+      return result;
+    }
+
 
     onMounted(() => {
       handleQueryCategory();

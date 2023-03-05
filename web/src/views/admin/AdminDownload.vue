@@ -85,13 +85,7 @@ export default defineComponent({
   components: {},
   name: "AdminDownload",
   setup: function () {
-    const loading = ref(true);
-    const listData = ref();
-    const pagination = ref({
-      current: 1,
-      pageSize: 10,
-      total: 0
-    });
+
 
 
     const columns = [
@@ -123,31 +117,17 @@ export default defineComponent({
     ];
 
 
-    //-------------搜索框--------------]
-    const onSearch = (searchValue: string) => {
-      handleQuery({
-        current: 1,
-        pageSize: pagination.value.pageSize,
-        name: searchValue,
-      })
-    };
-
     //-------------页面--------------
-    /**
-     * 新增按钮
-     * 注: 这里不需要写具体的新增逻辑, 已经在对话框的"确认"按钮的逻辑中写过了
-     */
-    const addDownloadItem = () => {
-      modalVisible.value = true;
-      downloadList.value = {};  // 清空当前的数据信息
-    };
+
+    const loading = ref(true);
+    const listData = ref();
 
     /**
      * 下载列表数据查询
      * @param p
      */
-    const handleQuery = (p: any) => {
-      axios.get("/downloadList/list", {
+    const downloadListALlQuery = (p: any) => {
+      axios.get("/downloadList/selectAll", {
         params: {
           page: p.current,
           size: p.pageSize,
@@ -168,42 +148,18 @@ export default defineComponent({
       })
     }
 
-    //-------------分页--------------
+
     /**
-     * 分页的跳转页面处理
-     * @param pagination
+     * 分类数据查询
      */
-    const handleTableChange = (pagination: any) => {
-      // console.log("pagination:" + pagination);
-      handleQuery({
-        current: pagination.current,
-        pageSize: pagination.pageSize,
-      });
-    };
+    let categorys: any;
+    const handleQueryCategory = () => {
+      axios.get("/category/selectAllOBSort").then((response) => {
+        if (response.data.success) {  // 判断后端接口返回是否出错
+          categorys = response.data.content;
+          categoryTree.value = Tool.array2Tree(response.data.content, 0);
 
-    //-------------表单--------------
-    const downloadList = ref();
-    const modalVisible = ref(false);
-    const modalLoading = ref(false);
-    const categoryIds = ref();
-    const categoryTree = ref();
-
-    const handleModalOk = () => {
-      modalLoading.value = true;
-      downloadList.value.categoryId1 = categoryIds.value[0];  // 保存之前先把两个分类从表单中提取出来
-      downloadList.value.categoryId2 = categoryIds.value[1];
-
-      axios.post("/downloadList/save", downloadList.value).then((response) => {
-        // console.log(response);
-        const data = response.data;
-        modalLoading.value = false;
-
-
-        if (data.success) {
-          modalVisible.value = false;
-
-          // 重新加载列表
-          handleQuery({
+          downloadListALlQuery({   // 下载列表的显示需要用到分类的信息, 由于 axios 是异步的, 所以必须在分类查询完成后再进行下载列表的查询显示
             current: pagination.value.current,
             pageSize: pagination.value.pageSize,
           });
@@ -211,7 +167,18 @@ export default defineComponent({
           message.error(response.data.message);
         }
       })
+    }
 
+
+    //-------------表格--------------
+
+    /**
+     * 新增按钮
+     * 注: 这里不需要写具体的新增逻辑, 已经在对话框的"确认"按钮的逻辑中写过了
+     */
+    const addDownloadItem = () => {
+      modalVisible.value = true;
+      downloadList.value = {};  // 清空当前的数据信息
     };
 
     /**
@@ -231,7 +198,7 @@ export default defineComponent({
         const data = response.data;
         if (data.success) {
           // 重新加载列表
-          handleQuery({
+          downloadListALlQuery({
             current: pagination.value.current,
             pageSize: pagination.value.pageSize,
           });
@@ -239,17 +206,33 @@ export default defineComponent({
       })
     };
 
-    /**
-     * 分类数据查询
-     */
-    let categorys: any;
-    const handleQueryCategory = () => {
-      axios.get("/category/selectAll").then((response) => {
-        if (response.data.success) {  // 判断后端接口返回是否出错
-          categorys = response.data.content;
-          categoryTree.value = Tool.array2Tree(response.data.content, 0);
 
-          handleQuery({   // 下载列表的显示需要用到分类的信息, 由于 axios 是异步的, 所以必须在分类查询完成后再进行下载列表的查询显示
+    //-------------表单--------------
+    const downloadList = ref();
+    const modalVisible = ref(false);
+    const modalLoading = ref(false);
+    const categoryIds = ref();
+    const categoryTree = ref();
+
+    /**
+     * 表单确认按钮
+     */
+    const handleModalOk = () => {
+      modalLoading.value = true;
+      downloadList.value.categoryId1 = categoryIds.value[0];  // 保存之前先把两个分类从表单中提取出来
+      downloadList.value.categoryId2 = categoryIds.value[1];
+
+      axios.post("/downloadList/save", downloadList.value).then((response) => {
+        // console.log(response);
+        const data = response.data;
+        modalLoading.value = false;
+
+
+        if (data.success) {
+          modalVisible.value = false;
+
+          // 重新加载列表
+          downloadListALlQuery({
             current: pagination.value.current,
             pageSize: pagination.value.pageSize,
           });
@@ -257,7 +240,41 @@ export default defineComponent({
           message.error(response.data.message);
         }
       })
-    }
+
+    };
+
+
+    //-------------分页--------------
+
+    const pagination = ref({
+      current: 1,
+      pageSize: 10,
+      total: 0
+    });
+
+    /**
+     * 分页的跳转页面处理
+     * @param pagination
+     */
+    const handleTableChange = (pagination: any) => {
+      // console.log("pagination:" + pagination);
+      downloadListALlQuery({
+        current: pagination.current,
+        pageSize: pagination.pageSize,
+      });
+    };
+
+
+    //-------------搜索框--------------
+    const onSearch = (searchValue: string) => {
+      downloadListALlQuery({
+        current: 1,
+        pageSize: pagination.value.pageSize,
+        name: searchValue,
+      })
+    };
+
+    //-------------其它--------------
 
     /**
      * 根据目录id返回具体的分类名称

@@ -23,14 +23,13 @@ public class DownloadListController {
      * 查询下载列表的所有数据
      *
      * @param req 查询参数
-     * @return CommonResq
      */
-    @GetMapping("/list")
+    @GetMapping("/selectAll")
     @ResponseBody
     public CommonResp list(@Valid DownloadListQueryReq req) {
         CommonResp<PageResp<DownloadListQueryResp>> resp = new CommonResp<>();
 
-        PageResp<DownloadListQueryResp> list = downloadListService.list(req);
+        PageResp<DownloadListQueryResp> list = downloadListService.selectAll(req);
 
         resp.setContent(list);
         return resp;
@@ -40,7 +39,6 @@ public class DownloadListController {
      * 新增或者更新一个下载项
      *
      * @param req 保存参数
-     * @return CommonResp
      */
     @PostMapping("/save")
     @ResponseBody

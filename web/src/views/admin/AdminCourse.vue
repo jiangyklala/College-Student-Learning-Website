@@ -169,13 +169,6 @@ export default defineComponent({
   components: {},
   name: "AdminCourse",
   setup: function () {
-    const courseListLoading = ref(true);
-    const courseList = ref();
-    const courseListPagination = ref({
-      current: 1,
-      pageSize: 5,
-      total: 0
-    });
 
     const courseListColumns = [
       {
@@ -219,24 +212,18 @@ export default defineComponent({
     ];
 
 
-    //-------------搜索框--------------]
-    const onSearch = (searchValue: string) => {
-      handleQuery({
-        current: 1,
-        pageSize: courseListPagination.value.pageSize,
-        name: searchValue,
-      })
-    };
-
     //-------------页面--------------
 
+    const courseListLoading = ref(true);
+    const courseList = ref();
 
     /**
      * 课程列表数据查询
      * @param p
      */
-    const handleQuery = (p: any) => {
-      axios.get("/courseList/list", {
+
+    const courseListAllQuery = (p: any) => {
+      axios.get("/courseList/selectAll", {
         params: {
           page: p.current,
           size: p.pageSize,
@@ -257,7 +244,6 @@ export default defineComponent({
       })
     }
 
-
     /**
      * 课程视频查询
      * @param p
@@ -271,7 +257,7 @@ export default defineComponent({
     });
 
     const courseItemQuery = (p: any) => {
-      axios.get("/courseItem/select", {
+      axios.get("/courseItem/selectAll", {
         params: {
           page: p.current,
           size: p.pageSize,
@@ -292,13 +278,40 @@ export default defineComponent({
       })
     }
 
+    /**
+     * 分类数据查询
+     */
+    let categorys: any;
+    const handleQueryCategory = () => {
+      axios.get("/category/selectAllOBSort").then((response) => {
+        if (response.data.success) {  // 判断后端接口返回是否出错
+          categorys = response.data.content;
+          categoryTree.value = Tool.array2Tree(response.data.content, 0);
+
+          courseListAllQuery({   // 下载列表的显示需要用到分类的信息, 由于 axios 是异步的, 所以必须在分类查询完成后再进行下载列表的查询显示
+            current: courseListPagination.value.current,
+            pageSize: courseListPagination.value.pageSize,
+          });
+        } else {
+          message.error(response.data.message);
+        }
+      })
+    }
+
     //-------------分页--------------
+
+    const courseListPagination = ref({
+      current: 1,
+      pageSize: 5,
+      total: 0
+    });
+
     /**
      * 课程分页的跳转页面处理
      */
     const courseTableChange = (pagination: any) => {
       // console.log("pagination:" + pagination);
-      handleQuery({
+      courseListAllQuery({
         current: pagination.current,
         pageSize: pagination.pageSize,
       });
@@ -308,12 +321,12 @@ export default defineComponent({
      * 视频分页的跳转页面处理
      */
     const itemTableChange = (pagination: any) => {
-      // console.log("pagination:" + pagination);
       courseItemQuery({
         current: pagination.current,
         pageSize: pagination.pageSize,
       });
     };
+
 
     //-------------课程表单--------------
     const courseInModal = ref();
@@ -340,7 +353,7 @@ export default defineComponent({
           editModalVisible.value = false;
 
           // 重新加载列表
-          handleQuery({
+          courseListAllQuery({
             current: courseListPagination.value.current,
             pageSize: courseListPagination.value.pageSize,
           });
@@ -350,52 +363,11 @@ export default defineComponent({
       })
     };
 
-    /**
-     * 课程表格的编辑按钮
-     */
-    const btnEdit = (record: any) => {
-      editModalVisible.value = true;
-      courseInModal.value = Tool.copy(record);
-      categoryIds.value = [courseInModal.value.categoryId1, courseInModal.value.categoryId2];  // 编辑时表单的分类显示需要再从 courseInModal 中提取出来
-    };
-
-    /**
-     * 课程表格的删除按钮
-     */
-    const btnDeleteCourse = (id: number) => {
-      axios.delete("/courseList/delete/" + id).then((response) => {
-        const data = response.data;
-        if (data.success) {
-          // 重新加载列表
-          handleQuery({
-            current: courseListPagination.value.current,
-            pageSize: courseListPagination.value.pageSize,
-          });
-        }
-      })
-    };
-
-    /**
-     * 新增课程按钮
-     * 注: 这里不需要写具体的新增逻辑, 已经在对话框的"确认"按钮的逻辑中写过了
-     */
-    const btnAddCourse = () => {
-      editModalVisible.value = true;
-      courseInModal.value = {};  // 清空当前的数据信息
-    };
 
     //-------------视频表单--------------
     const courseItemInModal = ref();
     const editItemModalVisible = ref(false);
     const editItemModalLoading = ref(false);
-
-    /**
-     * 视频表格的编辑按钮
-     */
-    const btnEditItem = (record: any) => {
-      editItemModalVisible.value = true;
-      courseItemInModal.value = Tool.copy(record);
-    };
 
     /**
      * 视频表单的确定按钮
@@ -421,8 +393,56 @@ export default defineComponent({
       })
     };
 
+
+    //-------------课程表格--------------
+
+    /**
+     * 课程表格的编辑按钮
+     */
+    const btnEdit = (record: any) => {
+      editModalVisible.value = true;
+      courseInModal.value = Tool.copy(record);
+      categoryIds.value = [courseInModal.value.categoryId1, courseInModal.value.categoryId2];  // 编辑时表单的分类显示需要再从 courseInModal 中提取出来
+    };
+
     /**
      * 课程表格的删除按钮
+     */
+    const btnDeleteCourse = (id: number) => {
+      axios.delete("/courseList/delete/" + id).then((response) => {
+        const data = response.data;
+        if (data.success) {
+          // 重新加载列表
+          courseListAllQuery({
+            current: courseListPagination.value.current,
+            pageSize: courseListPagination.value.pageSize,
+          });
+        }
+      })
+    };
+
+    /**
+     * 新增课程按钮
+     * 注: 这里不需要写具体的新增逻辑, 已经在对话框的"确认"按钮的逻辑中写过了
+     */
+    const btnAddCourse = () => {
+      editModalVisible.value = true;
+      courseInModal.value = {};  // 清空当前的数据信息
+    };
+
+
+    //-------------视频表格--------------
+
+    /**
+     * 视频表格的编辑按钮
+     */
+    const btnEditItem = (record: any) => {
+      editItemModalVisible.value = true;
+      courseItemInModal.value = Tool.copy(record);
+    };
+
+    /**
+     * 视频表格的删除按钮
      */
     const btnDeleteItem = (id: number) => {
       axios.delete("/courseItem/delete/" + id).then((response) => {
@@ -446,26 +466,17 @@ export default defineComponent({
       courseItemInModal.value = {};  // 清空当前的数据信息
     };
 
-    //-------------[分类]模块--------------
-    /**
-     * 分类数据查询
-     */
-    let categorys: any;
-    const handleQueryCategory = () => {
-      axios.get("/category/selectAll").then((response) => {
-        if (response.data.success) {  // 判断后端接口返回是否出错
-          categorys = response.data.content;
-          categoryTree.value = Tool.array2Tree(response.data.content, 0);
 
-          handleQuery({   // 下载列表的显示需要用到分类的信息, 由于 axios 是异步的, 所以必须在分类查询完成后再进行下载列表的查询显示
-            current: courseListPagination.value.current,
-            pageSize: courseListPagination.value.pageSize,
-          });
-        } else {
-          message.error(response.data.message);
-        }
+    //-------------搜索框--------------
+    const onSearch = (searchValue: string) => {
+      courseListAllQuery({
+        current: 1,
+        pageSize: courseListPagination.value.pageSize,
+        name: searchValue,
       })
-    }
+    };
+
+    //-------------其它--------------
 
     /**
      * 根据目录id返回具体的分类名称
@@ -480,6 +491,7 @@ export default defineComponent({
       });
       return result;
     }
+
 
     onMounted(() => {
       handleQueryCategory();

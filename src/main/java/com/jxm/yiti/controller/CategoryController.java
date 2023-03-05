@@ -2,8 +2,8 @@ package com.jxm.yiti.controller;
 
 import com.jxm.yiti.req.CategoryQueryReq;
 import com.jxm.yiti.req.CategorySaveReq;
-import com.jxm.yiti.resp.CommonResp;
 import com.jxm.yiti.resp.CategoryQueryResp;
+import com.jxm.yiti.resp.CommonResp;
 import com.jxm.yiti.resp.PageResp;
 import com.jxm.yiti.service.CategoryService;
 import jakarta.annotation.Resource;
@@ -24,28 +24,27 @@ public class CategoryController {
      * 查询下载列表的所有数据
      *
      * @param req 查询参数
-     * @return CommonResq
      */
-    @GetMapping("/list")
+    @GetMapping("/selectAll")
     @ResponseBody
     public CommonResp list(@Valid CategoryQueryReq req) {
         CommonResp<PageResp<CategoryQueryResp>> resp = new CommonResp<>();
 
-        PageResp<CategoryQueryResp> list = categoryService.list(req);
+        PageResp<CategoryQueryResp> list = categoryService.selectAll(req);
 
         resp.setContent(list);
         return resp;
     }
 
     /**
-     * 查询下载列表的所有数据
+     * 查询下载列表的所有数据, 并根据 sort 字段排序
      */
-    @GetMapping("/selectAll")
+    @GetMapping("/selectAllOBSort")
     @ResponseBody
-    public CommonResp selectAll() {
+    public CommonResp selectAllOBSort() {
         CommonResp<List<CategoryQueryResp>> resp = new CommonResp<>();
 
-        List<CategoryQueryResp> list = categoryService.selectAll();
+        List<CategoryQueryResp> list = categoryService.selectAllOBSort();
 
         resp.setContent(list);
         return resp;

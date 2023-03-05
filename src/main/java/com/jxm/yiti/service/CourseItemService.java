@@ -4,11 +4,9 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jxm.yiti.domain.CourseItem;
 import com.jxm.yiti.domain.CourseItemExample;
-import com.jxm.yiti.domain.CourseList;
 import com.jxm.yiti.mapper.CourseItemMapper;
 import com.jxm.yiti.req.CourseItemQueryReq;
 import com.jxm.yiti.req.CourseItemSaveReq;
-import com.jxm.yiti.resp.CourseItemQueryResp;
 import com.jxm.yiti.resp.CourseItemQueryResp;
 import com.jxm.yiti.resp.PageResp;
 import com.jxm.yiti.utils.CopyUtil;
@@ -30,7 +28,7 @@ public class CourseItemService {
 
     private static final Logger LOG = LoggerFactory.getLogger(CourseItemService.class);
 
-    public PageResp<CourseItemQueryResp> select(CourseItemQueryReq req) {
+    public PageResp<CourseItemQueryResp> selectAll(CourseItemQueryReq req) {
         CourseItemExample courseItemExample = new CourseItemExample();
         CourseItemExample.Criteria criteria = courseItemExample.createCriteria();
         if (!ObjectUtils.isEmpty(req.getCourse())) {                                    // 动态 SQL
@@ -63,7 +61,7 @@ public class CourseItemService {
 
         try {
             if (ObjectUtils.isEmpty(req.getId())) {
-                res.setId(snowFlakeIdWorker.nextId());
+                res.setId(snowFlakeIdWorker.nextId());          // 新增时, 设置雪花ID
                 return courseItemMapper.insert(res);
             } else {
                 criteria.andIdEqualTo(req.getId());

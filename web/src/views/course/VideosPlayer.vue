@@ -55,18 +55,82 @@ export default defineComponent({
   },
   name: 'VideosPlayer',
   setup() {
-    let itemCourse: any;
-    const courseItemInfo = ref("");
-    const courseItem = ref();
-    const isLive = ref(false);
+
 
     const columns = [
       {title: '课程目录', width: 300, dataIndex: 'name', key: 'name', fixed: 'left'},
       {title: '', width: 0},
     ];
 
+    /**
+     * 视频播放配置
+     */
+    const videoOptions = {
+      playbackRates: [0.5, 1.0, 1.5, 1.75, 2.0],        //播放速度
+      autoplay: false,
+      controls: true,
+      fluid: true,
+      preload: "auto",                                  // 建议浏览器在<video>加载元素后是否应该开始下载视频数据。auto浏览器选择最佳行为,立即开始加载视频（如果浏览器支持）
+      language: "zh-CN",
+      aspectRatio: '16:9',                              // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
+      notSupportedMessage: '此视频暂无法播放，请稍后再试',   // 允许覆盖Video.js无法播放媒体源时显示的默认信息。
+      sources: [
+        {
+          src: '',
+          type: 'video/mp4'
+        }
+      ],
+      controlBar: {
+        timeDivider: true,                            // 当前时间和持续时间的分隔符
+        durationDisplay: true,                        // 显示持续时间
+        remainingTimeDisplay: true,                   // 是否显示剩余时间功能
+        fullscreenToggle: true,                       // 是否显示全屏按钮
+      },
+    };
+
+    //-------------页面--------------
+
+    let itemCourse: any;
+    const courseItemInfo = ref("");
+    const courseItem = ref();
+    const isLive = ref(false);
     let categoryData = ref([]);
 
+    /**
+     * 页面初始化
+     */
+    const initData = () => {
+      let courseItemInfoJSON: any;
+      itemCourse = sessionStorage.getItem("CourseItem");
+      courseItemInfoJSON = sessionStorage.getItem("CourseItemInfo");
+      if (courseItemInfoJSON != null) {
+        courseItemInfo.value = JSON.parse(courseItemInfoJSON);
+        // console.log(courseItemInfo.value);
+      }
+      getCourseItemByCourse(itemCourse);
+    }
+
+    //-------------视频目录--------------
+
+    /**
+     * 视频目录项点击
+     * @param record
+     */
+    const categoryItemClick = (record: any) => {
+      videoOptions.sources[0].src = record.videoLink;   // 播放其中的第一个视频
+      isLive.value = false;
+      nextTick(() => {
+        isLive.value = true;
+      })
+      // console.log(record);
+    }
+
+    //-------------其它--------------
+
+    /**
+     * 将所有课程视频, 转化为目录树
+     * @param courseItem
+     */
     const itemsToCategoryTree = (courseItem: any) => {
       if (Tool.isEmpty(courseItem)) {
         return [];
@@ -103,35 +167,11 @@ export default defineComponent({
     }
 
     /**
-     * 视频播放配置
+     * 根据课程名, 查找所有课程视频
+     * @param itemCourse
      */
-    const videoOptions = {
-      playbackRates: [0.5, 1.0, 1.5, 1.75, 2.0],        //播放速度
-      autoplay: false,
-      controls: true,
-      fluid: true,
-      preload: "auto",                                  // 建议浏览器在<video>加载元素后是否应该开始下载视频数据。auto浏览器选择最佳行为,立即开始加载视频（如果浏览器支持）
-      language: "zh-CN",
-      aspectRatio: '16:9',                              // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
-      notSupportedMessage: '此视频暂无法播放，请稍后再试',   // 允许覆盖Video.js无法播放媒体源时显示的默认信息。
-      sources: [
-        {
-          src: '',
-          type: 'video/mp4'
-        }
-      ],
-      controlBar: {
-        timeDivider: true,                            // 当前时间和持续时间的分隔符
-        durationDisplay: true,                        // 显示持续时间
-        remainingTimeDisplay: true,                   // 是否显示剩余时间功能
-        fullscreenToggle: true,                       // 是否显示全屏按钮
-      },
-
-    };
-
-
     const getCourseItemByCourse = (itemCourse: any) => {
-      axios.get("/courseItem/select", {
+      axios.get("/courseItem/selectAll", {
         params: {
           page: 1,
           size: 100,          // 全查
@@ -158,48 +198,6 @@ export default defineComponent({
       })
     }
 
-    /**
-     * 页面初始化
-     */
-    const initData = () => {
-      let courseItemInfoJSON: any;
-      itemCourse = sessionStorage.getItem("CourseItem");
-      courseItemInfoJSON = sessionStorage.getItem("CourseItemInfo");
-      if (courseItemInfoJSON != null) {
-        courseItemInfo.value = JSON.parse(courseItemInfoJSON);
-        // console.log(courseItemInfo.value);
-      }
-      getCourseItemByCourse(itemCourse);
-    }
-
-    const categoryItemClick = (record: any) => {
-      videoOptions.sources[0].src = record.videoLink;   // 播放其中的第一个视频
-      isLive.value = false;
-      nextTick(() => {
-        isLive.value = true;
-      })
-      // console.log(record);
-    }
-
-    interface DataItem {
-      key: number;
-      name: string;
-      children?: DataItem[];
-    }
-
-    //
-    // const rowSelection = ref({
-    //   checkStrictly: false,
-    //   onChange: (selectedRowKeys: (string | number)[], selectedRows: DataItem[]) => {
-    //     console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-    //   },
-    //   onSelect: (record: DataItem, selected: boolean, selectedRows: DataItem[]) => {
-    //     console.log(record, selected, selectedRows);
-    //   },
-    //   onSelectAll: (selected: boolean, selectedRows: DataItem[], changeRows: DataItem[]) => {
-    //     console.log(selected, selectedRows, changeRows);
-    //   },
-    // });
 
     onMounted(() => {
       initData();

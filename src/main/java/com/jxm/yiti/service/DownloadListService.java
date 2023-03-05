@@ -31,19 +31,20 @@ public class DownloadListService {
     /**
      * 查询下载列表的所有数据, 带有模糊匹配功能
      */
-    public PageResp<DownloadListQueryResp> list(DownloadListQueryReq req) {
+    public PageResp<DownloadListQueryResp> selectAll(DownloadListQueryReq req) {
         DownloadListExample downloadListExample = new DownloadListExample();
         DownloadListExample.Criteria criteria = downloadListExample.createCriteria();
-        if (!ObjectUtils.isEmpty(req.getName())) {  // 动态 SQL
-            criteria.andNameLike("%" + req.getName() + "%");  // 模糊匹配条件
+        if (!ObjectUtils.isEmpty(req.getName())) {                                      // 动态 SQL
+            criteria.andNameLike("%" + req.getName() + "%");                            // 模糊匹配条件
         }
 
         PageHelper.startPage(req.getPage(), req.getSize(), true);
         List<DownloadList> downloadLists = downloadListMapper.selectByExample(downloadListExample);
-        System.out.println(downloadLists.toString());
 
-        PageInfo<DownloadList> downloadListPageInfo = new PageInfo<>(downloadLists); // 记得这里需要初始化
-        LOG.info("当前页: " + downloadListPageInfo.getPageNum() + ", 总页数: " + downloadListPageInfo.getPages() + " , 总记录数: " + downloadListPageInfo.getTotal());
+        PageInfo<DownloadList> downloadListPageInfo = new PageInfo<>(downloadLists);
+        LOG.info("当前页: " + downloadListPageInfo.getPageNum()
+                + ", 总页数: " + downloadListPageInfo.getPages()
+                + " , 总记录数: " + downloadListPageInfo.getTotal());
         PageResp<DownloadListQueryResp> resp = new PageResp<>();
         resp.setList(CopyUtil.copyList(downloadLists, DownloadListQueryResp.class));
         resp.setTotal(downloadListPageInfo.getTotal());
@@ -73,27 +74,35 @@ public class DownloadListService {
     }
 
     /**
-     * 删除一个下载项
+     * 删除 1 个下载项
      */
     public int delete(Long id) {
-        return downloadListMapper.deleteByPrimaryKey(id);
+        int res = downloadListMapper.deleteByPrimaryKey(id);
+        if (res != 1) {
+            LOG.info("删除 1 个课程项失败");
+            return 0;
+        } else {
+            return res;
+        }
     }
 
     /**
-     * 根据 categoryId2 查询在统一分类下的下载项
+     * 根据 categoryId2 查询: 在同一分类下的所有下载项
      */
     public PageResp<DownloadListQueryResp> selectByCategoryId(DownloadListQueryReq req) {
         DownloadListExample downloadListExample = new DownloadListExample();
         if (req.getCategoryId() != -1) {
             DownloadListExample.Criteria criteria = downloadListExample.createCriteria();
-            criteria.andCategoryId2EqualTo(req.getCategoryId());  // 匹配 categoryId2 相同的的下载项
+            criteria.andCategoryId2EqualTo(req.getCategoryId());                            // 匹配 categoryId2 相同的的下载项
         }
 
         PageHelper.startPage(req.getPage(), req.getSize(), true);
         List<DownloadList> downloadLists = downloadListMapper.selectByExample(downloadListExample);
-        PageInfo<DownloadList> downloadListPageInfo = new PageInfo<>(downloadLists);
-        LOG.info("当前页: " + downloadListPageInfo.getPageNum() + ", 总页数: " + downloadListPageInfo.getPages() + " , 总记录数: " + downloadListPageInfo.getTotal()); //        + " , 总页数: " + downloadListPageInfo.getTotal()
 
+        PageInfo<DownloadList> downloadListPageInfo = new PageInfo<>(downloadLists);
+        LOG.info("当前页: " + downloadListPageInfo.getPageNum()
+                + ", 总页数: " + downloadListPageInfo.getPages()
+                + " , 总记录数: " + downloadListPageInfo.getTotal());
         PageResp<DownloadListQueryResp> resp = new PageResp<>();
         resp.setList(CopyUtil.copyList(downloadLists, DownloadListQueryResp.class));
         resp.setTotal(downloadListPageInfo.getTotal());

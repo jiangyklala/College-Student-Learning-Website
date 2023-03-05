@@ -78,11 +78,6 @@ export default defineComponent({
   components: {},
   name: "AdminCategory",
   setup: function () {
-    const loading = ref(true);
-    const listData = ref();
-    const tableData = ref();
-
-
 
     const columns = [
       {
@@ -108,24 +103,18 @@ export default defineComponent({
     ];
 
 
-
-
     //-------------页面--------------
-    /**
-     * 新增按钮
-     * 注: 这里不需要写具体的新增逻辑, 已经在对话框的"确认"按钮的逻辑中写过了
-     */
-    const addCategoryItem = () => {
-      modalVisible.value = true;
-      category.value = {};  // 清空当前的数据信息
-    };
+
+    const loading = ref(true);
+    const listData = ref();
+    const tableData = ref();
 
     /**
-     * 数据查询
+     * 分类数据查询
      */
-    const handleQuery = () => {
+    const categoryAllOBSortQuery = () => {
       loading.value = true;
-      axios.get("/category/selectAll").then((response) => {
+      axios.get("/category/selectAllOBSort").then((response) => {
 
         if (response.data.success) {  // 判断后端接口返回是否出错
           loading.value = false;
@@ -135,37 +124,18 @@ export default defineComponent({
         } else {
           message.error(response.data.message);
         }
-
-
-      })
+      });
     }
 
+    //-------------表格--------------
 
-
-    //-------------表单--------------
-    const category = ref({});
-    const modalVisible = ref(false);
-    const modalLoading = ref(false);
-
-    const handleModalOk = () => {
-      modalLoading.value = true;
-
-      axios.post("/category/save", category.value).then((response) => {
-        // console.log(response);
-        const data = response.data;
-        modalLoading.value = false;
-
-
-        if (data.success) {
-          modalVisible.value = false;
-
-          // 重新加载列表
-          handleQuery();
-        } else {
-          message.error(response.data.message);
-        }
-      })
-
+    /**
+     * 新增按钮
+     * 注: 这里不需要写具体的新增逻辑, 已经在对话框的"确认"按钮的逻辑中写过了
+     */
+    const addCategoryItem = () => {
+      category.value = {};  // 清空当前的数据信息
+      modalVisible.value = true;
     };
 
     /**
@@ -185,13 +155,44 @@ export default defineComponent({
 
         if (data.success) {
           // 重新加载列表
-          handleQuery();
+          categoryAllOBSortQuery();
         }
       })
     };
 
+    //-------------表单--------------
+    const category = ref({});
+    const modalVisible = ref(false);
+    const modalLoading = ref(false);
+
+    /**
+     * 表单确认按钮
+     */
+    const handleModalOk = () => {
+      modalLoading.value = true;
+
+      axios.post("/category/save", category.value).then((response) => {
+        // console.log(response);
+        const data = response.data;
+        modalLoading.value = false;
+
+
+        if (data.success) {
+          modalVisible.value = false;
+
+          // 重新加载列表
+          categoryAllOBSortQuery();
+        } else {
+          message.error(response.data.message);
+        }
+      })
+
+    };
+
+
+
     onMounted(() => {
-      handleQuery();
+      categoryAllOBSortQuery();
     });
 
     return {
@@ -200,7 +201,7 @@ export default defineComponent({
       listData,
       columns,
 
-      btnEdit: buttonEdit,
+      buttonEdit,
       addCategoryItem,
       buttonDelete,
 
