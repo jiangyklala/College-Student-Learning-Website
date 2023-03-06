@@ -17,7 +17,9 @@ create table `download_list`(
                                 `download_count` int comment '下载量',
                                 `size`           varchar(25) comment '大小',
                                 `download_link`  varchar(500) comment '下载链接',
-                                primary key (`id`)
+                                primary key (`id`),
+                                index idx_name(`name`),
+                                index idx_cid2(`category_id2`)
 ) engine = innodb
   default charset = utf8mb4 comment ='下载列表';
 
@@ -88,7 +90,9 @@ create table `course_list`
     `category_id2` bigint comment '分类2',
     `click_count`  int comment '点击量',
     `description`  varchar(100) comment '课程描述',
-    primary key (`id`)
+    primary key (`id`),
+    index idx_name(`name`),
+    index idx_category(`category_id2`)
 ) engine = innodb
   default charset = utf8mb4 comment ='课程目录表';
 insert into `course_list` (id, name, avatar_link, category_id1, category_id2, click_count,
