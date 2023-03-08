@@ -41,6 +41,7 @@
           </span>
 
           <template #actions>
+            {{ item.size }}
             <span class="thunderbolt">
               <thunderbolt-two-tone/>
               {{ item.downloadCount }}
@@ -324,6 +325,7 @@ export default defineComponent({
 
 .pagination {
   text-align: center;
+  padding-top: 10px;
 }
 
 .layout-content {
@@ -337,9 +339,10 @@ export default defineComponent({
 }
 
 .itemCategorySpan {
-  display: block;
-  width: 200px;
+  position: absolute;
+  width: 450px;
   text-align: left;
+  padding-left: 220px;
 }
 
 
