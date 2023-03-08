@@ -43,7 +43,8 @@
         <!--                <table tableName="record_log" domainObjectName="RecordLog"/>-->
         <!--        <table tableName="category"/>-->
         <!--        <table tableName="course_list"/>-->
-        <table tableName="course_item"/>
+<!--        <table tableName="course_item"/>-->
+        <table tableName="column_list"/>
         <!--                <table tableName="demo" domainObjectName="Demo"/>-->
         <!--                <table tableName="disallow_word" domainObjectName="Disallow_word"/>-->
     </context>
