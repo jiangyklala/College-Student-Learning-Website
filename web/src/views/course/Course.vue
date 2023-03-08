@@ -3,7 +3,7 @@
     <span v-for="list in listData" v-bind:key="list">
       <div class="mainTags-div">
         <tag-two-tone/>
-        {{ getCategoryNameById(list[0].categoryId2) }}
+        {{ getCategoryNameById(list[0].categoryId2) }} / {{ getCategoryNameById(list[0].categoryId1) }}
       </div>
       <a-list
           item-layout="vertical"
@@ -224,6 +224,10 @@ export default defineComponent({
   padding-top: 10px;
   display: block;
   width: 100px !important;
+}
+
+.courseItem-div {
+
 }
 
 </style>
