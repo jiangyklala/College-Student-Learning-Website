@@ -106,7 +106,7 @@
       title="课程表单"
       v-model:visible="editModalVisible"
       :confirm-loading="editModalLoading"
-      @ok="editModalOK"
+      @ok="editCourseModalOK"
   >
     <a-form
         :model="courseInModal"
@@ -131,7 +131,7 @@
     </a-form>
   </a-modal>
 
-  <!--  视频表单-->
+  <!--  [视频] 表单-->
   <a-modal
       title="视频表单"
       v-model:visible="editItemModalVisible"
@@ -144,7 +144,12 @@
         class="item-modal-form"
     >
       <a-form-item label="所属课程名">
-        <a-input v-model:value="courseItemInModal.course"/>
+        <a-cascader
+            v-model:value="courseInModalItem"
+            :field-names="{ label: 'name', value: 'name'}"
+            :options="courseList"
+            placeholder="请选择"
+        />
       </a-form-item>
       <a-form-item label="排序">
         <a-input v-model:value="courseItemInModal.sort"/>
@@ -338,7 +343,7 @@ export default defineComponent({
     /**
      * 课程表单确认按钮
      */
-    const editModalOK = () => {
+    const editCourseModalOK = () => {
       editModalLoading.value = true;
       courseInModal.value.categoryId1 = categoryIds.value[0];  // 保存之前先把两个分类从表单中提取出来
       courseInModal.value.categoryId2 = categoryIds.value[1];
@@ -368,12 +373,14 @@ export default defineComponent({
     const courseItemInModal = ref();
     const editItemModalVisible = ref(false);
     const editItemModalLoading = ref(false);
+    const courseInModalItem = ref();
 
     /**
      * 视频表单的确定按钮
      */
     const editItemModalOK = () => {
       editItemModalLoading.value = true;
+      courseItemInModal.value.course = courseInModalItem.value[0];  // 将级联选择中的内容提取出来
 
       axios.post("/courseItem/save", courseItemInModal.value).then((response) => {
         const data = response.data;
@@ -439,6 +446,7 @@ export default defineComponent({
     const btnEditItem = (record: any) => {
       editItemModalVisible.value = true;
       courseItemInModal.value = Tool.copy(record);
+      courseInModalItem.value = "";       // 将所属目录清空
     };
 
     /**
@@ -509,6 +517,7 @@ export default defineComponent({
       courseItemPagination,
       courseItemColumns,
       courseItems,
+      courseInModalItem,
 
       btnEdit,
       btnAddCourse,
@@ -526,7 +535,7 @@ export default defineComponent({
       editModalLoading,
       editItemModalVisible,
       editItemModalLoading,
-      editModalOK,
+      editCourseModalOK,
       editItemModalOK,
 
       onSearch,
