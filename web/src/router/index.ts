@@ -6,6 +6,7 @@ import AdminCategory from "@/views/admin/AdminCategory.vue";
 import VideosPlayer from "@/views/course/VideosPlayer.vue";
 import Course from "@/views/course/Course.vue";
 import AdminCourse from "@/views/admin/AdminCourse.vue";
+import Column from "@/views/column/Column.vue";
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -48,6 +49,11 @@ const routes: Array<RouteRecordRaw> = [
         path: '/admin/AdminCourse',
         name: 'AdminCourse',
         component: AdminCourse
+    },
+    {
+        path: '/column/Column',
+        name: 'Column',
+        component: Column
     },
 ]
 

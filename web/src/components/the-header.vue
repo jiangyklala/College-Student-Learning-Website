@@ -14,6 +14,9 @@
       <a-menu-item key="3">
         <router-link to="/course/Course">课程</router-link>
       </a-menu-item>
+      <a-menu-item key="8">
+        <router-link to="/column/Column">专栏</router-link>
+      </a-menu-item>
       <a-menu-item key="4">
         <router-link to="/admin/AdminDownload">下载管理</router-link>
       </a-menu-item>
@@ -23,7 +26,7 @@
       <a-menu-item key="6">
         <router-link to="/admin/AdminCategory">分类管理</router-link>
       </a-menu-item>
-      <a-menu-item key="57">
+      <a-menu-item key="7">
         <router-link to="/About">关于</router-link>
       </a-menu-item>
     </a-menu>
