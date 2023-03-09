@@ -35,6 +35,11 @@
       <template v-slot:bodyCell="{ column, record, index }">
         <template v-if="column.dataIndex === 'action'">
           <a-space size="small">
+            <router-link to="/admin/adminDoc">
+              <a-button type="link">
+                文档管理
+              </a-button>
+            </router-link>
             <a-button type="link" @click="buttonEdit(record)">
               编辑
             </a-button>
@@ -338,7 +343,7 @@ export default defineComponent({
 
 .layout-content {
   padding: 30px 80px;
-  width: 1200px;
+  width: 1000px;
   height: 800px;
   min-height: 200px;
   margin: 20px auto 100px;

@@ -29,9 +29,9 @@ public class DocController {
     @GetMapping("/selectAll")
     @ResponseBody
     public CommonResp list(@Valid DocQueryReq req) {
-        CommonResp<PageResp<DocQueryResp>> resp = new CommonResp<>();
+        CommonResp<List<DocQueryResp>> resp = new CommonResp<>();
 
-        PageResp<DocQueryResp> list = docService.selectAll(req);
+        List<DocQueryResp> list = docService.selectAll(req);
 
         resp.setContent(list);
         return resp;

@@ -32,25 +32,16 @@ public class DocService {
     /**
      * 查询下载列表的所有数据, 带有模糊匹配功能
      */
-    public PageResp<DocQueryResp> selectAll(DocQueryReq req) {
+    public List<DocQueryResp> selectAll(DocQueryReq req) {
         DocExample docExample = new DocExample();
         DocExample.Criteria criteria = docExample.createCriteria();
         if (!ObjectUtils.isEmpty(req.getName())) {                                      // 动态 SQL
             criteria.andNameLike("%" + req.getName() + "%");                            // 模糊匹配条件
         }
 
-        PageHelper.startPage(req.getPage(), req.getSize(), true);
         List<Doc> docs = docMapper.selectByExample(docExample);
 
-        PageInfo<Doc> docPageInfo = new PageInfo<>(docs);
-        LOG.info("当前页: "
-                + docPageInfo.getPageNum() + ", 总页数: "
-                + docPageInfo.getPages() + " , 总记录数: "
-                + docPageInfo.getTotal());
-        PageResp<DocQueryResp> resp = new PageResp<>();
-        resp.setList(CopyUtil.copyList(docs, DocQueryResp.class));
-        resp.setTotal(docPageInfo.getTotal());
-
+        List<DocQueryResp> resp = CopyUtil.copyList(docs, DocQueryResp.class);
         return resp;
 
     }

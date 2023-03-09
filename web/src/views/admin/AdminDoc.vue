@@ -1,5 +1,5 @@
 <template>
-  <a-layout-content style="padding: 0px 250px">
+  <a-layout-content class="layout-content">
     <div class="body">
       <a-space direction="horizontal" size="large">
         <a-button type="primary" @click="addCategoryItem">
@@ -13,7 +13,9 @@
         :row-key="record => record.id"
         :loading="loading"
         :pagination="false"
-        bordered>
+        bordered
+        class="doc-table"
+    >
       <template v-slot:bodyCell="{ column, record, index }">
         <template v-if="column.dataIndex === 'action'">
           <a-space size="small">
@@ -36,33 +38,33 @@
     </a-table>
   </a-layout-content>
   <a-modal
-      title="分类表单"
+      title="文档表单"
       v-model:visible="modalVisible"
       :confirm-loading="modalLoading"
       @ok="handleModalOk"
   >
     <a-form
-        :model="category"
+        :model="doc"
         :label-col="{ span : 4 }"
     >
       <a-form-item label="名称">
-        <a-input v-model:value="category.name"/>
+        <a-input v-model:value="doc.name"/>
       </a-form-item>
-      <a-form-item label="父分类">
+      <a-form-item label="父文档">
         <a-select
             ref="select"
-            v-model:value="category.parent"
+            v-model:value="doc.parent"
         >
           <a-select-option value="0">
             无
           </a-select-option>
-          <a-select-option v-for="i in tableData" :key="i.id" :value="i.id" :disabled="category.id === i.id">
+          <a-select-option v-for="i in tableData" :key="i.id" :value="i.id" :disabled="doc.id === i.id">
             {{ i.name }}
           </a-select-option>
         </a-select>
       </a-form-item>
       <a-form-item label="排序">
-        <a-input v-model:value="category.sort"/>
+        <a-input v-model:value="doc.sort"/>
       </a-form-item>
     </a-form>
   </a-modal>
@@ -86,7 +88,7 @@ export default defineComponent({
         width: '40%',
       },
       {
-        title: '父分类',
+        title: '父文档',
         dataIndex: 'parent',
         width: '20%',
       },
@@ -110,15 +112,14 @@ export default defineComponent({
     const tableData = ref();
 
     /**
-     * 分类数据查询
+     * 文档数据查询
      */
-    const categoryAllOBSortQuery = () => {
+    const docAllOBSortQuery = () => {
       loading.value = true;
-      axios.get("/category/selectAllOBSort").then((response) => {
+      axios.get("/doc/selectAll").then((response) => {
 
         if (response.data.success) {  // 判断后端接口返回是否出错
           loading.value = false;
-          // tableData.value = [];
           tableData.value = Tool.array2Tree(response.data.content, 0)
 
         } else {
@@ -134,7 +135,7 @@ export default defineComponent({
      * 注: 这里不需要写具体的新增逻辑, 已经在对话框的"确认"按钮的逻辑中写过了
      */
     const addCategoryItem = () => {
-      category.value = {};  // 清空当前的数据信息
+      doc.value = {};  // 清空当前的数据信息
       modalVisible.value = true;
     };
 
@@ -143,25 +144,25 @@ export default defineComponent({
      */
     const buttonEdit = (record: any) => {
       modalVisible.value = true;
-      category.value = Tool.copy(record);
+      doc.value = Tool.copy(record);
     };
 
     /**
      * 表格的删除按钮
      */
     const buttonDelete = (id: number) => {
-      axios.delete("/category/delete/" + id).then((response) => {
+      axios.delete("/doc/delete/" + id).then((response) => {
         const data = response.data;
 
         if (data.success) {
           // 重新加载列表
-          categoryAllOBSortQuery();
+          docAllOBSortQuery();
         }
       })
     };
 
     //-------------表单--------------
-    const category = ref({});
+    const doc = ref({});
     const modalVisible = ref(false);
     const modalLoading = ref(false);
 
@@ -171,7 +172,7 @@ export default defineComponent({
     const handleModalOk = () => {
       modalLoading.value = true;
 
-      axios.post("/category/save", category.value).then((response) => {
+      axios.post("/doc/save", doc.value).then((response) => {
         // console.log(response);
         const data = response.data;
         modalLoading.value = false;
@@ -181,7 +182,7 @@ export default defineComponent({
           modalVisible.value = false;
 
           // 重新加载列表
-          categoryAllOBSortQuery();
+          docAllOBSortQuery();
         } else {
           message.error(response.data.message);
         }
@@ -192,7 +193,7 @@ export default defineComponent({
 
 
     onMounted(() => {
-      categoryAllOBSortQuery();
+      docAllOBSortQuery();
     });
 
     return {
@@ -205,7 +206,7 @@ export default defineComponent({
       addCategoryItem,
       buttonDelete,
 
-      category,
+      doc,
       modalVisible,
       modalLoading,
       handleModalOk,
@@ -217,5 +218,19 @@ export default defineComponent({
 </script>
 
 <style scoped>
+
+.layout-content {
+  padding: 30px;
+  width: 1200px;
+  height: 1800px;
+  min-height: 200px;
+  margin: 20px auto 100px;
+  overflow: hidden;
+  background: rgb(237,239,242);
+}
+
+.doc-table {
+  width: 1100px;
+}
 
 </style>
