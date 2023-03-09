@@ -1,6 +1,6 @@
 package com.jxm.yiti.req;
 
-public class ColumnListQueryReq extends PageReq{
+public class ColumnListQueryReq extends PageReq {
 
     private String name;
 
@@ -10,7 +10,7 @@ public class ColumnListQueryReq extends PageReq{
 
     private String description;
 
-    private String cover;
+    private String avatarLink;
 
     private Integer docCount;
 
@@ -50,12 +50,12 @@ public class ColumnListQueryReq extends PageReq{
         this.description = description;
     }
 
-    public String getCover() {
-        return cover;
+    public String getAvatarLink() {
+        return avatarLink;
     }
 
-    public void setCover(String cover) {
-        this.cover = cover;
+    public void setAvatarLink(String avatarLink) {
+        this.avatarLink = avatarLink;
     }
 
     public Integer getDocCount() {
@@ -89,7 +89,7 @@ public class ColumnListQueryReq extends PageReq{
                 ", categoryId1=" + categoryId1 +
                 ", categoryId2=" + categoryId2 +
                 ", description='" + description + '\'' +
-                ", cover='" + cover + '\'' +
+                ", avatarLink='" + avatarLink + '\'' +
                 ", docCount=" + docCount +
                 ", viewCount=" + viewCount +
                 ", voteCount=" + voteCount +

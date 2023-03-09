@@ -15,7 +15,7 @@ public class ColumnListSaveReq {
 
     private String description;
 
-    private String cover;
+    private String avatarLink;
 
     private Integer docCount;
 
@@ -63,12 +63,12 @@ public class ColumnListSaveReq {
         this.description = description;
     }
 
-    public String getCover() {
-        return cover;
+    public String getAvatarLink() {
+        return avatarLink;
     }
 
-    public void setCover(String cover) {
-        this.cover = cover;
+    public void setAvatarLink(String avatarLink) {
+        this.avatarLink = avatarLink;
     }
 
     public Integer getDocCount() {
@@ -103,7 +103,7 @@ public class ColumnListSaveReq {
                 ", categoryId1=" + categoryId1 +
                 ", categoryId2=" + categoryId2 +
                 ", description='" + description + '\'' +
-                ", cover='" + cover + '\'' +
+                ", avatarLink='" + avatarLink + '\'' +
                 ", docCount=" + docCount +
                 ", viewCount=" + viewCount +
                 ", voteCount=" + voteCount +

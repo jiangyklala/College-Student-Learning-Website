@@ -4,9 +4,11 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jxm.yiti.domain.ColumnList;
 import com.jxm.yiti.domain.ColumnListExample;
+import com.jxm.yiti.domain.ColumnList;
 import com.jxm.yiti.mapper.ColumnListMapper;
 import com.jxm.yiti.req.ColumnListQueryReq;
 import com.jxm.yiti.req.ColumnListSaveReq;
+import com.jxm.yiti.resp.ColumnListQueryResp;
 import com.jxm.yiti.resp.ColumnListQueryResp;
 import com.jxm.yiti.resp.PageResp;
 import com.jxm.yiti.utils.CopyUtil;
@@ -18,7 +20,10 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class ColumnListService {
@@ -89,24 +94,41 @@ public class ColumnListService {
     /**
      * 根据 categoryId2 查询: 在同一分类下的所有专栏项
      */
-    public PageResp<ColumnListQueryResp> selectByCategoryId(ColumnListQueryReq req) {
+    public List<ColumnListQueryResp> selectByCategoryId2(ColumnListQueryReq req) {
         ColumnListExample columnListExample = new ColumnListExample();
         if (req.getCategoryId2() != -1) {
             ColumnListExample.Criteria criteria = columnListExample.createCriteria();
             criteria.andCategoryId2EqualTo(req.getCategoryId2());                            // 匹配 categoryId2 相同的的专栏项
         }
 
-        PageHelper.startPage(req.getPage(), req.getSize(), true);
         List<ColumnList> columnLists = columnListMapper.selectByExample(columnListExample);
 
-        PageInfo<ColumnList> columnListPageInfo = new PageInfo<>(columnLists);
-        LOG.info("当前页: " + columnListPageInfo.getPageNum()
-                + ", 总页数: " + columnListPageInfo.getPages()
-                + " , 总记录数: " + columnListPageInfo.getTotal());
-        PageResp<ColumnListQueryResp> resp = new PageResp<>();
-        resp.setList(CopyUtil.copyList(columnLists, ColumnListQueryResp.class));
-        resp.setTotal(columnListPageInfo.getTotal());
-
+        List<ColumnListQueryResp> resp = CopyUtil.copyList(columnLists, ColumnListQueryResp.class);
         return resp;
+    }
+
+    /**
+     * 查询所有课程, 按 categoryId1 分组, 每组按 categoryId1 升序排序
+     */
+    public List<List<ColumnListQueryResp>> selectAllGpByCgId2() {
+
+        List<ColumnList> columnLists = columnListMapper.selectByExample(null);
+        List<ColumnListQueryResp> columnListQueryResps = CopyUtil.copyList(columnLists, ColumnListQueryResp.class);     // 先转化为查询类
+        Map<Long, List<ColumnListQueryResp>> columnListQueryRespsMap                                                    // 再将其按 categoryId1 分组
+                = columnListQueryResps.stream().collect(Collectors.groupingBy(ColumnListQueryResp::getCategoryId1));
+        List<List<ColumnListQueryResp>> resList                                                                         // 转换为 List
+                = new ArrayList<>(columnListQueryRespsMap.values());
+        resList.sort((o1, o2) -> {                                                                                      // 传入比较器, 按 categoryId1 升序排序
+            long res = o1.get(0).getCategoryId1() - o2.get(0).getCategoryId1();
+            if (res > 0) {
+                return 1;
+            } else if (res < 0) {
+                return -1;
+            } else {
+                return 0;
+            }
+        });
+
+        return resList;
     }
 }

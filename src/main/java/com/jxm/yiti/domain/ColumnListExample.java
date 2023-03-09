@@ -424,73 +424,73 @@ public class ColumnListExample {
             return (Criteria) this;
         }
 
-        public Criteria andCoverIsNull() {
-            addCriterion("cover is null");
+        public Criteria andAvatarLinkIsNull() {
+            addCriterion("avatar_link is null");
             return (Criteria) this;
         }
 
-        public Criteria andCoverIsNotNull() {
-            addCriterion("cover is not null");
+        public Criteria andAvatarLinkIsNotNull() {
+            addCriterion("avatar_link is not null");
             return (Criteria) this;
         }
 
-        public Criteria andCoverEqualTo(String value) {
-            addCriterion("cover =", value, "cover");
+        public Criteria andAvatarLinkEqualTo(String value) {
+            addCriterion("avatar_link =", value, "avatarLink");
             return (Criteria) this;
         }
 
-        public Criteria andCoverNotEqualTo(String value) {
-            addCriterion("cover <>", value, "cover");
+        public Criteria andAvatarLinkNotEqualTo(String value) {
+            addCriterion("avatar_link <>", value, "avatarLink");
             return (Criteria) this;
         }
 
-        public Criteria andCoverGreaterThan(String value) {
-            addCriterion("cover >", value, "cover");
+        public Criteria andAvatarLinkGreaterThan(String value) {
+            addCriterion("avatar_link >", value, "avatarLink");
             return (Criteria) this;
         }
 
-        public Criteria andCoverGreaterThanOrEqualTo(String value) {
-            addCriterion("cover >=", value, "cover");
+        public Criteria andAvatarLinkGreaterThanOrEqualTo(String value) {
+            addCriterion("avatar_link >=", value, "avatarLink");
             return (Criteria) this;
         }
 
-        public Criteria andCoverLessThan(String value) {
-            addCriterion("cover <", value, "cover");
+        public Criteria andAvatarLinkLessThan(String value) {
+            addCriterion("avatar_link <", value, "avatarLink");
             return (Criteria) this;
         }
 
-        public Criteria andCoverLessThanOrEqualTo(String value) {
-            addCriterion("cover <=", value, "cover");
+        public Criteria andAvatarLinkLessThanOrEqualTo(String value) {
+            addCriterion("avatar_link <=", value, "avatarLink");
             return (Criteria) this;
         }
 
-        public Criteria andCoverLike(String value) {
-            addCriterion("cover like", value, "cover");
+        public Criteria andAvatarLinkLike(String value) {
+            addCriterion("avatar_link like", value, "avatarLink");
             return (Criteria) this;
         }
 
-        public Criteria andCoverNotLike(String value) {
-            addCriterion("cover not like", value, "cover");
+        public Criteria andAvatarLinkNotLike(String value) {
+            addCriterion("avatar_link not like", value, "avatarLink");
             return (Criteria) this;
         }
 
-        public Criteria andCoverIn(List<String> values) {
-            addCriterion("cover in", values, "cover");
+        public Criteria andAvatarLinkIn(List<String> values) {
+            addCriterion("avatar_link in", values, "avatarLink");
             return (Criteria) this;
         }
 
-        public Criteria andCoverNotIn(List<String> values) {
-            addCriterion("cover not in", values, "cover");
+        public Criteria andAvatarLinkNotIn(List<String> values) {
+            addCriterion("avatar_link not in", values, "avatarLink");
             return (Criteria) this;
         }
 
-        public Criteria andCoverBetween(String value1, String value2) {
-            addCriterion("cover between", value1, value2, "cover");
+        public Criteria andAvatarLinkBetween(String value1, String value2) {
+            addCriterion("avatar_link between", value1, value2, "avatarLink");
             return (Criteria) this;
         }
 
-        public Criteria andCoverNotBetween(String value1, String value2) {
-            addCriterion("cover not between", value1, value2, "cover");
+        public Criteria andAvatarLinkNotBetween(String value1, String value2) {
+            addCriterion("avatar_link not between", value1, value2, "avatarLink");
             return (Criteria) this;
         }
 

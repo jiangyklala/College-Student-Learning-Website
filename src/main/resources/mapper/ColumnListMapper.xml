@@ -7,7 +7,7 @@
     <result column="category_id1" jdbcType="BIGINT" property="categoryId1" />
     <result column="category_id2" jdbcType="BIGINT" property="categoryId2" />
     <result column="description" jdbcType="VARCHAR" property="description" />
-    <result column="cover" jdbcType="VARCHAR" property="cover" />
+    <result column="avatar_link" jdbcType="VARCHAR" property="avatarLink" />
     <result column="doc_count" jdbcType="INTEGER" property="docCount" />
     <result column="view_count" jdbcType="INTEGER" property="viewCount" />
     <result column="vote_count" jdbcType="INTEGER" property="voteCount" />
@@ -71,7 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, `name`, category_id1, category_id2, description, cover, doc_count, view_count, 
+    id, `name`, category_id1, category_id2, description, avatar_link, doc_count, view_count, 
     vote_count
   </sql>
   <select id="selectByExample" parameterType="com.jxm.yiti.domain.ColumnListExample" resultMap="BaseResultMap">
@@ -106,11 +106,11 @@
   </delete>
   <insert id="insert" parameterType="com.jxm.yiti.domain.ColumnList">
     insert into column_list (id, `name`, category_id1, 
-      category_id2, description, cover, 
+      category_id2, description, avatar_link, 
       doc_count, view_count, vote_count
       )
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{categoryId1,jdbcType=BIGINT}, 
-      #{categoryId2,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, #{cover,jdbcType=VARCHAR}, 
+      #{categoryId2,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, #{avatarLink,jdbcType=VARCHAR}, 
       #{docCount,jdbcType=INTEGER}, #{viewCount,jdbcType=INTEGER}, #{voteCount,jdbcType=INTEGER}
       )
   </insert>
@@ -132,8 +132,8 @@
       <if test="description != null">
         description,
       </if>
-      <if test="cover != null">
-        cover,
+      <if test="avatarLink != null">
+        avatar_link,
       </if>
       <if test="docCount != null">
         doc_count,
@@ -161,8 +161,8 @@
       <if test="description != null">
         #{description,jdbcType=VARCHAR},
       </if>
-      <if test="cover != null">
-        #{cover,jdbcType=VARCHAR},
+      <if test="avatarLink != null">
+        #{avatarLink,jdbcType=VARCHAR},
       </if>
       <if test="docCount != null">
         #{docCount,jdbcType=INTEGER},
@@ -199,8 +199,8 @@
       <if test="record.description != null">
         description = #{record.description,jdbcType=VARCHAR},
       </if>
-      <if test="record.cover != null">
-        cover = #{record.cover,jdbcType=VARCHAR},
+      <if test="record.avatarLink != null">
+        avatar_link = #{record.avatarLink,jdbcType=VARCHAR},
       </if>
       <if test="record.docCount != null">
         doc_count = #{record.docCount,jdbcType=INTEGER},
@@ -223,7 +223,7 @@
       category_id1 = #{record.categoryId1,jdbcType=BIGINT},
       category_id2 = #{record.categoryId2,jdbcType=BIGINT},
       description = #{record.description,jdbcType=VARCHAR},
-      cover = #{record.cover,jdbcType=VARCHAR},
+      avatar_link = #{record.avatarLink,jdbcType=VARCHAR},
       doc_count = #{record.docCount,jdbcType=INTEGER},
       view_count = #{record.viewCount,jdbcType=INTEGER},
       vote_count = #{record.voteCount,jdbcType=INTEGER}
@@ -246,8 +246,8 @@
       <if test="description != null">
         description = #{description,jdbcType=VARCHAR},
       </if>
-      <if test="cover != null">
-        cover = #{cover,jdbcType=VARCHAR},
+      <if test="avatarLink != null">
+        avatar_link = #{avatarLink,jdbcType=VARCHAR},
       </if>
       <if test="docCount != null">
         doc_count = #{docCount,jdbcType=INTEGER},
@@ -267,7 +267,7 @@
       category_id1 = #{categoryId1,jdbcType=BIGINT},
       category_id2 = #{categoryId2,jdbcType=BIGINT},
       description = #{description,jdbcType=VARCHAR},
-      cover = #{cover,jdbcType=VARCHAR},
+      avatar_link = #{avatarLink,jdbcType=VARCHAR},
       doc_count = #{docCount,jdbcType=INTEGER},
       view_count = #{viewCount,jdbcType=INTEGER},
       vote_count = #{voteCount,jdbcType=INTEGER}
