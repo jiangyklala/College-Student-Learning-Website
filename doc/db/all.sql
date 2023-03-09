@@ -14,14 +14,26 @@ create table `download_list`(
                                 `name`           varchar(25) not null comment '名称',
                                 `category_id1`   bigint      not null comment '分类1',
                                 `category_id2`   bigint comment '分类2',
-                                `download_count` int comment '下载量',
-                                `size`           varchar(25) comment '大小',
-                                `download_link`  varchar(500) comment '下载链接',
+                                `download_count` int not null default 0 comment '下载量',
+                                `size`           varchar(25) default '' comment '大小',
+                                `download_link`  varchar(500) not null default '' comment '下载链接',
                                 primary key (`id`),
                                 index idx_name(`name`),
                                 index idx_cid2(`category_id2`)
 ) engine = innodb
   default charset = utf8mb4 comment ='下载列表';
+
+alter table download_list
+    change column download_count
+        download_count int  default 0 not null;
+
+alter table download_list
+    change column size
+        size varchar(25) default '';
+
+alter table download_list
+    change column download_link
+        download_link varchar(500) default '' not null;
 
 insert into `download_list` (id, name, category_id1, download_count, size)
 values (1, '资料1', 000, 0, '1.00MB');
@@ -86,15 +98,24 @@ create table `course_list`
     `id`           bigint      not null comment 'id',
     `name`         varchar(25) not null comment '课程名称',
     `avatar_link`  varchar(100) comment '封面',
-    `category_id1` bigint      not null comment '分类1',
+    `category_id1` bigint      not null default 0 comment '分类1',
     `category_id2` bigint comment '分类2',
-    `click_count`  int comment '点击量',
+    `click_count`  int not null default 0 comment '点击量',
     `description`  varchar(100) comment '课程描述',
     primary key (`id`),
     index idx_name(`name`),
     index idx_category(`category_id2`)
 ) engine = innodb
   default charset = utf8mb4 comment ='课程目录表';
+
+alter table course_list
+    change column click_count
+        click_count int  default 0 not null;
+
+alter table course_list
+    change column category_id1
+        category_id1 bigint default 0 not null;
+
 insert into `course_list` (id, name, avatar_link, category_id1, category_id2, click_count,
                            description)
 values (1, '视频1', 'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png', 000, 0, 15, '先看啊粉丝哦b');
@@ -136,3 +157,54 @@ insert into `course_item` (id, course, sort, video_link)
 values (4, '视频4', 301, 'https://yiti-download-1309630359.cos.ap-shanghai.myqcloud.com/4097_1667126621.mp4');
 insert into `course_item` (id, course, sort, video_link)
 values (5, '视频5', 401, 'https://yiti-download-1309630359.cos.ap-shanghai.myqcloud.com/4097_1667126621.mp4');
+
+# 专栏列表
+drop table if exists `column_list`;
+create table `column_list` (
+                         `id` bigint not null comment 'id',
+                         `name` varchar(50) not null default '' comment '专栏名称',
+                         `category_id1` bigint not null default 0 comment '分类1',
+                         `category_id2` bigint comment '分类2',
+                         `description` varchar(200) default '' comment '描述',
+                         `cover` varchar(200) default '' comment '封面',
+                         `doc_count` int comment '所含文档数',
+                         `view_count` int comment '阅读数',
+                         `vote_count` int comment '点赞数',
+                         primary key (`id`)
+) engine=innodb default charset=utf8mb4 comment='专栏列表';
+
+insert into `column_list` (id, name, description) values (1, 'SpringBoot入门教程', '零基础入门Java开发,企业级应用开发最佳首选框架');
+insert into `column_list` (id, name, description) values (2, 'Vue 入门教程', '零基础入门 Vue开发,企业级应用开发最佳首选框架');
+insert into `column_list` (id, name, description) values (3, 'Python 入门教程', '零基础入门 Python开发,企业级应用开发最佳首选框架');
+insert into `column_list` (id, name, description) values (4, 'Mysql 入门教程', '零基础入门 Mysql开发,企业级应用开发最佳首选框架');
+insert into `column_list` (id, name, description) values (5, 'Oracle 入门教程', '零基础入门 Oracle开发,企业级应用开发最佳首选框架');
+
+-- 文档表
+drop table if exists `doc`;
+create table `doc` (
+                       `id` bigint not null comment 'id',
+                       `column_id` bigint not null default 0 comment '所属专栏id',
+                       `parent` bigint not null default 0 comment '父id',
+                       `name` varchar(50) not null comment '名称',
+                       `sort` int comment '顺序',
+                       primary key (`id`)
+) engine=innodb default charset=utf8mb4 comment='文档表';
+
+insert into `doc` (id, column_id, parent, name, sort) values (1, 1, 0, '文档1', 1);
+insert into `doc` (id, column_id, parent, name, sort) values (2, 1, 1, '文档1.1', 1);
+insert into `doc` (id, column_id, parent, name, sort) values (3, 1, 0, '文档2', 2);
+insert into `doc` (id, column_id, parent, name, sort) values (4, 1, 3, '文档2.1', 1);
+insert into `doc` (id, column_id, parent, name, sort) values (5, 1, 3, '文档2.2', 2);
+insert into `doc` (id, column_id, parent, name, sort) values (6, 1, 5, '文档2.2.1', 1;
+
+drop table if exists `doc`;
+create table `doc` (
+                       `id` bigint not null comment 'id',
+                       `ebook_id` bigint not null default 0 comment '电子书id',
+                       `parent` bigint not null default 0 comment '父id',
+                       `name` varchar(50) not null comment '名称',
+                       `sort` int comment '顺序',
+                       `view_count` int default 0 comment '阅读数',
+                       `vote_count` int default 0 comment '点赞数',
+                       primary key (`id`)
+) engine=innodb default charset=utf8mb4 comment='文档';
