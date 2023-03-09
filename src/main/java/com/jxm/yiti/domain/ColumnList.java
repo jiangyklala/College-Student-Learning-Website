@@ -11,7 +11,7 @@ public class ColumnList {
 
     private String description;
 
-    private String cover;
+    private String avatarLink;
 
     private Integer docCount;
 
@@ -59,12 +59,12 @@ public class ColumnList {
         this.description = description;
     }
 
-    public String getCover() {
-        return cover;
+    public String getAvatarLink() {
+        return avatarLink;
     }
 
-    public void setCover(String cover) {
-        this.cover = cover;
+    public void setAvatarLink(String avatarLink) {
+        this.avatarLink = avatarLink;
     }
 
     public Integer getDocCount() {
@@ -102,7 +102,7 @@ public class ColumnList {
         sb.append(", categoryId1=").append(categoryId1);
         sb.append(", categoryId2=").append(categoryId2);
         sb.append(", description=").append(description);
-        sb.append(", cover=").append(cover);
+        sb.append(", avatarLink=").append(avatarLink);
         sb.append(", docCount=").append(docCount);
         sb.append(", viewCount=").append(viewCount);
         sb.append(", voteCount=").append(voteCount);

@@ -6,6 +6,8 @@ import AdminCategory from "@/views/admin/AdminCategory.vue";
 import VideosPlayer from "@/views/course/VideosPlayer.vue";
 import Course from "@/views/course/Course.vue";
 import AdminCourse from "@/views/admin/AdminCourse.vue";
+import AdminColumn from "@/views/admin/AdminColumn.vue";
+import AdminDoc from "@/views/admin/AdminDoc.vue";
 import Column from "@/views/column/Column.vue";
 
 const routes: Array<RouteRecordRaw> = [
@@ -54,6 +56,16 @@ const routes: Array<RouteRecordRaw> = [
         path: '/column/Column',
         name: 'Column',
         component: Column
+    },
+    {
+        path: '/admin/AdminColumn',
+        name: 'AdminColumn',
+        component: AdminColumn
+    },
+    {
+        path: '/admin/AdminDoc',
+        name: 'AdminDoc',
+        component: AdminDoc
     },
 ]
 

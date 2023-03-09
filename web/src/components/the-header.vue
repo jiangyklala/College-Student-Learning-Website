@@ -26,6 +26,9 @@
       <a-menu-item key="6">
         <router-link to="/admin/AdminCategory">分类管理</router-link>
       </a-menu-item>
+      <a-menu-item key="9">
+        <router-link to="/admin/AdminColumn">专栏管理</router-link>
+      </a-menu-item>
       <a-menu-item key="7">
         <router-link to="/About">关于</router-link>
       </a-menu-item>
