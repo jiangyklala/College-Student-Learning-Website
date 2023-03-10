@@ -44,8 +44,9 @@
         <!--        <table tableName="category"/>-->
         <!--        <table tableName="course_list"/>-->
 <!--        <table tableName="course_item"/>-->
-        <table tableName="column_list"/>
+<!--        <table tableName="column_list"/>-->
 <!--        <table tableName="doc"/>-->
+        <table tableName="doc_content"/>
         <!--                <table tableName="demo" domainObjectName="Demo"/>-->
         <!--                <table tableName="disallow_word" domainObjectName="Disallow_word"/>-->
     </context>
