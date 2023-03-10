@@ -51,17 +51,16 @@
         <a-input v-model:value="doc.name"/>
       </a-form-item>
       <a-form-item label="父文档">
-        <a-select
-            ref="select"
+        <a-tree-select
             v-model:value="doc.parent"
+            style="width: 100%"
+            :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+            placeholder="Please select"
+            tree-default-expand-all
+            :tree-data="treeSelectData"
+            :fieldNames="{label: 'name', key:'id', value:'id'}"
         >
-          <a-select-option value="0">
-            无
-          </a-select-option>
-          <a-select-option v-for="i in tableData" :key="i.id" :value="i.id" :disabled="doc.id === i.id">
-            {{ i.name }}
-          </a-select-option>
-        </a-select>
+        </a-tree-select>
       </a-form-item>
       <a-form-item label="排序">
         <a-input v-model:value="doc.sort"/>
@@ -71,7 +70,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, ref} from "vue";
+import {defineComponent, onMounted, reactive, ref} from "vue";
 import {message} from 'ant-design-vue';
 import axios from 'axios';
 import {Tool} from "@/utils/tool";
@@ -130,12 +129,15 @@ export default defineComponent({
 
     //-------------表格--------------
 
+    const treeSelectData = ref();
+    treeSelectData.value = [];
+
     /**
      * 新增按钮
      * 注: 这里不需要写具体的新增逻辑, 已经在对话框的"确认"按钮的逻辑中写过了
      */
     const addCategoryItem = () => {
-      doc.value = {};  // 清空当前的数据信息
+      doc.value = {};  // 清空当前的数据信息, 避免冗余显示上一次编辑的内容
       modalVisible.value = true;
     };
 
@@ -145,6 +147,16 @@ export default defineComponent({
     const buttonEdit = (record: any) => {
       modalVisible.value = true;
       doc.value = Tool.copy(record);
+
+      // 不能选择自己以及自己的子节点
+      treeSelectData.value = Tool.copy(tableData.value);
+      setDisable(treeSelectData.value, record.id);
+      deleteParent(treeSelectData.value);  // bug: 不能有 parent 字段, 否则会出现: [vue warn]: invalid prop: type check failed for prop "parent". expected object, got number.
+
+      // 为树最前面添加一个"0"级分类, "无"
+      treeSelectData.value.unshift({id: 0, name: '无'});
+
+      console.log(treeSelectData.value);
     };
 
     /**
@@ -190,6 +202,35 @@ export default defineComponent({
 
     };
 
+    const setDisable = (treeSelectData : any, id : any) => {
+      for (let i = 0; i < treeSelectData.length; ++i) {
+        const node = treeSelectData[i];
+        if (node.id === id) {
+          node.disabled = true;
+
+          if (Tool.isNotEmpty(node.children)) {
+            for (let j = 0; j < node.children.length; ++j) {
+              setDisable(node.children, node.children[j].id);
+            }
+          }
+
+        } else if (Tool.isNotEmpty(node.children)) {
+          setDisable(node.children, id);
+        }
+      }
+
+    }
+
+    const deleteParent = (treeSelectData : any) => {
+      for (let i = 0; i < treeSelectData.length; ++i) {
+        delete treeSelectData[i].parent;
+        if (Tool.isNotEmpty(treeSelectData[i].children)) {
+          deleteParent(treeSelectData[i].children);
+        }
+      }
+      // console.log(treeSelectData);
+    }
+
 
 
     onMounted(() => {
@@ -201,6 +242,7 @@ export default defineComponent({
       tableData,
       listData,
       columns,
+      treeSelectData,
 
       buttonEdit,
       addCategoryItem,

@@ -56,7 +56,10 @@
           <a-select-option value="0">
             无
           </a-select-option>
-          <a-select-option v-for="i in tableData" :key="i.id" :value="i.id" :disabled="category.id === i.id">
+          <a-select-option v-for="i in tableData"
+                           :key="i.id"
+                           :value="i.id"
+                           :disabled="category.id === i.id">
             {{ i.name }}
           </a-select-option>
         </a-select>
