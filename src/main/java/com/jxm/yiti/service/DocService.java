@@ -18,6 +18,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -38,6 +40,21 @@ public class DocService {
         if (!ObjectUtils.isEmpty(req.getName())) {                                      // 动态 SQL
             criteria.andNameLike("%" + req.getName() + "%");                            // 模糊匹配条件
         }
+
+        List<Doc> docs = docMapper.selectByExample(docExample);
+
+        List<DocQueryResp> resp = CopyUtil.copyList(docs, DocQueryResp.class);
+        return resp;
+
+    }
+
+    /**
+     * 查询下载列表的所有数据, 带有模糊匹配功能
+     */
+    public List<DocQueryResp> selectByColumnId(Long columnId) {
+        DocExample docExample = new DocExample();
+        DocExample.Criteria criteria = docExample.createCriteria();
+        criteria.andColumnIdEqualTo(columnId);
 
         List<Doc> docs = docMapper.selectByExample(docExample);
 
@@ -69,7 +86,7 @@ public class DocService {
     /**
      * 删除 1 个课程项
      */
-    public int delete(Long id) {
+    public int deleteId(Long id) {
         int res = docMapper.deleteByPrimaryKey(id);
         if (res != 1) {
             LOG.info("删除 1 个课程项失败");
@@ -77,6 +94,24 @@ public class DocService {
         } else {
             return res;
         }
+    }
+    /**
+     * 删除 1 个课程项
+     */
+    public int deleteStr(String idStr) {
+        int res = 0;
+        DocExample docExample = new DocExample();
+        DocExample.Criteria criteria = docExample.createCriteria();
+        List<String> idStrList = Arrays.asList(idStr.split(","));    // 将每个 columnId 抽出来
+        criteria.andIdIn(idStrList);
+
+        try {
+            res = docMapper.deleteByExample(docExample);
+        } catch (Exception e) {
+            LOG.info("删除多个专栏文档失败");
+        }
+
+        return res;
     }
 
 }

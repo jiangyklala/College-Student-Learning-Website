@@ -109,17 +109,18 @@ export default defineComponent({
     const loading = ref(true);
     const listData = ref();
     const tableData = ref();
+    const columnId = ref();
 
     /**
      * 文档数据查询
      */
-    const docAllOBSortQuery = () => {
+    const docByColumnIdQuery = (columnId : any) => {
       loading.value = true;
-      axios.get("/doc/selectAll").then((response) => {
+      axios.get("/doc/selectByColumnId/" + columnId).then((response) => {
 
         if (response.data.success) {  // 判断后端接口返回是否出错
           loading.value = false;
-          tableData.value = Tool.array2Tree(response.data.content, 0)
+          tableData.value = Tool.array2Tree(response.data.content, 0);
 
         } else {
           message.error(response.data.message);
@@ -127,17 +128,28 @@ export default defineComponent({
       });
     }
 
+    const init = () => {
+      columnId.value = sessionStorage.getItem("ColumnId");
+    }
+
     //-------------表格--------------
 
     const treeSelectData = ref();
     treeSelectData.value = [];
+    const deleteIdStr : Array<string> = [];
 
     /**
      * 新增按钮
      * 注: 这里不需要写具体的新增逻辑, 已经在对话框的"确认"按钮的逻辑中写过了
      */
     const addCategoryItem = () => {
-      doc.value = {};  // 清空当前的数据信息, 避免冗余显示上一次编辑的内容
+      doc.value = {                                             // 清空当前的数据信息, 避免冗余显示上一次编辑的内容
+        columnId: columnId.value,                               // 记得赋值所属专栏Id
+      };
+      treeSelectData.value = Tool.copy(tableData.value);        // 更新选择树
+      deleteParent(treeSelectData.value);                       // 这里还需删除 parent 字段
+      treeSelectData.value.unshift({id: 0, name: '无'});  // 为树最前面添加一个"0"级分类, "无"
+
       modalVisible.value = true;
     };
 
@@ -148,27 +160,31 @@ export default defineComponent({
       modalVisible.value = true;
       doc.value = Tool.copy(record);
 
-      // 不能选择自己以及自己的子节点
       treeSelectData.value = Tool.copy(tableData.value);
+      // 不能选择自己以及自己的子节点
       setDisable(treeSelectData.value, record.id);
-      deleteParent(treeSelectData.value);  // bug: 不能有 parent 字段, 否则会出现: [vue warn]: invalid prop: type check failed for prop "parent". expected object, got number.
+      // 不能选择自己的直接父节点, 没意义
+      setParentDocDisable(treeSelectData.value, record.parent);
+      deleteParent(treeSelectData.value);                       // bug: 不能有 parent 字段, 否则会出现: [vue warn]: invalid prop: type check failed for prop "parent". expected object, got number.
 
-      // 为树最前面添加一个"0"级分类, "无"
-      treeSelectData.value.unshift({id: 0, name: '无'});
 
-      console.log(treeSelectData.value);
+      treeSelectData.value.unshift({id: 0, name: '无'});  // 为树最前面添加一个"0"级分类, "无"
+
+      // console.log(treeSelectData.value);
     };
 
     /**
      * 表格的删除按钮
      */
     const buttonDelete = (id: number) => {
-      axios.delete("/doc/delete/" + id).then((response) => {
+      getDeleteIdStr(tableData.value, id);
+      console.log(deleteIdStr.join(","));
+      axios.delete("/doc/deleteIdStr/" + deleteIdStr.join(",")).then((response) => {
         const data = response.data;
 
         if (data.success) {
           // 重新加载列表
-          docAllOBSortQuery();
+          docByColumnIdQuery(columnId.value);
         }
       })
     };
@@ -183,6 +199,9 @@ export default defineComponent({
      */
     const handleModalOk = () => {
       modalLoading.value = true;
+          // columnId = columnId.value;
+      console.log(doc);
+      // doc.value.columnId = columnId.value;
 
       axios.post("/doc/save", doc.value).then((response) => {
         // console.log(response);
@@ -194,7 +213,7 @@ export default defineComponent({
           modalVisible.value = false;
 
           // 重新加载列表
-          docAllOBSortQuery();
+          docByColumnIdQuery(columnId.value);
         } else {
           message.error(response.data.message);
         }
@@ -202,6 +221,14 @@ export default defineComponent({
 
     };
 
+
+    //-------------其它--------------
+
+    /**
+     * 将选择树中指定 id 节点及其子节点都添加 disabled = true 的属性
+     * @param treeSelectData
+     * @param id
+     */
     const setDisable = (treeSelectData : any, id : any) => {
       for (let i = 0; i < treeSelectData.length; ++i) {
         const node = treeSelectData[i];
@@ -218,9 +245,30 @@ export default defineComponent({
           setDisable(node.children, id);
         }
       }
-
     }
 
+    /**
+     * 将 id 与给定 parentId 相同的节点添加 disabled = true 的属性
+     * @param treeSelectData
+     * @param parentId
+     */
+    const setParentDocDisable = (treeSelectData : any, parentId : any) => {
+      for (let i = 0; i < treeSelectData.length; ++i) {
+        const node = treeSelectData[i];
+        if (node.id === parentId) {
+          node.disabled = true;
+          break;
+        }
+        if (Tool.isNotEmpty(node.children)) {
+          setParentDocDisable(node.children, parentId);
+        }
+      }
+    }
+
+    /**
+     * 将选择树中的所有节点的 parent 属性删除
+     * @param treeSelectData
+     */
     const deleteParent = (treeSelectData : any) => {
       for (let i = 0; i < treeSelectData.length; ++i) {
         delete treeSelectData[i].parent;
@@ -231,10 +279,35 @@ export default defineComponent({
       // console.log(treeSelectData);
     }
 
+    /**
+     * 将选择树中指定 id 节点及其子节点都的 id 都添加到 deleteIdStr 中
+     * @param treeSelectData
+     * @param id
+     */
+    const getDeleteIdStr = (treeSelectData : any, id : any) => {
+      for (let i = 0; i < treeSelectData.length; ++i) {
+        const node = treeSelectData[i];
+        if (node.id === id) {
+          deleteIdStr.push(id);  // 将目标 id 放入结果集
+
+          if (Tool.isNotEmpty(node.children)) {
+            for (let j = 0; j < node.children.length; ++j) {
+              getDeleteIdStr(node.children, node.children[j].id);
+            }
+          }
+
+        } else if (Tool.isNotEmpty(node.children)) {
+          getDeleteIdStr(node.children, id);
+        }
+      }
+    }
+
 
 
     onMounted(() => {
-      docAllOBSortQuery();
+      init();
+      // console.log(columnId);
+      docByColumnIdQuery(columnId.value);
     });
 
     return {

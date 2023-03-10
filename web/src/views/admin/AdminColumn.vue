@@ -35,11 +35,9 @@
       <template v-slot:bodyCell="{ column, record, index }">
         <template v-if="column.dataIndex === 'action'">
           <a-space size="small">
-            <router-link to="/admin/adminDoc">
-              <a-button type="link">
-                文档管理
-              </a-button>
-            </router-link>
+            <a-button type="link" @click="btnToAdminDoc(record)">
+              文档管理
+            </a-button>
             <a-button type="link" @click="buttonEdit(record)">
               编辑
             </a-button>
@@ -92,6 +90,7 @@ import {defineComponent, onMounted, ref} from "vue";
 import {message} from 'ant-design-vue';
 import axios from 'axios';
 import {Tool} from "@/utils/tool";
+import router from "@/router";
 
 export default defineComponent({
   components: {},
@@ -223,6 +222,20 @@ export default defineComponent({
       })
     };
 
+    /**
+     * "管理文档"跳转到文档管理页面
+     */
+    const btnToAdminDoc = (item: any) => {
+      const routeData = router.resolve({
+        path: "/admin/AdminDoc",
+      });
+      // console.log(item);
+
+      sessionStorage.setItem("ColumnId", item.id);                   // 临时存储
+
+      window.open(routeData.href, '课程播放');
+    }
+
 
     //-------------表单--------------
     const columnList = ref();
@@ -323,6 +336,7 @@ export default defineComponent({
       buttonEdit,
       addDownloadItem,
       buttonDelete,
+      btnToAdminDoc,
 
       columnList,
       modalVisible,
