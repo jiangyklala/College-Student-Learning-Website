@@ -8,10 +8,14 @@
             :default-expand-all="true"
             :fieldNames="{title: 'name', key:'id'}"
             :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
-
+            @select="docContentByDocIdQuery"
         />
       </a-col>
-      <a-col :span="20">col-6</a-col>
+      <a-col :span="20">
+        <div :innerHTML="insertHtml"
+             id="editor-content-view"
+             class="editor-content-view"></div>
+      </a-col>
     </a-row>
   </a-layout-content>
 </template>
@@ -63,20 +67,23 @@ export default defineComponent({
       // console.log(treeSelectData);
     }
 
-    // /**
-    //  * 根据文档 id 查询对应的文档内容
-    //  */
-    // const docContentByDocIdQuery = (DocId : any) => {
-    //   axios.get("/doc/selectContentById/" + DocId).then((response) => {
-    //
-    //     if (response.data.success) {
-    //       // editorRef.value.txt.html(response.data.content);
-    //       editorRef.value.setHtml(response.data.content);
-    //     } else {
-    //       message.error(response.data.message);
-    //     }
-    //   });
-    // }
+    const insertHtml = ref();
+
+    /**
+     * 根据文档 id 查询对应的文档内容
+     */
+    const docContentByDocIdQuery = (DocId : any) => {
+      // console.log(DocId);
+      axios.get("/doc/selectContentById/" + DocId).then((response) => {
+
+        if (response.data.success) {
+          // editorRef.value.txt.html(response.data.content);
+          insertHtml.value = response.data.content;
+        } else {
+          message.error(response.data.message);
+        }
+      });
+    }
 
     onMounted(() => {
       columnItemId.value = sessionStorage.getItem("ColumnItemId");
@@ -85,11 +92,75 @@ export default defineComponent({
 
     return {
       categoryTreeData,
+      insertHtml,
+      docContentByDocIdQuery,
     };
   }
 })
 </script>
 
-<style scoped>
+<style>
+
+.layout-content {
+  width: 1400px;
+  height: 1000px;
+  min-height: 200px;
+  margin: 10px auto 100px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.editor-content-view {
+  /*border: 3px solid #ccc;*/
+  /*border-radius: 5px;*/
+  padding: 0 10px;
+  margin-top: 20px;
+  overflow-x: auto;
+}
+
+.editor-content-view p,
+.editor-content-view li {
+  white-space: pre-wrap; /* 保留空格 */
+}
+
+.editor-content-view blockquote {
+  border-left: 8px solid #d0e5f2;
+  padding: 10px 10px;
+  margin: 10px 0;
+  background-color: #f1f1f1;
+}
+
+.editor-content-view code {
+  font-family: monospace;
+  background-color: #eee;
+  padding: 3px;
+  border-radius: 3px;
+}
+.editor-content-view pre>code {
+  display: block;
+  padding: 10px;
+}
+
+.editor-content-view table {
+  border-collapse: collapse;
+}
+.editor-content-view td,
+.editor-content-view th {
+  border: 1px solid #ccc;
+  min-width: 50px;
+  height: 20px;
+}
+.editor-content-view th {
+  background-color: #f1f1f1;
+}
+
+.editor-content-view ul,
+.editor-content-view ol {
+  padding-left: 20px;
+}
+
+.editor-content-view input[type="checkbox"] {
+  margin-right: 5px;
+}
 
 </style>
