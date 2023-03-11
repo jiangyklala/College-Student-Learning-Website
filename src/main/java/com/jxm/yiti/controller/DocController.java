@@ -1,6 +1,7 @@
 package com.jxm.yiti.controller;
 
 
+import com.jxm.yiti.domain.DocContent;
 import com.jxm.yiti.req.DocQueryReq;
 import com.jxm.yiti.req.DocSaveReq;
 import com.jxm.yiti.resp.CommonResp;
@@ -52,6 +53,26 @@ public class DocController {
     }
 
     /**
+     * 根据 id 查 doc_content 表中的内容
+     */
+    @GetMapping("/selectContentById/{Id}")
+    @ResponseBody
+    public CommonResp selectContentById(@PathVariable Long Id) {
+        CommonResp<String> resp = new CommonResp<>();
+
+        DocContent docContent = docService.selectContentById(Id);
+        if (docContent == null) {
+            resp.setSuccess(false);
+            resp.setMessage("查找文档内容失败");
+        } else {
+            resp.setContent(docContent.getContent());   // 返回文档内容
+
+        }
+
+        return resp;
+    }
+
+    /**
      * 新增或者更新一个下载项
      *
      * @param req 保存参数
@@ -62,7 +83,7 @@ public class DocController {
     public CommonResp save(@RequestBody @Valid DocSaveReq req) {  // 以 json 方式提交
         CommonResp resp = new CommonResp();
 
-        if (docService.save(req) != 1) {
+        if (docService.save(req) == 0) {
             resp.setSuccess(false);
             resp.setMessage("保存下载项失败");
         }

@@ -3,7 +3,9 @@ package com.jxm.yiti.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jxm.yiti.domain.Doc;
+import com.jxm.yiti.domain.DocContent;
 import com.jxm.yiti.domain.DocExample;
+import com.jxm.yiti.mapper.DocContentMapper;
 import com.jxm.yiti.mapper.DocMapper;
 import com.jxm.yiti.req.DocQueryReq;
 import com.jxm.yiti.req.DocSaveReq;
@@ -27,6 +29,9 @@ public class DocService {
 
     @Resource
     private DocMapper docMapper;
+
+    @Resource
+    private DocContentMapper docContentMapper;
 
     private static final Logger LOG = LoggerFactory.getLogger(DocService.class);
 
@@ -67,15 +72,33 @@ public class DocService {
      * 新增或者更新一个下载项
      */
     public int save(DocSaveReq req) {
+        int res = 0;
         SnowFlakeIdWorker snowFlakeIdWorker = new SnowFlakeIdWorker(0, 0);
-        Doc res = CopyUtil.copy(req, Doc.class);
+        Doc doc = CopyUtil.copy(req, Doc.class);
+        DocContent docContent = CopyUtil.copy(req, DocContent.class);
 
         try {
-            if (ObjectUtils.isEmpty(req.getId())) {
-                res.setId(snowFlakeIdWorker.nextId());      // 新增时, 设置雪花ID
-                return docMapper.insert(res);
-            } else {
-                return docMapper.updateByPrimaryKey(res);
+            if (ObjectUtils.isEmpty(req.getId())) {                                     // 是新增操作
+                doc.setId(snowFlakeIdWorker.nextId());
+                docContent.setId(doc.getId());                                          // 两者 id 保持一致
+
+                try {
+                    res += docMapper.insert(doc);
+                    res += docContentMapper.insert(docContent);
+                } catch (Exception e) {
+                    LOG.info("新增文档失败");
+                }
+
+                return res;
+            } else {                                                                   // 是更新操作
+                try {
+                    res += docMapper.updateByPrimaryKey(doc);
+                    res += docContentMapper.updateByPrimaryKeyWithBLOBs(docContent);   // 对大字段进行更新操作
+                } catch (Exception e) {
+                    LOG.info("更新文档失败");
+                }
+
+                return res;
             }
         } catch (DataIntegrityViolationException e) {
             LOG.info("错误: 插入或更新错误");
@@ -114,4 +137,20 @@ public class DocService {
         return res;
     }
 
+    /**
+     * 根据 id 查 doc_content 表中的内容
+     */
+    public DocContent selectContentById(Long id) {
+        int res = 0;
+        DocContent docContent = null;
+
+        try {
+            docContent = docContentMapper.selectByPrimaryKey(id);
+        } catch (Exception e) {
+            LOG.info("查找文档内容失败");
+        }
+
+        return docContent;
+
+    }
 }

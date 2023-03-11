@@ -17,12 +17,23 @@ public class DocSaveReq {
     @NotNull(message = "[文档排序] 不能为空")
     private Integer sort;
 
+    @NotNull(message = "[内容] 不能为空")
+    private String content;               // docContent 表中的大字段
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public Long getColumnId() {
@@ -59,16 +70,13 @@ public class DocSaveReq {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", columnId=").append(columnId);
-        sb.append(", parent=").append(parent);
-        sb.append(", name=").append(name);
-        sb.append(", sort=").append(sort);
-        sb.append("]");
-        return sb.toString();
+        return "DocSaveReq{" +
+                "id=" + id +
+                ", columnId=" + columnId +
+                ", parent=" + parent +
+                ", name='" + name + '\'' +
+                ", sort=" + sort +
+                ", content='" + content + '\'' +
+                '}';
     }
 }

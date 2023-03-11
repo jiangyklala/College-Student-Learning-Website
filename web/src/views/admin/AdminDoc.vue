@@ -1,11 +1,7 @@
 <template>
   <a-layout-content class="layout-content">
     <div class="body">
-      <a-space direction="horizontal" size="large">
-        <a-button type="primary" @click="addCategoryItem">
-          新增
-        </a-button>
-      </a-space>
+
     </div>
     <a-table
         :columns="columns"
@@ -15,6 +11,7 @@
         :pagination="false"
         bordered
         class="doc-table"
+        :scroll="{y : 400}"
     >
       <template v-slot:bodyCell="{ column, record, index }">
         <template v-if="column.dataIndex === 'action'">
@@ -36,6 +33,44 @@
         </template>
       </template>
     </a-table>
+    <p style="font-size: 25px; text-align: center; padding-top: 20px">编辑区</p>
+    <div class="save-btn-div"
+         style="text-align: center">
+      <a-space direction="horizontal" size="large">
+        <a-button type="primary" @click="addCategoryItem">
+          新增
+        </a-button>
+        <a-button type="primary"
+                  @click="handleModalOk">
+          保存
+        </a-button>
+      </a-space>
+    </div>
+    <div class="edit-div">
+      <a-form
+          :model="doc"
+          :label-col="{ span : 1 }"
+      >
+        <a-form-item label="名称">
+          <a-input v-model:value="doc.name"/>
+        </a-form-item>
+        <a-form-item label="父文档">
+          <a-tree-select
+              v-model:value="doc.parent"
+              style="width: 100%"
+              :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+              placeholder="Please select"
+              tree-default-expand-all
+              :tree-data="treeSelectData"
+              :fieldNames="{label: 'name', key:'id', value:'id'}"
+          >
+          </a-tree-select>
+        </a-form-item>
+        <a-form-item label="排序">
+          <a-input v-model:value="doc.sort"/>
+        </a-form-item>
+      </a-form>
+    </div>
     <div class="wangEditor-div">
       <Toolbar
           style="border-bottom: 1px solid #ccc"
@@ -52,36 +87,6 @@
       />
     </div>
   </a-layout-content>
-  <a-modal
-      title="文档表单"
-      v-model:visible="modalVisible"
-      :confirm-loading="modalLoading"
-      @ok="handleModalOk"
-  >
-    <a-form
-        :model="doc"
-        :label-col="{ span : 4 }"
-    >
-      <a-form-item label="名称">
-        <a-input v-model:value="doc.name"/>
-      </a-form-item>
-      <a-form-item label="父文档">
-        <a-tree-select
-            v-model:value="doc.parent"
-            style="width: 100%"
-            :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
-            placeholder="Please select"
-            tree-default-expand-all
-            :tree-data="treeSelectData"
-            :fieldNames="{label: 'name', key:'id', value:'id'}"
-        >
-        </a-tree-select>
-      </a-form-item>
-      <a-form-item label="排序">
-        <a-input v-model:value="doc.sort"/>
-      </a-form-item>
-    </a-form>
-  </a-modal>
 </template>
 
 <script lang="ts">
@@ -130,7 +135,7 @@ export default defineComponent({
     const columnId = ref();
 
     /**
-     * 文档数据查询
+     * 根据专栏 id 查询其所包含的文档
      */
     const docByColumnIdQuery = (columnId : any) => {
       loading.value = true;
@@ -140,6 +145,21 @@ export default defineComponent({
           loading.value = false;
           tableData.value = Tool.array2Tree(response.data.content, 0);
 
+        } else {
+          message.error(response.data.message);
+        }
+      });
+    }
+
+    /**
+     * 根据文档 id 查询对应的文档内容
+     */
+    const docContentByDocIdQuery = (DocId : any) => {
+      axios.get("/doc/selectContentById/" + DocId).then((response) => {
+
+        if (response.data.success) {
+          // editorRef.value.txt.html(response.data.content);
+          editorRef.value.setHtml(response.data.content);
         } else {
           message.error(response.data.message);
         }
@@ -157,7 +177,7 @@ export default defineComponent({
     const editorRef = shallowRef()
 
     // 内容 HTML
-    const valueHtml = ref('<p>hello</p>')
+    const valueHtml = ref()
 
     const toolbarConfig = {}
     const editorConfig = { placeholder: '请输入内容...' }
@@ -187,31 +207,32 @@ export default defineComponent({
       doc.value = {                                             // 清空当前的数据信息, 避免冗余显示上一次编辑的内容
         columnId: columnId.value,                               // 记得赋值所属专栏Id
       };
+      editorRef.value.setHtml("");
+
       treeSelectData.value = Tool.copy(tableData.value);        // 更新选择树
       deleteParent(treeSelectData.value);                       // 这里还需删除 parent 字段
-      treeSelectData.value.unshift({id: 0, name: '无'});  // 为树最前面添加一个"0"级分类, "无"
+      treeSelectData.value.unshift({id: 0, name: '无'});        // 为树最前面添加一个"0"级分类, "无"
 
-      modalVisible.value = true;
     };
 
     /**
      * 表格的编辑按钮
      */
     const buttonEdit = (record: any) => {
-      modalVisible.value = true;
       doc.value = Tool.copy(record);
+      // editorRef.value.setHtml("");
 
+      // console.log(doc.value);
+
+      // 父文档的树选择设置
       treeSelectData.value = Tool.copy(tableData.value);
-      // 不能选择自己以及自己的子节点
-      setDisable(treeSelectData.value, record.id);
-      // 不能选择自己的直接父节点, 没意义
-      setParentDocDisable(treeSelectData.value, record.parent);
+      setDisable(treeSelectData.value, record.id);              // 不能选择自己以及自己的子节点
+      setParentDocDisable(treeSelectData.value, record.parent); // 不能选择自己的直接父节点, 没意义
       deleteParent(treeSelectData.value);                       // bug: 不能有 parent 字段, 否则会出现: [vue warn]: invalid prop: type check failed for prop "parent". expected object, got number.
+      treeSelectData.value.unshift({id: 0, name: '无'});        // 为树最前面添加一个"0"级分类, "无"
 
-
-      treeSelectData.value.unshift({id: 0, name: '无'});  // 为树最前面添加一个"0"级分类, "无"
-
-      // console.log(treeSelectData.value);
+      // 查出该文档下的文档内容
+      docContentByDocIdQuery(doc.value.id);
     };
 
     /**
@@ -230,31 +251,25 @@ export default defineComponent({
       })
     };
 
-    //-------------表单--------------
-    const doc = ref({});
-    const modalVisible = ref(false);
-    const modalLoading = ref(false);
+    //-------------编辑区--------------
+    const doc = ref();
+    doc.value = {};
 
     /**
-     * 表单确认按钮
+     * 保存按钮
      */
     const handleModalOk = () => {
-      modalLoading.value = true;
-          // columnId = columnId.value;
-      console.log(doc);
-      // doc.value.columnId = columnId.value;
-
+      // console.log(doc);
+      doc.value.content = editorRef.value.getHtml();
       axios.post("/doc/save", doc.value).then((response) => {
         // console.log(response);
         const data = response.data;
-        modalLoading.value = false;
 
 
         if (data.success) {
-          modalVisible.value = false;
-
           // 重新加载列表
           docByColumnIdQuery(columnId.value);
+          message.success("保存成功");
         } else {
           message.error(response.data.message);
         }
@@ -363,8 +378,6 @@ export default defineComponent({
       buttonDelete,
 
       doc,
-      modalVisible,
-      modalLoading,
       handleModalOk,
 
       editorRef,
@@ -401,6 +414,11 @@ export default defineComponent({
   padding-top: 20px;
   width: 1100px;
 
+}
+
+.edit-div {
+  padding-top: 20px;
+  width: 1100px;
 }
 
 </style>
