@@ -145,6 +145,8 @@ export default defineComponent({
           loading.value = false;
           tableData.value = Tool.array2Tree(response.data.content, 0);
 
+          init();
+
         } else {
           message.error(response.data.message);
         }
@@ -166,10 +168,19 @@ export default defineComponent({
       });
     }
 
+    const init = () => {
+      doc.value = {                                             // 清空当前的数据信息, 避免冗余显示上一次编辑的内容
+        columnId: columnId.value,                               // 记得赋值所属专栏Id
+      };
+
+      treeSelectData.value = Tool.copy(tableData.value);        // 加载选择树
+      deleteParent(treeSelectData.value);                       // 这里还需删除 parent 字段
+      treeSelectData.value.unshift({id: 0, name: '无'});        // 为树最前面添加一个"0"级分类, "无"
+    }
 
     //-------------wangEditor富文本编辑器--------------
 
-    const init = () => {
+    const initEditor = () => {
       columnId.value = sessionStorage.getItem("ColumnId");
     }
 
@@ -199,21 +210,7 @@ export default defineComponent({
     treeSelectData.value = [];
     const deleteIdStr : Array<string> = [];
 
-    /**
-     * 新增按钮
-     * 注: 这里不需要写具体的新增逻辑, 已经在对话框的"确认"按钮的逻辑中写过了
-     */
-    const addCategoryItem = () => {
-      doc.value = {                                             // 清空当前的数据信息, 避免冗余显示上一次编辑的内容
-        columnId: columnId.value,                               // 记得赋值所属专栏Id
-      };
-      editorRef.value.setHtml("");
 
-      treeSelectData.value = Tool.copy(tableData.value);        // 更新选择树
-      deleteParent(treeSelectData.value);                       // 这里还需删除 parent 字段
-      treeSelectData.value.unshift({id: 0, name: '无'});        // 为树最前面添加一个"0"级分类, "无"
-
-    };
 
     /**
      * 表格的编辑按钮
@@ -254,6 +251,20 @@ export default defineComponent({
     //-------------编辑区--------------
     const doc = ref();
     doc.value = {};
+
+    /**
+     * 新增按钮
+     * 注: 这里不需要写具体的新增逻辑, 已经在对话框的"确认"按钮的逻辑中写过了
+     */
+    const addCategoryItem = () => {
+
+      editorRef.value.setHtml("");
+
+      treeSelectData.value = Tool.copy(tableData.value);        // 更新选择树
+      deleteParent(treeSelectData.value);                       // 这里还需删除 parent 字段
+      treeSelectData.value.unshift({id: 0, name: '无'});        // 为树最前面添加一个"0"级分类, "无"
+
+    };
 
     /**
      * 保存按钮
@@ -361,7 +372,7 @@ export default defineComponent({
 
 
     onMounted(() => {
-      init();
+      initEditor();
       // console.log(columnId);
       docByColumnIdQuery(columnId.value);
     });
