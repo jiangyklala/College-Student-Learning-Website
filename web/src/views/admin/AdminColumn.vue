@@ -223,7 +223,7 @@ export default defineComponent({
     };
 
     /**
-     * "管理文档"跳转到文档管理页面
+     * "管理文档"按钮跳转到文档管理页面
      */
     const btnToAdminDoc = (item: any) => {
       const routeData = router.resolve({

@@ -30,7 +30,7 @@
           class="column-list"
     >
         <template #renderItem="{ item }">
-          <div class="column-div" >
+          <div class="column-div" @click="columnItemOnClick(item)">
             <a-list-item key="item.name" class="listItem">
             <a-list-item-meta :description="item.description">
               <template #title>
@@ -71,7 +71,7 @@ export default defineComponent({
     const listData = ref();
 
     /**
-     * 课程列表查询
+     * 专栏列表查询
      */
     const columnAllQuery = () => {
       axios.get("/columnList/selectAll", {
@@ -129,30 +129,28 @@ export default defineComponent({
       });
     }
 
-    //-------------课程点击--------------
+    //-------------专栏点击--------------
 
     /**
-     * 点击课程跳转的播放界面
+     * 点击专栏跳转的播放界面
      * @param item
      */
-    const courseItemOnClick = (item: any) => {
-      console.log(item);
+    const columnItemOnClick = (item: any) => {
+      // console.log(item);
       const routeData = router.resolve({
-        path: "/course/VideosPlayer",
+        path: "/column/Doc",
       });
 
-      console.log("item==" + item.name);
-      sessionStorage.setItem("CourseItem", item.name);                   // 临时存储
-      sessionStorage.setItem("CourseItemInfo", JSON.stringify(item));
+      sessionStorage.setItem("ColumnItemId", item.id);                   // 临时存储
 
-      window.open(routeData.href, '课程播放');
+      window.open(routeData.href, '专栏阅读');
     }
 
 
     //-------------其它--------------
 
     /**
-     * 自动调节"课程页"布局高度
+     * 自动调节"专栏页"布局高度
      */
     function autoLayoutHeight() {
       let tagsNum = listData.value.length;
@@ -212,7 +210,7 @@ export default defineComponent({
       // actions,
 
       getCategoryNameById,
-      courseItemOnClick,
+      columnItemOnClick,
       handleMeunClick,
     };
 

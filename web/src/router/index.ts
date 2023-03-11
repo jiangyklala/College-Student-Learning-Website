@@ -9,6 +9,7 @@ import AdminCourse from "@/views/admin/AdminCourse.vue";
 import AdminColumn from "@/views/admin/AdminColumn.vue";
 import AdminDoc from "@/views/admin/AdminDoc.vue";
 import Column from "@/views/column/Column.vue";
+import Doc from "@/views/column/Doc.vue";
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -66,6 +67,11 @@ const routes: Array<RouteRecordRaw> = [
         path: '/admin/AdminDoc',
         name: 'AdminDoc',
         component: AdminDoc
+    },
+    {
+        path: '/column/Doc',
+        name: 'Doc',
+        component: Doc
     },
 ]
 
