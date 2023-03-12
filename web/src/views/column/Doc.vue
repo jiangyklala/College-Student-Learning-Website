@@ -25,6 +25,7 @@ import {defineComponent, onMounted, ref} from "vue";
 import axios from "axios";
 import {message} from "ant-design-vue";
 import {Tool} from "@/utils/tool";
+import mavonEditor from "mavon-editor";
 
 
 export default defineComponent({
@@ -68,6 +69,8 @@ export default defineComponent({
     }
 
     const insertHtml = ref();
+    const mavonEditorRef = ref();
+
 
     /**
      * 根据文档 id 查询对应的文档内容
@@ -78,7 +81,7 @@ export default defineComponent({
 
         if (response.data.success) {
           // editorRef.value.txt.html(response.data.content);
-          insertHtml.value = response.data.content;
+          insertHtml.value = mavonEditorRef.value.render(response.data.content);
         } else {
           message.error(response.data.message);
         }
@@ -87,6 +90,7 @@ export default defineComponent({
 
     onMounted(() => {
       columnItemId.value = sessionStorage.getItem("ColumnItemId");
+      mavonEditorRef.value = mavonEditor.markdownIt;
       docByColumnIdQuery(columnItemId.value);
     });
 

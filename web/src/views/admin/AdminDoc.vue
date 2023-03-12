@@ -71,20 +71,14 @@
         </a-form-item>
       </a-form>
     </div>
-    <div class="wangEditor-div">
-      <Toolbar
-          style="border-bottom: 1px solid #ccc"
-          :editor="editorRef"
-          :defaultConfig="toolbarConfig"
-          :mode="mode"
-      />
-      <Editor
-          style="height: 500px; overflow-y: hidden;"
-          v-model="valueHtml"
-          :defaultConfig="editorConfig"
-          :mode="mode"
-          @onCreated="handleCreated"
-      />
+    <div class="mavonEditor">
+      <no-ssr>
+        <mavon-editor :toolbars="markdownOption"
+                      ref="md"
+                      @change="mavonChange"
+                      v-model="mavonVModel"
+        />
+      </no-ssr>
     </div>
   </a-layout-content>
 </template>
@@ -97,6 +91,10 @@ import {message} from 'ant-design-vue';
 import axios from 'axios';
 import {Tool} from "@/utils/tool";
 import {Editor, Toolbar} from "@wangeditor/editor-for-vue";
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
+
+
 
 export default defineComponent({
   components: {Editor, Toolbar},
@@ -133,6 +131,7 @@ export default defineComponent({
     const listData = ref();
     const tableData = ref();
     const columnId = ref();
+    const mavonVModel = ref();
 
     /**
      * 根据专栏 id 查询其所包含的文档
@@ -161,7 +160,7 @@ export default defineComponent({
 
         if (response.data.success) {
           // editorRef.value.txt.html(response.data.content);
-          editorRef.value.setHtml(response.data.content);
+          mavonVModel.value = response.data.content;
         } else {
           message.error(response.data.message);
         }
@@ -180,28 +179,39 @@ export default defineComponent({
 
     //-------------wangEditor富文本编辑器--------------
 
+
+    const markdownHTML = ref();
+    const mavonEditorRef = ref();
+
     const initEditor = () => {
       columnId.value = sessionStorage.getItem("ColumnId");
+      mavonEditorRef.value = mavonEditor.markdownIt;
+    }
+    //
+    // // 编辑器实例，必须用 shallowRef
+    // const editorRef = shallowRef()
+    //
+    // // 内容 HTML
+    // const valueHtml = ref()
+    //
+    // const toolbarConfig = {}
+    // const editorConfig = { placeholder: '请输入内容...' }
+    //
+    // // 组件销毁时，也及时销毁编辑器
+    // onBeforeUnmount(() => {
+    //   const editor = editorRef.value
+    //   if (editor != null) editor.destroy();
+    // })
+    //
+    // const handleCreated = (editor : any) => {
+    //   editorRef.value = editor // 记录 editor 实例，重要！
+    // }
+
+    const mavonChange = (value: any, render: any) => {
+      markdownHTML.value = value;
     }
 
-    // 编辑器实例，必须用 shallowRef
-    const editorRef = shallowRef()
 
-    // 内容 HTML
-    const valueHtml = ref()
-
-    const toolbarConfig = {}
-    const editorConfig = { placeholder: '请输入内容...' }
-
-    // 组件销毁时，也及时销毁编辑器
-    onBeforeUnmount(() => {
-      const editor = editorRef.value
-      if (editor != null) editor.destroy();
-    })
-
-    const handleCreated = (editor : any) => {
-      editorRef.value = editor // 记录 editor 实例，重要！
-    }
 
 
     //-------------表格--------------
@@ -209,8 +219,6 @@ export default defineComponent({
     const treeSelectData = ref();
     treeSelectData.value = [];
     const deleteIdStr : Array<string> = [];
-
-
 
     /**
      * 表格的编辑按钮
@@ -258,7 +266,7 @@ export default defineComponent({
      */
     const addCategoryItem = () => {
 
-      editorRef.value.setHtml("");
+      // editorRef.value.setHtml("");
 
       treeSelectData.value = Tool.copy(tableData.value);        // 更新选择树
       deleteParent(treeSelectData.value);                       // 这里还需删除 parent 字段
@@ -271,7 +279,8 @@ export default defineComponent({
      */
     const handleModalOk = () => {
       // console.log(doc);
-      doc.value.content = editorRef.value.getHtml();
+      // doc.value.content = editorRef.value.getHtml();
+      doc.value.content = mavonVModel.value;
       axios.post("/doc/save", doc.value).then((response) => {
         // console.log(response);
         const data = response.data;
@@ -391,13 +400,51 @@ export default defineComponent({
       doc,
       handleModalOk,
 
-      editorRef,
-      valueHtml,
+      // editorRef,
+      // valueHtml,
       mode: 'default', // 或 'simple'
-      toolbarConfig,
-      editorConfig,
-      handleCreated
+      // toolbarConfig,
+      // editorConfig,
+      // handleCreated,
 
+      markdownOption: {
+        bold: true, // 粗体
+        italic: true, // 斜体
+        header: true, // 标题
+        underline: true, // 下划线
+        strikethrough: true, // 中划线
+        mark: true, // 标记
+        superscript: true, // 上角标
+        subscript: true, // 下角标
+        quote: true, // 引用
+        ol: true, // 有序列表
+        ul: true, // 无序列表
+        link: true, // 链接
+        imagelink: true, // 图片链接
+        code: true, // code
+        table: true, // 表格
+        fullscreen: true, // 全屏编辑
+        readmodel: true, // 沉浸式阅读
+        htmlcode: true, // 展示html源码
+        help: true, // 帮助
+        /* 1.3.5 */
+        undo: true, // 上一步
+        redo: true, // 下一步
+        trash: true, // 清空
+        save: true, // 保存（触发events中的save事件）
+        /* 1.4.2 */
+        navigation: true, // 导航目录
+        /* 2.1.8 */
+        alignleft: true, // 左对齐
+        aligncenter: true, // 居中
+        alignright: true, // 右对齐
+        /* 2.2.1 */
+        subfield: true, // 单双栏模式
+        preview: true, // 预览
+      },
+      mavonEditorRef,
+      mavonChange,
+      mavonVModel,
     };
 
   },
@@ -428,6 +475,11 @@ export default defineComponent({
 }
 
 .edit-div {
+  padding-top: 20px;
+  width: 1100px;
+}
+
+.mavonEditor {
   padding-top: 20px;
   width: 1100px;
 }

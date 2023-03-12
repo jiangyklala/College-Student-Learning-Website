@@ -7,10 +7,12 @@ import 'ant-design-vue/dist/antd.css';
 import * as Icons from '@ant-design/icons-vue';
 import axios from "axios";
 import VideoPlayer from '@videojs-player/vue';
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
 axios.defaults.baseURL = process.env.VUE_APP_SERVER;
 
 const app = createApp(App);
-app.use(store).use(router).use(Antd).use(VideoPlayer).mount('#app');
+app.use(store).use(router).use(Antd).use(VideoPlayer).use(mavonEditor).mount('#app');
 
 
 // 全局使用图标
