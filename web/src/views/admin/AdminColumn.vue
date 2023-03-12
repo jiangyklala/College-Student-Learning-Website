@@ -78,8 +78,8 @@
             :field-names="{ label: 'name', value: 'id', children: 'children' }"
             :options="categoryTree"/>
       </a-form-item>
-      <a-form-item label="专栏链接">
-        <a-textarea v-model:value="columnList.downloadLink"/>
+      <a-form-item label="封面链接">
+        <a-textarea v-model:value="columnList.avatarLink"/>
       </a-form-item>
     </a-form>
   </a-modal>

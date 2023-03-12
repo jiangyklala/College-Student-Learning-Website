@@ -451,8 +451,8 @@ export default defineComponent({
 .layout-content {
   padding: 30px;
   width: 1200px;
-  height: 1800px;
-  min-height: 200px;
+  height: 100%;
+  min-height: 1000px;
   margin: 20px auto 100px;
   overflow: hidden;
   background: rgb(237,239,242);

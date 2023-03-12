@@ -2,6 +2,7 @@
   <a-layout-content class="layout-content" id="layout-content">
     <a-row>
       <a-col :span="4">
+        <div class="column-name-div"> {{ columnItemName }} </div>
         <a-tree
             class="category-tree"
             :tree-data="categoryTreeData"
@@ -40,6 +41,8 @@ export default defineComponent({
     );
 
     //-------------目录-----------------
+
+    const columnItemName = ref();
 
     /**
      * 根据专栏 id 查询其所包含的文档
@@ -91,6 +94,7 @@ export default defineComponent({
     onMounted(() => {
       columnItemId.value = sessionStorage.getItem("ColumnItemId");
       mavonEditorRef.value = mavonEditor.markdownIt;
+      columnItemName.value = sessionStorage.getItem("ColumnItemName");
       docByColumnIdQuery(columnItemId.value);
     });
 
@@ -98,6 +102,7 @@ export default defineComponent({
       categoryTreeData,
       insertHtml,
       docContentByDocIdQuery,
+      columnItemName,
     };
   }
 })
@@ -114,6 +119,17 @@ export default defineComponent({
   background: #fff;
 }
 
+.ant-tree-list-holder-inner {
+  align-items: flex-start;
+  padding-top: 15px;
+}
+
+.column-name-div {
+  text-align: center;
+  font-size: 19px;
+  font-weight: 800;
+}
+
 .editor-content-view {
   /*border: 3px solid #ccc;*/
   /*border-radius: 5px;*/
@@ -126,6 +142,7 @@ export default defineComponent({
 .editor-content-view p,
 .editor-content-view li {
   white-space: pre-wrap; /* 保留空格 */
+  font-size: 20px;
 }
 
 .editor-content-view blockquote {

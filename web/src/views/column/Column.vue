@@ -142,6 +142,7 @@ export default defineComponent({
       });
 
       sessionStorage.setItem("ColumnItemId", item.id);                   // 临时存储
+      sessionStorage.setItem("ColumnItemName", item.name);
 
       window.open(routeData.href, '专栏阅读');
     }
