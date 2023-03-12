@@ -67,7 +67,7 @@ export default defineComponent({
 
           console.log(listData);
 
-          autoLayoutHeight();   // 自动调整布局
+          // autoLayoutHeight();   // 自动调整布局
 
         } else {
           message.error(response.data.message);
@@ -188,7 +188,8 @@ export default defineComponent({
 .layout-content {
   padding: 30px 150px;
   width: 1200px;
-  min-height: 200px;
+  height: 100%;
+  min-height: 1000px;
   margin: 20px auto 100px;
   overflow: hidden;
   background: #fff;

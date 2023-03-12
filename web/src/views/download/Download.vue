@@ -309,8 +309,8 @@ export default defineComponent({
 .layout-content {
   padding: 30px 150px;
   width: 1200px;
-  height: 600px;
-  min-height: 200px;
+  height: 100%;
+  min-height: 1000px;
   margin: 20px auto 100px;
   overflow: hidden;
   background: rgb(244, 244, 244);

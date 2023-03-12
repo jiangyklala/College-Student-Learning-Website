@@ -39,7 +39,7 @@ public class DocController {
     }
 
     /**
-     * 根据 columnId 查询对应专栏
+     * 根据 columnId 查询对应专栏, 并按 sort 排序
      */
     @GetMapping("/selectByColumnId/{columnId}")
     @ResponseBody

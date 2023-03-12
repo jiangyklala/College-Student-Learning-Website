@@ -60,6 +60,8 @@ public class DocService {
         DocExample docExample = new DocExample();
         DocExample.Criteria criteria = docExample.createCriteria();
         criteria.andColumnIdEqualTo(columnId);
+        docExample.setOrderByClause("sort asc");
+
 
         List<Doc> docs = docMapper.selectByExample(docExample);
 

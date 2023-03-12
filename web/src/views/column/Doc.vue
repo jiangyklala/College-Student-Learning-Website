@@ -107,8 +107,8 @@ export default defineComponent({
 
 .layout-content {
   width: 1400px;
-  height: 1000px;
-  min-height: 200px;
+  height: 100%;
+  min-height: 1100px;
   margin: 10px auto 100px;
   overflow: hidden;
   background: #fff;
@@ -120,6 +120,7 @@ export default defineComponent({
   padding: 0 10px;
   margin-top: 20px;
   overflow-x: auto;
+  min-height: 1000px;
 }
 
 .editor-content-view p,

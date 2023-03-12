@@ -25,7 +25,7 @@
           item-layout="vertical"
           size="middle"
           :data-source="listData"
-          :grid="{ gutter: 50, column: 3}"
+          :grid="{ gutter: [80, 30], column: 3}"
           :loading="mainLoading"
           class="column-list"
     >
@@ -223,8 +223,8 @@ export default defineComponent({
 .layout-content {
   padding: 20px 20px 30px 80px;
   width: 1200px;
-  height: 800px;
-  min-height: 200px;
+  height: 100%;
+  min-height: 1000px;
   margin: 20px auto 100px;
   overflow: hidden;
   background: #fff;
@@ -250,7 +250,7 @@ export default defineComponent({
 }
 
 .column-list {
-  padding-top: 10px;
+  padding-top: 30px;
 }
 
 

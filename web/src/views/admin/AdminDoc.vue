@@ -4,12 +4,14 @@
 
     </div>
     <a-table
+        v-if="tableData.length > 0"
         :columns="columns"
         :data-source="tableData"
         :row-key="record => record.id"
         :loading="loading"
         :pagination="false"
         bordered
+        :defaultExpandAllRows="true"
         class="doc-table"
         :scroll="{y : 400}"
     >
@@ -46,7 +48,7 @@
         </a-button>
       </a-space>
     </div>
-    <div class="edit-div">
+    <div class="edit-div-form">
       <a-form
           :model="doc"
           :label-col="{ span : 1 }"
@@ -57,12 +59,12 @@
         <a-form-item label="父文档">
           <a-tree-select
               v-model:value="doc.parent"
-              style="width: 100%"
               :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
               placeholder="Please select"
               tree-default-expand-all
               :tree-data="treeSelectData"
               :fieldNames="{label: 'name', key:'id', value:'id'}"
+              class="form-tree-select"
           >
           </a-tree-select>
         </a-form-item>
@@ -71,14 +73,12 @@
         </a-form-item>
       </a-form>
     </div>
-    <div class="mavonEditor">
-      <no-ssr>
-        <mavon-editor :toolbars="markdownOption"
-                      ref="md"
+    <div id="mavonEditor" class="mavonEditor">
+      <mavon-editor :toolbars="markdownOption"
                       @change="mavonChange"
                       v-model="mavonVModel"
-        />
-      </no-ssr>
+                      @full-screen="mavonFullScreen"
+      />
     </div>
   </a-layout-content>
 </template>
@@ -108,19 +108,14 @@ export default defineComponent({
         width: '40%',
       },
       {
-        title: '父文档',
-        dataIndex: 'parent',
-        width: '20%',
-      },
-      {
         title: '排序',
         dataIndex: 'sort',
-        width: '20%',
+        width: '40%',
       },
       {
         title: '操作',
         dataIndex: 'action',
-        width: '30%',
+        width: '20%',
       },
     ];
 
@@ -130,6 +125,7 @@ export default defineComponent({
     const loading = ref(true);
     const listData = ref();
     const tableData = ref();
+    tableData.value = [];
     const columnId = ref();
     const mavonVModel = ref();
 
@@ -159,7 +155,6 @@ export default defineComponent({
       axios.get("/doc/selectContentById/" + DocId).then((response) => {
 
         if (response.data.success) {
-          // editorRef.value.txt.html(response.data.content);
           mavonVModel.value = response.data.content;
         } else {
           message.error(response.data.message);
@@ -168,50 +163,85 @@ export default defineComponent({
     }
 
     const init = () => {
-      doc.value = {                                             // 清空当前的数据信息, 避免冗余显示上一次编辑的内容
+      doc.value = {                                             // 清空当前的表单数据信息, 避免冗余显示上一次编辑的内容
         columnId: columnId.value,                               // 记得赋值所属专栏Id
       };
 
       treeSelectData.value = Tool.copy(tableData.value);        // 加载选择树
       deleteParent(treeSelectData.value);                       // 这里还需删除 parent 字段
+      if (Tool.isEmpty(treeSelectData.value)) {                 // 树选择数据为空时, 先要赋初值为数组, 后边的 unshift 才能生效
+        treeSelectData.value = [];
+      }
       treeSelectData.value.unshift({id: 0, name: '无'});        // 为树最前面添加一个"0"级分类, "无"
+      // console.log(treeSelectData.value);
     }
 
-    //-------------wangEditor富文本编辑器--------------
+    //-------------mavonEditor富文本编辑器--------------
+
+    // 编辑器控制表设置
+    const markdownOption = {
+      bold: true, // 粗体
+          italic: true, // 斜体
+          header: true, // 标题
+          underline: true, // 下划线
+          strikethrough: true, // 中划线
+          mark: true, // 标记
+          superscript: true, // 上角标
+          subscript: true, // 下角标
+          quote: true, // 引用
+          ol: true, // 有序列表
+          ul: true, // 无序列表
+          link: true, // 链接
+          imagelink: true, // 图片链接
+          code: true, // code
+          table: true, // 表格
+          fullscreen: true, // 全屏编辑
+          readmodel: true, // 沉浸式阅读
+          htmlcode: true, // 展示html源码
+          help: true, // 帮助
+          /* 1.3.5 */
+          undo: true, // 上一步
+          redo: true, // 下一步
+          trash: true, // 清空
+          save: true, // 保存（触发events中的save事件）
+          /* 1.4.2 */
+          navigation: true, // 导航目录
+          /* 2.1.8 */
+          alignleft: true, // 左对齐
+          aligncenter: true, // 居中
+          alignright: true, // 右对齐
+          /* 2.2.1 */
+          subfield: true, // 单双栏模式
+          preview: true, // 预览
+    };
 
 
-    const markdownHTML = ref();
+
     const mavonEditorRef = ref();
 
+    /**
+     * 初始化编辑器
+     */
     const initEditor = () => {
       columnId.value = sessionStorage.getItem("ColumnId");
       mavonEditorRef.value = mavonEditor.markdownIt;
     }
-    //
-    // // 编辑器实例，必须用 shallowRef
-    // const editorRef = shallowRef()
-    //
-    // // 内容 HTML
-    // const valueHtml = ref()
-    //
-    // const toolbarConfig = {}
-    // const editorConfig = { placeholder: '请输入内容...' }
-    //
-    // // 组件销毁时，也及时销毁编辑器
-    // onBeforeUnmount(() => {
-    //   const editor = editorRef.value
-    //   if (editor != null) editor.destroy();
-    // })
-    //
-    // const handleCreated = (editor : any) => {
-    //   editorRef.value = editor // 记录 editor 实例，重要！
-    // }
 
+    /**
+     * 编辑器变化事件 (包括输入内容)
+     * @param value  输入的 markdown 文本
+     * @param render  输出的 html 文本
+     */
     const mavonChange = (value: any, render: any) => {
-      markdownHTML.value = value;
+      mavonVModel.value = value;
     }
 
-
+    const mavonFullScreen = (status: any, value: any) => {
+      const elementById = document.getElementById("mavonEditor");
+      if (elementById != null) {
+        elementById.style.zIndex = "3000";    // 全屏编辑时, 器显示优先级最高
+      }
+    }
 
 
     //-------------表格--------------
@@ -225,7 +255,6 @@ export default defineComponent({
      */
     const buttonEdit = (record: any) => {
       doc.value = Tool.copy(record);
-      // editorRef.value.setHtml("");
 
       // console.log(doc.value);
 
@@ -236,7 +265,7 @@ export default defineComponent({
       deleteParent(treeSelectData.value);                       // bug: 不能有 parent 字段, 否则会出现: [vue warn]: invalid prop: type check failed for prop "parent". expected object, got number.
       treeSelectData.value.unshift({id: 0, name: '无'});        // 为树最前面添加一个"0"级分类, "无"
 
-      // 查出该文档下的文档内容
+      // 查出该文档下的文档内容, 并显示到编辑器中
       docContentByDocIdQuery(doc.value.id);
     };
 
@@ -265,8 +294,10 @@ export default defineComponent({
      * 注: 这里不需要写具体的新增逻辑, 已经在对话框的"确认"按钮的逻辑中写过了
      */
     const addCategoryItem = () => {
-
-      // editorRef.value.setHtml("");
+      doc.value = {                                             // 清空当前的表单数据信息, 避免冗余显示上一次编辑的内容
+        columnId: columnId.value,                               // 记得赋值所属专栏Id
+      };
+      mavonVModel.value = "";                                   // 清空编辑器内容
 
       treeSelectData.value = Tool.copy(tableData.value);        // 更新选择树
       deleteParent(treeSelectData.value);                       // 这里还需删除 parent 字段
@@ -287,6 +318,8 @@ export default defineComponent({
 
 
         if (data.success) {
+          mavonVModel.value = "";     // 清空编辑器内容
+
           // 重新加载列表
           docByColumnIdQuery(columnId.value);
           message.success("保存成功");
@@ -346,6 +379,8 @@ export default defineComponent({
      * @param treeSelectData
      */
     const deleteParent = (treeSelectData : any) => {
+      if (Tool.isEmpty(treeSelectData)) return;
+
       for (let i = 0; i < treeSelectData.length; ++i) {
         delete treeSelectData[i].parent;
         if (Tool.isNotEmpty(treeSelectData[i].children)) {
@@ -400,51 +435,11 @@ export default defineComponent({
       doc,
       handleModalOk,
 
-      // editorRef,
-      // valueHtml,
-      mode: 'default', // 或 'simple'
-      // toolbarConfig,
-      // editorConfig,
-      // handleCreated,
-
-      markdownOption: {
-        bold: true, // 粗体
-        italic: true, // 斜体
-        header: true, // 标题
-        underline: true, // 下划线
-        strikethrough: true, // 中划线
-        mark: true, // 标记
-        superscript: true, // 上角标
-        subscript: true, // 下角标
-        quote: true, // 引用
-        ol: true, // 有序列表
-        ul: true, // 无序列表
-        link: true, // 链接
-        imagelink: true, // 图片链接
-        code: true, // code
-        table: true, // 表格
-        fullscreen: true, // 全屏编辑
-        readmodel: true, // 沉浸式阅读
-        htmlcode: true, // 展示html源码
-        help: true, // 帮助
-        /* 1.3.5 */
-        undo: true, // 上一步
-        redo: true, // 下一步
-        trash: true, // 清空
-        save: true, // 保存（触发events中的save事件）
-        /* 1.4.2 */
-        navigation: true, // 导航目录
-        /* 2.1.8 */
-        alignleft: true, // 左对齐
-        aligncenter: true, // 居中
-        alignright: true, // 右对齐
-        /* 2.2.1 */
-        subfield: true, // 单双栏模式
-        preview: true, // 预览
-      },
+      markdownOption,
       mavonEditorRef,
       mavonChange,
       mavonVModel,
+      mavonFullScreen,
     };
 
   },
@@ -467,21 +462,25 @@ export default defineComponent({
   width: 1100px;
 }
 
-.wangEditor-div {
-  /*border: 1px solid #ccc;*/
-  padding-top: 20px;
-  width: 1100px;
 
-}
-
-.edit-div {
+.edit-div-form {
   padding-top: 20px;
   width: 1100px;
 }
 
 .mavonEditor {
+  position: relative;
+  z-index: 1;  /*显示在父文档的树选择之下*/
   padding-top: 20px;
   width: 1100px;
+  /*height: 500px;*/
+  /*min-height: 750px !important;*/
+}
+
+.form-tree-select {
+  width: 100%;
+  position: relative;
+  z-index: 2000;
 }
 
 </style>
