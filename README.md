@@ -97,4 +97,10 @@ create table `course_item`
 
 课程目录中的每一个课程，都对应着多个视频，两张表可通过 `course_list.name = course_item.course` 连接
 
-<img src="https://xiaoj-1309630359.cos.ap-nanjing.myqcloud.com/202303051639281.png" style="zoom:50%;" />
+![](https://xiaoj-1309630359.cos.ap-nanjing.myqcloud.com/202303051639281.png)
+
+## 用户登录模块
+
+### 用户表设计
+
+登录模块除了传统的账号密码登录以外，还加入了 GitHub 登录。
