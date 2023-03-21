@@ -1,7 +1,6 @@
 <template>
   <a-layout-content class="layout-content">
     <div class="body">
-
     </div>
     <a-table
         v-if="tableData.length > 0"

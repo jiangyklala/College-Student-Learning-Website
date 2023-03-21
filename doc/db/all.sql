@@ -166,7 +166,7 @@ create table `column_list` (
                          `category_id1` bigint not null default 0 comment '分类1',
                          `category_id2` bigint comment '分类2',
                          `description` varchar(200) default '' comment '描述',
-                         `cover` varchar(200) default '' comment '封面',
+                         `avatar_link` varchar(200) default '' comment '封面',
                          `doc_count` int comment '所含文档数',
                          `view_count` int comment '阅读数',
                          `vote_count` int comment '点赞数',
@@ -195,16 +195,48 @@ insert into `doc` (id, column_id, parent, name, sort) values (2, 1, 1, '文档1.
 insert into `doc` (id, column_id, parent, name, sort) values (3, 1, 0, '文档2', 2);
 insert into `doc` (id, column_id, parent, name, sort) values (4, 1, 3, '文档2.1', 1);
 insert into `doc` (id, column_id, parent, name, sort) values (5, 1, 3, '文档2.2', 2);
-insert into `doc` (id, column_id, parent, name, sort) values (6, 1, 5, '文档2.2.1', 1;
+insert into `doc` (id, column_id, parent, name, sort) values (6, 1, 5, '文档2.2.1', 1);
 
-drop table if exists `doc`;
-create table `doc` (
+# 文档内容表, 大字段分表
+drop table if exists `doc_content`;
+create table `doc_content` (
                        `id` bigint not null comment 'id',
-                       `ebook_id` bigint not null default 0 comment '电子书id',
-                       `parent` bigint not null default 0 comment '父id',
-                       `name` varchar(50) not null comment '名称',
-                       `sort` int comment '顺序',
-                       `view_count` int default 0 comment '阅读数',
-                       `vote_count` int default 0 comment '点赞数',
+                       `content` mediumtext not null comment '文档内容',
                        primary key (`id`)
-) engine=innodb default charset=utf8mb4 comment='文档';
+) engine=innodb default charset=utf8mb4 comment='文档内容表';
+
+-- 用户表
+drop table if exists `user`;
+create table `user` (
+                        `id` bigint auto_increment not null,
+                        `username` varchar(50) default('新用户') comment '用户名',
+                        `useraccount` varchar(50)  comment '用户账号',
+                        `password` char(32)  comment '用户密码',
+                        `salt` varchar(50)  default('') comment '密码盐值',
+                        `github_id` varchar(50) comment 'github_id',
+                        `email` varchar(50) default(NULL) comment '邮箱',
+                        `balance` bigint default 0 comment '用户余额',
+                        `others` varchar(50) comment '其它',
+                        primary key (`id`),
+                        index idx_username(`username`),
+                        index idx_useraccount(`useraccount`),
+                        index idx_github_id(`github_id`)
+) engine=innodb default charset=utf8mb4 comment='普通用户表';
+#
+# -- 用户表
+# drop table if exists `user_github`;
+# create table `user_github` (
+#                         `id` bigint auto_increment not null,
+#                         `github_id` varchar(50) not null comment 'github_id',
+#                         `others` varchar(50) default(NULL) comment '其它',
+#                         primary key (`id`)
+# ) engine=innodb default charset=utf8mb4 comment='github用户表';
+#
+# -- 用户表
+# drop table if exists `user_info`;
+# create table `user_info` (
+#                         `id` bigint auto_increment not null,
+#                         `balance` bigint not null default 0 comment '用户余额',
+#                         `email` varchar(50) default(NULL) comment '邮箱',
+#                         primary key (`id`)
+# ) engine=innodb default charset=utf8mb4 comment='用户信息表';
