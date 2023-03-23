@@ -36,8 +36,32 @@
       </a-menu>
 
     </div>
-    <div class="login-menu" @click="loginClick">
-      <a>登录</a>
+    <div class="login-menu">
+      <a v-if="!ifLoginIn" @click="loginClick">登录</a>
+      <a-dropdown v-if="ifLoginIn">
+        <a class="ant-dropdown-link" @click.prevent>
+          <a-avatar style="background-color: #87d068">
+            <template #icon>
+              <UserOutlined />
+            </template>
+          </a-avatar>
+          {{ userInfo.username }}
+          <DownOutlined />
+        </a>
+        <template #overlay>
+          <a-menu>
+            <a-menu-item>
+              账户余额: {{userInfo.balance}}
+            </a-menu-item>
+            <a-menu-item>
+              <a>2nd menu item</a>
+            </a-menu-item>
+            <a-menu-item>
+              <a>3rd menu item</a>
+            </a-menu-item>
+          </a-menu>
+        </template>
+      </a-dropdown>
     </div>
   </a-layout-header>
 
@@ -79,44 +103,65 @@
 import {defineComponent, onMounted, ref} from 'vue';
 import axios from "axios";
 import {message} from "ant-design-vue";
+import {DownOutlined, UserOutlined} from "@ant-design/icons-vue";
 
 export default defineComponent({
   name: 'the-header',
-  // props: {
-  //   msg: String,
-  // } // 父子组件间传递数据
+  components: {
+    UserOutlined,
+    DownOutlined,
+  },
   setup: function () {
 
+    //-------------登录表单--------------
     const loginModalVisible = ref(false);
     const loginModalLoading = ref(false);
     const userInModal = ref();
     userInModal.value = [];
 
+    /**
+     * 跳转到 GitHub 登录
+     */
+    const loginByGitHub = () => {
+      window.open("http://124.223.184.187:8111/user/render");
+    }
+
+    /**
+     * 登录点击
+     */
     const loginClick = () => {
       loginModalVisible.value = true;
-      console.log("lala");
     }
 
+    /**
+     * 登录确认
+     */
     const loginModalOk = () => {
       loginModalVisible.value = false;
-      console.log("lala");
-
     }
 
-    const loginByGitHub = () => {
-      window.open("http://124.223.184.187:8111/user/render")
-      // axios.get("/user/render").then((response) => {
-      //
-      //   if (response.data.success) {  // 判断后端接口返回是否出错
-      //     console.log("render success");
-      //   } else {
-      //     message.error(response.data.message);
-      //   }
-      // })
+    //-------------登录标识--------------
+    const ifLoginIn = ref(false);
+    const userInfo = ref();
+    userInfo.value = [];
+
+    /**
+     * 自动登录
+     */
+    const autoLogin = () => {
+      axios.defaults.withCredentials = true;
+      axios.get("/user/autoLogin").then((response) => {
+        console.log(response);
+
+        if (response.data.success) {   // 成功则加载用户信息
+          userInfo.value = response.data.content;
+          ifLoginIn.value = true;
+        }  // 失败无提示
+      })
     }
 
     onMounted(() => {
-      console.log("onMounted");
+      autoLogin();             // 页面加载时, 尝试自动登录
     });
 
     return {
@@ -125,7 +170,9 @@ export default defineComponent({
       loginModalLoading,
       loginModalOk,
       userInModal,
-      loginByGitHub
+      loginByGitHub,
+      ifLoginIn,
+      userInfo,
     };
   }
 });

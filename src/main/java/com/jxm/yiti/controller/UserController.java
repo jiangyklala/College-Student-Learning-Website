@@ -1,9 +1,14 @@
 package com.jxm.yiti.controller;
 
 import com.alibaba.fastjson2.JSON;
+import com.jxm.yiti.req.UserSaveReq;
 import com.jxm.yiti.resp.CommonResp;
+import com.jxm.yiti.resp.UserQueryResp;
 import com.jxm.yiti.service.UserService;
+import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import me.zhyd.oauth.model.AuthCallback;
 import me.zhyd.oauth.model.AuthResponse;
@@ -13,22 +18,24 @@ import me.zhyd.oauth.utils.AuthStateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.WebUtils;
 
 import java.io.IOException;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
 
     @Resource
-    private UserService userService;
+    public UserService userService;
 
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
-
+    /**
+     * GitHub 登录页面
+     */
     @GetMapping("/render")
     @ResponseBody
     public void renderAuth(HttpServletResponse response) throws IOException {
@@ -36,19 +43,60 @@ public class UserController {
         response.sendRedirect(authRequest.authorize(AuthStateUtils.createState()));
     }
 
-    @GetMapping("/github/callback")
+    /**
+     * 自动登录
+     * @param loginCert 本地 cookie 值
+     * @param userID 本地 cookie 值
+     */
+    @GetMapping("/autoLogin")
     @ResponseBody
-    public CommonResp githubLogin(AuthCallback callback) {
-        CommonResp<AuthUser> resp = new CommonResp();
-        AuthRequest authRequest = userService.getAuthRequest();
-        AuthResponse<AuthUser> authResponse = authRequest.login(callback);
-        String jsonString = JSON.toJSONString(authRequest);
-        if (authResponse.getCode() == 2000 && userService.signInOrUp(authResponse.getData()) > 0) {
-            resp.setMessage("登陆成功");
+    public CommonResp<UserQueryResp> autoLogin(@CookieValue(value = "yiti_loginCert", defaultValue = "null") String loginCert,
+                                                       @CookieValue(value = "yiti_userID", defaultValue = "null") String userID) throws IOException {
+        CommonResp<UserQueryResp> resp = new CommonResp<>();
+        if (Objects.equals(loginCert, "null")
+                || Objects.equals(userID, "null")
+                || !userService.checkLoginCert(loginCert, userID)) {
+            // 本地无 cookie 或 cookie 中的自动登录凭证失效2
+            resp.setSuccess(false);
+        } else {
+            resp.setContent(userService.selectUserByID(Long.valueOf(userID)));   // 将 user 信息返回
         }
 
-        LOG.info(jsonString);
-        resp.setContent(authResponse.getData());
         return resp;
     }
+
+    /**
+     * GitHub 登录成功后的回调函数
+     */
+    @GetMapping("/github/callback")
+    public void githubCallback(AuthCallback callback, HttpServletResponse response) throws IOException {
+        AuthRequest authRequest = userService.getAuthRequest();
+        AuthResponse<AuthUser> authResponse = authRequest.login(callback);
+
+        LOG.info("code= " + authResponse.getCode());
+        if (authResponse.getCode() == 2000) {
+            Long userID = userService.signInOrUp(authResponse.getData());                 // 通过(新增/查找已经存在的)用户, 获取 userID
+            if (userID == -1L) return;
+            userService.setOnlyLoginCert(userID, response);                               // 设置唯一登录凭证
+        }
+
+        response.sendRedirect("http://124.223.184.187:8110/");
+    }
+
+    @GetMapping("/getCookie1")
+    @ResponseBody
+    public String getCookie1(@CookieValue(value = "yiti_loginCert", defaultValue = "lala") String cookieName) throws IOException {
+        return cookieName;
+    }
+
+    @GetMapping("/getCookie2")
+    @ResponseBody
+    public String getCookie1(HttpServletRequest request) throws IOException {
+        Cookie yiti_loginCert = WebUtils.getCookie(request, "yiti_loginCert");
+        if (yiti_loginCert != null) {
+            return yiti_loginCert.getValue();
+        }
+        return "null";
+    }
+
 }

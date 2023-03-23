@@ -7,15 +7,26 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import {defineComponent, ref} from 'vue';
 import theHeader from "@/components/the-header.vue";
 import theFooter from "@/components/the-footer.vue";
+import axios from "axios";
+import {message} from "ant-design-vue";
 
 export default defineComponent({
   name: 'App',
   components: {
     theHeader,
     theFooter,
+  },
+  setup() {
+
+
+
+
+    return {
+
+    };
   }
 });
 </script>
