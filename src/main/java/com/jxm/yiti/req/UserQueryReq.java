@@ -7,9 +7,29 @@ public class UserQueryReq {
 
     private String useraccount;
 
+    private String password;
+
+    private String salt;
+
     private String githubId;
 
     private String email;
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public Long getId() {
         return id;
@@ -57,6 +77,8 @@ public class UserQueryReq {
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", useraccount='" + useraccount + '\'' +
+                ", password='" + password + '\'' +
+                ", salt='" + salt + '\'' +
                 ", githubId='" + githubId + '\'' +
                 ", email='" + email + '\'' +
                 '}';

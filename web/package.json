@@ -15,7 +15,6 @@
     "@wangeditor/editor-for-vue": "^5.1.12",
     "ant-design-vue": "^3.2.15",
     "axios": "^1.2.2",
-    "js-cookie": "^3.0.1",
     "mavon-editor": "^3.0.0",
     "vue": "^3.2.13",
     "vue-cookies": "^1.8.3",

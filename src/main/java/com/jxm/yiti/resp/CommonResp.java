@@ -10,7 +10,7 @@ public class CommonResp<T> {
     /**
      * 返回信息
      */
-    private String message;
+    private String message = "";
 
     /**
      * 返回泛型数据，自定义类型

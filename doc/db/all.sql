@@ -240,3 +240,17 @@ create table `user` (
 #                         `email` varchar(50) default(NULL) comment '邮箱',
 #                         primary key (`id`)
 # ) engine=innodb default charset=utf8mb4 comment='用户信息表';
+
+drop table if exists `disallow_word`;
+create table `disallow_word` (
+                                 `id` bigint auto_increment not null,
+                                 `value` varchar(50) not null comment '敏感字',
+                                 `type` int default(0) comment '类型',
+                                 primary key (`id`)
+) engine=innodb default charset=utf8mb4 comment='敏感词库';
+
+insert into disallow_word(value) values ('尼玛');
+insert into disallow_word(value) values ('站长');
+insert into disallow_word(value) values ('国家领导人');
+insert into disallow_word(value) values ('操');
+insert into disallow_word(value) values ('lala');

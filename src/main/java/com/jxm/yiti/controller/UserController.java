@@ -1,11 +1,11 @@
 package com.jxm.yiti.controller;
 
-import com.alibaba.fastjson2.JSON;
-import com.jxm.yiti.req.UserSaveReq;
+import com.jxm.yiti.domain.User;
+import com.jxm.yiti.req.UserQueryReq;
 import com.jxm.yiti.resp.CommonResp;
 import com.jxm.yiti.resp.UserQueryResp;
 import com.jxm.yiti.service.UserService;
-import jakarta.annotation.PostConstruct;
+import com.jxm.yiti.utils.CopyUtil;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,6 +34,40 @@ public class UserController {
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
     /**
+     * 登录接口
+     */
+    @PostMapping("/loginByAccount")
+    @ResponseBody
+    public CommonResp loginByAccount(@RequestBody UserQueryReq user, HttpServletResponse response) throws IOException {
+        CommonResp resp = new CommonResp<>();
+        LOG.info(user.toString());
+        userService.isLoginUserAccount(user.getUseraccount(), resp);   // 验证账号
+        userService.isLoginPassword(user, resp);                       // 验证密码, 如果密码有效, 根据此账号返回 user
+        if (resp.getSuccess()) {
+            // 登陆成功, 添加唯一登录凭证
+            userService.setOnlyLoginCert(user.getId(), response);
+        }
+
+        return resp;
+    }
+
+    /**
+     * 注册接口
+     */
+    @PostMapping("/register")
+    @ResponseBody
+    public CommonResp register(@RequestBody UserQueryReq user) {
+        CommonResp resp = new CommonResp<>();
+        userService.isRegisterUserAccount(user.getUseraccount(), resp);
+        userService.isRegisterPassword(user.getPassword(), resp);
+        if (resp.getSuccess()) {
+            userService.encryptPassword(user, userService.setSalt(user));  // 设置盐值并密码加密
+            userService.addUser(user, resp);
+        }
+        return resp;
+    }
+
+    /**
      * GitHub 登录页面
      */
     @GetMapping("/render")
@@ -48,7 +82,7 @@ public class UserController {
      * @param loginCert 本地 cookie 值
      * @param userID 本地 cookie 值
      */
-    @GetMapping("/autoLogin")
+    @PostMapping("/autoLogin")
     @ResponseBody
     public CommonResp<UserQueryResp> autoLogin(@CookieValue(value = "yiti_loginCert", defaultValue = "null") String loginCert,
                                                        @CookieValue(value = "yiti_userID", defaultValue = "null") String userID) throws IOException {
@@ -56,7 +90,7 @@ public class UserController {
         if (Objects.equals(loginCert, "null")
                 || Objects.equals(userID, "null")
                 || !userService.checkLoginCert(loginCert, userID)) {
-            // 本地无 cookie 或 cookie 中的自动登录凭证失效2
+            // 本地无 cookie 或 cookie 中的自动登录凭证失效
             resp.setSuccess(false);
         } else {
             resp.setContent(userService.selectUserByID(Long.valueOf(userID)));   // 将 user 信息返回

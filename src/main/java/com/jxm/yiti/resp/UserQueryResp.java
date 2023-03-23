@@ -1,7 +1,6 @@
 package com.jxm.yiti.resp;
 
 public class UserQueryResp {
-    private Long id;
 
     private String username;
 
@@ -16,14 +15,6 @@ public class UserQueryResp {
     private Long balance;
 
     private String others;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getUsername() {
         return username;
@@ -87,7 +78,6 @@ public class UserQueryResp {
         sb.append(getClass().getSimpleName());
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
         sb.append(", username=").append(username);
         sb.append(", useraccount=").append(useraccount);
         sb.append(", salt=").append(salt);
