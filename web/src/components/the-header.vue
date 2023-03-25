@@ -68,6 +68,7 @@
     </div>
   </a-layout-header>
 
+<!--  登录表单-->
   <a-modal
       title="登录"
       v-model:visible="loginModalVisible"
@@ -126,10 +127,12 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, ref} from 'vue';
+import {computed, defineComponent, onMounted, ref} from 'vue';
 import axios from "axios";
 import {message} from "ant-design-vue";
 import {DownOutlined, UserOutlined} from "@ant-design/icons-vue";
+import store from "@/store";
+import {Tool} from "@/utils/tool";
 
 export default defineComponent({
   name: 'the-header',
@@ -153,7 +156,7 @@ export default defineComponent({
     }
 
     /**
-     * 登录按钮点击
+     * 登录按钮点击, 弹出登录将框
      */
     const loginClick = () => {
       loginModalVisible.value = true;
@@ -163,10 +166,7 @@ export default defineComponent({
      * 登录表单提交
      */
     const loginModalOk = () => {
-
       console.log(userInModal.value);
-
-
       axios.post("/user/loginByAccount", userInModal.value).then((response) => {
         if (response.data.success) {    // 登录成功
           loginModalVisible.value = false;
@@ -187,18 +187,14 @@ export default defineComponent({
       registerModalVisible.value = true;
     }
 
-
     /**
-     * 登录表单提交
+     * 注册表单提交
      */
     const registerModalOk = () => {
-
-      console.log(userInModal.value);
-
-
+      // console.log(userInModal.value);
       axios.post("/user/register", userInModal.value).then((response) => {
         if (response.data.success) {    // 注册成功
-          message.success(response.data.message);
+          message.success(response.data.message + ", 自动跳转到登录页面");
           registerModalVisible.value = false;
           loginModalVisible.value = true;
         } else {
@@ -209,26 +205,50 @@ export default defineComponent({
 
     //-------------登录/注册标识--------------
     const ifLoginIn = ref(false);
-    const userInfo = ref();
-    userInfo.value = [];
+    const userInfo = computed(() => {
+      return store.state.userInfo;
+    })
 
     /**
      * 自动登录
      */
-    const autoLogin = () => {
+    const autoLogin = (userID : string) => {
       axios.defaults.withCredentials = true;
-      axios.post("/user/autoLogin").then((response) => {
+      axios.post("/user/loginByID/" + userID).then((response) => {
+        console.log("尝试自动登录");
         console.log(response);
 
         if (response.data.success) {   // 成功则加载用户信息
-          userInfo.value = response.data.content;
+          store.commit("setUserInfo", response.data.content);
           ifLoginIn.value = true;
         }  // 失败无提示
       })
     }
 
+    /**
+     * 验证登录凭证
+     */
+    const checkLoginCert = () => {
+      axios.defaults.withCredentials = true;
+      axios.post("/user/checkLoginCert").then((response) => {        // 验证登录凭证是否有效
+        console.log("验证登录凭证")
+        console.log(response);
+
+        if (response.data.success) {                                    // 若凭证有效, 检测本地存储 userInfo 是否为空,
+          if (Tool.isEmpty(userInfo.value)) {                           // 若 userInfo 为空, 则为初次登录, 尝试自动登录
+            console.log("凭证有效, userInfo 为空")
+            autoLogin(response.data.content);
+          } else {                                                      // 若 userInfo 不为空, 则正处于登录态
+            console.log("已经是登录态了");
+            ifLoginIn.value = true;
+          }
+
+        }  // 凭证失效, 或者 userInfo 不为空, do nothing
+      })
+    }
+
     onMounted(() => {
-      autoLogin();             // 页面加载时, 尝试自动登录
+      checkLoginCert();
     });
 
     return {

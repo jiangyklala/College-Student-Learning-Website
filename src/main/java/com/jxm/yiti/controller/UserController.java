@@ -79,21 +79,34 @@ public class UserController {
 
     /**
      * 自动登录
+     * @param userID 登录用户的 userID 值
+     */
+    @PostMapping("/loginByID/{userID}")
+    @ResponseBody
+    public CommonResp<UserQueryResp> autoLogin(@PathVariable String userID) throws IOException {
+        CommonResp<UserQueryResp> resp = new CommonResp<>();
+        resp.setContent(userService.selectUserByID(Long.valueOf(userID)));   // 将 user 信息返回
+        return resp;
+    }
+
+    /**
+     * 检测登录凭证是否有效
      * @param loginCert 本地 cookie 值
      * @param userID 本地 cookie 值
+     * @return 有效则返回 userID
      */
-    @PostMapping("/autoLogin")
+    @PostMapping("/checkLoginCert")
     @ResponseBody
-    public CommonResp<UserQueryResp> autoLogin(@CookieValue(value = "yiti_loginCert", defaultValue = "null") String loginCert,
+    public CommonResp<String> checkLoginCert(@CookieValue(value = "yiti_loginCert", defaultValue = "null") String loginCert,
                                                        @CookieValue(value = "yiti_userID", defaultValue = "null") String userID) throws IOException {
-        CommonResp<UserQueryResp> resp = new CommonResp<>();
+        CommonResp<String> resp = new CommonResp<>();
         if (Objects.equals(loginCert, "null")
                 || Objects.equals(userID, "null")
                 || !userService.checkLoginCert(loginCert, userID)) {
             // 本地无 cookie 或 cookie 中的自动登录凭证失效
             resp.setSuccess(false);
         } else {
-            resp.setContent(userService.selectUserByID(Long.valueOf(userID)));   // 将 user 信息返回
+            resp.setContent(userID);
         }
 
         return resp;

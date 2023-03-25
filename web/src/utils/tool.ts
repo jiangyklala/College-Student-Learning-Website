@@ -1,6 +1,6 @@
 export class Tool {
   /**
-   * 空校验 null或""都返回true
+   * 空校验, null 或 "" 都返回true
    */
   public static isEmpty(obj: any) {
     if ((typeof obj === 'string')) {
