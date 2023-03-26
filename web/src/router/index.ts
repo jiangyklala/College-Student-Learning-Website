@@ -10,6 +10,7 @@ import AdminColumn from "@/views/admin/AdminColumn.vue";
 import AdminDoc from "@/views/admin/AdminDoc.vue";
 import Column from "@/views/column/Column.vue";
 import Doc from "@/views/column/Doc.vue";
+import Chatgpt from "@/views/chatgpt/Chatgpt.vue";
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -72,6 +73,11 @@ const routes: Array<RouteRecordRaw> = [
         path: '/column/Doc',
         name: 'Doc',
         component: Doc
+    },
+    {
+        path: '/chatgpt/Chatgpt',
+        name: 'Chatgpt',
+        component: Chatgpt
     },
 ]
 

@@ -104,3 +104,7 @@ create table `course_item`
 ### 用户表设计
 
 登录模块除了传统的账号密码登录以外，还加入了 GitHub 登录。
+
+登录/注册逻辑：
+
+![](https://xiaoj-1309630359.cos.ap-nanjing.myqcloud.com/202303282036691.png)

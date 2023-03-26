@@ -9,6 +9,9 @@
         <a-menu-item key="1">
           <router-link to="/Home">首页</router-link>
         </a-menu-item>
+        <a-menu-item key="10">
+          <router-link to="/chatgpt/Chatgpt">ChatGPT-3.5</router-link>
+        </a-menu-item>
         <a-menu-item key="2">
           <router-link to="/download/Download">下载</router-link>
         </a-menu-item>

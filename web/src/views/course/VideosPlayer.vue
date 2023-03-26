@@ -219,10 +219,11 @@ export default defineComponent({
 
 <style scoped>
 .layout-content {
+  /*position: absolute;*/
   padding: 20px 20px 30px 80px;
   width: 1200px;
-  height: 800px;
-  min-height: 200px;
+  height: 100%;
+  min-height: 800px;
   margin: 20px auto 100px;
   overflow: hidden;
   background: #fff;
@@ -256,15 +257,16 @@ export default defineComponent({
 }
 
 .video-player {
+  float: left;
   width: 700px !important;
 }
 
 .category-div {
   float: right;
-
 }
 
 .table-category {
+  /*position: absolute;*/
   margin-left: 50px;
   width: 350px !important;
 

@@ -254,3 +254,25 @@ insert into disallow_word(value) values ('站长');
 insert into disallow_word(value) values ('国家领导人');
 insert into disallow_word(value) values ('操');
 insert into disallow_word(value) values ('lala');
+
+
+-- 测试表
+drop table if exists `test`;
+create table `test` (
+                        `id` int auto_increment,
+                        `A` varchar(20),
+                        `B` varchar(20),
+                        primary key (`id`),
+                        index idx_A_B(`A`, `B`)
+) engine=innodb default charset=utf8mb4;
+
+insert into test(A, B) values ('a', 'b');
+insert into test(A, B) values ('a', 'bb');
+insert into test(A, B) values ('a', 'c');
+insert into test(A, B) values ('a', 'cc');
+insert into test(A, B) values ('b', 'd');
+
+explain select * from test where A like 'a' and B = 'bb%';
+
+show processlist;
+show variables like 'max_connections';
