@@ -189,18 +189,15 @@ export default defineComponent({
     }
 
     /**
-     * 点击资料的下载按钮
+     * 点击资料的下载按钮--下载数 + 1
      * @param item
      */
     const downloadBtnClick = (item: any) => {
       mainLoading.value = true;
-      ++item.downloadCount;
       console.log(item);
-      axios.post("/downloadList/save", item).then((response) => {
+      axios.post("/downloadList/incrDownloadCount/" + item.id).then((response) => {
 
-        const data = response.data;
-
-        if (data.success) {
+        if (response.data.success) {
           mainLoading.value = false;
           // 重新加载列表
           downloadListAllQuery({

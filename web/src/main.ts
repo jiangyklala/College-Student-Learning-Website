@@ -41,4 +41,5 @@ axios.interceptors.response.use(function (response) {
 
 console.log('环境:', process.env.NODE_ENV);
 console.log('服务端:', process.env.VUE_APP_SERVER);
+console.log('WS 服务端:', process.env.VUE_APP_WS_SERVER);
 
