@@ -54,7 +54,7 @@ public class DownloadListController {
     }
 
     /**
-     * 删除一个下载项
+     * 删除一个 id = ? 的下载项
      *
      * @param id 所删除下载项的 id
      * @return CommonResp
@@ -83,6 +83,23 @@ public class DownloadListController {
         PageResp<DownloadListQueryResp> list = downloadListService.selectByCategoryId(req);
 
         resp.setContent(list);
+        return resp;
+    }
+
+    /**
+     * 为某个下载项的下载数自增 1
+     * @param id 下载项 ID
+     */
+    @PostMapping("/incrDownloadCount/{id}")
+    @ResponseBody
+    public CommonResp incrDownloadCount(@PathVariable Long id) {
+        CommonResp resp = new CommonResp();
+
+        if (downloadListService.incrDownloadCount(id) != 1) {
+            resp.setSuccess(false);
+            resp.setMessage("点赞失败");
+        }
+
         return resp;
     }
 

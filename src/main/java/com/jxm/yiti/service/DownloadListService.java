@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.jxm.yiti.domain.DownloadList;
 import com.jxm.yiti.domain.DownloadListExample;
 import com.jxm.yiti.mapper.DownloadListMapper;
+import com.jxm.yiti.mapper.cust.DownloadListMapperCust;
 import com.jxm.yiti.req.DownloadListQueryReq;
 import com.jxm.yiti.req.DownloadListSaveReq;
 import com.jxm.yiti.resp.DownloadListQueryResp;
@@ -25,6 +26,10 @@ public class DownloadListService {
 
     @Resource
     private DownloadListMapper downloadListMapper;
+
+    @Resource
+    private DownloadListMapperCust downloadListMapperCust;
+
 
     private static final Logger LOG = LoggerFactory.getLogger(DownloadListService.class);
 
@@ -63,7 +68,9 @@ public class DownloadListService {
         try {
             if (ObjectUtils.isEmpty(req.getId())) {
                 res.setId(snowFlakeIdWorker.nextId());
-                return downloadListMapper.insert(res);
+                int insertRes = downloadListMapper.insert(res);
+//                rocketMQ.convertAndSend("yiti_newItem_notifyAll", "有新文档发布");
+                return insertRes;
             } else {
                 return downloadListMapper.updateByPrimaryKey(res);
             }
@@ -108,5 +115,9 @@ public class DownloadListService {
         resp.setTotal(downloadListPageInfo.getTotal());
 
         return resp;
+    }
+
+    public int incrDownloadCount(Long id) {
+        return downloadListMapperCust.incrDownloadCount(id);
     }
 }
