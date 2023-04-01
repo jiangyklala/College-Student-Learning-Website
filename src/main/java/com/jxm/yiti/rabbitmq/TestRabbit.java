@@ -1,8 +1,6 @@
 package com.jxm.yiti.rabbitmq;
 
-import javax.sound.midi.Receiver;
-
-public class Test {
+public class TestRabbit {
     public static void main(String[] args) throws Exception{
         ReceiverRabbit receiver = new ReceiverRabbit("testQueue");
         Thread receiverThread = new Thread(receiver);

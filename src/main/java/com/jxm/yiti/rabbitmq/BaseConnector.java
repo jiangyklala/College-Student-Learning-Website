@@ -12,6 +12,8 @@ public class BaseConnector {
     protected Connection connection;
     protected String queueName;
 
+    public BaseConnector() {}
+
     public BaseConnector(String queueName) throws IOException, TimeoutException {
         this.queueName = queueName;
 

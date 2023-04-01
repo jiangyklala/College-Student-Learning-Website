@@ -13,6 +13,13 @@ public class MessageInfoRabbit implements Serializable {
     //来源
     private String content;
 
+    public MessageInfoRabbit() { }
+
+    public MessageInfoRabbit(String channel, String content) {
+        this.channel = channel;
+        this.content = content;
+    }
+
     public String getChannel() {
         return channel;
     }

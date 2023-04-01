@@ -14,9 +14,9 @@ create table `download_list`(
                                 `name`           varchar(25) not null comment '名称',
                                 `category_id1`   bigint      not null comment '分类1',
                                 `category_id2`   bigint comment '分类2',
-                                `download_count` int not null default 0 comment '下载量',
+                                `download_count` int  default 0 comment '下载量',
                                 `size`           varchar(25) default '' comment '大小',
-                                `download_link`  varchar(500) not null default '' comment '下载链接',
+                                `download_link`  varchar(500)  default '' comment '下载链接',
                                 primary key (`id`),
                                 index idx_name(`name`),
                                 index idx_cid2(`category_id2`)
