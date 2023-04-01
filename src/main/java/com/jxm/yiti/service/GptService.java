@@ -16,7 +16,7 @@ import java.net.Proxy;
 @Service
 public class GptService {
 
-    public static String sendPost(String data) {
+    public String sendPost(String data) {
         String res = "";
         String proxyHost = "127.0.0.1";
         int proxyPort = 7890;
@@ -47,7 +47,6 @@ public class GptService {
             res = choices.getJSONObject(0).getJSONObject("message").getString("content");
 
         }
-//        Object o = jsonObject.get("\"choices\"");
         return res;
     }
 
