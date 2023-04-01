@@ -223,6 +223,7 @@ export default defineComponent({
 
         if (response.data.success) {   // 成功则加载用户信息
           store.commit("setUserInfo", response.data.content);
+          wsLogin();
           ifLoginIn.value = true;
         }  // 失败无提示
       })
@@ -243,6 +244,7 @@ export default defineComponent({
             autoLogin(response.data.content);
           } else {                                                      // 若 userInfo 不为空, 则正处于登录态
             console.log("已经是登录态了");
+            wsLogin();
             ifLoginIn.value = true;
           }
 
@@ -300,7 +302,6 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      wsLogin();
       checkLoginCert();
     });
 

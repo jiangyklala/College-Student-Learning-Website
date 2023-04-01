@@ -1,5 +1,6 @@
 package com.jxm.yiti.controller;
 
+import com.jxm.yiti.rabbitmq.TestRabbit;
 import jakarta.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
@@ -11,11 +12,10 @@ public class testController {
 
 
 
-//    @GetMapping("/test1")
-//    @ResponseBody
-//    public void test1() throws MQClientException {
-//        rocketMQ.convertAndSend("yiti_newItem_notifyAll", "有新文档发布");
-//
-//    }
+    @GetMapping("/test1")
+    @ResponseBody
+    public void test1() throws Exception {
+        TestRabbit.main(new String[0]);
+    }
 
 }

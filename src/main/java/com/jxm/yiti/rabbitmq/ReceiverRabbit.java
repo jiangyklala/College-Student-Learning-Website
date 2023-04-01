@@ -3,13 +3,10 @@ package com.jxm.yiti.rabbitmq;
 import com.alibaba.fastjson2.JSON;
 import com.jxm.yiti.websocket.WebSocketServer;
 import com.rabbitmq.client.*;
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -27,15 +24,8 @@ public class ReceiverRabbit extends BaseConnector implements Runnable, Consumer 
     public void setWebSocketServer(WebSocketServer webSocketServer) {
         ReceiverRabbit.webSocketServer = webSocketServer;
     }
-//    private static ReceiverRabbit receiverRabbit;
 
     private static final Logger LOG = LoggerFactory.getLogger(ReceiverRabbit.class);
-//
-//    @PostConstruct
-//    public void init() {
-//        receiverRabbit = this;
-//        receiverRabbit.webSocketServer = this.webSocketServer;
-//    }
 
     public ReceiverRabbit() {
         super();

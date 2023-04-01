@@ -87,6 +87,7 @@ public class DownloadListService {
                 int insertRes = downloadListMapper.insert(res);
 //                rocketMQ.convertAndSend("yiti_newItem_notifyAll", "有新文档发布");
                 if (insertRes == 1) {
+                    LOG.info("开始发送消息力");
                     new SenderRabbit("yiti_new_download_item").sendMessage(new MessageInfoRabbit("lala", "有新的下载资料发布呦~"));
                 }
                 return insertRes;
