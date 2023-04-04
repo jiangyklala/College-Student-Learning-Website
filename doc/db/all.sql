@@ -255,3 +255,11 @@ insert into disallow_word(value) values ('国家领导人');
 insert into disallow_word(value) values ('操');
 insert into disallow_word(value) values ('lala');
 
+# chatGPT 用户历史查询信息记录
+DROP TABLE IF EXISTS `chat_history`;
+
+CREATE TABLE `chat_history` (
+                        `id` int AUTO_INCREMENT NOT NULL,
+                        `user_id` bigint NOT NULL COMMENT '所属用户ID',
+                        `content` mediumtext NOT NULL COMMENT '文档内容',
+                        PRIMARY KEY (`id`)) engine = innodb DEFAULT charset = utf8mb4 COMMENT = 'chatGPT 用户历史查询信息记录';

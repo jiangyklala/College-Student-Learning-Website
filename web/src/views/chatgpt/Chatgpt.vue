@@ -1,6 +1,20 @@
 <template>
   <a-layout-content class="layout-content">
 
+    <a-button type="primary" @click="showDrawer">Open</a-button>
+    <a-drawer
+        v-model:visible="drawerVisible"
+        class="drawer"
+        style="color: red"
+        title="历史记录"
+        placement="left"
+        @after-visible-change="afterVisibleChange"
+    >
+      <p>Some contents...</p>
+      <p>Some contents...</p>
+      <p>Some contents...</p>
+    </a-drawer>
+
     <a-input-search
         class="input-search"
         v-model:value="gptQuestion"
@@ -9,6 +23,7 @@
         enter-button
         @search="onSearch"
     />
+
     <a-spin
         class="spin"
         tip="加载过程比较慢, 请耐心等待..."
@@ -37,13 +52,20 @@ export default defineComponent({
   name: 'Chatgpt',
   setup() {
 
-    const gptQuestion = ref();
+    const gptQuestion = ref("");
     const insertHtml2 = ref();
     insertHtml2.value = "";
     const searchLoading = ref(false);
     const spinning = ref(false);
 
     const mavonEditorRef = ref();
+
+    const chatCplQueryReq = ref();
+    chatCplQueryReq.value = {
+      userID: 1,
+      historyID: -1,
+      queryStr: ""
+    };
 
 
     onMounted(() => {
@@ -53,7 +75,10 @@ export default defineComponent({
     const onSearch = () => {
       searchLoading.value = true;
       spinning.value = true;
-      axios.post("/gpt/getData2/" + gptQuestion.value).then((response) => {
+      chatCplQueryReq.value.queryStr = gptQuestion.value;
+      chatCplQueryReq.value.historyID = 6;
+      // console.log(chatCplQueryReq.value);
+      axios.post("/gpt/chatCompletion2", chatCplQueryReq.value).then((response) => {
         // console.log(response);
         searchLoading.value = false;
         spinning.value = false;
@@ -68,12 +93,29 @@ export default defineComponent({
       })
     }
 
+    //-----------------抽屉------------------
+    const drawerVisible = ref<boolean>(false);
+
+    const afterVisibleChange = (bool: boolean) => {
+      console.log('drawerVisible', bool);
+    };
+
+    const showDrawer = () => {
+      drawerVisible.value = true;
+    };
+
+
+
+
     return {
       gptQuestion,
       insertHtml2,
       searchLoading,
       onSearch,
       spinning,
+      drawerVisible,
+      afterVisibleChange,
+      showDrawer,
     };
   },
 });

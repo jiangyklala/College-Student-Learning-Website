@@ -2,9 +2,11 @@ package com.jxm.yiti.controller;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
+import com.jxm.yiti.req.ChatCplQueryReq;
 import com.jxm.yiti.resp.CommonResp;
 import com.jxm.yiti.service.GptService;
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -34,6 +36,24 @@ public class GptController {
     public CommonResp<String> getData2(@PathVariable String data){
         CommonResp<String> resp = new CommonResp<>();
         String res = gptService.sendPost(data);
+        resp.setContent(res);
+        return resp;
+    }
+
+    @PostMapping("/chatCompletion")
+    @ResponseBody
+    public CommonResp<String> chatCompletion(@RequestBody ChatCplQueryReq chatCplQueryReq){
+        CommonResp<String> resp = new CommonResp<>();
+        String res = gptService.chatCompletion(chatCplQueryReq);
+        resp.setContent(res);
+        return resp;
+    }
+
+    @PostMapping("/chatCompletion2")
+    @ResponseBody
+    public CommonResp<String> chatCompletion2(@RequestBody @Valid ChatCplQueryReq chatCplQueryReq){
+        CommonResp<String> resp = new CommonResp<>();
+        String res = gptService.chatCompletion2(chatCplQueryReq);
         resp.setContent(res);
         return resp;
     }
