@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
  * SnowFlake每秒能够产生26万ID左右。
  */
 
+@Component
 public class SnowFlakeIdWorker {
 
     // ==============================Fields===========================================
@@ -92,6 +93,8 @@ public class SnowFlakeIdWorker {
     private long lastTimestamp = -1L;
 
     // ==============================Constructors=====================================
+
+    public SnowFlakeIdWorker() {}
 
     /**
      * 构造函数
