@@ -7,10 +7,10 @@ import com.jxm.yiti.domain.DocContent;
 import com.jxm.yiti.domain.DocExample;
 import com.jxm.yiti.mapper.DocContentMapper;
 import com.jxm.yiti.mapper.DocMapper;
+import com.jxm.yiti.rabbitmq.ReceiverRabbit;
 import com.jxm.yiti.req.DocQueryReq;
 import com.jxm.yiti.req.DocSaveReq;
 import com.jxm.yiti.resp.DocQueryResp;
-import com.jxm.yiti.resp.PageResp;
 import com.jxm.yiti.utils.CopyUtil;
 import com.jxm.yiti.utils.SnowFlakeIdWorker;
 import jakarta.annotation.Resource;
@@ -121,7 +121,7 @@ public class DocService {
         }
     }
     /**
-     * 删除 1 个课程项
+     * 删除多个课程项
      */
     public int deleteStr(String idStr) {
         int res = 0;

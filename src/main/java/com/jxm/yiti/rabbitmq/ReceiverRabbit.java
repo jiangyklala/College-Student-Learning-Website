@@ -16,15 +16,6 @@ public class ReceiverRabbit extends BaseConnector implements Runnable, Consumer 
 
     private static WebSocketServer webSocketServer;
 
-    public WebSocketServer getWebSocketServer() {
-        return webSocketServer;
-    }
-
-    @Autowired
-    public void setWebSocketServer(WebSocketServer webSocketServer) {
-        ReceiverRabbit.webSocketServer = webSocketServer;
-    }
-
     private static final Logger LOG = LoggerFactory.getLogger(ReceiverRabbit.class);
 
     public ReceiverRabbit() {
@@ -34,6 +25,16 @@ public class ReceiverRabbit extends BaseConnector implements Runnable, Consumer 
     public ReceiverRabbit(String queueName) throws IOException, TimeoutException {
         super(queueName);
     }
+
+    public WebSocketServer getWebSocketServer() {
+        return webSocketServer;
+    }
+
+    @Autowired
+    public void setWebSocketServer(WebSocketServer webSocketServer) {
+        ReceiverRabbit.webSocketServer = webSocketServer;
+    }
+
 
     //当消费者注册完成自动调用
     @Override
