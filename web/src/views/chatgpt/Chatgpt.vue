@@ -1,7 +1,8 @@
 <template>
   <a-layout-content class="layout-content">
 
-    <a-button type="primary" @click="showDrawer">Open</a-button>
+<!--    历史记录--抽屉-->
+    <a-button type="primary" @click="showDrawer" class="drawer-button">历<br>史<br>记<br>录</a-button>
     <a-drawer
         v-model:visible="drawerVisible"
         class="drawer"
@@ -10,10 +11,17 @@
         placement="left"
         @after-visible-change="afterVisibleChange"
     >
-      <p>Some contents...</p>
-      <p>Some contents...</p>
-      <p>Some contents...</p>
+      <span v-for="item in historyList" v-bind:key="item">
+        <a style="font-size: 18px; padding-left: 13px" @click="historyItemClick(item.id)">--> {{ item.title }}</a><br>
+      </span>
     </a-drawer>
+
+    <div v-for="msg in msglist" :key="msg">
+      <left-chat-item v-if="msg.type === 1" :content="msg.content" ></left-chat-item>
+      <right-chat-item v-if="msg.type === 2" :content="msg.content"></right-chat-item>
+    </div>
+
+
 
     <a-input-search
         class="input-search"
@@ -24,30 +32,34 @@
         @search="onSearch"
     />
 
-    <a-spin
-        class="spin"
-        tip="加载过程比较慢, 请耐心等待..."
-        :spinning="spinning">
-    </a-spin>
+<!--    <a-spin-->
+<!--        class="spin"-->
+<!--        tip="加载过程比较慢, 请耐心等待..."-->
+<!--        :spinning="spinning">-->
+<!--    </a-spin>-->
 
-    <div :innerHTML="insertHtml2"
-         id="editor-content-view"
-         class="editor-content-view"></div>
+
 
   </a-layout-content>
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, ref} from 'vue';
+import {computed, defineComponent, onMounted, ref} from 'vue';
 import axios from "axios";
 import {message} from "ant-design-vue";
 import mavonEditor from "mavon-editor";
+import {Tool} from "@/utils/tool";
+import store from "@/store";
+import LeftChatItem from "@/components/left-chat-item.vue";
+import RightChatItem from "@/components/right-chat-item.vue";
 
 // import axios from 'axios';
 
 
 export default defineComponent({
   components: {
+    RightChatItem,
+    LeftChatItem
   },
   name: 'Chatgpt',
   setup() {
@@ -55,8 +67,8 @@ export default defineComponent({
     const gptQuestion = ref("");
     const insertHtml2 = ref();
     insertHtml2.value = "";
-    const searchLoading = ref(false);
-    const spinning = ref(false);
+    const searchLoading = ref(false);   // 搜索框 loading
+    // const spinning = ref(false);             // 加载中 loading
 
     const mavonEditorRef = ref();
 
@@ -74,18 +86,24 @@ export default defineComponent({
 
     const onSearch = () => {
       searchLoading.value = true;
-      spinning.value = true;
-      chatCplQueryReq.value.queryStr = gptQuestion.value;
-      chatCplQueryReq.value.historyID = 6;
-      // console.log(chatCplQueryReq.value);
+      msglist.value.push({           // 显示 [human] 对话
+        type: 2,
+        content: gptQuestion.value,
+      });
+      console.log(msglist);
+      chatCplQueryReq.value.queryStr = gptQuestion.value.replaceAll('"', "\"");
       axios.post("/gpt/chatCompletion2", chatCplQueryReq.value).then((response) => {
-        // console.log(response);
         searchLoading.value = false;
-        spinning.value = false;
 
         if (response.data.success) {
-          insertHtml2.value = mavonEditorRef.value.render(response.data.content);
-
+          let resp = response.data.content;
+          msglist.value.push({      // 显示 [robot] 对话
+            type: 1,
+            content: resp.content,
+          })
+          // insertHtml2.value = insertHtml2.value + "<br><br>" + mavonEditorRef.value.render(resp.content);
+          chatCplQueryReq.value.historyID = resp.historyID;
+          selectHistoryList();     // 刷新历史记录
 
         } else {
           message.error(response.data.message);
@@ -95,16 +113,76 @@ export default defineComponent({
 
     //-----------------抽屉------------------
     const drawerVisible = ref<boolean>(false);
+    const historyList = ref();
+    historyList.value = [];
 
     const afterVisibleChange = (bool: boolean) => {
-      console.log('drawerVisible', bool);
+      // console.log('drawerVisible', bool);
     };
 
     const showDrawer = () => {
       drawerVisible.value = true;
     };
 
+    const selectHistoryList = () => {
+      axios.get("/gpt/selectAll").then((response) => {
+        // loading.value = false;
+        if (response.data.success) {  // 判断后端接口返回是否出错
+          historyList.value = response.data.content;
+          // console.log(historyList);
+        } else {
+          message.error(response.data.message);
+        }
+      })
+    }
 
+    const historyItemClick = (historyID : number) => {
+      // chatCplQueryReq.value.userID = computed(() => {
+      //   return store.state.userInfo;
+      // }).value.id;
+      msglist.value = [];
+      chatCplQueryReq.value.historyID = historyID;
+      drawerVisible.value = false;
+      // console.log("chatCplQueryReq:");
+      // console.log(chatCplQueryReq);
+      axios.get("/gpt/selectContentByID/" + historyID).then((response) => {
+        if (response.data.success) {  // 判断后端接口返回是否出错
+          extractAndShowChat(response.data.content);
+        } else {
+          message.error(response.data.message);
+        }
+      })
+
+    }
+
+    const extractAndShowChat = (content : any) => {
+      content = "[" + content + "{}]";
+      content = JSON.parse(content);// JSON.stringify(content);
+      console.log(content);
+      for (let i = 0; i < content.length - 1; ++i) {
+        if (content[i].role === "user") {
+          msglist.value.push({
+            type: 2,
+            content: content[i].content,
+          })
+        } else {
+          msglist.value.push({
+            type: 1,
+            content: content[i].content,
+          })
+        }
+      }
+    }
+
+    //-----------------对话显示------------------
+
+    const msglist = ref();
+    msglist.value = [];
+
+
+    onMounted(() => {
+      selectHistoryList();
+    })
 
 
     return {
@@ -112,10 +190,13 @@ export default defineComponent({
       insertHtml2,
       searchLoading,
       onSearch,
-      spinning,
+      // spinning,
       drawerVisible,
       afterVisibleChange,
       showDrawer,
+      historyList,
+      historyItemClick,
+      msglist,
     };
   },
 });
@@ -123,10 +204,18 @@ export default defineComponent({
 
 <style scoped>
 
+.drawer-button {
+  position: fixed;
+  width: 40px;
+  height: 100px;
+  left: 5px;
+}
+
 .input-search {
-  width: 80%;
+  position: fixed;
+  width: 60%;
   padding-left: 20%;
-  padding-top: 5%;
+  bottom: 5%;
 }
 
 .spin {
@@ -154,65 +243,5 @@ export default defineComponent({
 }
 
 
-.editor-content-view {
-  /*border: 3px solid #ccc;*/
-  /*border-radius: 5px;*/
-  /*padding: 0 10px;*/
-  padding-top: 6%;
-  padding-left: 10%;
-  padding-bottom: 4%;
-  width: 90%;
-  height: 90%;
-  min-height: 500px;
-  margin-top: 20px;
-  overflow-x: auto;
-  /*min-height: 1000px;*/
-}
-
-.editor-content-view p,
-.editor-content-view li {
-  white-space: pre-wrap; /* 保留空格 */
-  font-size: 20px;
-}
-
-.editor-content-view blockquote {
-  border-left: 8px solid #d0e5f2;
-  padding: 10px 10px;
-  margin: 10px 0;
-  background-color: #f1f1f1;
-}
-
-.editor-content-view code {
-  font-family: monospace;
-  background-color: #eee;
-  padding: 3px;
-  border-radius: 3px;
-}
-.editor-content-view pre>code {
-  display: block;
-  padding: 10px;
-}
-
-.editor-content-view table {
-  border-collapse: collapse;
-}
-.editor-content-view td,
-.editor-content-view th {
-  border: 1px solid #ccc;
-  min-width: 50px;
-  height: 20px;
-}
-.editor-content-view th {
-  background-color: #f1f1f1;
-}
-
-.editor-content-view ul,
-.editor-content-view ol {
-  padding-left: 20px;
-}
-
-.editor-content-view input[type="checkbox"] {
-  margin-right: 5px;
-}
 
 </style>

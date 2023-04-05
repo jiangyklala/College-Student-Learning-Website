@@ -4,6 +4,8 @@ import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.jxm.yiti.domain.ChatHistory;
+import com.jxm.yiti.domain.ChatHistoryContent;
+import com.jxm.yiti.mapper.ChatHistoryContentMapper;
 import com.jxm.yiti.mapper.ChatHistoryMapper;
 import com.jxm.yiti.req.ChatCplQueryReq;
 import com.jxm.yiti.resp.ChatCplQueryResp;
@@ -38,6 +40,9 @@ public class GptService {
 
     @Resource
     private ChatHistoryMapper chatHistoryMapper;
+
+    @Resource
+    private ChatHistoryContentMapper chatHistoryContentMapper;
 
     @Resource
     private SnowFlakeIdWorker snowFlakeIdWorker;
@@ -100,39 +105,40 @@ public class GptService {
     }
 
     public String chatCompletion(ChatCplQueryReq chatCplQueryReq) {
-        OpenAiService service = new OpenAiService(OPENAI_TOKEN, Duration.ofSeconds(30));
-
-        String historyMes = chatCplQueryReq.getHistoryID() == 0
-                ? ""
-                : chatHistoryMapper.selectByPrimaryKey(chatCplQueryReq.getHistoryID()).getContent();
-
-//        JSONObject jsonObject = JSON.parseObject(chatHistoryMapper.selectByPrimaryKey(chatCplQueryReq.getHistoryID()).getContent());
-
-        ArrayList<ChatMessage> chatMessages = new ArrayList<ChatMessage>();
-        chatMessages.add(new ChatMessage(ChatMessageRole.USER.value(), chatCplQueryReq.getQueryStr()));
-        chatMessages.add(new ChatMessage(ChatMessageRole.ASSISTANT.value(), historyMes));
-
-
-        ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
-                .builder()
-                .model("gpt-3.5-turbo")
-                .messages(chatMessages)
-                .n(1)
-                .maxTokens(150)
-                .logitBias(new HashMap<>())
-                .build();
-
-        String resContent = service.createChatCompletion(chatCompletionRequest).getChoices().get(0).getMessage().getContent();
-
-        ChatHistory chatHistory = new ChatHistory();
-        chatHistory.setUserId(chatCplQueryReq.getUserID());
-        chatHistory.setContent(historyMes +
-                String.format("{\"role\": \"user\", \"content\": %s}", chatCplQueryReq.getQueryStr()) +
-                String.format("{\"role\": \"assistant\", \"content\": %s}", resContent));
-        chatHistoryMapper.insert(chatHistory);
-
-        service.shutdownExecutor();
-        return resContent;
+        return null;
+//        OpenAiService service = new OpenAiService(OPENAI_TOKEN, Duration.ofSeconds(30));
+//
+//        String historyMes = chatCplQueryReq.getHistoryID() == 0
+//                ? ""
+//                : chatHistoryMapper.selectByPrimaryKey(chatCplQueryReq.getHistoryID()).getContent();
+//
+////        JSONObject jsonObject = JSON.parseObject(chatHistoryMapper.selectByPrimaryKey(chatCplQueryReq.getHistoryID()).getContent());
+//
+//        ArrayList<ChatMessage> chatMessages = new ArrayList<ChatMessage>();
+//        chatMessages.add(new ChatMessage(ChatMessageRole.USER.value(), chatCplQueryReq.getQueryStr()));
+//        chatMessages.add(new ChatMessage(ChatMessageRole.ASSISTANT.value(), historyMes));
+//
+//
+//        ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
+//                .builder()
+//                .model("gpt-3.5-turbo")
+//                .messages(chatMessages)
+//                .n(1)
+//                .maxTokens(150)
+//                .logitBias(new HashMap<>())
+//                .build();
+//
+//        String resContent = service.createChatCompletion(chatCompletionRequest).getChoices().get(0).getMessage().getContent();
+//
+//        ChatHistory chatHistory = new ChatHistory();
+//        chatHistory.setUserId(chatCplQueryReq.getUserID());
+//        chatHistory.setContent(historyMes +
+//                String.format("{\"role\": \"user\", \"content\": %s}", chatCplQueryReq.getQueryStr()) +
+//                String.format("{\"role\": \"assistant\", \"content\": %s}", resContent));
+//        chatHistoryMapper.insert(chatHistory);
+//
+//        service.shutdownExecutor();
+//        return resContent;
     }
 
     public ChatCplQueryResp chatCompletion2(ChatCplQueryReq chatCplQueryReq) {
@@ -142,11 +148,11 @@ public class GptService {
         String queryStr = chatCplQueryReq.getQueryStr();
 
 
-        String historyMesContent = "";
-        ChatHistory historyMes = new ChatHistory();
+        ChatHistory historyMes = new ChatHistory();           // 历史记录 obj
+        ChatHistoryContent historyMesContent = new ChatHistoryContent("");          // 历史记录内容 obj
         if (chatCplQueryReq.getHistoryID() != -1) {           // 获取本次对话的历史记录
             historyMes = chatHistoryMapper.selectByPrimaryKey(chatCplQueryReq.getHistoryID());
-            historyMesContent = historyMes.getContent();
+            historyMesContent = chatHistoryContentMapper.selectByPrimaryKey(historyMes.getContentId());
         LOG.info(historyMes.toString());
         }
 
@@ -161,7 +167,7 @@ public class GptService {
                 "{\n" +
                         "    \"model\": \"gpt-3.5-turbo-0301\",\n" +
                         "    \"messages\":" +
-                        "[" + historyMesContent + "{\"role\": \"user\", \"content\": \"%s\"}],\n" +
+                        "[" + historyMesContent.getContent() + "{\"role\": \"user\", \"content\": \"%s\"}],\n" +
                         "    \"temperature\": 0, \n" +
                         "    \"max_tokens\": 2048\n" +
                         "}", queryStr
@@ -176,21 +182,28 @@ public class GptService {
             resContent = jsonObject.getJSONArray("choices").getJSONObject(0).getJSONObject("message").getString("content");
 
             // 下面更新本次对话的历史记录
-            historyMes.setContent(historyMesContent +                                     // 无论是新旧对话, 都要更新 content
-                    String.format("{\"role\": \"user\", \"content\": \"%s\"}", queryStr) +
-                    String.format(",{\"role\": \"assistant\", \"content\": %s},", JSON.toJSONString(resContent)));
             LOG.info(historyMes.toString());
             if (chatCplQueryReq.getHistoryID() == -1) {                                   // 此次对话为新对话
+                historyMesContent = new ChatHistoryContent();                                 // 无论是新旧对话, 都要更新 content
+                historyMesContent.setId(snowFlakeIdWorker.nextId());
+                historyMesContent.setContent(String.format("{\"role\": \"user\", \"content\": \"%s\"}", queryStr) +
+                                             String.format(",{\"role\": \"assistant\", \"content\": %s},", JSON.toJSONString(resContent)));
+                chatHistoryContentMapper.insert(historyMesContent);
+
                 queryStr = queryStr.length() > 50 ? queryStr.substring(0, 50) : queryStr;    // title 的长度限制在 50
                 historyMes.setId(snowFlakeIdWorker.nextId());                                // 设置 id
                 historyMes.setUserId(chatCplQueryReq.getUserID());                           // 设置历史记录所属 user
                 historyMes.setTitle(queryStr);                                               // 设置这次对话的 title
+                historyMes.setContentId(historyMesContent.getId());                          // 设置历史记录内容 id
 
                 LOG.info(historyMes.toString());
                 chatHistoryMapper.insert(historyMes);
             } else {                                                                      // 此次对话为旧对话, 只用更新 content
-                LOG.info("lala" + historyMes.toString());
-                chatHistoryMapper.updateByPrimaryKeyWithBLOBs(historyMes);
+                historyMesContent.setContent(historyMesContent.getContent() +
+                        String.format("{\"role\": \"user\", \"content\": \"%s\"}", queryStr) +
+                        String.format(",{\"role\": \"assistant\", \"content\": %s},", JSON.toJSONString(resContent)));
+                chatHistoryContentMapper.updateByPrimaryKeyWithBLOBs(historyMesContent);
+                LOG.info("lala" + historyMesContent.toString());
             }
             chatCplQueryResp = new ChatCplQueryResp();
             chatCplQueryResp.setContent(resContent);
@@ -208,5 +221,11 @@ public class GptService {
             e.printStackTrace();
         }
         return res;
+    }
+
+    public String selectContentByID(Long historyId) {
+        ChatHistory chatHistory = chatHistoryMapper.selectByPrimaryKey(historyId);
+        ChatHistoryContent chatHistoryContent = chatHistoryContentMapper.selectByPrimaryKey(chatHistory.getContentId());
+        return chatHistoryContent.getContent();
     }
 }

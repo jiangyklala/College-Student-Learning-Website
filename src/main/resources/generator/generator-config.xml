@@ -46,7 +46,7 @@
 <!--        <table tableName="course_item"/>-->
 <!--        <table tableName="column_list"/>-->
 <!--        <table tableName="doc"/>-->
-        <table tableName="chat_history"/>
+        <table tableName="chat_history_content"/>
         <!--                <table tableName="demo" domainObjectName="Demo"/>-->
         <!--                <table tableName="disallow_word" domainObjectName="Disallow_word"/>-->
     </context>

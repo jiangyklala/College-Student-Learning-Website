@@ -7,7 +7,7 @@ public class ChatHistory {
 
     private String title;
 
-    private String content;
+    private Long contentId;
 
     public Long getId() {
         return id;
@@ -33,12 +33,12 @@ public class ChatHistory {
         this.title = title;
     }
 
-    public String getContent() {
-        return content;
+    public Long getContentId() {
+        return contentId;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setContentId(Long contentId) {
+        this.contentId = contentId;
     }
 
     @Override
@@ -50,7 +50,7 @@ public class ChatHistory {
         sb.append(", id=").append(id);
         sb.append(", userId=").append(userId);
         sb.append(", title=").append(title);
-        sb.append(", content=").append(content);
+        sb.append(", contentId=").append(contentId);
         sb.append("]");
         return sb.toString();
     }

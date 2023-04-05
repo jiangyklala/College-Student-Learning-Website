@@ -3,14 +3,14 @@ package com.jxm.yiti.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChatHistoryExample {
+public class ChatHistoryContentExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public ChatHistoryExample() {
+    public ChatHistoryContentExample() {
         oredCriteria = new ArrayList<>();
     }
 
@@ -161,196 +161,6 @@ public class ChatHistoryExample {
 
         public Criteria andIdNotBetween(Long value1, Long value2) {
             addCriterion("id not between", value1, value2, "id");
-            return (Criteria) this;
-        }
-
-        public Criteria andUserIdIsNull() {
-            addCriterion("user_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andUserIdIsNotNull() {
-            addCriterion("user_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andUserIdEqualTo(Long value) {
-            addCriterion("user_id =", value, "userId");
-            return (Criteria) this;
-        }
-
-        public Criteria andUserIdNotEqualTo(Long value) {
-            addCriterion("user_id <>", value, "userId");
-            return (Criteria) this;
-        }
-
-        public Criteria andUserIdGreaterThan(Long value) {
-            addCriterion("user_id >", value, "userId");
-            return (Criteria) this;
-        }
-
-        public Criteria andUserIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("user_id >=", value, "userId");
-            return (Criteria) this;
-        }
-
-        public Criteria andUserIdLessThan(Long value) {
-            addCriterion("user_id <", value, "userId");
-            return (Criteria) this;
-        }
-
-        public Criteria andUserIdLessThanOrEqualTo(Long value) {
-            addCriterion("user_id <=", value, "userId");
-            return (Criteria) this;
-        }
-
-        public Criteria andUserIdIn(List<Long> values) {
-            addCriterion("user_id in", values, "userId");
-            return (Criteria) this;
-        }
-
-        public Criteria andUserIdNotIn(List<Long> values) {
-            addCriterion("user_id not in", values, "userId");
-            return (Criteria) this;
-        }
-
-        public Criteria andUserIdBetween(Long value1, Long value2) {
-            addCriterion("user_id between", value1, value2, "userId");
-            return (Criteria) this;
-        }
-
-        public Criteria andUserIdNotBetween(Long value1, Long value2) {
-            addCriterion("user_id not between", value1, value2, "userId");
-            return (Criteria) this;
-        }
-
-        public Criteria andTitleIsNull() {
-            addCriterion("title is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTitleIsNotNull() {
-            addCriterion("title is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTitleEqualTo(String value) {
-            addCriterion("title =", value, "title");
-            return (Criteria) this;
-        }
-
-        public Criteria andTitleNotEqualTo(String value) {
-            addCriterion("title <>", value, "title");
-            return (Criteria) this;
-        }
-
-        public Criteria andTitleGreaterThan(String value) {
-            addCriterion("title >", value, "title");
-            return (Criteria) this;
-        }
-
-        public Criteria andTitleGreaterThanOrEqualTo(String value) {
-            addCriterion("title >=", value, "title");
-            return (Criteria) this;
-        }
-
-        public Criteria andTitleLessThan(String value) {
-            addCriterion("title <", value, "title");
-            return (Criteria) this;
-        }
-
-        public Criteria andTitleLessThanOrEqualTo(String value) {
-            addCriterion("title <=", value, "title");
-            return (Criteria) this;
-        }
-
-        public Criteria andTitleLike(String value) {
-            addCriterion("title like", value, "title");
-            return (Criteria) this;
-        }
-
-        public Criteria andTitleNotLike(String value) {
-            addCriterion("title not like", value, "title");
-            return (Criteria) this;
-        }
-
-        public Criteria andTitleIn(List<String> values) {
-            addCriterion("title in", values, "title");
-            return (Criteria) this;
-        }
-
-        public Criteria andTitleNotIn(List<String> values) {
-            addCriterion("title not in", values, "title");
-            return (Criteria) this;
-        }
-
-        public Criteria andTitleBetween(String value1, String value2) {
-            addCriterion("title between", value1, value2, "title");
-            return (Criteria) this;
-        }
-
-        public Criteria andTitleNotBetween(String value1, String value2) {
-            addCriterion("title not between", value1, value2, "title");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentIdIsNull() {
-            addCriterion("content_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentIdIsNotNull() {
-            addCriterion("content_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentIdEqualTo(Long value) {
-            addCriterion("content_id =", value, "contentId");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentIdNotEqualTo(Long value) {
-            addCriterion("content_id <>", value, "contentId");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentIdGreaterThan(Long value) {
-            addCriterion("content_id >", value, "contentId");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("content_id >=", value, "contentId");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentIdLessThan(Long value) {
-            addCriterion("content_id <", value, "contentId");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentIdLessThanOrEqualTo(Long value) {
-            addCriterion("content_id <=", value, "contentId");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentIdIn(List<Long> values) {
-            addCriterion("content_id in", values, "contentId");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentIdNotIn(List<Long> values) {
-            addCriterion("content_id not in", values, "contentId");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentIdBetween(Long value1, Long value2) {
-            addCriterion("content_id between", value1, value2, "contentId");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentIdNotBetween(Long value1, Long value2) {
-            addCriterion("content_id not between", value1, value2, "contentId");
             return (Criteria) this;
         }
     }

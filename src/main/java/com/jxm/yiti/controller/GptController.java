@@ -139,10 +139,11 @@ public class GptController {
         return resp;
     }
 
-    @GetMapping("/test3/{data}")
+    @GetMapping("/selectContentByID/{historyId}")
     @ResponseBody
-    public String test3(@PathVariable String data){
-        String s = JSON.toJSONString(data);
-        return s;
+    public CommonResp<String> selectContentByID(@PathVariable Long historyId) {
+        CommonResp<String> resp = new CommonResp<>();
+        resp.setContent(gptService.selectContentByID(historyId));
+        return resp;
     }
 }
