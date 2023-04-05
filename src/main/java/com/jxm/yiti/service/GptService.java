@@ -6,6 +6,8 @@ import com.alibaba.fastjson2.JSONObject;
 import com.jxm.yiti.domain.ChatHistory;
 import com.jxm.yiti.mapper.ChatHistoryMapper;
 import com.jxm.yiti.req.ChatCplQueryReq;
+import com.jxm.yiti.resp.ChatCplQueryResp;
+import com.jxm.yiti.utils.SnowFlakeIdWorker;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatCompletionResult;
@@ -35,7 +37,10 @@ import java.util.List;
 public class GptService {
 
     @Resource
-    ChatHistoryMapper chatHistoryMapper;
+    private ChatHistoryMapper chatHistoryMapper;
+
+    @Resource
+    private SnowFlakeIdWorker snowFlakeIdWorker;
 
     private static final Logger LOG = LoggerFactory.getLogger(GptService.class);
 
@@ -130,30 +135,36 @@ public class GptService {
         return resContent;
     }
 
-    public String chatCompletion2(ChatCplQueryReq chatCplQueryReq) {
+    public ChatCplQueryResp chatCompletion2(ChatCplQueryReq chatCplQueryReq) {
+        ChatCplQueryResp chatCplQueryResp = null;
         LOG.info(chatCplQueryReq.toString());
         String resContent = "";
+        String queryStr = chatCplQueryReq.getQueryStr();
 
-        // 获取本次对话的历史记录
-        String historyMes = chatCplQueryReq.getHistoryID() == -1
-                ? ""
-                : chatHistoryMapper.selectByPrimaryKey(chatCplQueryReq.getHistoryID()).getContent();
-        LOG.info(historyMes);
 
+        String historyMesContent = "";
+        ChatHistory historyMes = new ChatHistory();
+        if (chatCplQueryReq.getHistoryID() != -1) {           // 获取本次对话的历史记录
+            historyMes = chatHistoryMapper.selectByPrimaryKey(chatCplQueryReq.getHistoryID());
+            historyMesContent = historyMes.getContent();
+        LOG.info(historyMes.toString());
+        }
+
+        // 设置请求体
         RestTemplate client = new RestTemplate();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Authorization","Bearer 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");
-        httpHeaders.add("Content-Type", "application/json"); // 传递请求体时必须设置
+        httpHeaders.add("Content-Type", "application/json");  // 传递请求体时必须设置
 
         // 在 content 字段中, 添加本次对话的历史记录
         String requestJson = String.format(
                 "{\n" +
                         "    \"model\": \"gpt-3.5-turbo-0301\",\n" +
                         "    \"messages\":" +
-                        "[" + historyMes + ",{\"role\": \"user\", \"content\": \"%s\"}],\n" +
+                        "[" + historyMesContent + "{\"role\": \"user\", \"content\": \"%s\"}],\n" +
                         "    \"temperature\": 0, \n" +
                         "    \"max_tokens\": 2048\n" +
-                        "}", chatCplQueryReq.getQueryStr()
+                        "}", queryStr
         );
 
         LOG.info(requestJson);
@@ -164,24 +175,38 @@ public class GptService {
         if (jsonObject != null) {
             resContent = jsonObject.getJSONArray("choices").getJSONObject(0).getJSONObject("message").getString("content");
 
-            // 更新本次对话的历史记录
-            ChatHistory chatHistory = new ChatHistory();
-            chatHistory.setUserId(chatCplQueryReq.getUserID());
-            chatHistory.setContent(historyMes +
-                    String.format(",{\"role\": \"user\", \"content\": \"%s\"}", chatCplQueryReq.getQueryStr()) +
-                    String.format(",{\"role\": \"assistant\", \"content\": \"%s\"}", resContent));
-            LOG.info(chatHistory.toString());
-            if (chatCplQueryReq.getHistoryID() == -1) {
-                LOG.info(chatHistory.toString());
-                chatHistoryMapper.insert(chatHistory);
-            } else {
-                chatHistory.setId(chatCplQueryReq.getHistoryID());
-                LOG.info("lala" + chatHistory.toString());
-//                chatHistoryMapper.updateByPrimaryKey(chatHistory);
-                chatHistoryMapper.updateByPrimaryKeyWithBLOBs(chatHistory);
+            // 下面更新本次对话的历史记录
+            historyMes.setContent(historyMesContent +                                     // 无论是新旧对话, 都要更新 content
+                    String.format("{\"role\": \"user\", \"content\": \"%s\"}", queryStr) +
+                    String.format(",{\"role\": \"assistant\", \"content\": %s},", JSON.toJSONString(resContent)));
+            LOG.info(historyMes.toString());
+            if (chatCplQueryReq.getHistoryID() == -1) {                                   // 此次对话为新对话
+                queryStr = queryStr.length() > 50 ? queryStr.substring(0, 50) : queryStr;    // title 的长度限制在 50
+                historyMes.setId(snowFlakeIdWorker.nextId());                                // 设置 id
+                historyMes.setUserId(chatCplQueryReq.getUserID());                           // 设置历史记录所属 user
+                historyMes.setTitle(queryStr);                                               // 设置这次对话的 title
+
+                LOG.info(historyMes.toString());
+                chatHistoryMapper.insert(historyMes);
+            } else {                                                                      // 此次对话为旧对话, 只用更新 content
+                LOG.info("lala" + historyMes.toString());
+                chatHistoryMapper.updateByPrimaryKeyWithBLOBs(historyMes);
             }
+            chatCplQueryResp = new ChatCplQueryResp();
+            chatCplQueryResp.setContent(resContent);
+            chatCplQueryResp.setHistoryID(historyMes.getId());
 
         }
-        return resContent;
+        return chatCplQueryResp;
+    }
+
+    public List<ChatHistory> selectAll() {
+        List<ChatHistory> res = null;
+        try {
+            res = chatHistoryMapper.selectByExample(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return res;
     }
 }

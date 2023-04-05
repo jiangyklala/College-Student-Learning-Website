@@ -259,7 +259,8 @@ insert into disallow_word(value) values ('lala');
 DROP TABLE IF EXISTS `chat_history`;
 
 CREATE TABLE `chat_history` (
-                        `id` int AUTO_INCREMENT NOT NULL,
+                        `id` bigint AUTO_INCREMENT NOT NULL,
                         `user_id` bigint NOT NULL COMMENT '所属用户ID',
+                        `title` varchar(50)  COMMENT '文档内容',
                         `content` mediumtext NOT NULL COMMENT '文档内容',
                         PRIMARY KEY (`id`)) engine = innodb DEFAULT charset = utf8mb4 COMMENT = 'chatGPT 用户历史查询信息记录';

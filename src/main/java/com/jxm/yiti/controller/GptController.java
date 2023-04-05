@@ -2,7 +2,9 @@ package com.jxm.yiti.controller;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
+import com.jxm.yiti.domain.ChatHistory;
 import com.jxm.yiti.req.ChatCplQueryReq;
+import com.jxm.yiti.resp.ChatCplQueryResp;
 import com.jxm.yiti.resp.CommonResp;
 import com.jxm.yiti.service.GptService;
 import jakarta.annotation.Resource;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/gpt")
@@ -51,9 +54,13 @@ public class GptController {
 
     @PostMapping("/chatCompletion2")
     @ResponseBody
-    public CommonResp<String> chatCompletion2(@RequestBody @Valid ChatCplQueryReq chatCplQueryReq){
-        CommonResp<String> resp = new CommonResp<>();
-        String res = gptService.chatCompletion2(chatCplQueryReq);
+    public CommonResp<ChatCplQueryResp> chatCompletion2(@RequestBody @Valid ChatCplQueryReq chatCplQueryReq){
+        CommonResp<ChatCplQueryResp> resp = new CommonResp<>();
+        ChatCplQueryResp res = gptService.chatCompletion2(chatCplQueryReq);
+        if (res == null) {
+            resp.setSuccess(false);
+            resp.setMessage("接口出错");
+        }
         resp.setContent(res);
         return resp;
     }
@@ -122,4 +129,20 @@ public class GptController {
 //        System.out.println("jaja");
     }
 
+    @GetMapping("/selectAll")
+    @ResponseBody
+    public CommonResp selectAll() {
+        CommonResp<List<ChatHistory>> resp = new CommonResp<>();
+
+        resp.setContent(gptService.selectAll());
+
+        return resp;
+    }
+
+    @GetMapping("/test3/{data}")
+    @ResponseBody
+    public String test3(@PathVariable String data){
+        String s = JSON.toJSONString(data);
+        return s;
+    }
 }

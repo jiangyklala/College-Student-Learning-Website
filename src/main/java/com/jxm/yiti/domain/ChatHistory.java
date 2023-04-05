@@ -1,17 +1,19 @@
 package com.jxm.yiti.domain;
 
 public class ChatHistory {
-    private Integer id;
+    private Long id;
 
     private Long userId;
 
+    private String title;
+
     private String content;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -21,6 +23,14 @@ public class ChatHistory {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getContent() {
@@ -39,6 +49,7 @@ public class ChatHistory {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", userId=").append(userId);
+        sb.append(", title=").append(title);
         sb.append(", content=").append(content);
         sb.append("]");
         return sb.toString();

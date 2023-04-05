@@ -10,7 +10,7 @@ public interface ChatHistoryMapper {
 
     int deleteByExample(ChatHistoryExample example);
 
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(Long id);
 
     int insert(ChatHistory record);
 
@@ -20,7 +20,7 @@ public interface ChatHistoryMapper {
 
     List<ChatHistory> selectByExample(ChatHistoryExample example);
 
-    ChatHistory selectByPrimaryKey(Integer id);
+    ChatHistory selectByPrimaryKey(Long id);
 
     int updateByExampleSelective(@Param("record") ChatHistory record, @Param("example") ChatHistoryExample example);
 

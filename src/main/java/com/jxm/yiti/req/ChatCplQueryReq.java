@@ -7,15 +7,15 @@ public class ChatCplQueryReq {
     @NotNull(message = "userID 不能为空")
     private Long userID;
 
-    private int historyID;
+    private Long historyID;
 
     private String queryStr;
 
-    public int getHistoryID() {
+    public Long getHistoryID() {
         return historyID;
     }
 
-    public void setHistoryID(int historyID) {
+    public void setHistoryID(Long historyID) {
         this.historyID = historyID;
     }
 
