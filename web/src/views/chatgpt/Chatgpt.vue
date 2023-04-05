@@ -3,6 +3,7 @@
 
 <!--    历史记录--抽屉-->
     <a-button type="primary" @click="showDrawer" class="drawer-button">历<br>史<br>记<br>录</a-button>
+    <a-button type="primary" @click="newChat" class="new-chat-button">新<br>对<br>话</a-button>
     <a-drawer
         v-model:visible="drawerVisible"
         class="drawer"
@@ -64,46 +65,51 @@ export default defineComponent({
   name: 'Chatgpt',
   setup() {
 
-    const gptQuestion = ref("");
-    const insertHtml2 = ref();
-    insertHtml2.value = "";
+    const userInfo = computed(() => {
+      return store.state.userInfo;
+    });
+
+    const gptQuestion = ref("");        // 用户提问的问题
     const searchLoading = ref(false);   // 搜索框 loading
-    // const spinning = ref(false);             // 加载中 loading
+    const mavonEditorRef = ref();             // mavonEditor
 
-    const mavonEditorRef = ref();
-
-    const chatCplQueryReq = ref();
+    const chatCplQueryReq = ref();            // 查询 gpt 参数
     chatCplQueryReq.value = {
-      userID: 1,
+      userID: userInfo.value.id,
       historyID: -1,
       queryStr: ""
     };
 
+    const newChat = () => {
+      location.reload();
 
-    onMounted(() => {
-      mavonEditorRef.value = mavonEditor.markdownIt;
-    });
+    }
 
     const onSearch = () => {
+      console.log(chatCplQueryReq.value.userID);
+      if (Tool.isEmpty(userInfo.value)) {           // 检测是否登录
+        message.warn("需要先登录才能用呦~~~");
+        return;
+      }
+      // chatCplQueryReq.value.userID = 1;
+
       searchLoading.value = true;
-      msglist.value.push({           // 显示 [human] 对话
+      msglist.value.push({                          // 先显示 [human] 对话
         type: 2,
         content: gptQuestion.value,
       });
-      console.log(msglist);
-      chatCplQueryReq.value.queryStr = gptQuestion.value.replaceAll('"', "\"");
+      chatCplQueryReq.value.queryStr = JSON.stringify(gptQuestion.value);
       axios.post("/gpt/chatCompletion2", chatCplQueryReq.value).then((response) => {
         searchLoading.value = false;
 
         if (response.data.success) {
           let resp = response.data.content;
-          msglist.value.push({      // 显示 [robot] 对话
+          msglist.value.push({                      // 再显示 [robot] 对话
             type: 1,
             content: resp.content,
           })
-          // insertHtml2.value = insertHtml2.value + "<br><br>" + mavonEditorRef.value.render(resp.content);
           chatCplQueryReq.value.historyID = resp.historyID;
-          selectHistoryList();     // 刷新历史记录
+          selectHistoryList();                      // 刷新历史记录
 
         } else {
           message.error(response.data.message);
@@ -125,21 +131,21 @@ export default defineComponent({
     };
 
     const selectHistoryList = () => {
-      axios.get("/gpt/selectAll").then((response) => {
-        // loading.value = false;
-        if (response.data.success) {  // 判断后端接口返回是否出错
-          historyList.value = response.data.content;
-          // console.log(historyList);
-        } else {
-          message.error(response.data.message);
-        }
-      })
+      if (Tool.isNotEmpty(userInfo.value)) {
+        axios.get("/gpt/selectAllByID/" + userInfo.value.id).then((response) => {
+          // loading.value = false;
+          if (response.data.success) {  // 判断后端接口返回是否出错
+            historyList.value = response.data.content;
+            // console.log(historyList);
+          } else {
+            message.error(response.data.message);
+          }
+        })
+      }
     }
 
     const historyItemClick = (historyID : number) => {
-      // chatCplQueryReq.value.userID = computed(() => {
-      //   return store.state.userInfo;
-      // }).value.id;
+
       msglist.value = [];
       chatCplQueryReq.value.historyID = historyID;
       drawerVisible.value = false;
@@ -154,6 +160,12 @@ export default defineComponent({
       })
 
     }
+
+
+    //-----------------对话显示------------------
+
+    const msglist = ref();
+    msglist.value = [];
 
     const extractAndShowChat = (content : any) => {
       content = "[" + content + "{}]";
@@ -174,20 +186,14 @@ export default defineComponent({
       }
     }
 
-    //-----------------对话显示------------------
-
-    const msglist = ref();
-    msglist.value = [];
-
-
     onMounted(() => {
+      mavonEditorRef.value = mavonEditor.markdownIt;
       selectHistoryList();
     })
 
 
     return {
       gptQuestion,
-      insertHtml2,
       searchLoading,
       onSearch,
       // spinning,
@@ -197,12 +203,22 @@ export default defineComponent({
       historyList,
       historyItemClick,
       msglist,
+      newChat,
     };
   },
 });
 </script>
 
 <style scoped>
+
+.new-chat-button {
+  position: fixed;
+  width: 40px;
+  height: 80px;
+  left: 5px;
+  /*padding-top: 100px;*/
+  top: 200px;
+}
 
 .drawer-button {
   position: fixed;

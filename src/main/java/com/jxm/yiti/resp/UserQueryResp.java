@@ -2,11 +2,11 @@ package com.jxm.yiti.resp;
 
 public class UserQueryResp {
 
+    private Long id;
+
     private String username;
 
     private String useraccount;
-
-    private String salt;
 
     private String githubId;
 
@@ -15,6 +15,14 @@ public class UserQueryResp {
     private Long balance;
 
     private String others;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;
@@ -30,14 +38,6 @@ public class UserQueryResp {
 
     public void setUseraccount(String useraccount) {
         this.useraccount = useraccount;
-    }
-
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
     }
 
     public String getGithubId() {
@@ -74,18 +74,14 @@ public class UserQueryResp {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", username=").append(username);
-        sb.append(", useraccount=").append(useraccount);
-        sb.append(", salt=").append(salt);
-        sb.append(", githubId=").append(githubId);
-        sb.append(", email=").append(email);
-        sb.append(", balance=").append(balance);
-        sb.append(", others=").append(others);
-        sb.append("]");
-        return sb.toString();
+        return "UserQueryResp{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", useraccount='" + useraccount + '\'' +
+                ", githubId='" + githubId + '\'' +
+                ", email='" + email + '\'' +
+                ", balance=" + balance +
+                ", others='" + others + '\'' +
+                '}';
     }
 }

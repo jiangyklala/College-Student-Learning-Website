@@ -155,7 +155,7 @@ export default defineComponent({
      * 跳转到 GitHub 登录
      */
     const loginByGitHub = () => {
-      window.open("http://124.223.184.187:8111/user/render");
+      window.open("http://165.154.36.46:8111/user/render");
     }
 
     /**

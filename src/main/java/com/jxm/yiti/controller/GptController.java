@@ -129,12 +129,17 @@ public class GptController {
 //        System.out.println("jaja");
     }
 
-    @GetMapping("/selectAll")
+    /**
+     * 查询某个用户下的所有历史记录
+     * @param userID 用户 ID
+     * @return
+     */
+    @GetMapping("/selectAllByID/{userID}")
     @ResponseBody
-    public CommonResp selectAll() {
+    public CommonResp selectAll(@PathVariable Long userID) {
         CommonResp<List<ChatHistory>> resp = new CommonResp<>();
 
-        resp.setContent(gptService.selectAll());
+        resp.setContent(gptService.selectAllByID(userID));
 
         return resp;
     }

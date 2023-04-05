@@ -5,6 +5,7 @@ import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.jxm.yiti.domain.ChatHistory;
 import com.jxm.yiti.domain.ChatHistoryContent;
+import com.jxm.yiti.domain.ChatHistoryExample;
 import com.jxm.yiti.mapper.ChatHistoryContentMapper;
 import com.jxm.yiti.mapper.ChatHistoryMapper;
 import com.jxm.yiti.req.ChatCplQueryReq;
@@ -154,6 +155,7 @@ public class GptService {
             historyMes = chatHistoryMapper.selectByPrimaryKey(chatCplQueryReq.getHistoryID());
             historyMesContent = chatHistoryContentMapper.selectByPrimaryKey(historyMes.getContentId());
         LOG.info(historyMes.toString());
+        LOG.info(historyMesContent.toString());
         }
 
         // 设置请求体
@@ -167,7 +169,7 @@ public class GptService {
                 "{\n" +
                         "    \"model\": \"gpt-3.5-turbo-0301\",\n" +
                         "    \"messages\":" +
-                        "[" + historyMesContent.getContent() + "{\"role\": \"user\", \"content\": \"%s\"}],\n" +
+                        "[" + historyMesContent.getContent() + "{\"role\": \"user\", \"content\": %s}],\n" +
                         "    \"temperature\": 0, \n" +
                         "    \"max_tokens\": 2048\n" +
                         "}", queryStr
@@ -186,8 +188,9 @@ public class GptService {
             if (chatCplQueryReq.getHistoryID() == -1) {                                   // 此次对话为新对话
                 historyMesContent = new ChatHistoryContent();                                 // 无论是新旧对话, 都要更新 content
                 historyMesContent.setId(snowFlakeIdWorker.nextId());
-                historyMesContent.setContent(String.format("{\"role\": \"user\", \"content\": \"%s\"}", queryStr) +
+                historyMesContent.setContent(String.format("{\"role\": \"user\", \"content\": %s}", JSON.toJSONString(queryStr)) +
                                              String.format(",{\"role\": \"assistant\", \"content\": %s},", JSON.toJSONString(resContent)));
+                LOG.info(historyMesContent.toString());
                 chatHistoryContentMapper.insert(historyMesContent);
 
                 queryStr = queryStr.length() > 50 ? queryStr.substring(0, 50) : queryStr;    // title 的长度限制在 50
@@ -200,7 +203,7 @@ public class GptService {
                 chatHistoryMapper.insert(historyMes);
             } else {                                                                      // 此次对话为旧对话, 只用更新 content
                 historyMesContent.setContent(historyMesContent.getContent() +
-                        String.format("{\"role\": \"user\", \"content\": \"%s\"}", queryStr) +
+                        String.format("{\"role\": \"user\", \"content\": %s}", JSON.toJSONString(queryStr)) +
                         String.format(",{\"role\": \"assistant\", \"content\": %s},", JSON.toJSONString(resContent)));
                 chatHistoryContentMapper.updateByPrimaryKeyWithBLOBs(historyMesContent);
                 LOG.info("lala" + historyMesContent.toString());
@@ -213,10 +216,14 @@ public class GptService {
         return chatCplQueryResp;
     }
 
-    public List<ChatHistory> selectAll() {
+    public List<ChatHistory> selectAllByID(Long userID) {
         List<ChatHistory> res = null;
+        ChatHistoryExample chatHistoryExample = new ChatHistoryExample();
+        ChatHistoryExample.Criteria criteria = chatHistoryExample.createCriteria();
+        criteria.andUserIdEqualTo(userID);
+
         try {
-            res = chatHistoryMapper.selectByExample(null);
+            res = chatHistoryMapper.selectByExample(chatHistoryExample);
         } catch (Exception e) {
             e.printStackTrace();
         }

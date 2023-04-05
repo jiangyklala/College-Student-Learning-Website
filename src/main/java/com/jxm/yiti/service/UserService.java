@@ -101,7 +101,7 @@ public class UserService {
         return new AuthGithubRequest(AuthConfig.builder()
                 .clientId("7f64b8527592ce2d4d7c")
                 .clientSecret("bc5d42bee691771f547351fec23f445676aeb10b")
-                .redirectUri("http://124.223.184.187:8111/user/github/callback")
+                .redirectUri("http://165.154.36.46:8111/user/github/callback")
                 .build());
     }
 
@@ -112,7 +112,7 @@ public class UserService {
         String onlyLoginCert = Long.toString(snowFlakeIdWorker.nextId());           // 生成唯一登录凭证
 
         response.setHeader("Access-Control-Allow-Credentials","true");
-        response.setHeader("Access-Control-Allow-Origin", "http://124.223.184.187:8110");
+        response.setHeader("Access-Control-Allow-Origin", "http://165.154.36.46:8110");
 
         Cookie cookieLoginCert = new Cookie("yiti_loginCert", onlyLoginCert);       // 增加本地唯一登录凭证 Cookie
         cookieLoginCert.setMaxAge(60 * 60 * 24);
