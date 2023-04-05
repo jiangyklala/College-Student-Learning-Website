@@ -127,7 +127,7 @@ public class UserController {
             userService.setOnlyLoginCert(userID, response);                               // 设置唯一登录凭证
         }
 
-        response.sendRedirect("http://124.223.184.187:8110/");
+        response.sendRedirect("http://165.154.36.46:8110/");
     }
 
     @GetMapping("/getCookie1")
