@@ -136,6 +136,7 @@ import {message, notification} from "ant-design-vue";
 import {DownOutlined, UserOutlined} from "@ant-design/icons-vue";
 import store from "@/store";
 import {Tool} from "@/utils/tool";
+import router from "@/router";
 
 export default defineComponent({
   name: 'the-header',
@@ -173,7 +174,8 @@ export default defineComponent({
       axios.post("/user/loginByAccount", userInModal.value).then((response) => {
         if (response.data.success) {    // 登录成功
           loginModalVisible.value = false;
-          location.reload();
+          // window.open("http://localhost:8110/Home");
+          window.location.href = 'http://localhost:8110/Home'
         } else {
           message.error(response.data.message);
         }

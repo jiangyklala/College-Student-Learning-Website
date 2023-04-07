@@ -4,21 +4,19 @@ import com.jxm.yiti.domain.User;
 import com.jxm.yiti.domain.UserExample;
 import com.jxm.yiti.mapper.UserMapper;
 import com.jxm.yiti.req.UserQueryReq;
-import com.jxm.yiti.req.UserSaveReq;
 import com.jxm.yiti.resp.CommonResp;
 import com.jxm.yiti.resp.UserQueryResp;
 import com.jxm.yiti.utils.*;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import me.zhyd.oauth.config.AuthConfig;
 import me.zhyd.oauth.model.AuthUser;
 import me.zhyd.oauth.request.AuthGithubRequest;
 import me.zhyd.oauth.request.AuthRequest;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -40,10 +38,16 @@ public class UserService {
 
     private static SnowFlakeIdWorker snowFlakeIdWorker;
 
+    @Value("${my.addr}")
+    private String myAddr;
+
+    @Value("${my.redis.ip}")
+    private String myRedisIP;
+
     @PostConstruct
     public void init() {
         snowFlakeIdWorker  = new SnowFlakeIdWorker(0, 0);            // 初始化雪花ID生成器
-        jedisPool = new JedisPool(setJedisPoolConfig(), "124.223.184.187", 6379, 5000, "jiang", 1);
+        jedisPool = new JedisPool(setJedisPoolConfig(), myRedisIP, 6379, 5000, "jiang", 1);
 //        initJedisPool(jedisPool);
     }
 
@@ -101,7 +105,7 @@ public class UserService {
         return new AuthGithubRequest(AuthConfig.builder()
                 .clientId("7f64b8527592ce2d4d7c")
                 .clientSecret("bc5d42bee691771f547351fec23f445676aeb10b")
-                .redirectUri("http://165.154.36.46:8111/user/github/callback")
+                .redirectUri(myAddr + "/user/github/callback")
                 .build());
     }
 
@@ -112,7 +116,7 @@ public class UserService {
         String onlyLoginCert = Long.toString(snowFlakeIdWorker.nextId());           // 生成唯一登录凭证
 
         response.setHeader("Access-Control-Allow-Credentials","true");
-        response.setHeader("Access-Control-Allow-Origin", "http://165.154.36.46:8110");
+        response.setHeader("Access-Control-Allow-Origin", myAddr);
 
         Cookie cookieLoginCert = new Cookie("yiti_loginCert", onlyLoginCert);       // 增加本地唯一登录凭证 Cookie
         cookieLoginCert.setMaxAge(60 * 60 * 24);
