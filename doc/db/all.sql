@@ -241,6 +241,7 @@ create table `user` (
 #                         primary key (`id`)
 # ) engine=innodb default charset=utf8mb4 comment='用户信息表';
 
+# 敏感词表
 drop table if exists `disallow_word`;
 create table `disallow_word` (
                                  `id` bigint auto_increment not null,
@@ -255,14 +256,14 @@ insert into disallow_word(value) values ('国家领导人');
 insert into disallow_word(value) values ('操');
 insert into disallow_word(value) values ('lala');
 
-# chatGPT 用户历史查询信息记录
+# chatGPT 用户历史查询信息记录 1.0
 DROP TABLE IF EXISTS `chat_history`;
 
 CREATE TABLE `chat_history` (
                         `id` bigint AUTO_INCREMENT NOT NULL,
                         `user_id` bigint NOT NULL COMMENT '所属用户ID',
-                        `title` varchar(50)  COMMENT '文档内容',
-                        `content_id` bigint NOT NULL COMMENT '文档内容',
+                        `title` varchar(50)  COMMENT '对话标题',
+                        `content_id` bigint NOT NULL COMMENT '对话内容',
                         PRIMARY KEY (`id`)) engine = innodb DEFAULT charset = utf8mb4 COMMENT = 'chatGPT 用户历史查询信息记录';
 
 # chatGPT 用户历史查询信息记录的 content 字段

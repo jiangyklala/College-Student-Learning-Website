@@ -86,7 +86,7 @@ export default defineComponent({
     }
 
     const onSearch = () => {
-      console.log(chatCplQueryReq.value.userID);
+      // console.log(chatCplQueryReq.value.userID);
       if (Tool.isEmpty(userInfo.value)) {           // 检测是否登录
         message.warn("需要先登录才能用呦~~~");
         return;
@@ -130,6 +130,9 @@ export default defineComponent({
       drawerVisible.value = true;
     };
 
+    /**
+     * 查询所有对话记录
+     */
     const selectHistoryList = () => {
       if (Tool.isNotEmpty(userInfo.value)) {
         axios.get("/gpt/selectAllByID/" + userInfo.value.id).then((response) => {
@@ -144,6 +147,10 @@ export default defineComponent({
       }
     }
 
+    /**
+     * 点击某个对话, 显示这个对话的内容
+     * @param historyID
+     */
     const historyItemClick = (historyID : number) => {
 
       msglist.value = [];
@@ -153,7 +160,7 @@ export default defineComponent({
       // console.log(chatCplQueryReq);
       axios.get("/gpt/selectContentByID/" + historyID).then((response) => {
         if (response.data.success) {  // 判断后端接口返回是否出错
-          extractAndShowChat(response.data.content);
+          extractAndShowChat2(response.data.content);
         } else {
           message.error(response.data.message);
         }
@@ -167,10 +174,36 @@ export default defineComponent({
     const msglist = ref();
     msglist.value = [];
 
-    const extractAndShowChat = (content : any) => {
+    /**
+     * 提取并显示对话 2.0
+     * @param content
+     */
+    const extractAndShowChat2 = (content : any) => {
+      content = JSON.parse(content);// JSON.stringify(content);
+      // console.log(content);
+      for (let i = 0; i < content.length - 1; ++i) {
+        if (content[i].role === "user") {
+          msglist.value.push({
+            type: 2,
+            content: content[i].content,
+          })
+        } else {
+          msglist.value.push({
+            type: 1,
+            content: content[i].content,
+          })
+        }
+      }
+    }
+
+    /**
+     * 提取并显示对话 1.0
+     * @param content
+     */
+    const extractAndShowChat1 = (content : any) => {
       content = "[" + content + "{}]";
       content = JSON.parse(content);// JSON.stringify(content);
-      console.log(content);
+      // console.log(content);
       for (let i = 0; i < content.length - 1; ++i) {
         if (content[i].role === "user") {
           msglist.value.push({
