@@ -1,6 +1,6 @@
 <template>
   <a-layout-content style="padding: 0 250px">
-    <p>欢迎</p>
+    <h2 style="text-align: center">欢迎</h2>
   </a-layout-content>
 </template>
 

@@ -33,6 +33,28 @@ public class UserController {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
+//    /**
+//     * 激活邮件
+//     */
+//    @GetMapping ("/activeEmail/{email}")
+//    @ResponseBody
+//    public String activeEmail(@PathVariable String email) throws IOException {
+//        Boolean res = userService.activeEmail(email);
+//
+//        return res ? "恭喜! 邮箱激活成功" : "出错喽, 重发激活邮件试试, 或者微信 call 我呦";
+//    }
+
+    /**
+     * 发送激活邮件
+     */
+    @PostMapping("/sendActiveEmail/{email}")
+    @ResponseBody
+    public CommonResp sendActiveEmail(@PathVariable String email) {
+        CommonResp resp = new CommonResp<>();
+        userService.sendActiveEmail(email, resp);
+        return resp;
+    }
+
     /**
      * 登录接口
      */
@@ -52,13 +74,58 @@ public class UserController {
     }
 
     /**
+     * 登录接口
+     */
+    @PostMapping("/loginByEmail")
+    @ResponseBody
+    public CommonResp loginByEmail(@RequestBody UserQueryReq user, HttpServletResponse response) throws IOException {
+        CommonResp resp = new CommonResp<>();
+        userService.isLoginEmail(user.getEmail(), resp);
+        userService.isLoginPassword(user, resp);                       // 验证密码, 如果密码有效, 根据此账号返回 user
+        if (resp.getSuccess()) {
+            // 登陆成功, 添加唯一登录凭证
+            userService.setOnlyLoginCert(user.getId(), response);
+        }
+
+        return resp;
+    }
+
+    /**
+     * 注册接口
+     */
+    @PostMapping("/isInvite/{inviteCode}")
+    @ResponseBody
+    public CommonResp isInvite(@PathVariable String inviteCode) {
+        CommonResp resp = new CommonResp<>();
+        userService.isInvite(inviteCode, resp);
+        return resp;
+    }
+
+    /**
      * 注册接口
      */
     @PostMapping("/register")
     @ResponseBody
     public CommonResp register(@RequestBody UserQueryReq user) {
         CommonResp resp = new CommonResp<>();
-        userService.isRegisterUserAccount(user.getUseraccount(), resp);
+        userService.isActiveEmail(user.getEmail(), user.getVerifyCode(), resp);
+        userService.isRegisterPassword(user.getPassword(), resp);
+        if (resp.getSuccess()) {
+            userService.encryptPassword(user, userService.setSalt(user));  // 设置盐值并密码加密
+            userService.addUser(user, resp);
+        }
+        return resp;
+    }
+
+
+    /**
+     * 注册接口
+     */
+    @PostMapping("/register0")
+    @ResponseBody
+    public CommonResp register0(@RequestBody UserQueryReq user) {
+        CommonResp resp = new CommonResp<>();
+//        userService.isRegisterUserAccount(user.getUseraccount(), resp);
         userService.isRegisterPassword(user.getPassword(), resp);
         if (resp.getSuccess()) {
             userService.encryptPassword(user, userService.setSalt(user));  // 设置盐值并密码加密

@@ -44,6 +44,7 @@
   </a-layout-content>
 </template>
 
+
 <script lang="ts">
 import {computed, defineComponent, onMounted, ref} from 'vue';
 import axios from "axios";
@@ -86,20 +87,19 @@ export default defineComponent({
     }
 
     const onSearch = () => {
-      // console.log(chatCplQueryReq.value.userID);
       if (Tool.isEmpty(userInfo.value)) {           // 检测是否登录
         message.warn("需要先登录才能用呦~~~");
         return;
       }
-      // chatCplQueryReq.value.userID = 1;
 
+      chatCplQueryReq.value.queryStr = JSON.stringify(gptQuestion.value);
       searchLoading.value = true;
       msglist.value.push({                          // 先显示 [human] 对话
         type: 2,
         content: gptQuestion.value,
       });
-      chatCplQueryReq.value.queryStr = JSON.stringify(gptQuestion.value);
-      axios.post("/gpt/chatCompletion2", chatCplQueryReq.value).then((response) => {
+      gptQuestion.value = "";
+      axios.post("http://165.154.36.46:8111/gpt/chatCompletion2", chatCplQueryReq.value).then((response) => {
         searchLoading.value = false;
 
         if (response.data.success) {
@@ -159,7 +159,7 @@ export default defineComponent({
       // console.log("chatCplQueryReq:");
       // console.log(chatCplQueryReq);
       axios.get("/gpt/selectContentByID/" + historyID).then((response) => {
-        if (response.data.success) {  // 判断后端接口返回是否出错
+        if (response.data.success) {
           extractAndShowChat2(response.data.content);
         } else {
           message.error(response.data.message);
@@ -180,8 +180,8 @@ export default defineComponent({
      */
     const extractAndShowChat2 = (content : any) => {
       content = JSON.parse(content);// JSON.stringify(content);
-      // console.log(content);
-      for (let i = 0; i < content.length - 1; ++i) {
+      console.log(content);
+      for (let i = 0; i < content.length; ++i) {
         if (content[i].role === "user") {
           msglist.value.push({
             type: 2,

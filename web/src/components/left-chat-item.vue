@@ -48,7 +48,7 @@ export default defineComponent({
     onMounted(() => {
       mavonEditorRef.value = mavonEditor.markdownIt;
       contentMD.value = mavonEditorRef.value.render(props.content);
-      console.log(contentMD.value);
+      // console.log(contentMD.value);
     })
 
     return {

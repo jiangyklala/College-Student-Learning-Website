@@ -214,7 +214,7 @@ create table `user` (
                         `password` char(32)  comment '用户密码',
                         `salt` varchar(50)  default('') comment '密码盐值',
                         `github_id` varchar(50) comment 'github_id',
-                        `email` varchar(50) default(NULL) comment '邮箱',
+                        `email` varchar(50) unique default(NULL) comment '邮箱',
                         `balance` bigint default 0 comment '用户余额',
                         `others` varchar(50) comment '其它',
                         primary key (`id`),
@@ -273,3 +273,11 @@ CREATE TABLE `chat_history_content` (
                         `id` bigint NOT NULL,
                         `content` mediumtext  COMMENT '文档内容',
                         PRIMARY KEY (`id`)) engine = innodb DEFAULT charset = utf8mb4 COMMENT = 'chatGPT 用户历史查询信息记录的 content 字段';
+
+# 邮箱激活表
+DROP TABLE IF EXISTS `email_active`;
+
+CREATE TABLE `email_active` (
+                                `email` varchar(50)  COMMENT '对话标题',
+                                `active` boolean COMMENT '此邮箱是否被激活',
+                                PRIMARY KEY (`email`)) engine = innodb DEFAULT charset = utf8mb4 COMMENT = 'chatGPT 用户历史查询信息记录';

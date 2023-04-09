@@ -1,6 +1,7 @@
 <template>
   <a-layout-header class="header">
     <div class="header-menu">
+<!--      ChatGPT-3.5 内测&#45;&#45;&#45;&#45;抢先体验 ^_^-->
       <a-menu
           theme="light"
           mode="horizontal"
@@ -10,32 +11,32 @@
           <router-link to="/Home">首页</router-link>
         </a-menu-item>
         <a-menu-item key="10">
-          <router-link to="/chatgpt/Chatgpt">ChatGPT-3.5</router-link>
+          <router-link to="/chatgpt/Chatgpt">ChatGPT-3.5 内测&#45;&#45;&#45;&#45;抢先体验</router-link>
         </a-menu-item>
-        <a-menu-item key="2">
-          <router-link to="/download/Download">下载</router-link>
-        </a-menu-item>
-        <a-menu-item key="3">
-          <router-link to="/course/Course">课程</router-link>
-        </a-menu-item>
-        <a-menu-item key="8">
-          <router-link to="/column/Column">专栏</router-link>
-        </a-menu-item>
-        <a-menu-item key="4">
-          <router-link to="/admin/AdminDownload">下载管理</router-link>
-        </a-menu-item>
-        <a-menu-item key="5">
-          <router-link to="/admin/AdminCourse">课程及视频管理</router-link>
-        </a-menu-item>
-        <a-menu-item key="6">
-          <router-link to="/admin/AdminCategory">分类管理</router-link>
-        </a-menu-item>
-        <a-menu-item key="9">
-          <router-link to="/admin/AdminColumn">专栏管理</router-link>
-        </a-menu-item>
-        <a-menu-item key="7">
-          <router-link to="/About">关于</router-link>
-        </a-menu-item>
+<!--        <a-menu-item key="2">-->
+<!--          <router-link to="/download/Download">下载</router-link>-->
+<!--        </a-menu-item>-->
+<!--        <a-menu-item key="3">-->
+<!--          <router-link to="/course/Course">课程</router-link>-->
+<!--        </a-menu-item>-->
+<!--        <a-menu-item key="8">-->
+<!--          <router-link to="/column/Column">专栏</router-link>-->
+<!--        </a-menu-item>-->
+<!--        <a-menu-item key="4">-->
+<!--          <router-link to="/admin/AdminDownload">下载管理</router-link>-->
+<!--        </a-menu-item>-->
+<!--        <a-menu-item key="5">-->
+<!--          <router-link to="/admin/AdminCourse">课程及视频管理</router-link>-->
+<!--        </a-menu-item>-->
+<!--        <a-menu-item key="6">-->
+<!--          <router-link to="/admin/AdminCategory">分类管理</router-link>-->
+<!--        </a-menu-item>-->
+<!--        <a-menu-item key="9">-->
+<!--          <router-link to="/admin/AdminColumn">专栏管理</router-link>-->
+<!--        </a-menu-item>-->
+<!--        <a-menu-item key="7">-->
+<!--          <router-link to="/About">关于</router-link>-->
+<!--        </a-menu-item>-->
       </a-menu>
 
     </div>
@@ -60,10 +61,7 @@
               账户余额: {{userInfo.balance}}
             </a-menu-item>
             <a-menu-item>
-              <a>2nd menu item</a>
-            </a-menu-item>
-            <a-menu-item>
-              <a>3rd menu item</a>
+              <a>开发中</a>
             </a-menu-item>
           </a-menu>
         </template>
@@ -82,8 +80,8 @@
         :model="userInModal"
         :label-col="{ span : 2 }"
     >
-      <a-form-item label="账号">
-        <a-input v-model:value="userInModal.useraccount"/>
+      <a-form-item label="邮箱">
+        <a-input v-model:value="userInModal.email"/>
       </a-form-item>
       <a-form-item label="密码">
         <a-input-password v-model:value="userInModal.password"/>
@@ -111,13 +109,19 @@
   >
     <a-form
         :model="userInModal"
-        :label-col="{ span : 2 }"
+        :label-col="{ span : 3 }"
     >
-      <a-form-item label="账号">
-        <a-input v-model:value="userInModal.useraccount"/>
+      <a-form-item label="邮箱" :required="true">
+        <a-input v-model:value="userInModal.email"/>
       </a-form-item>
       <a-form-item label="密码">
         <a-input-password v-model:value="userInModal.password"/>
+      </a-form-item>
+      <a-form-item label="验证码">
+        <a-input style="width: 70%" v-model:value="userInModal.verifyCode"/><a-button :disabled="verifyBtnDisable" style="float: right; width: 29%" type="dashed" @click="sendVerifyCode">发送验证码</a-button>
+      </a-form-item>
+      <a-form-item label="邀请码">
+        <a-input v-model:value="inviteCode"/>
       </a-form-item>
     </a-form>
     <template #footer>
@@ -171,10 +175,15 @@ export default defineComponent({
      */
     const loginModalOk = () => {
       console.log(userInModal.value);
-      axios.post("/user/loginByAccount", userInModal.value).then((response) => {
+      axios.post("/user/loginByEmail", userInModal.value).then((response) => {
         if (response.data.success) {    // 登录成功
           loginModalVisible.value = false;
-          window.location.href = 'http://localhost:8110/Home'
+          window.location.href = "http://124.223.184.187:8110/Home";
+          // window.location.href = "http://localhost:8110/Home";
+
+          // location.reload();
+          // router.go(0);
+          // message.success(process.env.HOME_ADDR);
         } else {
           message.error(response.data.message);
         }
@@ -184,6 +193,8 @@ export default defineComponent({
     //-------------注册表单--------------
     const registerModalVisible = ref(false);
     const registerModalLoading = ref(false);
+    const inviteCode = ref("");
+    const verifyBtnDisable = ref(false);
     /**
      * 注册按钮点击
      */
@@ -195,13 +206,40 @@ export default defineComponent({
      * 注册表单提交
      */
     const registerModalOk = () => {
-      // console.log(userInModal.value);
-      axios.post("/user/register", userInModal.value).then((response) => {
-        if (response.data.success) {    // 注册成功
-          message.success(response.data.message + ", 自动跳转到登录页面");
-          registerModalVisible.value = false;
-          loginModalVisible.value = true;
+
+      axios.post("/user/isInvite/" + inviteCode.value).then((response) => {
+        if (response.data.success) {   // 邀请码有效
+          axios.post("/user/register", userInModal.value).then((response2) => {
+            if (response2.data.success) {    // 注册成功
+              message.success(response2.data.message + ", 自动跳转到登录页面", 5);
+              registerModalVisible.value = false;
+              loginModalVisible.value = true;
+            } else {
+              message.error(response2.data.message);
+            }
+          })
         } else {
+          message.error(response.data.message);
+        }
+      });
+    }
+
+    /**
+     * 发送邮箱验证码
+     */
+    const sendVerifyCode = () => {
+      if (Tool.isEmpty(userInModal.value.email)) {
+        message.error("邮箱不能为空呦");
+        return;
+      }
+      verifyBtnDisable.value = true;
+      axios.post("/user/sendActiveEmail/" + userInModal.value.email).then((response) => {
+
+        if (response.data.success) {
+          message.success("验证码发送成功", 5);
+          verifyBtnDisable.value = false;
+        } else {
+          verifyBtnDisable.value = false;
           message.error(response.data.message);
         }
       })
@@ -313,15 +351,19 @@ export default defineComponent({
 
       registerModalVisible,
       registerModalLoading,
+      // verifyCode,
+      inviteCode,
 
       userInModal,
       userInfo,
+      verifyBtnDisable,
 
       loginByGitHub,
       loginModalOk,
       loginClick,
       registerClick,
       registerModalOk,
+      sendVerifyCode,
     };
   }
 });
@@ -336,10 +378,18 @@ export default defineComponent({
 
 }
 
+/*.header-menu {*/
+/*  display: inline-block;*/
+/*  width: 85%;*/
+/*  padding-left: 20%;*/
+/*}*/
+
 .header-menu {
   display: inline-block;
   width: 85%;
-  padding-left: 20%;
+  /*padding-left: 20%;*/
+  color: black;
+  background-color: white;
 }
 
 .login-menu {

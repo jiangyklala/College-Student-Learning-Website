@@ -14,6 +14,16 @@ public class UserQueryReq {
     private String githubId;
 
     private String email;
+    
+    private String verifyCode;
+
+    public String getVerifyCode() {
+        return verifyCode;
+    }
+
+    public void setVerifyCode(String verifyCode) {
+        this.verifyCode = verifyCode;
+    }
 
     public String getSalt() {
         return salt;
@@ -81,6 +91,7 @@ public class UserQueryReq {
                 ", salt='" + salt + '\'' +
                 ", githubId='" + githubId + '\'' +
                 ", email='" + email + '\'' +
+                ", verifyCode='" + verifyCode + '\'' +
                 '}';
     }
 }

@@ -15,7 +15,10 @@ import me.zhyd.oauth.config.AuthConfig;
 import me.zhyd.oauth.model.AuthUser;
 import me.zhyd.oauth.request.AuthGithubRequest;
 import me.zhyd.oauth.request.AuthRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -31,8 +34,13 @@ import java.util.regex.Pattern;
 @Service
 public class UserService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
+
     @Resource
     private UserMapper userMapper;
+
+    @Resource
+    private MailService mailService;
 
     public static JedisPool jedisPool;
 
@@ -310,6 +318,36 @@ public class UserService {
         }
 
         // 判断密码是否正确
+        User user = selectAUserByEmail(userQueryReq.getEmail());                                        // 根据 email 获取数据库中的 user, 这里的 user 在数据库中必定存在; 如果不存在, 在第一个判断中已经返回了
+        userQueryReq.setId(user.getId());
+        String nowPassword = userQueryReq.getPassword();                                                   // 从前端传过来的 password
+        nowPassword = Md5Encrypt.mdtEncrypt(nowPassword, user.getSalt(), (long) nowPassword.length());     // 对前端传过来的 password 进行加密
+        if (!Objects.equals(user.getPassword(), nowPassword)) {                                            // 将前端传过来的密码加密后与数据库中的 user 密码比较
+            resp.setSuccess(false);
+            resp.setMessage("密码错误");
+            return;
+        }
+
+    }
+
+    /**
+     * 验证登录时的"密码"是否符合限制
+     * @param resp 传入最终返回结果类的引用, 进行修改
+     */
+    public void isLoginPassword0(UserQueryReq userQueryReq, CommonResp resp) {
+        // 如果账号已经不对, 直接返回
+        if (!resp.getSuccess()) {
+            return;
+        }
+
+        // 判断密码是否符合限制
+        if (PasswordLimit.passWordLimit(userQueryReq.getPassword()) != 0) {
+            resp.setSuccess(false);
+            resp.setMessage("密码错误");
+            return;
+        }
+
+        // 判断密码是否正确
         User user = selectAUserByAc(userQueryReq.getUseraccount());                                        // 根据账号获取数据库中的 user, 这里的 user 在数据库中必定存在; 如果不存在, 在第一个判断中已经返回了
         userQueryReq.setId(user.getId());
         String nowPassword = userQueryReq.getPassword();                                                   // 从前端传过来的 password
@@ -342,6 +380,26 @@ public class UserService {
     }
 
     /**
+     * 根据 email 返回这个 user
+     * @return 是 - 返回 user 对象; 否 - 返回 null
+     */
+    public User selectAUserByEmail(String email) {
+        List<User> userList = null;
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+        criteria.andEmailEqualTo(email);
+
+        try {
+            userList = userMapper.selectByExample(userExample);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return userList == null ? null : userList.get(0);
+
+    }
+
+    /**
      * 根据 userAccount 返回这个 user
      * @return 是 - 返回 user 对象; 否 - 返回 null
      */
@@ -369,11 +427,54 @@ public class UserService {
         userInsert.setId(snowFlakeIdWorker.nextId());
         userInsert.setUsername("新用户" + userInsert.getId().toString().substring(4, 10));   // 初始名称
         userInsert.setBalance(0L);
-        if (userMapper.insert(userInsert) != 0) {
-            resp.setMessage(resp.getMessage() + "用户添加成功");
-        } else {
-            resp.setSuccess(false);
-            resp.setMessage(resp.getMessage() + "用户插入失败");
+        try {
+            if (userMapper.insert(userInsert) != 0) {
+                resp.setMessage(resp.getMessage() + "用户添加成功");
+            } else {
+                resp.setSuccess(false);
+                resp.setMessage(resp.getMessage() + "用户插入失败");
+            }
+        } catch (DuplicateKeyException e) {
+            resp.setMessage("用户已经存在了呦~");
         }
+    }
+
+    public void isLoginEmail(String email, CommonResp resp) {
+        if (!resp.getSuccess()) return;
+        Pattern pattern1 = Pattern.compile("^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$");
+        resp.setSuccess(pattern1.matcher(email).matches());
+    }
+
+    public boolean sendActiveEmail(String email, CommonResp resp) {
+        Pattern pattern1 = Pattern.compile("^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$");
+        if (!pattern1.matcher(email).matches()) {
+            resp.setSuccess(false);
+            resp.setMessage("邮箱格式错误");
+        }
+        return mailService.sendActiveEmail(email);
+    }
+
+    /**
+     * 验证邮箱是否有效
+     */
+    public void isActiveEmail(String email, String verifyCode, CommonResp resp) {
+        LOG.info(verifyCode);
+        try (Jedis jedis = UserService.jedisPool.getResource()) {
+            LOG.info(jedis.get("yt:ac:email:" + email));
+            if (Objects.equals(jedis.get("yt:ac:email:" + email), verifyCode)) {
+                resp.setSuccess(true);
+                return;
+            }
+        }
+        resp.setMessage("验证码不对呦");
+        resp.setSuccess(false);
+    }
+
+    public void isInvite(String inviteCode, CommonResp resp) {
+        if (Objects.equals(inviteCode, "8110") || Objects.equals(inviteCode, "0118")) {
+            return;
+        }
+        resp.setSuccess(false);
+        resp.setMessage("邀请码无效");
     }
 }
