@@ -471,10 +471,23 @@ public class UserService {
     }
 
     public void isInvite(String inviteCode, CommonResp resp) {
-        if (Objects.equals(inviteCode, "8110") || Objects.equals(inviteCode, "0118")) {
-            return;
+        try (Jedis jedis = UserService.jedisPool.getResource()) {
+            if (jedis.exists("yt:ac:code:" + inviteCode)) {
+                jedis.expire("yt:ac:code:" + inviteCode, -2);
+                return;
+            }
         }
         resp.setSuccess(false);
         resp.setMessage("邀请码无效");
+    }
+
+    public ArrayList<String> getInviteCode(Integer num) {
+        ArrayList<String> codes = new ArrayList<>(num);
+        try (Jedis jedis = UserService.jedisPool.getResource()) {
+            String code = InviteCodeGenerate.next();
+            jedis.setex("yt:ac:code:" + code, 24 * 60 * 60, "");
+            codes.add(code);
+        }
+        return codes;
     }
 }

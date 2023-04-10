@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.WebUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Objects;
 
 @Controller
@@ -43,6 +44,15 @@ public class UserController {
 //
 //        return res ? "恭喜! 邮箱激活成功" : "出错喽, 重发激活邮件试试, 或者微信 call 我呦";
 //    }
+
+
+
+    @GetMapping("/getInviteCode/{num}")
+    @ResponseBody
+    public String getInviteCode(@PathVariable Integer num) throws IOException {
+        ArrayList<String> inviteCode = userService.getInviteCode(num);
+        return inviteCode.toString();
+    }
 
     /**
      * 发送激活邮件

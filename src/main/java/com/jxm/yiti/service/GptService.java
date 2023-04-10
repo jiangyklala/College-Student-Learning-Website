@@ -3,9 +3,12 @@ package com.jxm.yiti.service;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.jxm.yiti.domain.ChatHistory;
 import com.jxm.yiti.domain.ChatHistoryContent;
 import com.jxm.yiti.domain.ChatHistoryExample;
+import com.jxm.yiti.domain.DownloadList;
 import com.jxm.yiti.mapper.ChatHistoryContentMapper;
 import com.jxm.yiti.mapper.ChatHistoryMapper;
 import com.jxm.yiti.req.ChatCplQueryReq;
@@ -259,10 +262,17 @@ public class GptService {
         criteria.andUserIdEqualTo(userID);
 
         try {
+            PageHelper.startPage(1, 20, true);
             res = chatHistoryMapper.selectByExample(chatHistoryExample);
+            PageInfo<ChatHistory> downloadListPageInfo = new PageInfo<>(res);
+            LOG.info("当前页: " + downloadListPageInfo.getPageNum()
+                    + ", 总页数: " + downloadListPageInfo.getPages()
+                    + " , 总记录数: " + downloadListPageInfo.getTotal());
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
         return res;
     }
 
