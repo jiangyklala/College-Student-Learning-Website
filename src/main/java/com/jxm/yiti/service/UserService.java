@@ -305,7 +305,7 @@ public class UserService {
      * @param resp 传入最终返回结果类的引用, 进行修改
      */
     public void isLoginPassword(UserQueryReq userQueryReq, CommonResp resp) {
-        // 如果账号已经不对, 直接返回
+        // 如果邮箱已经错误, 返回
         if (!resp.getSuccess()) {
             return;
         }
@@ -319,6 +319,11 @@ public class UserService {
 
         // 判断密码是否正确
         User user = selectAUserByEmail(userQueryReq.getEmail());                                        // 根据 email 获取数据库中的 user, 这里的 user 在数据库中必定存在; 如果不存在, 在第一个判断中已经返回了
+        if (user == null) {
+            resp.setSuccess(false);
+            resp.setMessage("此邮箱是不是还没注册呢?");
+            return;
+        }
         userQueryReq.setId(user.getId());
         String nowPassword = userQueryReq.getPassword();                                                   // 从前端传过来的 password
         nowPassword = Md5Encrypt.mdtEncrypt(nowPassword, user.getSalt(), (long) nowPassword.length());     // 对前端传过来的 password 进行加密
@@ -384,7 +389,7 @@ public class UserService {
      * @return 是 - 返回 user 对象; 否 - 返回 null
      */
     public User selectAUserByEmail(String email) {
-        List<User> userList = null;
+        List<User> userList = new ArrayList<>();
         UserExample userExample = new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();
         criteria.andEmailEqualTo(email);
@@ -395,7 +400,7 @@ public class UserService {
             e.printStackTrace();
         }
 
-        return userList == null ? null : userList.get(0);
+        return userList.size() == 0 ? null : userList.get(0);
 
     }
 
@@ -440,9 +445,12 @@ public class UserService {
     }
 
     public void isLoginEmail(String email, CommonResp resp) {
-        if (!resp.getSuccess()) return;
         Pattern pattern1 = Pattern.compile("^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$");
-        resp.setSuccess(pattern1.matcher(email).matches());
+        if (!pattern1.matcher(email).matches()) {
+            resp.setSuccess(false);
+            resp.setMessage("邮箱格式不对呦");
+        }
+        return;
     }
 
     public boolean sendActiveEmail(String email, CommonResp resp) {
@@ -484,9 +492,11 @@ public class UserService {
     public ArrayList<String> getInviteCode(Integer num) {
         ArrayList<String> codes = new ArrayList<>(num);
         try (Jedis jedis = UserService.jedisPool.getResource()) {
-            String code = InviteCodeGenerate.next();
-            jedis.setex("yt:ac:code:" + code, 24 * 60 * 60, "");
-            codes.add(code);
+            for (int i = 0; i < num; ++i) {
+                String code = InviteCodeGenerate.next();
+                jedis.setex("yt:ac:code:" + code, 24 * 60 * 60, "");
+                codes.add(code);
+            }
         }
         return codes;
     }
