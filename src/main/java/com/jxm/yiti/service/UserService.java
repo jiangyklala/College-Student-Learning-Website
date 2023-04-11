@@ -466,6 +466,9 @@ public class UserService {
      * 验证邮箱是否有效
      */
     public void isActiveEmail(String email, String verifyCode, CommonResp resp) {
+        if (!resp.getSuccess()) {
+            return;
+        }
         LOG.info(verifyCode);
         try (Jedis jedis = UserService.jedisPool.getResource()) {
             LOG.info(jedis.get("yt:ac:email:" + email));

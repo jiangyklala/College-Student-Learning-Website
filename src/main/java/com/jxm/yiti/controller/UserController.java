@@ -118,8 +118,8 @@ public class UserController {
     @ResponseBody
     public CommonResp register(@RequestBody UserQueryReq user) {
         CommonResp resp = new CommonResp<>();
-        userService.isActiveEmail(user.getEmail(), user.getVerifyCode(), resp);
         userService.isRegisterPassword(user.getPassword(), resp);
+        userService.isActiveEmail(user.getEmail(), user.getVerifyCode(), resp);
         if (resp.getSuccess()) {
             userService.encryptPassword(user, userService.setSalt(user));  // 设置盐值并密码加密
             userService.addUser(user, resp);
