@@ -116,6 +116,7 @@
       </a-form-item>
       <a-form-item label="密码">
         <a-input-password v-model:value="userInModal.password"/>
+        <div style="font-size: 10px; color: purple">至少两种字符, 只能包含数字和英文大小写三种字符, 且长度只在 6 - 16 位</div>
       </a-form-item>
       <a-form-item label="验证码">
         <a-input style="width: 70%" v-model:value="userInModal.verifyCode"/><a-button :disabled="verifyBtnDisable" style="float: right; width: 29%" type="dashed" @click="sendVerifyCode">发送验证码</a-button>
