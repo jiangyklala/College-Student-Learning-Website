@@ -13,6 +13,9 @@
         <a-menu-item key="10">
           <router-link to="/chatgpt/Chatgpt">ChatGPT-3.5 内测&#45;&#45;&#45;&#45;抢先体验</router-link>
         </a-menu-item>
+        <a-menu-item key="11">
+          <router-link to="/chatgpt/Image">3.5 - 画图</router-link>
+        </a-menu-item>
 <!--        <a-menu-item key="2">-->
 <!--          <router-link to="/download/Download">下载</router-link>-->
 <!--        </a-menu-item>-->

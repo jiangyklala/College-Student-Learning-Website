@@ -33,12 +33,13 @@ public class OpenAiApiExample {
         System.out.println("\nCreating Image...");
         CreateImageRequest request = CreateImageRequest.builder()
                 .prompt("a close up, studio photographic portrait of a white siamese cat that looks curious, backlit ears")
+                .size("1024x1024")
                 .build();
 
         System.out.println("\nImage is located at:");
         ImageResult image = service.createImage(request);
         System.out.println(image.toString());
-        System.out.println(image.getData().get(0).getUrl());
+//        System.out.println(image.getData().get(0).getUrl());
 //
 //        System.out.println("Streaming chat completion...");
 //        final List<ChatMessage> messages = new ArrayList<>();
