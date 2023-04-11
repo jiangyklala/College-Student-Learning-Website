@@ -86,14 +86,14 @@
       <a-form-item label="密码">
         <a-input-password v-model:value="userInModal.password"/>
       </a-form-item>
-      <div style="text-align: center">其它方式登录</div>
-      <div
-          style="padding-left: 20px"
-          @click="loginByGitHub"
-      >
-        <img src="../assets/githubIcon.jpg" alt="githubIcon" style="width: 25px">
-        <a>github 登录</a>
-      </div>
+<!--      <div style="text-align: center">其它方式登录</div>-->
+<!--      <div-->
+<!--          style="padding-left: 20px"-->
+<!--          @click="loginByGitHub"-->
+<!--      >-->
+<!--        <img src="../assets/githubIcon.jpg" alt="githubIcon" style="width: 25px">-->
+<!--        <a>github 登录</a>-->
+<!--      </div>-->
     </a-form>
     <template #footer>
       <div class="modal-footer-div">
@@ -160,7 +160,7 @@ export default defineComponent({
      * 跳转到 GitHub 登录
      */
     const loginByGitHub = () => {
-      window.open("http://165.154.36.46:8111/user/render");
+      window.open("http://study.playoffer.cn:8111/user/render");
     }
 
     /**
@@ -175,10 +175,14 @@ export default defineComponent({
      */
     const loginModalOk = () => {
       console.log(userInModal.value);
+      if (Tool.isEmpty(userInModal.value.email) || Tool.isEmpty(userInModal.value.password)) {
+        message.warn("邮箱或密码不能为空呦~");
+        return;
+      }
       axios.post("/user/loginByEmail", userInModal.value).then((response) => {
         if (response.data.success) {    // 登录成功
           loginModalVisible.value = false;
-          window.location.href = "http://124.223.184.187:8110/Home";
+          window.location.href = "https://study.playoffer.cn";
           // window.location.href = "http://localhost:8110/Home";
 
           // location.reload();

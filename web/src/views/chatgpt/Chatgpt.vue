@@ -99,7 +99,7 @@ export default defineComponent({
         content: gptQuestion.value,
       });
       gptQuestion.value = "";
-      axios.post("http://165.154.36.46:8111/gpt/chatCompletion2", chatCplQueryReq.value).then((response) => {
+      axios.post("https://study-gpt.playoffer.cn/gpt/chatCompletion2", chatCplQueryReq.value).then((response) => {
         searchLoading.value = false;
 
         if (response.data.success) {
