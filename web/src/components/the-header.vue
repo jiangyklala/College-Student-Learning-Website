@@ -122,7 +122,7 @@
         <a-input style="width: 70%" v-model:value="userInModal.verifyCode"/><a-button :disabled="verifyBtnDisable" style="float: right; width: 29%" type="dashed" @click="sendVerifyCode">发送验证码</a-button>
       </a-form-item>
       <a-form-item label="邀请码">
-        <a-input v-model:value="inviteCode"/>
+        <a-input v-model:value="userInModal.inviteCode"/>
       </a-form-item>
     </a-form>
     <template #footer>
@@ -198,7 +198,6 @@ export default defineComponent({
     //-------------注册表单--------------
     const registerModalVisible = ref(false);
     const registerModalLoading = ref(false);
-    const inviteCode = ref("");
     const verifyBtnDisable = ref(false);
     /**
      * 注册按钮点击
@@ -211,22 +210,15 @@ export default defineComponent({
      * 注册表单提交
      */
     const registerModalOk = () => {
-
-      axios.post("/user/isInvite/" + inviteCode.value).then((response) => {
-        if (response.data.success) {   // 邀请码有效
-          axios.post("/user/register", userInModal.value).then((response2) => {
-            if (response2.data.success) {    // 注册成功
-              message.success(response2.data.message + ", 自动跳转到登录页面", 5);
-              registerModalVisible.value = false;
-              loginModalVisible.value = true;
-            } else {
-              message.error(response2.data.message);
-            }
-          })
+      axios.post("/user/register", userInModal.value).then((response2) => {
+        if (response2.data.success) {    // 注册成功
+          message.success(response2.data.message + ", 自动跳转到登录页面", 5);
+          registerModalVisible.value = false;
+          loginModalVisible.value = true;
         } else {
-          message.error(response.data.message);
+          message.error(response2.data.message);
         }
-      });
+      })
     }
 
     /**
@@ -357,7 +349,6 @@ export default defineComponent({
       registerModalVisible,
       registerModalLoading,
       // verifyCode,
-      inviteCode,
 
       userInModal,
       userInfo,

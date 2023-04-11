@@ -482,6 +482,9 @@ public class UserService {
     }
 
     public void isInvite(String inviteCode, CommonResp resp) {
+        if (!resp.getSuccess()) {
+            return;
+        }
         try (Jedis jedis = UserService.jedisPool.getResource()) {
             if (jedis.exists("yt:ac:code:" + inviteCode)) {
                 jedis.expire("yt:ac:code:" + inviteCode, -2);

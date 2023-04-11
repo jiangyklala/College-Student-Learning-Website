@@ -107,7 +107,6 @@ public class UserController {
     @ResponseBody
     public CommonResp isInvite(@PathVariable String inviteCode) {
         CommonResp resp = new CommonResp<>();
-        userService.isInvite(inviteCode, resp);
         return resp;
     }
 
@@ -119,9 +118,10 @@ public class UserController {
     public CommonResp register(@RequestBody UserQueryReq user) {
         CommonResp resp = new CommonResp<>();
         userService.isRegisterPassword(user.getPassword(), resp);
-        userService.isActiveEmail(user.getEmail(), user.getVerifyCode(), resp);
+        userService.isActiveEmail(user.getEmail(), user.getVerifyCode(), resp);   // 验证码校验
+        userService.isInvite(user.getInviteCode(), resp);                         // 邀请码校验
         if (resp.getSuccess()) {
-            userService.encryptPassword(user, userService.setSalt(user));  // 设置盐值并密码加密
+            userService.encryptPassword(user, userService.setSalt(user));         // 设置盐值并密码加密
             userService.addUser(user, resp);
         }
         return resp;

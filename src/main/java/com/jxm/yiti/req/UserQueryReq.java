@@ -15,7 +15,17 @@ public class UserQueryReq {
 
     private String email;
     
-    private String verifyCode;
+    private String verifyCode;  // 邮箱验证码
+
+    private String inviteCode;   // 邀请码
+
+    public String getInviteCode() {
+        return inviteCode;
+    }
+
+    public void setInviteCode(String inviteCode) {
+        this.inviteCode = inviteCode;
+    }
 
     public String getVerifyCode() {
         return verifyCode;
@@ -92,6 +102,7 @@ public class UserQueryReq {
                 ", githubId='" + githubId + '\'' +
                 ", email='" + email + '\'' +
                 ", verifyCode='" + verifyCode + '\'' +
+                ", inviteCode='" + inviteCode + '\'' +
                 '}';
     }
 }
