@@ -23,9 +23,9 @@
           :width="500"
           :src="href"
       /><br><br>
-      <div>
-        图片链接: {{href}}
-      </div>
+<!--      <div>-->
+<!--        图片链接: {{href}}-->
+<!--      </div>-->
     </div>
   </a-layout-content>
 
