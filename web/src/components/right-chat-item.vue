@@ -3,7 +3,9 @@
     <smile-two-tone style="font-size: 35px; padding-top: 5px"/>
 
     <div class="content">
-      <div class="text">
+      <div
+          @click="copyToClipboard"
+          class="text">
         {{content}}
       </div>
     </div>
@@ -11,10 +13,11 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 
 import {defineComponent} from "vue";
 import {FireTwoTone, SmileTwoTone} from '@ant-design/icons-vue';
+import {message} from "ant-design-vue";
 
 
 export default defineComponent({
@@ -24,10 +27,18 @@ export default defineComponent({
     FireTwoTone,
     SmileTwoTone,
   },
-  setup : function () {
+  setup : function (props : any) {
+
+    const copyToClipboard = () => {
+      navigator.clipboard.writeText(props.content).then(() => {
+        message.success('内容已复制到剪贴板');
+      }, () => {
+        console.error('复制失败');
+      });
+    }
 
   return {
-
+    copyToClipboard,
   }
 
 }

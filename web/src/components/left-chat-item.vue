@@ -7,13 +7,9 @@
       <div class="text">
         <div :innerHTML="contentMD"
              id="my-editor-content-view"
-             class="my-editor-content-view"></div>
-<!--        <mavon-editor  v-model="mavonVModel"-->
-<!--                       :subfield="false"-->
-<!--                       defaultOpen="preview"-->
-<!--                       :toolbarsFlag="false"-->
-<!--                       :editable="false"-->
-<!--        ></mavon-editor>-->
+             class="my-editor-content-view"
+             @click="copyToClipboard">
+        </div>
 
       </div>
 
@@ -29,6 +25,7 @@ import {defineComponent, onMounted, ref} from "vue";
 import {FireTwoTone} from '@ant-design/icons-vue';
 import mavonEditor from "mavon-editor";
 import 'mavon-editor/dist/css/index.css';
+import {message} from "ant-design-vue";
 
 
 export default defineComponent({
@@ -44,6 +41,14 @@ export default defineComponent({
 
     const contentMD = ref();
 
+    const copyToClipboard = () => {
+      navigator.clipboard.writeText(props.content).then(() => {
+        message.success('内容已复制到剪贴板');
+      }, () => {
+        console.error('复制失败');
+      });
+    };
+
 
     onMounted(() => {
       mavonEditorRef.value = mavonEditor.markdownIt;
@@ -53,6 +58,7 @@ export default defineComponent({
 
     return {
       contentMD,
+      copyToClipboard,
     }
 
   }
