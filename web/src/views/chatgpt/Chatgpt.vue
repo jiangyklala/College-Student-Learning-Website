@@ -90,7 +90,10 @@ export default defineComponent({
     };
 
     const newChat = () => {
-      location.reload();
+
+      msglist.value = [];
+      historyID.value = -1;
+      // location.reload();
 
     }
 
