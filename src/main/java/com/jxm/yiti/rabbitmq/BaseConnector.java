@@ -27,7 +27,7 @@ public class BaseConnector {
         this.queueName = queueName;
 
         ConnectionFactory factory = new ConnectionFactory();          //打开连接和创建频道
-        System.out.println(myRabbitIP);
+//        System.out.println(myRabbitIP);
         factory.setHost(myRabbitIP);                                   //设置 RabbitMQ 所在主机 ip, user, password
         factory.setUsername("admin");
         factory.setPassword("jiang");

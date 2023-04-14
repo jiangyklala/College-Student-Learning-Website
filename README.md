@@ -7,11 +7,11 @@
 + [x] 导航栏
 + [x] 阅读目录
 + [ ] GPT 翻译，copy 等等功能
-+ [ ] GPT 接口 jar 包重构
++ [x] GPT 接口 jar 包重构
 + [ ] GPT 连接线程池
-+ [ ] 邮箱注册（前期需要有邀请码）
++ [x] 邮箱注册（前期需要有邀请码）
 + [ ] GPT 每日使用次数，需要积分（每日签到弄）
-+ [ ] 历史记录 10 条（自定义 mapper or pagehelper） 
++ [x] 历史记录 10 条（自定义 mapper or pagehelper） 
 
 
 

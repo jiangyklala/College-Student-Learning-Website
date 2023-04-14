@@ -56,11 +56,11 @@ export default defineComponent({
     const messageEventListener = (res: any) => {
 
       let resJson = JSON.parse(res.data)
-      console.log(resJson);
+      // console.log(resJson);
 
       if (resJson.end === true) {
-        console.log("message----end");
-        console.log(resJson.message);
+        // console.log("message----end");
+        // console.log(resJson.message);
         emit('update:historyID', resJson.message);
         eventSource.value.close();
         removeListen();

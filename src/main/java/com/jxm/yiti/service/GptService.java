@@ -53,7 +53,7 @@ public class GptService {
 
     private static final Logger LOG = LoggerFactory.getLogger(GptService.class);
 
-    private final String OPENAI_TOKEN = "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";
+    private final String OPENAI_TOKEN = "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";
 
 
 

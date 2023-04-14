@@ -52,69 +52,6 @@ public class GptController {
         return resp;
     }
 
-//    @PostMapping("/test1")
-//    @ResponseBody
-//    public void test1(){
-//        ArrayList<Thread> list = new ArrayList<>(10);
-//
-//        for (int i = 0; i < 10; ++i) {
-//            int finalI = i;
-//            Thread thread = new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    long l = System.currentTimeMillis();
-//                    String hello = gptService.sendPost("Hello");
-//                    LOG.info("线程" + finalI + "完成, 时间:" + String.valueOf(System.currentTimeMillis() - l) + ", 数据:" + hello);
-//                }
-//            });
-//            list.add(thread);
-//        }
-//
-//        for (Thread t : list) {
-//            t.start();
-//        }
-//
-//        for (Thread t : list) {
-//            try {
-//                t.join();
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-
-//    @PostMapping("/test2/{data}")
-//    @ResponseBody
-//    public void test2(@PathVariable String data){
-//        ArrayList<Thread> list = new ArrayList<>(10);
-//
-//        for (int i = 0; i < 10; ++i) {
-//            int finalI = i;
-//            Thread thread = new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    long l = System.currentTimeMillis();
-//                    String hello = gptService.sendPost(data);
-//                    LOG.info("线程" + finalI + "完成, 时间:" + String.valueOf(System.currentTimeMillis() - l) + ", 数据:" + hello);
-//                }
-//            });
-//            list.add(thread);
-//        }
-//
-//        for (Thread t : list) {
-//            t.start();
-//        }
-//
-//        for (Thread t : list) {
-//            try {
-//                t.join();
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-////        System.out.println("jaja");
-//    }
-
     /**
      * 查询某个用户下的所有历史记录
      * @param userID 用户 ID
