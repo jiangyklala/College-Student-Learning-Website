@@ -107,7 +107,7 @@ export default defineComponent({
     /**
      * 查询按钮
      */
-    const onSearch = () => {
+    const onSearch = (searchStr : any) => {
       if (Tool.isEmpty(userInfo.value)) {           // 检测是否登录
         message.warn("需要先登录才能用呦~~~");
         return;
@@ -116,13 +116,17 @@ export default defineComponent({
       searchLoading.value = true;
       msglist.value.push({                          // 先显示 [human] 对话
         type: 2,
-        content: gptQuestion.value,
+        content: searchStr,
       });
+      gptQuestion.value = "";
 
       console.log("开始查询, historyID = ", historyID.value);
+      console.log("str = ", searchStr);
+      console.log("escapeSpecialChars = ", escapeSpecialChars(searchStr));
+      console.log("JSONQuestion = ", JSON.stringify(searchStr));
       msglist.value.push({                          // 再显示 [bot] 对话
         type: 1,
-        queryStr: JSON.stringify(gptQuestion.value),
+        queryStr: JSON.stringify(searchStr),
         userID: userInfo.value.id,
         historyID: historyID.value,
         isStatic: false,
@@ -169,8 +173,7 @@ export default defineComponent({
       msglist.value = [];                 // 清空显示的对话内容
       historyID.value = thisHistoryID;    // 重新复制 historyID
       drawerVisible.value = false;        // 关闭抽屉显示
-      // console.log("chatCplQueryReq:");
-      // console.log(chatCplQueryReq);
+      // console.log("chatCplQueryReq:" + chatCplQueryReq);
       axios.get("/gpt/selectContentByID/" + thisHistoryID).then((response) => {
         if (response.data.success) {
           extractAndShowChat2(response.data.content);
@@ -233,6 +236,26 @@ export default defineComponent({
           })
         }
       }
+    }
+
+    /**
+     * 对特殊字符进行转义
+     * @param str
+     */
+    function escapeSpecialChars(str: string): string {
+      return str.replace(/["'\\\n\r\t\v\s]/g, (match) => {
+        switch (match) {
+          case '"': return '\\"';
+          case '\'': return '\\\'';
+          case '\\': return '\\\\';
+          case '\n': return '\\n';
+          case '\r': return '\\r';
+          case '\t': return '\\t';
+          case '\v': return '\\v';
+          case ' ': return '\\s';
+          default: return match;
+        }
+      });
     }
 
     onMounted(() => {

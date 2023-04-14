@@ -33,15 +33,16 @@ export default defineComponent({
     FireTwoTone,
     mavonEditor,
   },
-  setup : function (props : any, { emit }) {
+  setup: function (props: any, {emit}) {
 
     const mavonEditorRef = ref();
 
     const contentMD = ref("");
+    const contentPlain = ref("");
     const eventSource = ref();
 
     const copyToClipboard = () => {
-      navigator.clipboard.writeText(contentMD.value).then(() => {
+      navigator.clipboard.writeText(contentPlain.value.replace(/<br>/g, '\n')).then(() => {
         message.success('内容已复制到剪贴板');
       }, () => {
         console.error('复制失败');
@@ -55,7 +56,7 @@ export default defineComponent({
     const messageEventListener = (res: any) => {
 
       let resJson = JSON.parse(res.data)
-      // console.log(resJson);
+      console.log(resJson);
 
       if (resJson.end === true) {
         console.log("message----end");
@@ -63,9 +64,9 @@ export default defineComponent({
         emit('update:historyID', resJson.message);
         eventSource.value.close();
         removeListen();
-        contentMD.value = mavonEditorRef.value.render(contentMD.value);
       } else {
-        contentMD.value += resJson.message;
+        contentPlain.value += resJson.message.replace(/\n/g, '<br>');
+        contentMD.value = mavonEditorRef.value.render(contentPlain.value.replace(/<br>/g, '\n'));
       }
 
     };
@@ -91,6 +92,7 @@ export default defineComponent({
     }
 
     const showMessage = () => {
+      contentPlain.value =  props.queryStr;      // 粘贴板
       contentMD.value = mavonEditorRef.value.render(props.queryStr);
     }
 
@@ -169,7 +171,8 @@ export default defineComponent({
   padding: 3px;
   border-radius: 3px;
 }
-.my-editor-content-view pre>code {
+
+.my-editor-content-view pre > code {
   display: block;
   padding: 10px;
 }
@@ -177,12 +180,14 @@ export default defineComponent({
 .my-editor-content-view table {
   border-collapse: collapse;
 }
+
 .my-editor-content-view td,
 .my-editor-content-view th {
   border: 1px solid #ccc;
   min-width: 50px;
   height: 20px;
 }
+
 .my-editor-content-view th {
   background-color: #f1f1f1;
 }
