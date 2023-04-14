@@ -54,6 +54,13 @@ public class UserController {
         return inviteCode.toString();
     }
 
+    @GetMapping("/getInviteCodePer/{num}")
+    @ResponseBody
+    public String getInviteCodePer(@PathVariable Integer num) throws IOException {
+        ArrayList<String> inviteCode = userService.getInviteCodePer(num);
+        return inviteCode.toString();
+    }
+
     /**
      * 发送激活邮件
      */

@@ -506,4 +506,16 @@ public class UserService {
         }
         return codes;
     }
+
+    public ArrayList<String> getInviteCodePer(Integer num) {
+        ArrayList<String> codes = new ArrayList<>(num);
+        try (Jedis jedis = UserService.jedisPool.getResource()) {
+            for (int i = 0; i < num; ++i) {
+                String code = InviteCodeGenerate.next();
+                jedis.set("yt:ac:code:" + code, "");
+                codes.add(code);
+            }
+        }
+        return codes;
+    }
 }
