@@ -3,7 +3,6 @@
     <fire-two-tone style="font-size: 35px; padding-top: 5px"/>
 
     <div class="content">
-
       <div class="text">
         <div :innerHTML="contentMD"
              id="my-editor-content-view"
@@ -12,8 +11,6 @@
         </div>
 
       </div>
-
-
     </div>
 
   </div>
@@ -30,30 +27,82 @@ import {message} from "ant-design-vue";
 
 export default defineComponent({
   name: 'left-chat-item',
-  props: ['content'],
+  emits: ['update:historyID'],
+  props: ['queryStr', 'userID', 'historyID', 'isStatic'],
   components: {
     FireTwoTone,
     mavonEditor,
   },
-  setup : function (props : any) {
+  setup : function (props : any, { emit }) {
 
     const mavonEditorRef = ref();
 
-    const contentMD = ref();
+    const contentMD = ref("");
+    const eventSource = ref();
 
     const copyToClipboard = () => {
-      navigator.clipboard.writeText(props.content).then(() => {
+      navigator.clipboard.writeText(contentMD.value).then(() => {
         message.success('内容已复制到剪贴板');
       }, () => {
         console.error('复制失败');
       });
     };
 
+    const openEventListener = () => {
+      console.log("open!!");
+    };
+
+    const messageEventListener = (res: any) => {
+
+      let resJson = JSON.parse(res.data)
+      // console.log(resJson);
+
+      if (resJson.end === true) {
+        console.log("message----end");
+        console.log(resJson.message);
+        emit('update:historyID', resJson.message);
+        eventSource.value.close();
+        removeListen();
+        contentMD.value = mavonEditorRef.value.render(contentMD.value);
+      } else {
+        contentMD.value += resJson.message;
+      }
+
+    };
+
+    const errorEventListener = () => {
+      eventSource.value.close();
+      message.error("接口出错, 试着刷新一下, 或者联系我呦");
+      console.log("error!!!");
+    }
+
+    const removeListen = () => {
+      eventSource.value.removeEventListener('open', openEventListener);
+      eventSource.value.removeEventListener('message', messageEventListener);
+      eventSource.value.removeEventListener('error', errorEventListener);
+    }
+
+    const initListen = () => {
+      eventSource.value = new EventSource(process.env.VUE_APP_LOCAL_GPT_TEST + "/gpt/completions/stream/" + props.userID + "&" + props.historyID + "&" + props.queryStr);
+
+      eventSource.value.addEventListener('open', openEventListener);
+      eventSource.value.addEventListener('message', messageEventListener);
+      eventSource.value.addEventListener('error', errorEventListener);
+    }
+
+    const showMessage = () => {
+      contentMD.value = mavonEditorRef.value.render(props.queryStr);
+    }
+
 
     onMounted(() => {
       mavonEditorRef.value = mavonEditor.markdownIt;
-      contentMD.value = mavonEditorRef.value.render(props.content);
-      // console.log(contentMD.value);
+      if (props.isStatic) {
+        showMessage();
+      } else {
+        initListen();
+      }
+
     })
 
     return {

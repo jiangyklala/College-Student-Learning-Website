@@ -18,7 +18,13 @@
     </a-drawer>
 
     <div v-for="msg in msglist" :key="msg">
-      <left-chat-item v-if="msg.type === 1" :content="msg.content" ></left-chat-item>
+      <left-chat-item v-if="msg.type === 1"
+                      :userID="msg.userID"
+                      :historyID="msg.historyID"
+                      :queryStr="msg.queryStr"
+                      :isStatic="msg.isStatic"
+                      v-on:update:historyID="updateHistoryID"
+      ></left-chat-item>
       <right-chat-item v-if="msg.type === 2" :content="msg.content"></right-chat-item>
     </div>
 
@@ -74,6 +80,8 @@ export default defineComponent({
     const searchLoading = ref(false);   // 搜索框 loading
     const mavonEditorRef = ref();             // mavonEditor
 
+    const historyID = ref(-1);
+
     const chatCplQueryReq = ref();            // 查询 gpt 参数
     chatCplQueryReq.value = {
       userID: userInfo.value.id,
@@ -86,35 +94,40 @@ export default defineComponent({
 
     }
 
+    /**
+     * 监听子组件返回的 historyID
+     * @param newHistoryID
+     */
+    const updateHistoryID = (newHistoryID : any) => {
+      historyID.value = newHistoryID;
+      searchLoading.value = false;
+      console.log("new historyID!!: " + historyID.value);
+    }
+
+    /**
+     * 查询按钮
+     */
     const onSearch = () => {
       if (Tool.isEmpty(userInfo.value)) {           // 检测是否登录
         message.warn("需要先登录才能用呦~~~");
         return;
       }
 
-      chatCplQueryReq.value.queryStr = JSON.stringify(gptQuestion.value);
       searchLoading.value = true;
       msglist.value.push({                          // 先显示 [human] 对话
         type: 2,
         content: gptQuestion.value,
       });
-      gptQuestion.value = "";
-      axios.post("https://study-gpt.playoffer.cn/gpt/chatCompletion2", chatCplQueryReq.value).then((response) => {
-        searchLoading.value = false;
 
-        if (response.data.success) {
-          let resp = response.data.content;
-          msglist.value.push({                      // 再显示 [robot] 对话
-            type: 1,
-            content: resp.content,
-          })
-          chatCplQueryReq.value.historyID = resp.historyID;
-          selectHistoryList();                      // 刷新历史记录
-
-        } else {
-          message.error(response.data.message);
-        }
+      console.log("开始查询, historyID = ", historyID.value);
+      msglist.value.push({                          // 再显示 [bot] 对话
+        type: 1,
+        queryStr: JSON.stringify(gptQuestion.value),
+        userID: userInfo.value.id,
+        historyID: historyID.value,
+        isStatic: false,
       })
+
     }
 
     //-----------------抽屉------------------
@@ -149,22 +162,24 @@ export default defineComponent({
 
     /**
      * 点击某个对话, 显示这个对话的内容
-     * @param historyID
+     * @param thisHistoryID
      */
-    const historyItemClick = (historyID : number) => {
+    const historyItemClick = (thisHistoryID : number) => {
 
-      msglist.value = [];
-      chatCplQueryReq.value.historyID = historyID;
-      drawerVisible.value = false;
+      msglist.value = [];                 // 清空显示的对话内容
+      historyID.value = thisHistoryID;    // 重新复制 historyID
+      drawerVisible.value = false;        // 关闭抽屉显示
       // console.log("chatCplQueryReq:");
       // console.log(chatCplQueryReq);
-      axios.get("/gpt/selectContentByID/" + historyID).then((response) => {
+      axios.get("/gpt/selectContentByID/" + thisHistoryID).then((response) => {
         if (response.data.success) {
           extractAndShowChat2(response.data.content);
         } else {
           message.error(response.data.message);
         }
       })
+
+      console.log("点击了这个对话, historyID = " + historyID.value);
 
     }
 
@@ -182,15 +197,16 @@ export default defineComponent({
       content = JSON.parse(content);// JSON.stringify(content);
       console.log(content);
       for (let i = 0; i < content.length; ++i) {
-        if (content[i].role === "user") {
+        if (content[i].userType === 0) {
           msglist.value.push({
             type: 2,
-            content: content[i].content,
+            content: content[i].message,
           })
         } else {
           msglist.value.push({
             type: 1,
-            content: content[i].content,
+            queryStr: content[i].message,
+            isStatic: true,
           })
         }
       }
@@ -228,15 +244,16 @@ export default defineComponent({
     return {
       gptQuestion,
       searchLoading,
-      onSearch,
-      // spinning,
       drawerVisible,
+      historyList,
+      msglist,
+
+      onSearch,
       afterVisibleChange,
       showDrawer,
-      historyList,
       historyItemClick,
-      msglist,
       newChat,
+      updateHistoryID
     };
   },
 });
