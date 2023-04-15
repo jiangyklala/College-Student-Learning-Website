@@ -134,6 +134,23 @@ public class UserController {
         return resp;
     }
 
+    /**
+     * 注册接口
+     */
+    @PostMapping("/forget")
+    @ResponseBody
+    public CommonResp forget(@RequestBody UserQueryReq user) {
+        CommonResp resp = new CommonResp<>();
+        userService.isRegisterPassword(user.getPassword(), resp);
+        user = userService.isExitsUserEmail(user, resp);                                 // 是否存在用户(by email)
+        userService.isActiveEmail(user.getEmail(), user.getVerifyCode(), resp);   // 验证码校验
+        if (resp.getSuccess()) {
+            userService.encryptPassword(user, userService.setSalt(user));         // 设置盐值并密码加密
+            userService.updateUser(user, resp);
+        }
+        return resp;
+    }
+
 
     /**
      * 注册接口

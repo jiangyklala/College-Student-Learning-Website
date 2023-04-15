@@ -9,15 +9,33 @@ public class UserQueryReq {
 
     private String password;
 
-    private String salt;
-
     private String githubId;
 
     private String email;
+
+    private String salt;
+
+    private Long balance;
     
     private String verifyCode;  // 邮箱验证码
 
     private String inviteCode;   // 邀请码
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    public Long getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Long balance) {
+        this.balance = balance;
+    }
 
     public String getInviteCode() {
         return inviteCode;
@@ -33,14 +51,6 @@ public class UserQueryReq {
 
     public void setVerifyCode(String verifyCode) {
         this.verifyCode = verifyCode;
-    }
-
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
     }
 
     public String getPassword() {
@@ -98,9 +108,10 @@ public class UserQueryReq {
                 ", username='" + username + '\'' +
                 ", useraccount='" + useraccount + '\'' +
                 ", password='" + password + '\'' +
-                ", salt='" + salt + '\'' +
                 ", githubId='" + githubId + '\'' +
                 ", email='" + email + '\'' +
+                ", salt='" + salt + '\'' +
+                ", balance=" + balance +
                 ", verifyCode='" + verifyCode + '\'' +
                 ", inviteCode='" + inviteCode + '\'' +
                 '}';

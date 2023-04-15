@@ -54,7 +54,7 @@ public class UserService {
 
     @PostConstruct
     public void init() {
-        snowFlakeIdWorker  = new SnowFlakeIdWorker(0, 0);            // 初始化雪花ID生成器
+        snowFlakeIdWorker = new SnowFlakeIdWorker(0, 0);            // 初始化雪花ID生成器
         jedisPool = new JedisPool(setJedisPoolConfig(), myRedisIP, 6379, 5000, "jiang", 1);
 //        initJedisPool(jedisPool);
     }
@@ -123,7 +123,7 @@ public class UserService {
     public void setOnlyLoginCert(Long userID, HttpServletResponse response) throws IOException {
         String onlyLoginCert = Long.toString(snowFlakeIdWorker.nextId());           // 生成唯一登录凭证
 
-        response.setHeader("Access-Control-Allow-Credentials","true");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Allow-Origin", myAddr);
 
         Cookie cookieLoginCert = new Cookie("yiti_loginCert", onlyLoginCert);       // 增加本地唯一登录凭证 Cookie
@@ -145,8 +145,9 @@ public class UserService {
 
     /**
      * 验证登录凭证, cookie 和 redis 中的是否一致
+     *
      * @param loginCert 本地 cookie 中获取登录凭证
-     * @param userID 本地 cookie 中获取用户ID
+     * @param userID    本地 cookie 中获取用户ID
      * @return
      */
     public boolean checkLoginCert(String loginCert, String userID) {
@@ -160,6 +161,7 @@ public class UserService {
 
     /**
      * 获取 userID, 并选择进行添加新用户操作
+     *
      * @param authUser GitHub 登录成功后返回的用户信息
      * @return DB 中的 userID
      */
@@ -189,6 +191,7 @@ public class UserService {
 
     /**
      * 根据用户 ID 获取用户信息
+     *
      * @param userID DB 中的 userID
      * @return 用户信息
      */
@@ -205,6 +208,7 @@ public class UserService {
 
     /**
      * 注册时账号是否符合限制
+     *
      * @param resp 传入最终返回结果类的引用, 进行修改
      */
     public void isRegisterUserAccount(String userAccount, CommonResp resp) {
@@ -244,8 +248,10 @@ public class UserService {
             return;
         }
     }
+
     /**
      * 登录时账号是否符合限制
+     *
      * @param resp 传入最终返回结果类的引用, 进行修改
      */
     public void isLoginUserAccount(String userAccount, CommonResp resp) {
@@ -281,6 +287,7 @@ public class UserService {
 
     /**
      * 注册时密码是否符合限制
+     *
      * @param resp 传入最终返回结果类的引用, 进行修改
      */
     public void isRegisterPassword(String password, CommonResp resp) {
@@ -302,6 +309,7 @@ public class UserService {
 
     /**
      * 验证登录时的"密码"是否符合限制
+     *
      * @param resp 传入最终返回结果类的引用, 进行修改
      */
     public void isLoginPassword(UserQueryReq userQueryReq, CommonResp resp) {
@@ -337,6 +345,7 @@ public class UserService {
 
     /**
      * 验证登录时的"密码"是否符合限制
+     *
      * @param resp 传入最终返回结果类的引用, 进行修改
      */
     public void isLoginPassword0(UserQueryReq userQueryReq, CommonResp resp) {
@@ -375,6 +384,7 @@ public class UserService {
 
     /**
      * 使用雪花算法设置盐值
+     *
      * @return 返回盐值
      */
     public String setSalt(UserQueryReq user) {
@@ -386,6 +396,7 @@ public class UserService {
 
     /**
      * 根据 email 返回这个 user
+     *
      * @return 是 - 返回 user 对象; 否 - 返回 null
      */
     public User selectAUserByEmail(String email) {
@@ -406,6 +417,7 @@ public class UserService {
 
     /**
      * 根据 userAccount 返回这个 user
+     *
      * @return 是 - 返回 user 对象; 否 - 返回 null
      */
     public User selectAUserByAc(String userAccount) {
@@ -444,6 +456,19 @@ public class UserService {
         }
     }
 
+    /**
+     * 添加用户
+     */
+    public void updateUser(UserQueryReq user, CommonResp resp) {
+        User userUpdate = CopyUtil.copy(user, User.class);
+
+        try {
+            userMapper.updateByPrimaryKey(userUpdate);
+        } catch (Exception e) {
+            LOG.error("更新用户失败", e);
+        }
+    }
+
     public void isLoginEmail(String email, CommonResp resp) {
         Pattern pattern1 = Pattern.compile("^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$");
         if (!pattern1.matcher(email).matches()) {
@@ -469,9 +494,9 @@ public class UserService {
         if (!resp.getSuccess()) {
             return;
         }
-        LOG.info(verifyCode);
+//        LOG.info(verifyCode);
         try (Jedis jedis = UserService.jedisPool.getResource()) {
-            LOG.info(jedis.get("yt:ac:email:" + email));
+//            LOG.info(jedis.get("yt:ac:email:" + email));
             if (Objects.equals(jedis.get("yt:ac:email:" + email), verifyCode)) {
                 resp.setSuccess(true);
                 return;
@@ -517,5 +542,26 @@ public class UserService {
             }
         }
         return codes;
+    }
+
+    public UserQueryReq isExitsUserEmail(UserQueryReq user, CommonResp resp) {
+        if (!resp.getSuccess()) return user;
+
+        User oldUser = selectAUserByEmail(user.getEmail());
+        if (oldUser == null) {
+            resp.setSuccess(false);
+            resp.setMessage("用户不存在");
+        } else {
+            String password = user.getPassword();
+            String verifyCode = user.getVerifyCode();
+//            LOG.info(oldUser.toString());
+//            LOG.info(user.toString());
+            user = CopyUtil.copy(oldUser, UserQueryReq.class);
+            user.setPassword(password);
+            user.setVerifyCode(verifyCode);
+//            LOG.info(user.toString());
+        }
+
+        return user;
     }
 }
