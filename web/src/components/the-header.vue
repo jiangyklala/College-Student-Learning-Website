@@ -89,6 +89,7 @@
       <a-form-item label="密码">
         <a-input-password v-model:value="userInModal.password"/>
       </a-form-item>
+      <a style="text-align: center; float: right" @click="forgetPasswordHandle">忘记密码?</a>
 <!--      <div style="text-align: center">其它方式登录</div>-->
 <!--      <div-->
 <!--          style="padding-left: 20px"-->
@@ -131,6 +132,36 @@
     <template #footer>
       <div class="modal-footer-div">
         <a-button key="submit" type="primary"  @click="registerModalOk" style="width: 30%">注册</a-button>
+      </div>
+    </template>
+  </a-modal>
+
+  <a-modal
+      title="忘记密码"
+      v-model:visible="forgetModalVisible"
+      :confirm-loading="forgetModalLoading"
+  >
+    <a-form
+        :model="userInModal"
+        :label-col="{ span : 4 }"
+    >
+      <a-form-item label="邮箱" :required="true">
+        <a-input v-model:value="userInModal.email"/>
+      </a-form-item>
+      <a-form-item label="新密码">
+        <a-input-password v-model:value="userInModal.password"/>
+        <div style="font-size: 10px; color: purple">至少两种字符, 只能包含数字和英文大小写三种字符, 且长度只在 6 - 16 位</div>
+      </a-form-item>
+      <a-form-item label="重复新密码">
+        <a-input-password v-model:value="repeatNewPassword"/>
+      </a-form-item>
+      <a-form-item label="验证码">
+        <a-input style="width: 70%" v-model:value="userInModal.verifyCode"/><a-button :disabled="verifyBtnDisable" style="float: right; width: 29%" type="dashed" @click="sendVerifyCode">发送验证码</a-button>
+      </a-form-item>
+    </a-form>
+    <template #footer>
+      <div class="modal-footer-div">
+        <a-button key="submit" type="primary"  @click="forgetModalOk" style="width: 30%">OK</a-button>
       </div>
     </template>
   </a-modal>
@@ -186,12 +217,7 @@ export default defineComponent({
       axios.post("/user/loginByEmail", userInModal.value).then((response) => {
         if (response.data.success) {    // 登录成功
           loginModalVisible.value = false;
-          window.location.href = "https://study.playoffer.cn";
-          // window.location.href = "http://localhost:8110/Home";
-
-          // location.reload();
-          // router.go(0);
-          // message.success(process.env.HOME_ADDR);
+          window.location.href = process.env.VUE_APP_WEB;
         } else {
           message.error(response.data.message);
         }
@@ -243,6 +269,34 @@ export default defineComponent({
           message.error(response.data.message);
         }
       })
+    }
+
+    //-------------忘记密码--------------
+    const forgetModalVisible = ref(false);
+    const forgetModalLoading = ref();
+    const repeatNewPassword = ref();
+
+
+    const forgetPasswordHandle = () => {
+      forgetModalVisible.value = true;
+    }
+
+    const forgetModalOk = () => {
+      if (userInModal.value.password != repeatNewPassword.value) {
+        message.warn("两次密码不一样呦");
+        return;
+      }
+
+      axios.post("/user/forget", userInModal.value).then((response2) => {
+        if (response2.data.success) {
+          message.success(response2.data.message + "更改密码成功, 自动跳转到登录页面", 5);
+          forgetModalVisible.value = false;
+          loginModalVisible.value = true;
+        } else {
+          message.error(response2.data.message);
+        }
+      })
+
     }
 
     //-------------登录/注册标识--------------
@@ -353,6 +407,10 @@ export default defineComponent({
       registerModalLoading,
       // verifyCode,
 
+      forgetModalVisible,
+      forgetModalLoading,
+      repeatNewPassword,
+
       userInModal,
       userInfo,
       verifyBtnDisable,
@@ -363,6 +421,8 @@ export default defineComponent({
       registerClick,
       registerModalOk,
       sendVerifyCode,
+      forgetPasswordHandle,
+      forgetModalOk,
     };
   }
 });
