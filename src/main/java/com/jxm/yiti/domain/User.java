@@ -17,7 +17,7 @@ public class User {
 
     private Long balance;
 
-    private String others;
+    private Integer type;
 
     public Long getId() {
         return id;
@@ -83,12 +83,12 @@ public class User {
         this.balance = balance;
     }
 
-    public String getOthers() {
-        return others;
+    public Integer getType() {
+        return type;
     }
 
-    public void setOthers(String others) {
-        this.others = others;
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     @Override
@@ -105,7 +105,7 @@ public class User {
         sb.append(", githubId=").append(githubId);
         sb.append(", email=").append(email);
         sb.append(", balance=").append(balance);
-        sb.append(", others=").append(others);
+        sb.append(", type=").append(type);
         sb.append("]");
         return sb.toString();
     }

@@ -207,21 +207,26 @@ create table `doc_content` (
 
 -- 用户表
 drop table if exists `user`;
-create table `user` (
-                        `id` bigint auto_increment not null,
-                        `username` varchar(50) default('新用户') comment '用户名',
-                        `useraccount` varchar(50)  comment '用户账号',
-                        `password` char(32)  comment '用户密码',
-                        `salt` varchar(50)  default('') comment '密码盐值',
-                        `github_id` varchar(50) comment 'github_id',
-                        `email` varchar(50) unique default(NULL) comment '邮箱',
-                        `balance` bigint default 0 comment '用户余额',
-                        `others` varchar(50) comment '其它',
-                        primary key (`id`),
-                        index idx_username(`username`),
-                        index idx_useraccount(`useraccount`),
-                        index idx_github_id(`github_id`)
-) engine=innodb default charset=utf8mb4 comment='普通用户表';
+create table `user`
+(
+    `id`          bigint auto_increment not null,
+    `username`    varchar(50)        default ('新用户') comment '用户名',
+    `useraccount` varchar(50) comment '用户账号',
+    `password`    char(32) comment '用户密码',
+    `salt`        varchar(50)        default ('') comment '密码盐值',
+    `github_id`   varchar(50) comment 'github_id',
+    `email`       varchar(50) unique default (NULL) comment '邮箱',
+    `balance`     bigint             default 0 comment '用户余额',
+    `others`      varchar(50) comment '其它',
+    primary key (`id`),
+    index idx_username (`username`),
+    index idx_useraccount (`useraccount`),
+    index idx_github_id (`github_id`)
+) engine = innodb
+  default charset = utf8mb4 comment ='普通用户表';
+
+ALTER TABLE user CHANGE others type int default 0 COMMENT '用户类型';
+
 #
 # -- 用户表
 # drop table if exists `user_github`;

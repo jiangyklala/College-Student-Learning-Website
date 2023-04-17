@@ -10,7 +10,7 @@
     <result column="github_id" jdbcType="VARCHAR" property="githubId" />
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="balance" jdbcType="BIGINT" property="balance" />
-    <result column="others" jdbcType="VARCHAR" property="others" />
+    <result column="type" jdbcType="INTEGER" property="type" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -71,7 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, username, useraccount, `password`, salt, github_id, email, balance, `others`
+    id, username, useraccount, `password`, salt, github_id, email, balance, `type`
   </sql>
   <select id="selectByExample" parameterType="com.jxm.yiti.domain.UserExample" resultMap="BaseResultMap">
     select
@@ -106,11 +106,11 @@
   <insert id="insert" parameterType="com.jxm.yiti.domain.User">
     insert into user (id, username, useraccount, 
       `password`, salt, github_id, 
-      email, balance, `others`
+      email, balance, `type`
       )
     values (#{id,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{useraccount,jdbcType=VARCHAR}, 
       #{password,jdbcType=CHAR}, #{salt,jdbcType=VARCHAR}, #{githubId,jdbcType=VARCHAR}, 
-      #{email,jdbcType=VARCHAR}, #{balance,jdbcType=BIGINT}, #{others,jdbcType=VARCHAR}
+      #{email,jdbcType=VARCHAR}, #{balance,jdbcType=BIGINT}, #{type,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.jxm.yiti.domain.User">
@@ -140,8 +140,8 @@
       <if test="balance != null">
         balance,
       </if>
-      <if test="others != null">
-        `others`,
+      <if test="type != null">
+        `type`,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -169,8 +169,8 @@
       <if test="balance != null">
         #{balance,jdbcType=BIGINT},
       </if>
-      <if test="others != null">
-        #{others,jdbcType=VARCHAR},
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -207,8 +207,8 @@
       <if test="record.balance != null">
         balance = #{record.balance,jdbcType=BIGINT},
       </if>
-      <if test="record.others != null">
-        `others` = #{record.others,jdbcType=VARCHAR},
+      <if test="record.type != null">
+        `type` = #{record.type,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null">
@@ -225,7 +225,7 @@
       github_id = #{record.githubId,jdbcType=VARCHAR},
       email = #{record.email,jdbcType=VARCHAR},
       balance = #{record.balance,jdbcType=BIGINT},
-      `others` = #{record.others,jdbcType=VARCHAR}
+      `type` = #{record.type,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -254,8 +254,8 @@
       <if test="balance != null">
         balance = #{balance,jdbcType=BIGINT},
       </if>
-      <if test="others != null">
-        `others` = #{others,jdbcType=VARCHAR},
+      <if test="type != null">
+        `type` = #{type,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -269,7 +269,7 @@
       github_id = #{githubId,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
       balance = #{balance,jdbcType=BIGINT},
-      `others` = #{others,jdbcType=VARCHAR}
+      `type` = #{type,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

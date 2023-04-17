@@ -644,73 +644,63 @@ public class UserExample {
             return (Criteria) this;
         }
 
-        public Criteria andOthersIsNull() {
-            addCriterion("`others` is null");
+        public Criteria andTypeIsNull() {
+            addCriterion("`type` is null");
             return (Criteria) this;
         }
 
-        public Criteria andOthersIsNotNull() {
-            addCriterion("`others` is not null");
+        public Criteria andTypeIsNotNull() {
+            addCriterion("`type` is not null");
             return (Criteria) this;
         }
 
-        public Criteria andOthersEqualTo(String value) {
-            addCriterion("`others` =", value, "others");
+        public Criteria andTypeEqualTo(Integer value) {
+            addCriterion("`type` =", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andOthersNotEqualTo(String value) {
-            addCriterion("`others` <>", value, "others");
+        public Criteria andTypeNotEqualTo(Integer value) {
+            addCriterion("`type` <>", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andOthersGreaterThan(String value) {
-            addCriterion("`others` >", value, "others");
+        public Criteria andTypeGreaterThan(Integer value) {
+            addCriterion("`type` >", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andOthersGreaterThanOrEqualTo(String value) {
-            addCriterion("`others` >=", value, "others");
+        public Criteria andTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("`type` >=", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andOthersLessThan(String value) {
-            addCriterion("`others` <", value, "others");
+        public Criteria andTypeLessThan(Integer value) {
+            addCriterion("`type` <", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andOthersLessThanOrEqualTo(String value) {
-            addCriterion("`others` <=", value, "others");
+        public Criteria andTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("`type` <=", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andOthersLike(String value) {
-            addCriterion("`others` like", value, "others");
+        public Criteria andTypeIn(List<Integer> values) {
+            addCriterion("`type` in", values, "type");
             return (Criteria) this;
         }
 
-        public Criteria andOthersNotLike(String value) {
-            addCriterion("`others` not like", value, "others");
+        public Criteria andTypeNotIn(List<Integer> values) {
+            addCriterion("`type` not in", values, "type");
             return (Criteria) this;
         }
 
-        public Criteria andOthersIn(List<String> values) {
-            addCriterion("`others` in", values, "others");
+        public Criteria andTypeBetween(Integer value1, Integer value2) {
+            addCriterion("`type` between", value1, value2, "type");
             return (Criteria) this;
         }
 
-        public Criteria andOthersNotIn(List<String> values) {
-            addCriterion("`others` not in", values, "others");
-            return (Criteria) this;
-        }
-
-        public Criteria andOthersBetween(String value1, String value2) {
-            addCriterion("`others` between", value1, value2, "others");
-            return (Criteria) this;
-        }
-
-        public Criteria andOthersNotBetween(String value1, String value2) {
-            addCriterion("`others` not between", value1, value2, "others");
+        public Criteria andTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("`type` not between", value1, value2, "type");
             return (Criteria) this;
         }
     }

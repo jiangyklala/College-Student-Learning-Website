@@ -46,7 +46,12 @@ public class UserController {
 //    }
 
 
-
+    /**
+     * 获取邀请码 valid-24h
+     * @param num 激活码的数量
+     * @return 激活码列表
+     * @throws IOException IOException
+     */
     @GetMapping("/getInviteCode/{num}")
     @ResponseBody
     public String getInviteCode(@PathVariable Integer num) throws IOException {
@@ -54,6 +59,12 @@ public class UserController {
         return inviteCode.toString();
     }
 
+    /**
+     * 获取永久激活码
+     * @param num 激活码的数量
+     * @return 激活码列表
+     * @throws IOException IOException
+     */
     @GetMapping("/getInviteCodePer/{num}")
     @ResponseBody
     public String getInviteCodePer(@PathVariable Integer num) throws IOException {
@@ -73,7 +84,7 @@ public class UserController {
     }
 
     /**
-     * 登录接口
+     * 账号登录接口
      */
     @PostMapping("/loginByAccount")
     @ResponseBody
@@ -91,7 +102,7 @@ public class UserController {
     }
 
     /**
-     * 登录接口
+     * 邮箱登录接口
      */
     @PostMapping("/loginByEmail")
     @ResponseBody
@@ -108,7 +119,7 @@ public class UserController {
     }
 
     /**
-     * 注册接口
+     * 判断邀请码是否有效
      */
     @PostMapping("/isInvite/{inviteCode}")
     @ResponseBody
