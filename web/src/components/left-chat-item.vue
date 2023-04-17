@@ -71,10 +71,11 @@ export default defineComponent({
 
     };
 
-    const errorEventListener = () => {
+    const errorEventListener = (res : any) => {
       eventSource.value.close();
-      message.error("接口出错, 试着刷新一下, 或者联系我呦");
+      message.error("对话内容过长(max 4096 tokens)或接口超时, 请开启一个新对话, 或者联系我呦", 5);
       console.log("error!!!");
+
     }
 
     const removeListen = () => {

@@ -30,14 +30,27 @@
 
 
 
-    <a-input-search
-        class="input-search"
-        v-model:value="gptQuestion"
-        placeholder="问点啥呗 QAQ"
-        :loading="searchLoading"
-        enter-button
-        @search="onSearch"
-    />
+    <a-textarea v-model:value="gptQuestion"
+                placeholder="问点啥呗 QAQ"
+                enter-button
+                class="input-search"
+                :autosize="{ minRows: 2, maxRows: 6 }"/>
+    <a-button type="primary"
+              shape="circle"
+              size="large"
+              :disabled="searchLoading"
+              class="search-icon-btn"
+              @click="onSearch(gptQuestion)">
+      <template #icon><rocket-two-tone class="search-icon" /></template>
+    </a-button>
+
+<!--    <a-input-search-->
+<!--        class="input-search"-->
+<!--        v-model:value="gptQuestion"-->
+<!--        placeholder="问点啥呗 QAQ"-->
+<!--        :loading="searchLoading"-->
+<!--        @search="onSearch"-->
+<!--    />-->
 
 <!--    <a-spin-->
 <!--        class="spin"-->
@@ -90,11 +103,9 @@ export default defineComponent({
     };
 
     const newChat = () => {
-
-      msglist.value = [];
-      historyID.value = -1;
-      // location.reload();
-
+      // msglist.value = [];
+      // historyID.value = -1;
+      location.reload();
     }
 
     /**
@@ -123,13 +134,12 @@ export default defineComponent({
       });
       gptQuestion.value = "";
 
-      console.log("开始查询, historyID = ", historyID.value);
-      console.log("str = ", searchStr);
-      console.log("escapeSpecialChars = ", escapeSpecialChars(searchStr));
-      console.log("JSONQuestion = ", JSON.stringify(searchStr));
+      // console.log("开始查询, historyID = ", historyID.value);
+      // console.log("str = ", searchStr);
+      // console.log("encodeURIComponent = ", encodeURIComponent(searchStr));
       msglist.value.push({                          // 再显示 [bot] 对话
         type: 1,
-        queryStr: JSON.stringify(searchStr),
+        queryStr: encodeURIComponent(searchStr),
         userID: userInfo.value.id,
         historyID: historyID.value,
         isStatic: false,
@@ -305,9 +315,19 @@ export default defineComponent({
 
 .input-search {
   position: fixed;
-  width: 60%;
-  padding-left: 20%;
+  width: 45%;
+  left: 26%;
   bottom: 5%;
+}
+
+.search-icon-btn {
+  position: fixed;
+  left: 72%;
+  bottom: 6%;
+}
+
+.search-icon {
+  font-size: 35px !important;
 }
 
 .spin {

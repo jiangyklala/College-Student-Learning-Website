@@ -11,7 +11,8 @@
 + [ ] GPT 连接线程池
 + [x] 邮箱注册（前期需要有邀请码）
 + [ ] GPT 每日使用次数，需要积分（每日签到弄）
-+ [x] 历史记录 10 条（自定义 mapper or pagehelper） 
++ [x] 历史记录 30 条（自定义 mapper or pagehelper） 
++ [ ] MySQL，历史记录定时清理
 
 
 
