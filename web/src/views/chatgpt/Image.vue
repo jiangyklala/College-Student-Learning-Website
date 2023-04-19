@@ -48,7 +48,7 @@ export default defineComponent( {
     const href = ref();
     const spanning = ref(false);
     const ifShowImage = ref(false);
-    const imageCost = 10;
+    const imageCost = 20;
 
 
     const userInfo = computed(() => {
