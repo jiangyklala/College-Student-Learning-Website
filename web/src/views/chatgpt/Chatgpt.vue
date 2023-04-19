@@ -139,9 +139,11 @@ export default defineComponent({
       });
       gptQuestion.value = "";
 
+      searchStr = btoa(encodeURIComponent(searchStr));
+
       // console.log("开始查询, historyID = ", historyID.value);
-      // console.log("str = ", searchStr);
-      // console.log("encodeURIComponent = ", encodeURIComponent(searchStr));
+      console.log("str = ", searchStr);
+      console.log("encodeURIComponent = ", searchStr);
 
       // 先进行权限验证
       axios.get("/user/permissionValid/" + userInfo.value.id + "/" + chatCost).then((response) => {
@@ -149,7 +151,7 @@ export default defineComponent({
           // 认证通过, 进行提问逻辑 (再显示 [bot] 对话)
           msglist.value.push({
             type: 1,
-            queryStr: encodeURIComponent(searchStr),
+            queryStr: searchStr,
             userID: userInfo.value.id,
             historyID: historyID.value,
             isStatic: false,

@@ -22,7 +22,7 @@ for (const i in icons) {
 }
 
 
-if (process.env.NODE_ENV === "develop") {
+if (process.env.NODE_ENV === "development") {
     /**
      * axios拦截器
      */
