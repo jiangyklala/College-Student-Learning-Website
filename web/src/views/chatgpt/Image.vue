@@ -48,6 +48,7 @@ export default defineComponent( {
     const href = ref();
     const spanning = ref(false);
     const ifShowImage = ref(false);
+    const imageCost = 10;
 
 
     const userInfo = computed(() => {
@@ -63,31 +64,42 @@ export default defineComponent( {
       ifShowImage.value = false;
       searchLoading.value = true;
       href.value = "";
-      const imagePromptJSON = JSON.stringify(imagePrompt.value);
+      // const imagePromptJSON = JSON.stringify(imagePrompt.value);
       spanning.value = true;
 
-
-      axios.post(process.env.VUE_APP_LOCAL_GPT_TEST + "/gpt/image/" + imagePromptJSON).then((response) => {
-        imagePrompt.value = "";
-        searchLoading.value = false;
-        spanning.value = false;
-        ifShowImage.value = true;
-
+      axios.get("/user/permissionValid/" + userInfo.value.id + "/" + imageCost).then((response) => {
         if (response.data.success) {
-          href.value = response.data.content;
+          // 认证通过, 进行提问逻辑 (再显示 [bot] 对话)
+          axios.post(process.env.VUE_APP_LOCAL_GPT_TEST + "/gpt/image/" + encodeURIComponent(imagePrompt.value)).then((response) => {
+            imagePrompt.value = "";
+            searchLoading.value = false;
+            spanning.value = false;
+            ifShowImage.value = true;
 
+            if (response.data.success) {
+              href.value = response.data.content;
+
+            } else {
+              message.error(response.data.message);
+            }
+          })
         } else {
+          searchLoading.value = false;
+          spanning.value = false;
           message.error(response.data.message);
         }
       })
+
+
     }
 
     const showAttention = () => {
       Modal.info({
         title: '注意',
         content: h('div', {}, [
-          h('p', '本模块没有 "历史记录", 满足要求的图片要及时保存呦'),
+          h('p', '每次画图需要消耗 10 次提问次数呦'),
           h('p', '每个生成图片的链接有效期只有 24 小时'),
+          h('p', '本模块没有 "历史记录", 满足要求的图片要及时保存呦'),
         ])
       });
     }
@@ -135,7 +147,7 @@ export default defineComponent( {
   position: fixed;
   width: 40px;
   height: 70px;
-  left: 5px;
-  bottom: 10%;
+  left: 8px;
+  top: 10%;
 }
 </style>
