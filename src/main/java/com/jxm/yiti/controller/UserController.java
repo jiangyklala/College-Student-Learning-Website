@@ -47,6 +47,23 @@ public class UserController {
 
 
     /**
+     * 对用户进行权限验证: 永久会员通行, 普通用户和普通会员扣费
+     * @param userID 用户 ID
+     */
+    @GetMapping("/permissionValid/{userID}/{count}")
+    @ResponseBody
+    public CommonResp permissionValid(@PathVariable Long userID, @PathVariable Long count) {
+        CommonResp resp = new CommonResp();
+        if (0 == userService.permissionValid(userID, count)) {
+            resp.setSuccess(false);
+            resp.setMessage("用户权限验证出错");
+            return resp;
+        }
+        return resp;
+    }
+
+
+    /**
      * 获取邀请码 valid-24h
      * @param num 激活码的数量
      * @return 激活码列表
@@ -190,8 +207,9 @@ public class UserController {
     }
 
     /**
-     * 自动登录
+     * 根据 userID 查询 user 的全部信息
      * @param userID 登录用户的 userID 值
+     * @return 返回 CommonResp<UserQueryResp>
      */
     @PostMapping("/loginByID/{userID}")
     @ResponseBody

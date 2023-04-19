@@ -92,7 +92,7 @@ export default defineComponent({
     const gptQuestion = ref("");        // 用户提问的问题
     const searchLoading = ref(false);   // 搜索框 loading
     const mavonEditorRef = ref();             // mavonEditor
-
+    const chatCost = 1;
     const historyID = ref(-1);
 
     const chatCplQueryReq = ref();            // 查询 gpt 参数
@@ -122,13 +122,16 @@ export default defineComponent({
      * 查询按钮
      */
     const onSearch = (searchStr : any) => {
-      if (Tool.isEmpty(userInfo.value)) {           // 检测是否登录
+
+      // 检测是否登录
+      if (Tool.isEmpty(userInfo.value)) {
         message.warn("需要先登录才能用呦~~~");
         return;
       }
 
+      // 先显示 [human] 对话
       searchLoading.value = true;
-      msglist.value.push({                          // 先显示 [human] 对话
+      msglist.value.push({
         type: 2,
         content: searchStr,
       });
@@ -137,13 +140,25 @@ export default defineComponent({
       // console.log("开始查询, historyID = ", historyID.value);
       // console.log("str = ", searchStr);
       // console.log("encodeURIComponent = ", encodeURIComponent(searchStr));
-      msglist.value.push({                          // 再显示 [bot] 对话
-        type: 1,
-        queryStr: encodeURIComponent(searchStr),
-        userID: userInfo.value.id,
-        historyID: historyID.value,
-        isStatic: false,
+
+      // 先进行权限验证
+      axios.get("/user/permissionValid/" + userInfo.value.id + "/" + chatCost).then((response) => {
+        if (response.data.success) {
+          // 认证通过, 进行提问逻辑 (再显示 [bot] 对话)
+          msglist.value.push({
+            type: 1,
+            queryStr: encodeURIComponent(searchStr),
+            userID: userInfo.value.id,
+            historyID: historyID.value,
+            isStatic: false,
+          })
+        } else {
+          searchLoading.value = false;
+          message.error(response.data.message);
+        }
       })
+
+
 
     }
 

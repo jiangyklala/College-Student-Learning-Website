@@ -48,7 +48,7 @@
         <a @click="loginClick">登录</a> | <a @click="registerClick">注册</a>
 
       </div>
-      <a-dropdown v-if="ifLoginIn">
+      <a-dropdown v-if="ifLoginIn" @click="dropdownClickHandle">
         <a class="ant-dropdown-link" @click.prevent>
           <a-avatar style="background-color: #87d068">
             <template #icon>
@@ -61,10 +61,7 @@
         <template #overlay>
           <a-menu>
             <a-menu-item>
-              账户余额: {{userInfo.balance}}
-            </a-menu-item>
-            <a-menu-item>
-              <a>开发中</a>
+              剩余提问次数: {{userInfo.balance}}
             </a-menu-item>
           </a-menu>
         </template>
@@ -171,7 +168,7 @@
 <script lang="ts">
 import {computed, defineComponent, onMounted, ref} from 'vue';
 import axios from "axios";
-import {message, notification} from "ant-design-vue";
+import {MenuProps, message, notification} from "ant-design-vue";
 import {DownOutlined, UserOutlined} from "@ant-design/icons-vue";
 import store from "@/store";
 import {Tool} from "@/utils/tool";
@@ -306,13 +303,25 @@ export default defineComponent({
     })
 
     /**
+     * 点击右上角的账户详情
+     */
+    const dropdownClickHandle = () => {
+      axios.defaults.withCredentials = true;
+      axios.post("/user/loginByID/" + userInfo.value.id).then((response) => {
+        if (response.data.success) {   // 成功则加载用户信息
+          store.commit("setUserInfo", response.data.content);
+        }
+      })
+    };
+
+    /**
      * 自动登录
      */
     const autoLogin = (userID : string) => {
       axios.defaults.withCredentials = true;
       axios.post("/user/loginByID/" + userID).then((response) => {
         console.log("尝试自动登录");
-        console.log(response);
+        // console.log(response);
 
         if (response.data.success) {   // 成功则加载用户信息
           store.commit("setUserInfo", response.data.content);
@@ -423,6 +432,7 @@ export default defineComponent({
       sendVerifyCode,
       forgetPasswordHandle,
       forgetModalOk,
+      dropdownClickHandle,
     };
   }
 });

@@ -3,6 +3,7 @@ package com.jxm.yiti.service;
 import com.jxm.yiti.domain.User;
 import com.jxm.yiti.domain.UserExample;
 import com.jxm.yiti.mapper.UserMapper;
+import com.jxm.yiti.mapper.cust.UserMapperCust;
 import com.jxm.yiti.req.UserQueryReq;
 import com.jxm.yiti.resp.CommonResp;
 import com.jxm.yiti.resp.UserQueryResp;
@@ -38,6 +39,9 @@ public class UserService {
 
     @Resource
     private UserMapper userMapper;
+
+    @Resource
+    private UserMapperCust userMapperCust;
 
     @Resource
     private MailService mailService;
@@ -564,5 +568,24 @@ public class UserService {
         }
 
         return user;
+    }
+
+    public int permissionValid(Long userID, Long count) {
+        try {
+            User user = userMapper.selectByPrimaryKey(userID);  // 查的是整个 user, 性能可提升
+            switch (user.getType()) {
+                case 2 -> {
+                    return 2;
+                }
+                case 1, 0 -> {
+                    userMapperCust.balanceGetAndDecrNum(userID, count);
+                }
+            }
+        } catch (Exception e) {
+            LOG.error("权限验证(扣除提问次数)出错");
+            return 0;
+        }
+
+        return 1;
     }
 }

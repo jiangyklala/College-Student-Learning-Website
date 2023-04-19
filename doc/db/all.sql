@@ -286,3 +286,5 @@ CREATE TABLE `email_active` (
                                 `email` varchar(50)  COMMENT '对话标题',
                                 `active` boolean COMMENT '此邮箱是否被激活',
                                 PRIMARY KEY (`email`)) engine = innodb DEFAULT charset = utf8mb4 COMMENT = 'chatGPT 用户历史查询信息记录';
+
+update user set balance = balance - 10 where id = 2658810919845888;
