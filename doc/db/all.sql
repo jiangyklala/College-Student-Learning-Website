@@ -271,6 +271,8 @@ CREATE TABLE `chat_history` (
                         `content_id` bigint NOT NULL COMMENT '对话内容',
                         PRIMARY KEY (`id`)) engine = innodb DEFAULT charset = utf8mb4 COMMENT = 'chatGPT 用户历史查询信息记录';
 
+ALTER TABLE chat_history ADD total_token bigint;
+
 # chatGPT 用户历史查询信息记录的 content 字段
 DROP TABLE IF EXISTS `chat_history_content`;
 

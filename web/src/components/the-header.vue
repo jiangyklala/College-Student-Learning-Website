@@ -48,7 +48,7 @@
         <a @click="loginClick">登录</a> | <a @click="registerClick">注册</a>
 
       </div>
-      <a-dropdown v-if="ifLoginIn" @click="dropdownClickHandle">
+      <a-dropdown v-if="ifLoginIn">
         <a class="ant-dropdown-link" @click.prevent>
           <a-avatar style="background-color: #87d068">
             <template #icon>
@@ -61,7 +61,7 @@
         <template #overlay>
           <a-menu>
             <a-menu-item>
-              剩余提问次数: {{userInfo.balance}}
+              剩余提问次数: {{userInfo.balance}}     <sync-outlined @click="userInfoClick" :spin="userInfoRefresh" />
             </a-menu-item>
           </a-menu>
         </template>
@@ -169,7 +169,7 @@
 import {computed, defineComponent, onMounted, ref} from 'vue';
 import axios from "axios";
 import {MenuProps, message, notification} from "ant-design-vue";
-import {DownOutlined, UserOutlined} from "@ant-design/icons-vue";
+import {DownOutlined, UserOutlined, SyncOutlined} from "@ant-design/icons-vue";
 import store from "@/store";
 import {Tool} from "@/utils/tool";
 import router from "@/router";
@@ -177,6 +177,7 @@ import router from "@/router";
 export default defineComponent({
   name: 'the-header',
   components: {
+    SyncOutlined,
     UserOutlined,
     DownOutlined,
   },
@@ -301,6 +302,20 @@ export default defineComponent({
     const userInfo = computed(() => {
       return store.state.userInfo;
     })
+    const userInfoRefresh = ref(false);
+
+    const userInfoClick = () => {
+      userInfoRefresh.value = true;
+      axios.defaults.withCredentials = true;
+      axios.post("/user/loginByID/" + userInfo.value.id).then((response) => {
+        if (response.data.success) {   // 成功则加载用户信息
+          store.commit("setUserInfo", response.data.content);
+        } else {
+          message.error(response.data.message);
+        }
+        userInfoRefresh.value = false;
+      })
+    }
 
     /**
      * 点击右上角的账户详情
@@ -423,6 +438,7 @@ export default defineComponent({
       userInModal,
       userInfo,
       verifyBtnDisable,
+      userInfoRefresh,
 
       loginByGitHub,
       loginModalOk,
@@ -433,6 +449,7 @@ export default defineComponent({
       forgetPasswordHandle,
       forgetModalOk,
       dropdownClickHandle,
+      userInfoClick,
     };
   }
 });

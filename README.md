@@ -159,3 +159,22 @@ create table `course_item`
 + 只有在用户点击右上角的用户详情时，才会去重新查 user 的信息 ✓ 
   + 进一步优化：可以在前端的 userInfo 中添加一个修改次数（modcount）字段，只有当 modcount 不为 0 时才去重新查。当然，这需要在可能使 userInfo 变化的代码后面添加 ++modcount
   + 增加接口访问次数限制（通用模块）
++ 加一个提示，在剩余次数后面显示一个「刷新」的按钮，引导用户点击刷新按钮。
+
+
+
+# Contribution
+
+Anyone is welcome and encouraged to contribute. If you discover a bug, or think the project could use an enhancement, follow these steps:
+
+1. Create an issue and offer to code a solution. We can discuss the issue and decide whether any code would be a good addition to the project.
+2. Fork the project. [https://github.com/nlpie/biomedicus-tokenizer/fork]
+3. Create Feature branch (`git checkout -b feature-name`)
+4. Code your solution.
+
+- Follow the [Google style guide for Java](https://google.github.io/styleguide/javaguide.html). There are IDE profiles available [here](https://github.com/google/styleguide).
+- Write unit tests for any non-trivial aspects of your code. If you are fixing a bug write a regression test: one that confirms the behavior you fixed stays fixed.
+
+1. Commit to branch. (`git commit -am 'Summary of changes'`)
+2. Push to GitHub (`git push origin feature-name`)
+3. Create a pull request on this repository from your forked project. We will review and discuss your code and merge it.
