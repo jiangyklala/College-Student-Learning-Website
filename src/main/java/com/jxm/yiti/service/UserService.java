@@ -570,22 +570,26 @@ public class UserService {
         return user;
     }
 
-    public int permissionValid(Long userID, Long count) {
+    public void permissionValid(Long userID, Long count, CommonResp resp) {
         try {
             User user = userMapper.selectByPrimaryKey(userID);  // 查的是整个 user, 性能可提升
             switch (user.getType()) {
                 case 2 -> {
-                    return 2;
+                    return;
                 }
                 case 1, 0 -> {
+                    if (user.getBalance() <= count) {
+                        resp.setSuccess(false);
+                        resp.setMessage("剩余提问次数不足");
+                    }
                     userMapperCust.balanceGetAndDecrNum(userID, count);
                 }
             }
         } catch (Exception e) {
+            resp.setSuccess(false);
+            resp.setMessage("用户权限验证出错");
             LOG.error("权限验证(扣除提问次数)出错");
-            return 0;
         }
 
-        return 1;
     }
 }

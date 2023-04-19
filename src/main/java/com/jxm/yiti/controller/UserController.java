@@ -54,11 +54,7 @@ public class UserController {
     @ResponseBody
     public CommonResp permissionValid(@PathVariable Long userID, @PathVariable Long count) {
         CommonResp resp = new CommonResp();
-        if (0 == userService.permissionValid(userID, count)) {
-            resp.setSuccess(false);
-            resp.setMessage("用户权限验证出错");
-            return resp;
-        }
+        userService.permissionValid(userID, count, resp);
         return resp;
     }
 
