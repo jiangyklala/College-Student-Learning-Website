@@ -448,7 +448,7 @@ public class UserService {
         userInsert.setId(snowFlakeIdWorker.nextId());
         userInsert.setUsername("新用户" + userInsert.getId().toString().substring(4, 10));   // 初始名称
         userInsert.setBalance(0L);
-        userInsert.setType(0);
+        userInsert.setType(1);
         try {
             if (userMapper.insert(userInsert) != 0) {
                 resp.setMessage(resp.getMessage() + "用户添加成功");
