@@ -4,6 +4,8 @@
 <!--    历史记录--抽屉-->
     <a-button type="primary" @click="showDrawer" class="drawer-button">历<br>史<br>记<br>录</a-button>
     <a-button type="primary" @click="newChat" class="new-chat-button">新<br>对<br>话</a-button>
+    <a-button type="primary" @click="showAttention" class="show-attention-button">注<br>意<br></a-button>
+
     <a-drawer
         v-model:visible="drawerVisible"
         class="drawer"
@@ -65,9 +67,9 @@
 
 
 <script lang="ts">
-import {computed, defineComponent, onMounted, ref} from 'vue';
+import {computed, defineComponent, h, onMounted, ref} from 'vue';
 import axios from "axios";
-import {message} from "ant-design-vue";
+import {message, Modal} from "ant-design-vue";
 import mavonEditor from "mavon-editor";
 import {Tool} from "@/utils/tool";
 import store from "@/store";
@@ -266,6 +268,20 @@ export default defineComponent({
       }
     }
 
+    //-----------------其它------------------
+
+    /**
+     * "注意" 对话框显示
+     */
+    const showAttention = () => {
+      Modal.info({
+        title: '注意',
+        content: h('div', {}, [
+          h('p', '每次提问需要消耗 1 次提问次数呦'),
+        ])
+      });
+    }
+
     /**
      * 对特殊字符进行转义
      * @param str
@@ -304,7 +320,8 @@ export default defineComponent({
       showDrawer,
       historyItemClick,
       newChat,
-      updateHistoryID
+      updateHistoryID,
+      showAttention,
     };
   },
 });
@@ -326,6 +343,15 @@ export default defineComponent({
   width: 40px;
   height: 100px;
   left: 5px;
+}
+
+.show-attention-button {
+  position: fixed;
+  width: 40px;
+  height: 80px;
+  left: 5px;
+  /*padding-top: 100px;*/
+  top: 305px;
 }
 
 .input-search {
