@@ -447,7 +447,7 @@ public class UserService {
         User userInsert = CopyUtil.copy(user, User.class);
         userInsert.setId(snowFlakeIdWorker.nextId());
         userInsert.setUsername("新用户" + userInsert.getId().toString().substring(4, 10));   // 初始名称
-        userInsert.setBalance(0L);
+        userInsert.setBalance(1000L);
         userInsert.setType(1);
         try {
             if (userMapper.insert(userInsert) != 0) {
