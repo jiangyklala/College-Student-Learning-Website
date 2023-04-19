@@ -337,15 +337,15 @@ export default defineComponent({
     const checkLoginCert = () => {
       axios.defaults.withCredentials = true;
       axios.post("/user/checkLoginCert").then((response) => {        // 验证登录凭证是否有效
-        console.log("验证登录凭证")
-        console.log(response);
+        // console.log("验证登录凭证")
+        // console.log(response);
 
         if (response.data.success) {                                    // 若凭证有效, 检测本地存储 userInfo 是否为空,
           if (Tool.isEmpty(userInfo.value)) {                           // 若 userInfo 为空, 则为初次登录, 尝试自动登录
-            console.log("凭证有效, userInfo 为空")
+            // console.log("凭证有效, userInfo 为空")
             autoLogin(response.data.content);
           } else {                                                      // 若 userInfo 不为空, 则正处于登录态
-            console.log("已经是登录态了");
+            // console.log("已经是登录态了");
             wsLogin();
             ifLoginIn.value = true;
           }
@@ -360,11 +360,11 @@ export default defineComponent({
     let token: any;
 
     const onOpen = () => {
-      console.log('WebSocket连接成功，状态码：', websocket.readyState)
+      // console.log('WebSocket连接成功，状态码：', websocket.readyState)
     };
 
     const onMessage = (event: any) => {
-      console.log('WebSocket收到消息：', event.data);
+      // console.log('WebSocket收到消息：', event.data);
       notification['info']({
         message: '收到消息',
         description: event.data,
@@ -372,11 +372,11 @@ export default defineComponent({
     };
 
     const onError = () => {
-      console.log('WebSocket连接错误，状态码：', websocket.readyState)
+      // console.log('WebSocket连接错误，状态码：', websocket.readyState)
     };
 
     const onClose = () => {
-      console.log('WebSocket连接关闭，状态码：', websocket.readyState)
+      // console.log('WebSocket连接关闭，状态码：', websocket.readyState)
     };
 
     const initWebSocket = () => {

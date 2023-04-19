@@ -592,4 +592,15 @@ public class UserService {
         }
 
     }
+
+    public void payWith(String userEmail, Long count, CommonResp resp) {
+        try {
+            userMapperCust.payWithCount(userEmail, count);
+            resp.setMessage("充值成功!");
+        } catch (Exception e) {
+            LOG.error("用户{} 充值失败", userEmail, e);
+            resp.setSuccess(false);
+            resp.setMessage("充值失败!");
+        }
+    }
 }

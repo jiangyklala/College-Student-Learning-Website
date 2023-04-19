@@ -288,3 +288,5 @@ CREATE TABLE `email_active` (
                                 PRIMARY KEY (`email`)) engine = innodb DEFAULT charset = utf8mb4 COMMENT = 'chatGPT 用户历史查询信息记录';
 
 update user set balance = balance - 10 where id = 2658810919845888;
+
+update user set balance = balance + 100 where email = 'jiangyk@nwafu.edu.cn';

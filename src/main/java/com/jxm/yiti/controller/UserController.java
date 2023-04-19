@@ -47,8 +47,22 @@ public class UserController {
 
 
     /**
+     * 对某用户充值提问次数
+     * @param userEmail 用户 email
+     * @param count 充值次数
+     */
+    @PostMapping("/payWith/{userEmail}&{count}")
+    @ResponseBody
+    public CommonResp payWith(@PathVariable String userEmail, @PathVariable Long count) {
+        CommonResp resp = new CommonResp();
+        userService.payWith(userEmail, count, resp);
+        return resp;
+    }
+
+    /**
      * 对用户进行权限验证: 永久会员通行, 普通用户和普通会员扣费
      * @param userID 用户 ID
+     * @param count 扣费的多少
      */
     @GetMapping("/permissionValid/{userID}/{count}")
     @ResponseBody
