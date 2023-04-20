@@ -45,6 +45,14 @@ public class UserController {
 //        return res ? "恭喜! 邮箱激活成功" : "出错喽, 重发激活邮件试试, 或者微信 call 我呦";
 //    }
 
+    /**
+     * 获取当日的 [提问总数] 与 [消耗的总 token]
+     */
+    @GetMapping("/getGptTotalInfo")
+    @ResponseBody
+    public String getGptTotalInfo() {
+        return userService.getGptTotalInfo();
+    }
 
     /**
      * 对某用户充值提问次数

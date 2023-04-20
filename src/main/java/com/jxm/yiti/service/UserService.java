@@ -26,10 +26,9 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.regex.Pattern;
 
 @Service
@@ -602,5 +601,24 @@ public class UserService {
             resp.setSuccess(false);
             resp.setMessage("充值失败!");
         }
+    }
+
+    public String getGptTotalInfo() {
+        String res = "";
+
+        // 获取当日日期
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");   // 只要年月日
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+        String nowTime = sdf.format(new Date());
+
+        try (Jedis jedis = jedisPool.getResource()) {
+            String times = jedis.get("yt:gpt:times:" + nowTime);
+            String tokens = jedis.get("yt:gpt:tokens:" + nowTime);
+            res += "提问总数: " + times + ", 消耗的总 token: " + tokens;
+        } catch (Exception e) {
+            LOG.error("获取当日的 [提问总数] 与 [消耗的总 token] 失败", e);
+        }
+
+        return res;
     }
 }

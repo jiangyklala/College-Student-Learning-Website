@@ -117,7 +117,7 @@ export default defineComponent({
     const updateHistoryID = (newHistoryID : any) => {
       historyID.value = newHistoryID;
       searchLoading.value = false;
-      console.log("new historyID!!: " + historyID.value);
+      // console.log("new historyID!!: " + historyID.value);
     }
 
     /**
@@ -142,12 +142,13 @@ export default defineComponent({
       searchStr = btoa(encodeURIComponent(searchStr));
 
       // console.log("开始查询, historyID = ", historyID.value);
-      console.log("str = ", searchStr);
-      console.log("encodeURIComponent = ", searchStr);
+      // console.log("str = ", searchStr);
+      // console.log("encodeURIComponent = ", searchStr);
 
       // 先进行权限验证
-      axios.get("/user/permissionValid/" + userInfo.value.id + "/" + chatCost).then((response) => {
+      axios.get(process.env.VUE_APP_LOCAL_GPT_TEST + "/gpt/payForAns/" + userInfo.value.id + "/" + historyID.value).then((response) => {
         if (response.data.success) {
+          // console.log(response.data.content);
           // 认证通过, 进行提问逻辑 (再显示 [bot] 对话)
           msglist.value.push({
             type: 1,
@@ -161,9 +162,6 @@ export default defineComponent({
           message.error(response.data.message);
         }
       })
-
-
-
     }
 
     //-----------------抽屉------------------
@@ -214,7 +212,7 @@ export default defineComponent({
         }
       })
 
-      console.log("点击了这个对话, historyID = " + historyID.value);
+      // console.log("点击了这个对话, historyID = " + historyID.value);
 
     }
 
@@ -230,7 +228,7 @@ export default defineComponent({
      */
     const extractAndShowChat2 = (content : any) => {
       content = JSON.parse(content);// JSON.stringify(content);
-      console.log(content);
+      // console.log(content);
       for (let i = 0; i < content.length; ++i) {
         if (content[i].userType === 0) {
           msglist.value.push({
