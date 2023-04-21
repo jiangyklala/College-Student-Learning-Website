@@ -37,8 +37,8 @@ export default defineComponent({
 
     const mavonEditorRef = ref();
 
-    const contentMD = ref("");
-    const contentPlain = ref("");
+    const contentMD = ref("");      // 显示出来的经 markdown 渲染过的文本
+    const contentPlain = ref("");   // 返回答案的原始文本
     const eventSource = ref();
 
     const copyToClipboard = () => {
@@ -56,34 +56,45 @@ export default defineComponent({
     const messageEventListener = (res: any) => {
 
       let resJson = JSON.parse(res.data)
-      // console.log(resJson);
 
       if (resJson.end === true) {
-        // console.log("message----end");
-        // console.log(resJson.message);
+        // 向父组件提交变更后的 historyID
         emit('update:historyID', resJson.message);
+
+        // 关闭对于接口的监听, 移除各种监听事件
         eventSource.value.close();
         removeListen();
       } else {
+        // 将 \n 替换成 <br> 以正确显示换行
         contentPlain.value += resJson.message.replace(/\n/g, '<br>');
+
+        // 进行 markdown 渲染时需要再将其转换过来
         contentMD.value = mavonEditorRef.value.render(contentPlain.value.replace(/<br>/g, '\n'));
       }
-
     };
 
-    const errorEventListener = (res : any) => {
+    /**
+     * 错误事件监听
+     */
+    const errorEventListener = () => {
       eventSource.value.close();
       message.error("连续对话内容过长(max 4096 tokens)或接口超时, 请开启一个新对话, 或者联系我呦", 5);
       console.log("error!!!");
 
     }
 
+    /**
+     * 移除各种监听事件
+     */
     const removeListen = () => {
       eventSource.value.removeEventListener('open', openEventListener);
       eventSource.value.removeEventListener('message', messageEventListener);
       eventSource.value.removeEventListener('error', errorEventListener);
     }
 
+    /**
+     * 初始化监听时间
+     */
     const initListen = () => {
       eventSource.value = new EventSource(process.env.VUE_APP_LOCAL_GPT_TEST + "/gpt/completions/stream/" + props.userID + "&" + props.historyID + "&" + props.queryStr);
 
@@ -100,12 +111,13 @@ export default defineComponent({
 
     onMounted(() => {
       mavonEditorRef.value = mavonEditor.markdownIt;
+
+      // 判断是 [静态消息] 还是需要监听接口 (动态)
       if (props.isStatic) {
         showMessage();
       } else {
         initListen();
       }
-
     })
 
     return {

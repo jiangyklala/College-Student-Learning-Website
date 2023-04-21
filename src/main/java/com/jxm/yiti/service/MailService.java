@@ -49,6 +49,7 @@ public class MailService {
 
         String verifyCode = String.valueOf((int)(Math.random() * 9000) + 1000);
 
+        // 激活码有效期 5 min
         try (Jedis jedis = UserService.jedisPool.getResource()) {
             jedis.setex("yt:ac:email:" + email, 5 * 60, verifyCode);
         }

@@ -122,6 +122,7 @@ export default defineComponent({
 
     /**
      * 查询按钮
+     * @param searchStr 用户输入的问题
      */
     const onSearch = (searchStr : any) => {
 
@@ -137,18 +138,18 @@ export default defineComponent({
         type: 2,
         content: searchStr,
       });
+
+      // 清空问题输入框
       gptQuestion.value = "";
 
+      // 对问题进行编码
       searchStr = btoa(encodeURIComponent(searchStr));
 
-      // console.log("开始查询, historyID = ", historyID.value);
-      // console.log("str = ", searchStr);
       // console.log("encodeURIComponent = ", searchStr);
 
       // 先进行权限验证
       axios.get(process.env.VUE_APP_LOCAL_GPT_TEST + "/gpt/payForAns/" + userInfo.value.id + "/" + historyID.value).then((response) => {
         if (response.data.success) {
-          // console.log(response.data.content);
           // 认证通过, 进行提问逻辑 (再显示 [bot] 对话)
           msglist.value.push({
             type: 1,
@@ -169,10 +170,16 @@ export default defineComponent({
     const historyList = ref();
     historyList.value = [];
 
+    /**
+     *
+     */
     const afterVisibleChange = (bool: boolean) => {
       // console.log('drawerVisible', bool);
     };
 
+    /**
+     * 显示 [抽屉]
+     */
     const showDrawer = () => {
       drawerVisible.value = true;
     };

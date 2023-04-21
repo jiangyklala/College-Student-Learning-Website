@@ -64,7 +64,7 @@ public class UserService {
 
 
     /**
-     * 预热
+     * 预热 jedisPool
      */
     public void initJedisPool(JedisPool jedisPool) {
         int minIdle = 100;
@@ -181,7 +181,7 @@ public class UserService {
             user.setUsername("新用户" + user.getId().toString().substring(4, 10));   // 初始名称
             user.setGithubId(authUser.getUuid());
             user.setEmail(authUser.getEmail());
-            user.setBalance(0L);                        // 初始余额设为 0
+            user.setBalance(100L);                                                    // 初始余额设为 0
 
             if (userMapper.insert(user) <= 0) {
                 return -1L;
@@ -473,6 +473,12 @@ public class UserService {
         }
     }
 
+    /**
+     * 验证邮箱格式
+     *
+     * @param email email
+     * @param resp 回调 resp
+     */
     public void isLoginEmail(String email, CommonResp resp) {
         Pattern pattern1 = Pattern.compile("^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$");
         if (!pattern1.matcher(email).matches()) {
@@ -482,6 +488,13 @@ public class UserService {
         return;
     }
 
+    /**
+     * 发送激活邮件
+     *
+     * @param email 目的 email
+     * @param resp 回调 resp
+     * @return 是否发送成功
+     */
     public boolean sendActiveEmail(String email, CommonResp resp) {
         Pattern pattern1 = Pattern.compile("^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$");
         if (!pattern1.matcher(email).matches()) {
@@ -493,14 +506,16 @@ public class UserService {
 
     /**
      * 验证邮箱是否有效
+     *
+     * @param email email
+     * @param verifyCode 验证码
+     * @param resp 回调 resp
      */
     public void isActiveEmail(String email, String verifyCode, CommonResp resp) {
         if (!resp.getSuccess()) {
             return;
         }
-//        LOG.info(verifyCode);
         try (Jedis jedis = UserService.jedisPool.getResource()) {
-//            LOG.info(jedis.get("yt:ac:email:" + email));
             if (Objects.equals(jedis.get("yt:ac:email:" + email), verifyCode)) {
                 resp.setSuccess(true);
                 return;
@@ -510,6 +525,9 @@ public class UserService {
         resp.setSuccess(false);
     }
 
+    /**
+     * 验证邀请码是否有效
+     */
     public void isInvite(String inviteCode, CommonResp resp) {
         if (!resp.getSuccess()) {
             return;
@@ -524,6 +542,11 @@ public class UserService {
         resp.setMessage("邀请码无效");
     }
 
+    /**
+     * 获取 num 个邀请码
+     *
+     * @return 生成所有邀请码的 List
+     */
     public ArrayList<String> getInviteCode(Integer num) {
         ArrayList<String> codes = new ArrayList<>(num);
         try (Jedis jedis = UserService.jedisPool.getResource()) {
@@ -536,6 +559,11 @@ public class UserService {
         return codes;
     }
 
+    /**
+     * 获取 num 个 [永久] 邀请码
+     *
+     * @return 生成所有邀请码的 List
+     */
     public ArrayList<String> getInviteCodePer(Integer num) {
         ArrayList<String> codes = new ArrayList<>(num);
         try (Jedis jedis = UserService.jedisPool.getResource()) {
@@ -548,6 +576,11 @@ public class UserService {
         return codes;
     }
 
+    /**
+     * 验证用户 email 是否存在, 并
+     *
+     * @return
+     */
     public UserQueryReq isExitsUserEmail(UserQueryReq user, CommonResp resp) {
         if (!resp.getSuccess()) return user;
 
@@ -558,12 +591,9 @@ public class UserService {
         } else {
             String password = user.getPassword();
             String verifyCode = user.getVerifyCode();
-//            LOG.info(oldUser.toString());
-//            LOG.info(user.toString());
             user = CopyUtil.copy(oldUser, UserQueryReq.class);
             user.setPassword(password);
             user.setVerifyCode(verifyCode);
-//            LOG.info(user.toString());
         }
 
         return user;
