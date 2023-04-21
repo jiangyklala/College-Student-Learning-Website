@@ -73,7 +73,7 @@ export default defineComponent({
 
     const errorEventListener = (res : any) => {
       eventSource.value.close();
-      message.error("对话内容过长(max 4096 tokens)或接口超时, 请开启一个新对话, 或者联系我呦", 5);
+      message.error("连续对话内容过长(max 4096 tokens)或接口超时, 请开启一个新对话, 或者联系我呦", 5);
       console.log("error!!!");
 
     }
