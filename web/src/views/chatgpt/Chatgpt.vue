@@ -4,7 +4,7 @@
 <!--    历史记录--抽屉-->
     <a-button type="primary" @click="showDrawer" class="drawer-button">历<br>史<br>记<br>录</a-button>
     <a-button type="primary" @click="newChat" class="new-chat-button">新<br>对<br>话</a-button>
-    <a-button type="primary" @click="showAttention" class="show-attention-button">注<br>意<br></a-button>
+    <a-button type="primary" @click="showAttention" class="show-attention-button">提<br>问<br>消<br>耗<br>规<br>则</a-button>
     <a-button type="primary" @click="showAddCredit" class="show-add-credit-button">充<br>值<br></a-button>
 
     <a-drawer
@@ -312,7 +312,7 @@ export default defineComponent({
           h('p', '具体可以扫下面帅地的微信小店购买对应的面额，购买成功后联系帅地即可。'),
           h('img', { src: 'https://xiaoj-1309630359.cos.ap-nanjing.myqcloud.com/202304221452920.jpg' })
         ]),
-        width: 710,
+        width: 610,
         okText: '了然'
       });
     }
@@ -384,7 +384,7 @@ export default defineComponent({
 .show-attention-button {
   position: fixed;
   width: 43px;
-  height: 60px;
+  height: 150px;
   left: 10px;
   top: 305px;
 }
@@ -394,7 +394,7 @@ export default defineComponent({
   width: 43px;
   height: 60px;
   left: 10px;
-  top: 390px;
+  top: 480px;
 }
 
 .input-search {
