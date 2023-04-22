@@ -1,7 +1,7 @@
 <template>
   <a-layout-header class="header">
     <div class="header-menu">
-<!--      ChatGPT-3.5 内测&#45;&#45;&#45;&#45;抢先体验 ^_^-->
+
       <a-menu
           theme="light"
           mode="horizontal"
@@ -11,7 +11,7 @@
           <router-link to="/Home">首页</router-link>
         </a-menu-item>
         <a-menu-item key="10">
-          <router-link to="/chatgpt/Chatgpt">ChatGPT-3.5 内测&#45;&#45;&#45;&#45;抢先体验</router-link>
+          <router-link to="/chatgpt/Chatgpt">GPT 3.5 </router-link>
         </a-menu-item>
         <a-menu-item key="11">
           <router-link to="/chatgpt/Image">3.5 - 画图</router-link>
@@ -125,6 +125,7 @@
       <a-form-item label="邀请码">
         <a-input v-model:value="userInModal.inviteCode"/>
       </a-form-item>
+      <a style="text-align: center; float: right;" @click="getInviteCode">如何获取邀请码?</a>
     </a-form>
     <template #footer>
       <div class="modal-footer-div">
@@ -269,6 +270,10 @@ export default defineComponent({
       })
     }
 
+    const getInviteCode = () => {
+      window.open("https://www.playoffer.cn/1619.html");
+    }
+
     //-------------忘记密码--------------
     const forgetModalVisible = ref(false);
     const forgetModalLoading = ref();
@@ -294,7 +299,6 @@ export default defineComponent({
           message.error(response2.data.message);
         }
       })
-
     }
 
     //-------------登录/注册标识--------------
@@ -450,6 +454,7 @@ export default defineComponent({
       forgetModalOk,
       dropdownClickHandle,
       userInfoClick,
+      getInviteCode,
     };
   }
 });

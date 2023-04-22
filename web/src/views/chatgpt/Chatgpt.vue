@@ -5,6 +5,7 @@
     <a-button type="primary" @click="showDrawer" class="drawer-button">历<br>史<br>记<br>录</a-button>
     <a-button type="primary" @click="newChat" class="new-chat-button">新<br>对<br>话</a-button>
     <a-button type="primary" @click="showAttention" class="show-attention-button">注<br>意<br></a-button>
+    <a-button type="primary" @click="showAddCredit" class="show-add-credit-button">充<br>值<br></a-button>
 
     <a-drawer
         v-model:visible="drawerVisible"
@@ -286,10 +287,30 @@ export default defineComponent({
         content: h('div', {}, [
           h('p', '由于本网站具体连续对话功能 + 画图功能，这些功能的 token 计算比较复杂，这里只给出本网站简单的「提问次数消耗规则」：'),
           h('p', '1、每次普通提问，会消耗 1 次提问。'),
-          h('p', '2、具备上下文的语境的连续提问，会消耗 1+ 次，最多消耗 15 次，具体计算规则如下：'),
+          h('p', '2、具备上下文的语境的连续提问，会消耗 1+ 次，最多消耗 8 次，具体计算规则如下：'),
           h('p', 'GPT具备上下文语境，比如点击开启一次新对话：'),
-          h('p', '第一次提问，会消耗 1 次提问次数，第二次继续提问，会累加你上一次提问消耗的 token。如果 token 太大，那么会消耗 1+ 次，最大消耗 20 次，但如果你连续对话 1000 次，那么会提问失败 (超过单次连续对所限制的 4096 token)。'),
+          h('p', '第一次提问，会消耗 1 次提问次数，第二次继续提问，会累加你上一次提问消耗的 token。如果 token 太大，那么会消耗 1+ 次，最大消耗 8 次，但如果你连续对话太多次，那么提问有可能失败（超过官方最大限制）。'),
           h('p', '如果你并不需要上下文语境，那么可以点击「新对话」，那么此时就开启了一个新的上下文语境。'),
+        ]),
+        width: 710,
+        okText: '了然'
+      });
+    }
+
+    /**
+     * 显示充值页面
+     */
+    const showAddCredit = () => {
+      Modal.info({
+        title: 'GPT 在线网站提问次数购买',
+        content: h('div', {}, [
+          h('p', '目前仅提供三种额度购买: '),
+          h('p', '1、10 块钱面额：获得 1000 次提问'),
+          h('p', '2、20 块钱面额：获得 2500 次提问'),
+          h('p', '3、30 块钱名额：获得 4500 次提问'),
+          h('h4', '如何购买?'),
+          h('p', '具体可以扫下面帅地的微信小店购买对应的面额，购买成功后联系帅地即可。'),
+          h('img', { src: 'https://xiaoj-1309630359.cos.ap-nanjing.myqcloud.com/202304221452920.jpg' })
         ]),
         width: 710,
         okText: '了然'
@@ -336,6 +357,7 @@ export default defineComponent({
       newChat,
       updateHistoryID,
       showAttention,
+      showAddCredit,
     };
   },
 });
@@ -345,27 +367,34 @@ export default defineComponent({
 
 .new-chat-button {
   position: fixed;
-  width: 40px;
+  width: 43px;
   height: 80px;
-  left: 5px;
+  left: 10px;
   /*padding-top: 100px;*/
   top: 200px;
 }
 
 .drawer-button {
   position: fixed;
-  width: 40px;
+  width: 43px;
   height: 100px;
-  left: 5px;
+  left: 10px;
 }
 
 .show-attention-button {
   position: fixed;
-  width: 40px;
-  height: 80px;
-  left: 5px;
-  /*padding-top: 100px;*/
+  width: 43px;
+  height: 60px;
+  left: 10px;
   top: 305px;
+}
+
+.show-add-credit-button {
+  position: fixed;
+  width: 43px;
+  height: 60px;
+  left: 10px;
+  top: 390px;
 }
 
 .input-search {
