@@ -130,12 +130,12 @@ public class UserService {
         response.setHeader("Access-Control-Allow-Origin", myAddr);
 
         Cookie cookieLoginCert = new Cookie("yiti_loginCert", onlyLoginCert);       // 增加本地唯一登录凭证 Cookie
-        cookieLoginCert.setMaxAge(60 * 60 * 24);
+        cookieLoginCert.setMaxAge(60 * 60 * 24 * 15);                               // 设置 cookie 有效期
         cookieLoginCert.setPath("/");
         response.addCookie(cookieLoginCert);
 
         Cookie cookieUserID = new Cookie("yiti_userID", Long.toString(userID));     // 增加本地自动登录账号信息 Cookie
-        cookieUserID.setMaxAge(60 * 60 * 24);
+        cookieUserID.setMaxAge(60 * 60 * 24 * 15);
         cookieUserID.setPath("/");
         response.addCookie(cookieUserID);
 
