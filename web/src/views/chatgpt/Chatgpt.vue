@@ -365,6 +365,55 @@ export default defineComponent({
 
 <style scoped>
 
+@media (max-width: 768px) {
+
+  .layout-content {
+    width: 87% !important;
+    margin-right: 5px !important;
+  }
+
+  .new-chat-button {
+    transform: scale(0.7);
+    position: fixed;
+    width: 43px;
+    height: 80px;
+    left: 0px !important;
+
+    /*padding-top: 100px;*/
+    top: 170px !important;
+  }
+
+  .drawer-button {
+    transform: scale(0.7);
+    left: 0px !important;
+  }
+
+  .show-attention-button {
+    transform: scale(0.7);
+    left: 0px !important;
+    top: 235px !important;
+  }
+
+  .show-add-credit-button {
+    transform: scale(0.7);
+    left: 0px !important;
+    top: 370px !important;
+  }
+
+  .input-search {
+    position: fixed;
+    width: 75% !important;
+    left: 11.5% !important;
+    bottom: 5%;
+  }
+
+  .search-icon-btn {
+    position: fixed;
+    left: 87% !important;
+    bottom: 6%;
+  }
+}
+
 .new-chat-button {
   position: fixed;
   width: 43px;

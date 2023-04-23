@@ -102,12 +102,13 @@ export default defineComponent( {
           h('p', '本模块没有 "历史记录", 满足要求的图片要及时保存呦'),
         ]),
         width: 500,
+        okText: '了然'
       });
     }
 
 
     onMounted(() => {
-      console.log("aa");
+      // console.log("aa");
     })
 
     return {
@@ -125,6 +126,37 @@ export default defineComponent( {
 </script>
 
 <style scoped>
+
+@media (max-width: 768px) {
+
+  .layout-content {
+    width: 87% !important;
+    margin-right: 5px !important;
+  }
+
+  .show-attention-button {
+    transform: scale(0.7);
+    left: 0px !important;
+    top: 235px !important;
+  }
+
+  .input-search {
+    transform: scale(0.9);
+    position: fixed;
+    width: 96.5% !important;
+    left: 7% !important;
+    top: 11%;
+  }
+
+  .show-attention-button {
+    position: fixed;
+    width: 40px;
+    height: 70px;
+    left: 8px;
+    top: 10% !important;
+  }
+}
+
 .layout-content {
   width: 85%;
   height: 100%;

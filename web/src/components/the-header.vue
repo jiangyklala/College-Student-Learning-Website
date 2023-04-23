@@ -44,9 +44,8 @@
 
     </div>
     <div class="login-menu">
-      <div v-if="!ifLoginIn">
+      <div class="login-mark-div" v-if="!ifLoginIn">
         <a @click="loginClick">登录</a> | <a @click="registerClick">注册</a>
-
       </div>
       <a-dropdown v-if="ifLoginIn">
         <a class="ant-dropdown-link" @click.prevent>
@@ -462,7 +461,36 @@ export default defineComponent({
 
 <style>
 
+@media (max-width: 768px) {
+  .header-menu {
+    transform: scale(0.8);
+    display: inline-block;
+    width: 60%;
+    max-width: 60%;
+    padding-left: 0% !important;
+    color: black;
+    background-color: white;
+  }
+
+  .login-menu {
+    transform: scale(0.9);
+    color: black;
+    float: left;
+    width: 40% !important;
+    height: 64px;
+    /*font-weight: bold;*/
+  }
+
+  .login-mark-div {
+    position: absolute;
+    width: 100%;
+    padding-left: 40%;
+    max-height: 64px;
+  }
+}
+
 .header {
+  padding: 0 0px !important;
   color: white !important;
   background: white !important;
   /*text-align: center !important;*/
@@ -478,14 +506,14 @@ export default defineComponent({
 .header-menu {
   display: inline-block;
   width: 85%;
-  /*padding-left: 20%;*/
+  padding-left: 6%; /*与白色页面的边对齐*/
   color: black;
   background-color: white;
 }
 
 .login-menu {
   color: black;
-  width: 15%;
+  width: 13%;  /*与白色页面的边对齐*/
   float: right;
   /*font-weight: bold;*/
 }
