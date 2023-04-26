@@ -181,7 +181,7 @@ public class UserService {
             user.setUsername("新用户" + user.getId().toString().substring(4, 10));   // 初始名称
             user.setGithubId(authUser.getUuid());
             user.setEmail(authUser.getEmail());
-            user.setBalance(100L);                                                    // 初始余额设为 0
+            user.setBalance(100L);                                                    // 初始余额设为 100
 
             if (userMapper.insert(user) <= 0) {
                 return -1L;
@@ -644,7 +644,9 @@ public class UserService {
         try (Jedis jedis = jedisPool.getResource()) {
             String times = jedis.get("yt:gpt:times:" + nowTime);
             String tokens = jedis.get("yt:gpt:tokens:" + nowTime);
-            res += "提问总数: " + times + ", 消耗的总 token: " + tokens;
+            res += "当日: 提问总数: " + times + ", 消耗的总token: " + tokens + "\n"
+                + "截止到目前, 总共: 提问次数: " + (Long.parseLong(jedis.get("yt:gpt:times:total")) + Long.parseLong(times))
+                + ", 消耗的总token: " + (Long.parseLong(jedis.get("yt:gpt:tokens:total")) + Long.parseLong(tokens));
         } catch (Exception e) {
             LOG.error("获取当日的 [提问总数] 与 [消耗的总 token] 失败", e);
         }

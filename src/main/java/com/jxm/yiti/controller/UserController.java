@@ -278,20 +278,4 @@ public class UserController {
         response.sendRedirect("http://165.154.36.46:8110/");
     }
 
-    @GetMapping("/getCookie1")
-    @ResponseBody
-    public String getCookie1(@CookieValue(value = "yiti_loginCert", defaultValue = "lala") String cookieName) throws IOException {
-        return cookieName;
-    }
-
-    @GetMapping("/getCookie2")
-    @ResponseBody
-    public String getCookie1(HttpServletRequest request) throws IOException {
-        Cookie yiti_loginCert = WebUtils.getCookie(request, "yiti_loginCert");
-        if (yiti_loginCert != null) {
-            return yiti_loginCert.getValue();
-        }
-        return "null";
-    }
-
 }

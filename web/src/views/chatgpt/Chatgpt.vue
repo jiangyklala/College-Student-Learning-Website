@@ -1,10 +1,11 @@
 <template>
   <a-layout-content class="layout-content">
 
-<!--    历史记录--抽屉-->
+    <!--    历史记录--抽屉-->
     <a-button type="primary" @click="showDrawer" class="drawer-button">历<br>史<br>记<br>录</a-button>
     <a-button type="primary" @click="newChat" class="new-chat-button">新<br>对<br>话</a-button>
-    <a-button type="primary" @click="showAttention" class="show-attention-button">提<br>问<br>消<br>耗<br>规<br>则</a-button>
+    <a-button type="primary" @click="showAttention" class="show-attention-button">提<br>问<br>消<br>耗<br>规<br>则
+    </a-button>
     <a-button type="primary" @click="showAddCredit" class="show-add-credit-button">充<br>值<br></a-button>
 
     <a-drawer
@@ -25,6 +26,7 @@
                       :userID="msg.userID"
                       :historyID="msg.historyID"
                       :queryStr="msg.queryStr"
+                      :totalTokens="msg.totalTokens"
                       :isStatic="msg.isStatic"
                       v-on:update:historyID="updateHistoryID"
       ></left-chat-item>
@@ -32,35 +34,35 @@
     </div>
 
 
-
     <a-textarea v-model:value="gptQuestion"
                 placeholder="问点啥呗 QAQ"
                 enter-button
                 class="input-search"
-                :autosize="{ minRows: 2, maxRows: 6 }"/>
+                :autoSize="{ minRows: 2, maxRows: 6 }"/>
     <a-button type="primary"
               shape="circle"
               size="large"
               :disabled="searchLoading"
               class="search-icon-btn"
               @click="onSearch(gptQuestion)">
-      <template #icon><rocket-two-tone class="search-icon" /></template>
+      <template #icon>
+        <rocket-two-tone class="search-icon"/>
+      </template>
     </a-button>
 
-<!--    <a-input-search-->
-<!--        class="input-search"-->
-<!--        v-model:value="gptQuestion"-->
-<!--        placeholder="问点啥呗 QAQ"-->
-<!--        :loading="searchLoading"-->
-<!--        @search="onSearch"-->
-<!--    />-->
+    <!--    <a-input-search-->
+    <!--        class="input-search"-->
+    <!--        v-model:value="gptQuestion"-->
+    <!--        placeholder="问点啥呗 QAQ"-->
+    <!--        :loading="searchLoading"-->
+    <!--        @search="onSearch"-->
+    <!--    />-->
 
-<!--    <a-spin-->
-<!--        class="spin"-->
-<!--        tip="加载过程比较慢, 请耐心等待..."-->
-<!--        :spinning="spinning">-->
-<!--    </a-spin>-->
-
+    <!--    <a-spin-->
+    <!--        class="spin"-->
+    <!--        tip="加载过程比较慢, 请耐心等待..."-->
+    <!--        :spinning="spinning">-->
+    <!--    </a-spin>-->
 
 
   </a-layout-content>
@@ -115,7 +117,7 @@ export default defineComponent({
      * 监听子组件返回的 historyID
      * @param newHistoryID
      */
-    const updateHistoryID = (newHistoryID : any) => {
+    const updateHistoryID = (newHistoryID: any) => {
       historyID.value = newHistoryID;
       searchLoading.value = false;
       // console.log("new historyID!!: " + historyID.value);
@@ -125,7 +127,12 @@ export default defineComponent({
      * 查询按钮
      * @param searchStr 用户输入的问题
      */
-    const onSearch = (searchStr : any) => {
+    const onSearch = (searchStr: any) => {
+      // 检测内容是否为空
+      if (Tool.isEmpty(searchStr)) {
+        message.info("输入不能为空呦");
+        return;
+      }
 
       // 检测是否登录
       if (Tool.isEmpty(userInfo.value)) {
@@ -149,7 +156,11 @@ export default defineComponent({
       // console.log("encodeURIComponent = ", searchStr);
 
       // 先进行权限验证
-      axios.get(process.env.VUE_APP_LOCAL_GPT_TEST + "/gpt/payForAns/" + userInfo.value.id + "/" + historyID.value).then((response) => {
+      axios.post(process.env.VUE_APP_LOCAL_GPT_TEST + "/gpt/payForAns", {
+        userID: userInfo.value.id,
+        historyID: historyID.value,
+        queryStr: searchStr,
+      }).then((response) => {
         if (response.data.success) {
           // 认证通过, 进行提问逻辑 (再显示 [bot] 对话)
           msglist.value.push({
@@ -157,6 +168,7 @@ export default defineComponent({
             queryStr: searchStr,
             userID: userInfo.value.id,
             historyID: historyID.value,
+            totalTokens: response.data.content,
             isStatic: false,
           })
         } else {
@@ -206,7 +218,7 @@ export default defineComponent({
      * 点击某个对话, 显示这个对话的内容
      * @param thisHistoryID
      */
-    const historyItemClick = (thisHistoryID : number) => {
+    const historyItemClick = (thisHistoryID: number) => {
 
       msglist.value = [];                 // 清空显示的对话内容
       historyID.value = thisHistoryID;    // 重新复制 historyID
@@ -234,7 +246,7 @@ export default defineComponent({
      * 提取并显示对话 2.0
      * @param content
      */
-    const extractAndShowChat2 = (content : any) => {
+    const extractAndShowChat2 = (content: any) => {
       content = JSON.parse(content);// JSON.stringify(content);
       // console.log(content);
       for (let i = 0; i < content.length; ++i) {
@@ -257,7 +269,7 @@ export default defineComponent({
      * 提取并显示对话 1.0
      * @param content
      */
-    const extractAndShowChat1 = (content : any) => {
+    const extractAndShowChat1 = (content: any) => {
       content = "[" + content + "{}]";
       content = JSON.parse(content);// JSON.stringify(content);
       // console.log(content);
@@ -310,7 +322,7 @@ export default defineComponent({
           h('p', '3、30 块钱名额：获得 4500 次提问'),
           h('h4', '如何购买?'),
           h('p', '具体可以扫下面帅地的微信小店购买对应的面额，购买成功后联系帅地即可。'),
-          h('img', { src: 'https://xiaoj-1309630359.cos.ap-nanjing.myqcloud.com/202304221452920.jpg' })
+          h('img', {src: 'https://xiaoj-1309630359.cos.ap-nanjing.myqcloud.com/202304221452920.jpg'})
         ]),
         width: 610,
         okText: '了然'
@@ -324,15 +336,24 @@ export default defineComponent({
     function escapeSpecialChars(str: string): string {
       return str.replace(/["'\\\n\r\t\v\s]/g, (match) => {
         switch (match) {
-          case '"': return '\\"';
-          case '\'': return '\\\'';
-          case '\\': return '\\\\';
-          case '\n': return '\\n';
-          case '\r': return '\\r';
-          case '\t': return '\\t';
-          case '\v': return '\\v';
-          case ' ': return '\\s';
-          default: return match;
+          case '"':
+            return '\\"';
+          case '\'':
+            return '\\\'';
+          case '\\':
+            return '\\\\';
+          case '\n':
+            return '\\n';
+          case '\r':
+            return '\\r';
+          case '\t':
+            return '\\t';
+          case '\v':
+            return '\\v';
+          case ' ':
+            return '\\s';
+          default:
+            return match;
         }
       });
     }
@@ -486,7 +507,6 @@ export default defineComponent({
   overflow: hidden;
   background: #fff;
 }
-
 
 
 </style>

@@ -292,3 +292,14 @@ CREATE TABLE `email_active` (
 update user set balance = balance - 10 where id = 2658810919845888;
 
 update user set balance = balance + 100 where email = 'jiangyk@nwafu.edu.cn';
+
+
+# chatGPT 信息记录表
+DROP TABLE IF EXISTS `chat_record_info`;
+
+CREATE TABLE `chat_record_info` (
+                                `id` bigint AUTO_INCREMENT NOT NULL,
+                                `date` varchar(50) DEFAULT (NULL),
+                                `times` varchar(50) NOT NULL DEFAULT (NULL),
+                                `tokens` varchar(50) NOT NULL DEFAULT (NULL),
+                                PRIMARY KEY (`id`)) engine = innodb DEFAULT charset = utf8mb4 COMMENT = 'chatGPT 用户历史查询信息记录';
