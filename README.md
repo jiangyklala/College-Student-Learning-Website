@@ -1,24 +1,29 @@
-### 网站应该具备的功能：
+# 大学生学习网站
 
-+ [ ] 首先拥有登陆的功能，这里到时候是采用公众号登陆的哦，然后是扫码登陆还是验证码登陆，这个到时候在说，因为一开始没有登陆功能也是可以滴。
-+ [ ] 具备刷题的功能，具体可以参考牛客网这种，但是这个功能留着后面做了，未来半年内应该不会用到。
-+ [x] 具备播放视频的功能，资源放在腾讯云等地方
-+ [ ] 具体积分系统，不过这个以后再说了。
-+ [x] 导航栏
-+ [x] 阅读目录
-+ [ ] GPT 翻译，copy 等等功能
-+ [x] GPT 接口 jar 包重构
-+ [ ] GPT 连接线程池
-+ [x] 邮箱注册（前期需要有邀请码）
-+ [ ] GPT 每日使用次数，需要积分（每日签到弄）
-+ [x] 历史记录 30 条（自定义 mapper or pagehelper） 
-+ [ ] MySQL，历史记录定时清理
-+ [ ] 每次提问花费提问次数
-+ [ ] 画图扣十次
-+ [x] 用户加上用户类型，比如会员，永久会员，普通用户
-+ [ ] 先写个简单的隐藏页面，可以用来充值次数，比如输入用户ID，然后输入充值次数，那么就会充值进去
+### 具备的功能：
 
++ 课程资料下载
 
++ 课程视频在线播放
+
++ 专栏阅读
++ GPT-3.5 对话
+
+由于目前只暴露了 GPT 的功能：[https://study.playoffer.cn/](https://study.playoffer.cn/)
+
+其它功能地址如下：
+
++ 课程资料下载：[这里](https://study.playoffer.cn/download/Download)
+
++ 课程视频在线播放：[这里](https://study.playoffer.cn/course/Course)
+
++ 专栏阅读：[这里](https://study.playoffer.cn/column/Column)
++ 课程资料下载管理：[这里](https://study.playoffer.cn/admin/AdminDownload)
+
++ 课程视频在线播放管理：[这里](https://study.playoffer.cn/admin/AdminCourse)
+
++ 专栏阅读管理：[这里](https://study.playoffer.cn/admin/AdminColumn)
++ 分类标签管理：[这里](https://study.playoffer.cn/admin/AdminCategory)
 
 ## 分类标签模块
 
@@ -136,45 +141,3 @@ create table `course_item`
 
   + 注册提交时，后端需检测 “激活码” 的 “激活状态”
 
-    
-
-
-
-## ChatGPT - 3.5
-
-### 用户「对话记录表」设计
-
-![](https://xiaoj-1309630359.cos.ap-nanjing.myqcloud.com/202304072123514.png)
-
-
-
-+ 未登录状态下不能使用
-
-
-
-设计中遇到的问题：用户提问时需要扣除相应的提问次数，那怎么样设计才能让用户点开右上角的账户详情时，实时查看剩余的提问词数？
-
-+ 扣除完提问次数后，将 userInfo 设为空，这样用户再次刷新页面时，系统会判定此次为第一次登录，会重新查 user 信息存入 userInfo。缺点：需要重新刷新页面
-+ 专门写一个函数，在每个可能更改用户余额的操作后，追加一个重新查 userInfo 的操作
-+ 只有在用户点击右上角的用户详情时，才会去重新查 user 的信息 ✓ 
-  + 进一步优化：可以在前端的 userInfo 中添加一个修改次数（modcount）字段，只有当 modcount 不为 0 时才去重新查。当然，这需要在可能使 userInfo 变化的代码后面添加 ++modcount
-  + 增加接口访问次数限制（通用模块）
-+ 加一个提示，在剩余次数后面显示一个「刷新」的按钮，引导用户点击刷新按钮。
-
-
-
-# Contribution
-
-Anyone is welcome and encouraged to contribute. If you discover a bug, or think the project could use an enhancement, follow these steps:
-
-1. Create an issue and offer to code a solution. We can discuss the issue and decide whether any code would be a good addition to the project.
-2. Fork the project. [https://github.com/nlpie/biomedicus-tokenizer/fork]
-3. Create Feature branch (`git checkout -b feature-name`)
-4. Code your solution.
-
-- Follow the [Google style guide for Java](https://google.github.io/styleguide/javaguide.html). There are IDE profiles available [here](https://github.com/google/styleguide).
-- Write unit tests for any non-trivial aspects of your code. If you are fixing a bug write a regression test: one that confirms the behavior you fixed stays fixed.
-
-1. Commit to branch. (`git commit -am 'Summary of changes'`)
-2. Push to GitHub (`git push origin feature-name`)
-3. Create a pull request on this repository from your forked project. We will review and discuss your code and merge it.
