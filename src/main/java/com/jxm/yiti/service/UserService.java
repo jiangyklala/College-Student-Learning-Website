@@ -624,6 +624,11 @@ public class UserService {
 
     public void payWith(String userEmail, Long count, CommonResp resp) {
         try {
+            if (selectAUserByEmail(userEmail) == null) {
+                resp.setSuccess(false);
+                resp.setMessage("用户不存在, 充值失败!");
+                return;
+            }
             userMapperCust.payWithCount(userEmail, count);
             resp.setMessage("充值成功!");
         } catch (Exception e) {
@@ -644,9 +649,9 @@ public class UserService {
         try (Jedis jedis = jedisPool.getResource()) {
             String times = jedis.get("yt:gpt:times:" + nowTime);
             String tokens = jedis.get("yt:gpt:tokens:" + nowTime);
-            res += "当日: 提问总数: " + times + ", 消耗的总token: " + tokens + "\n"
-                + "截止到目前, 总共: 提问次数: " + (Long.parseLong(jedis.get("yt:gpt:times:total")) + Long.parseLong(times))
-                + ", 消耗的总token: " + (Long.parseLong(jedis.get("yt:gpt:tokens:total")) + Long.parseLong(tokens));
+            res += "当日: 提问总数: " + times + ", 消耗的总token: " + tokens + "\n";
+//                + "截止到目前, 总共: 提问次数: " + (Long.parseLong(jedis.get("yt:gpt:times:total")) + Long.parseLong(times))
+//                + ", 消耗的总token: " + (Long.parseLong(jedis.get("yt:gpt:tokens:total")) + Long.parseLong(tokens));
         } catch (Exception e) {
             LOG.error("获取当日的 [提问总数] 与 [消耗的总 token] 失败", e);
         }
