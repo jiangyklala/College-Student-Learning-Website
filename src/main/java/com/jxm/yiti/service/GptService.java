@@ -56,6 +56,7 @@ public class GptService {
     public List<ChatHistory> selectAllByID(Long userID) {
         List<ChatHistory> res = null;
         ChatHistoryExample chatHistoryExample = new ChatHistoryExample();
+        chatHistoryExample.setOrderByClause("id desc");
         ChatHistoryExample.Criteria criteria = chatHistoryExample.createCriteria();
         criteria.andUserIdEqualTo(userID);
 
