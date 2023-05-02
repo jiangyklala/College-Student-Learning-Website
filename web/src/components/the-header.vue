@@ -121,10 +121,10 @@
       <a-form-item label="验证码">
         <a-input style="width: 70%" v-model:value="userInModal.verifyCode"/><a-button :disabled="verifyBtnDisable" style="float: right; width: 29%" type="dashed" @click="sendVerifyCode">发送验证码</a-button>
       </a-form-item>
-      <a-form-item label="邀请码">
-        <a-input v-model:value="userInModal.inviteCode"/>
-      </a-form-item>
-      <a style="text-align: center; float: right;" @click="getInviteCode">如何获取邀请码?</a>
+<!--      <a-form-item label="邀请码">-->
+<!--        <a-input v-model:value="userInModal.inviteCode"/>-->
+<!--      </a-form-item>-->
+<!--      <a style="text-align: center; float: right;" @click="getInviteCode">如何获取邀请码?</a>-->
     </a-form>
     <template #footer>
       <div class="modal-footer-div">

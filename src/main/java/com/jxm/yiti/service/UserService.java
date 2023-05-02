@@ -658,4 +658,8 @@ public class UserService {
 
         return res;
     }
+
+    public void loginPerDay(String userID) {
+        UserQueryResp userQueryResp = selectUserByID(Long.valueOf(userID));
+    }
 }

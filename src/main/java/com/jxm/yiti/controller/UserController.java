@@ -172,7 +172,7 @@ public class UserController {
         CommonResp resp = new CommonResp<>();
         userService.isRegisterPassword(user.getPassword(), resp);
         userService.isActiveEmail(user.getEmail(), user.getVerifyCode(), resp);   // 验证码校验
-        userService.isInvite(user.getInviteCode(), resp);                         // 邀请码校验
+//        userService.isInvite(user.getInviteCode(), resp);                         // 邀请码校验
         if (resp.getSuccess()) {
             userService.encryptPassword(user, userService.setSalt(user));         // 设置盐值并密码加密
             userService.addUser(user, resp);
@@ -233,6 +233,7 @@ public class UserController {
     @ResponseBody
     public CommonResp<UserQueryResp> autoLogin(@PathVariable String userID) throws IOException {
         CommonResp<UserQueryResp> resp = new CommonResp<>();
+//        userService.loginPerDay(userID);
         resp.setContent(userService.selectUserByID(Long.valueOf(userID)));   // 将 user 信息返回
         return resp;
     }
