@@ -203,6 +203,7 @@ public class UserService {
         try {
             User user = userMapper.selectByPrimaryKey(userID);
             userQueryResp = CopyUtil.copy(user, UserQueryResp.class);
+            LOG.info("user: {}", userQueryResp.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }

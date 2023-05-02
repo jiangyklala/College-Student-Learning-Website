@@ -60,6 +60,9 @@
         <template #overlay>
           <a-menu>
             <a-menu-item>
+              用户类型: {{getUserType(userInfo.type)}}
+            </a-menu-item>
+            <a-menu-item>
               剩余提问次数: {{userInfo.balance}}     <sync-outlined @click="userInfoClick" :spin="userInfoRefresh" />
             </a-menu-item>
           </a-menu>
@@ -332,6 +335,18 @@ export default defineComponent({
       })
     };
 
+    const getUserType = (type : any) => {
+      if (type === 1) {
+        return "普通用户";
+      } else if (type === 2) {
+        return "会员";
+      } else if (type === 3) {
+        return "超级会员";
+      } else {
+        return "类型错误";
+      }
+    }
+
     /**
      * 自动登录
      */
@@ -454,6 +469,7 @@ export default defineComponent({
       dropdownClickHandle,
       userInfoClick,
       getInviteCode,
+      getUserType,
     };
   }
 });

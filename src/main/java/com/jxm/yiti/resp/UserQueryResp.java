@@ -14,7 +14,7 @@ public class UserQueryResp {
 
     private Long balance;
 
-    private String type;
+    private Integer type;
 
     public Long getId() {
         return id;
@@ -64,11 +64,11 @@ public class UserQueryResp {
         this.balance = balance;
     }
 
-    public String getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 
@@ -81,7 +81,7 @@ public class UserQueryResp {
                 ", githubId='" + githubId + '\'' +
                 ", email='" + email + '\'' +
                 ", balance=" + balance +
-                ", others='" + type + '\'' +
+                ", type='" + type + '\'' +
                 '}';
     }
 }
