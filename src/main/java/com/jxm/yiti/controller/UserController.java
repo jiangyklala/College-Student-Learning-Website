@@ -170,7 +170,7 @@ public class UserController {
     @ResponseBody
     public CommonResp register(@RequestBody UserQueryReq user) {
         CommonResp resp = new CommonResp<>();
-        userService.isRegisterPassword(user.getPassword(), resp);
+        userService.isRegisterPassword(user.getPassword(), resp);                 // 密码强度校验
         userService.isActiveEmail(user.getEmail(), user.getVerifyCode(), resp);   // 验证码校验
 //        userService.isInvite(user.getInviteCode(), resp);                         // 邀请码校验
         if (resp.getSuccess()) {
