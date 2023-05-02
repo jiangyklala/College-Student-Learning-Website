@@ -203,10 +203,25 @@ public class UserService {
         try {
             User user = userMapper.selectByPrimaryKey(userID);
             userQueryResp = CopyUtil.copy(user, UserQueryResp.class);
-            LOG.info("user: {}", userQueryResp.toString());
+//            LOG.info("user: {}", userQueryResp.toString());
+
+            // 检查用户 vip 是否到期
+            ifVipEnd(user);
+
+            // 查询 vip 剩余时间
+            if (user.getType() == 2) {
+                try (Jedis jedis = jedisPool.getResource()) {
+                    String vipKey = "yt:vip:" + user.getEmail();
+                    userQueryResp.setRemainDays(String.valueOf(jedis.ttl(vipKey) / (60L * 60 * 24)));
+                } catch (Exception e) {
+                    LOG.info("查询 vip 剩余时间出错");
+                }
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return userQueryResp;
     }
 
@@ -706,5 +721,27 @@ public class UserService {
         }
 
         resp.setMessage("原来: " + getUserTypeStr(oldType) + ", 现在: " + getUserTypeStr(type));
+    }
+
+    private void ifVipEnd(User user) {
+        if (user.getType() != 2) {
+            return;
+        }
+
+        try (Jedis jedis = jedisPool.getResource()) {
+            String vipKey = "yt:vip:" + user.getEmail();
+            boolean exists = jedis.exists(vipKey);
+
+            if (!exists) {
+                // 到期了
+                user.setType(1);
+                try {
+                    userMapper.updateByPrimaryKey(user);
+                    LOG.info("vip 到期, userEmail: {}", user.getEmail());
+                } catch (Exception e) {
+                    LOG.error("权限验证(会员到期, 更改用户类型)出错");
+                }
+            }
+        }
     }
 }

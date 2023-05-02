@@ -16,6 +16,16 @@ public class UserQueryResp {
 
     private Integer type;
 
+    private String remainDays;
+
+    public String getRemainDays() {
+        return remainDays;
+    }
+
+    public void setRemainDays(String remainDays) {
+        this.remainDays = remainDays;
+    }
+
     public Long getId() {
         return id;
     }
@@ -81,7 +91,8 @@ public class UserQueryResp {
                 ", githubId='" + githubId + '\'' +
                 ", email='" + email + '\'' +
                 ", balance=" + balance +
-                ", type='" + type + '\'' +
+                ", type=" + type +
+                ", remainDays='" + remainDays + '\'' +
                 '}';
     }
 }

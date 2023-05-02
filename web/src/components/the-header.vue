@@ -339,7 +339,7 @@ export default defineComponent({
       if (type === 1) {
         return "普通用户";
       } else if (type === 2) {
-        return "会员";
+        return "会员 剩余: " + userInfo.value.remainDays + "天" ;
       } else if (type === 3) {
         return "超级会员";
       } else {
