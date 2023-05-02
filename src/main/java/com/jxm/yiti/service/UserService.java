@@ -478,7 +478,7 @@ public class UserService {
      * 验证邮箱格式
      *
      * @param email email
-     * @param resp 回调 resp
+     * @param resp  回调 resp
      */
     public void isLoginEmail(String email, CommonResp resp) {
         Pattern pattern1 = Pattern.compile("^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$");
@@ -493,7 +493,7 @@ public class UserService {
      * 发送激活邮件
      *
      * @param email 目的 email
-     * @param resp 回调 resp
+     * @param resp  回调 resp
      * @return 是否发送成功
      */
     public boolean sendActiveEmail(String email, CommonResp resp) {
@@ -508,9 +508,9 @@ public class UserService {
     /**
      * 验证邮箱是否有效
      *
-     * @param email email
+     * @param email      email
      * @param verifyCode 验证码
-     * @param resp 回调 resp
+     * @param resp       回调 resp
      */
     public void isActiveEmail(String email, String verifyCode, CommonResp resp) {
         if (!resp.getSuccess()) {
@@ -662,5 +662,49 @@ public class UserService {
 
     public void loginPerDay(String userID) {
         UserQueryResp userQueryResp = selectUserByID(Long.valueOf(userID));
+    }
+
+    private String getUserTypeStr(Integer userType) {
+        return switch (userType) {
+            case 1 -> "普通用户";
+            case 2 -> "会员";
+            case 3 -> "超级会员";
+            default -> "未知用户";
+        };
+    }
+
+    public void setUserType(String userEmail, Integer type, Integer days, CommonResp resp) {
+        User user = selectAUserByEmail(userEmail);
+
+        if (user == null) {
+            resp.setSuccess(false);
+            resp.setMessage("用户不存在!");
+            return;
+        }
+
+        Integer oldType = user.getType();
+        if (Objects.equals(oldType, type)) {
+            resp.setSuccess(false);
+            resp.setMessage("已经是" + getUserTypeStr(type) + "了!");
+            return;
+        }
+        user.setType(type);
+
+        try {
+            userMapper.updateByPrimaryKey(user);
+            if (type == 2) {
+                String vipKey = "yt:vip:" + userEmail;
+                try (Jedis jedis = jedisPool.getResource()) {
+                    jedis.setex(vipKey, 60L * 60 * 24 * days, "");
+                }
+            }
+        } catch (Exception e) {
+            resp.setSuccess(false);
+            resp.setMessage("用户类型修改出错");
+            LOG.error("用户类型修改出错");
+            return;
+        }
+
+        resp.setMessage("原来: " + getUserTypeStr(oldType) + ", 现在: " + getUserTypeStr(type));
     }
 }

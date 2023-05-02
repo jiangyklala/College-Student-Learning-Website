@@ -46,6 +46,21 @@ public class UserController {
 //    }
 
     /**
+     * 设置用户类型
+     *
+     * @param userEmail 用户邮箱
+     * @param type 1-普通会员, 2-会员, 3-超级会员
+     * @param days 持续天数
+     */
+    @PostMapping("/setUserType")
+    @ResponseBody
+    public CommonResp setUserType(String userEmail, Integer type, Integer days) {
+        CommonResp resp = new CommonResp();
+        userService.setUserType(userEmail, type, days, resp);
+        return resp;
+    }
+
+    /**
      * 获取当日的 [提问总数] 与 [消耗的总 token]
      */
     @GetMapping("/getGptTotalInfo")
@@ -233,7 +248,6 @@ public class UserController {
     @ResponseBody
     public CommonResp<UserQueryResp> autoLogin(@PathVariable String userID) throws IOException {
         CommonResp<UserQueryResp> resp = new CommonResp<>();
-//        userService.loginPerDay(userID);
         resp.setContent(userService.selectUserByID(Long.valueOf(userID)));   // 将 user 信息返回
         return resp;
     }

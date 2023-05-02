@@ -28,7 +28,7 @@ import {message} from "ant-design-vue";
 export default defineComponent({
   name: 'left-chat-item',
   emits: ['update:historyID'],
-  props: ['queryStr', 'userID', 'historyID','totalTokens', 'isStatic'],
+  props: ['queryStr', 'userID', 'historyID','totalTokens', 'isStatic', 'userType'],
   components: {
     FireTwoTone,
     mavonEditor,
@@ -99,6 +99,7 @@ export default defineComponent({
       eventSource.value = new EventSource(process.env.VUE_APP_LOCAL_GPT_TEST +
                                               "/gpt/completions/stream/" +
                                               props.userID + "&" +
+                                              props.userType + "&" +
                                               props.historyID + "&" +
                                               props.totalTokens + "&" +
                                               props.queryStr);

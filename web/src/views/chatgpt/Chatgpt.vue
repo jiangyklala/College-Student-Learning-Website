@@ -27,6 +27,7 @@
                       :historyID="msg.historyID"
                       :queryStr="msg.queryStr"
                       :totalTokens="msg.totalTokens"
+                      :userType="msg.userType"
                       :isStatic="msg.isStatic"
                       v-on:update:historyID="updateHistoryID"
       ></left-chat-item>
@@ -124,7 +125,7 @@ export default defineComponent({
     }
 
     /**
-     * 查询按钮
+     * 提问按钮
      * @param searchStr 用户输入的问题
      */
     const onSearch = (searchStr: any) => {
@@ -168,7 +169,8 @@ export default defineComponent({
             queryStr: searchStr,
             userID: userInfo.value.id,
             historyID: historyID.value,
-            totalTokens: response.data.content,
+            totalTokens: response.data.content.finalToken,
+            userType: response.data.content.userType,
             isStatic: false,
           })
         } else {
@@ -303,6 +305,7 @@ export default defineComponent({
           h('p', 'GPT具备上下文语境，比如点击开启一次新对话：'),
           h('p', '第一次提问，会消耗 1 次提问次数，第二次继续提问，会累加你上一次提问消耗的 token。如果 token 太大，那么会消耗 1+ 次，最大消耗 8 次，但如果你连续对话太多次，那么提问有可能失败（超过官方最大限制）。'),
           h('p', '如果你并不需要上下文语境，那么可以点击「新对话」，那么此时就开启了一个新的上下文语境。'),
+          h('p', 'ps: 如果内容输出突然中断, 请发送「继续」'),
         ]),
         width: 710,
         okText: '了然'
