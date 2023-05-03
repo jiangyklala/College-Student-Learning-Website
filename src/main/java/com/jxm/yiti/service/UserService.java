@@ -1,7 +1,10 @@
 package com.jxm.yiti.service;
 
-import com.jxm.yiti.domain.User;
-import com.jxm.yiti.domain.UserExample;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.jxm.yiti.domain.*;
+import com.jxm.yiti.mapper.ChatRecordInfoMapper;
 import com.jxm.yiti.mapper.UserMapper;
 import com.jxm.yiti.mapper.cust.UserMapperCust;
 import com.jxm.yiti.req.UserQueryReq;
@@ -26,6 +29,7 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.*;
@@ -41,6 +45,9 @@ public class UserService {
 
     @Resource
     private UserMapperCust userMapperCust;
+
+    @Resource
+    private ChatRecordInfoMapper chatRecordInfoMapper;
 
     @Resource
     private MailService mailService;
@@ -665,9 +672,9 @@ public class UserService {
         try (Jedis jedis = jedisPool.getResource()) {
             String times = jedis.get("yt:gpt:times:" + nowTime);
             String tokens = jedis.get("yt:gpt:tokens:" + nowTime);
-            res += "当日: 提问总数: " + times + ", 消耗的总token: " + tokens + "\n";
-//                + "截止到目前, 总共: 提问次数: " + (Long.parseLong(jedis.get("yt:gpt:times:total")) + Long.parseLong(times))
-//                + ", 消耗的总token: " + (Long.parseLong(jedis.get("yt:gpt:tokens:total")) + Long.parseLong(tokens));
+            res += "当日: 提问总数: " + times + ", 消耗的总token: " + tokens + "\n"
+                + "截止到目前, 总共消耗: 提问次数: " + (Long.parseLong(jedis.get("yt:gpt:times:total")) + Long.parseLong(times))
+                + ", 消耗的总token: " + (Long.parseLong(jedis.get("yt:gpt:tokens:total")) + Long.parseLong(tokens));
         } catch (Exception e) {
             LOG.error("获取当日的 [提问总数] 与 [消耗的总 token] 失败", e);
         }
@@ -743,5 +750,51 @@ public class UserService {
                 }
             }
         }
+    }
+
+    public String getGptAllInfo(Integer days) throws ParseException {
+        if (days < 1) {
+            return "days 参数非法";
+        }
+        List<ChatRecordInfo> res = null;
+        ChatRecordInfoExample chatRecordInfoExample = new ChatRecordInfoExample();
+        chatRecordInfoExample.setOrderByClause("id desc");      // 按 id 倒序返回, 即离现在时间最近的 20 条记录
+//        ChatRecordInfoExample.Criteria criteria = chatRecordInfoExample.createCriteria();
+
+        try {
+            PageHelper.startPage(1, days, true);
+            res = chatRecordInfoMapper.selectByExample(chatRecordInfoExample);
+//            PageInfo<ChatRecordInfo> chatRecordInfoPageInfo = new PageInfo<>(res);
+//            LOG.info("当前页: " + chatRecordInfoPageInfo.getPageNum()
+//                    + ", 总页数: " + chatRecordInfoPageInfo.getPages()
+//                    + " , 总记录数: " + chatRecordInfoPageInfo.getTotal());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "error";
+        }
+
+        StringBuilder resStr = new StringBuilder();
+
+        for (ChatRecordInfo chatRecordInfo : res) {
+            resStr.append("日期:").append(transferDateFormat(chatRecordInfo.getDate())).append(", 消耗提问次数:").append(chatRecordInfo.getTimes()).append(", 消耗token: ").append(chatRecordInfo.getTokens()).append("\n");
+        }
+
+        return resStr.toString();
+    }
+
+    private String transferDateFormat(String oldDate) throws ParseException {
+        // 定义原始日期格式
+        SimpleDateFormat originalFormat = new SimpleDateFormat("yyyyMMdd");
+
+        // 将原始日期字符串解析为 Date 对象
+        Date date = originalFormat.parse(oldDate);
+
+        // 定义目标日期格式
+        SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy年MM月dd日");
+
+        // 将 Date 对象格式化为目标日期字符串
+        String targetDateStr = targetFormat.format(date);
+
+        return targetDateStr;
     }
 }

@@ -59,12 +59,18 @@
         </a>
         <template #overlay>
           <a-menu>
-            <a-menu-item>
-              用户类型: {{getUserType(userInfo.type)}}
-            </a-menu-item>
-            <a-menu-item>
-              剩余提问次数: {{userInfo.balance}}     <sync-outlined @click="userInfoClick" :spin="userInfoRefresh" />
-            </a-menu-item>
+            <a-descriptions layout="horizontal"
+                            size="small"
+                            bordered>
+              <a-descriptions-item label="用户类型">{{getUserType(userInfo.type)}}</a-descriptions-item>
+              <a-descriptions-item label="剩余提问次数">{{userInfo.balance}}   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <sync-outlined @click="userInfoClick" :spin="userInfoRefresh" /></a-descriptions-item>
+            </a-descriptions>
+<!--            <a-menu-item>-->
+<!--              用户类型: {{getUserType(userInfo.type)}}-->
+<!--            </a-menu-item>-->
+<!--            <a-menu-item>-->
+<!--              剩余提问次数: {{userInfo.balance}}     <sync-outlined @click="userInfoClick" :spin="userInfoRefresh" />-->
+<!--            </a-menu-item>-->
           </a-menu>
         </template>
       </a-dropdown>

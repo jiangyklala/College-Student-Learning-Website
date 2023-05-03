@@ -56,7 +56,7 @@ public class GptService {
     public List<ChatHistory> selectAllByID(Long userID) {
         List<ChatHistory> res = null;
         ChatHistoryExample chatHistoryExample = new ChatHistoryExample();
-        chatHistoryExample.setOrderByClause("id desc");
+        chatHistoryExample.setOrderByClause("id desc");      // 按 id 倒序返回, 即离现在时间最近的 20 条记录
         ChatHistoryExample.Criteria criteria = chatHistoryExample.createCriteria();
         criteria.andUserIdEqualTo(userID);
 
