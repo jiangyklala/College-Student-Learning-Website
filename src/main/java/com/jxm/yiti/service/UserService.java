@@ -1,9 +1,10 @@
 package com.jxm.yiti.service;
 
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.jxm.yiti.domain.*;
+import com.jxm.yiti.domain.ChatRecordInfo;
+import com.jxm.yiti.domain.ChatRecordInfoExample;
+import com.jxm.yiti.domain.User;
+import com.jxm.yiti.domain.UserExample;
 import com.jxm.yiti.mapper.ChatRecordInfoMapper;
 import com.jxm.yiti.mapper.UserMapper;
 import com.jxm.yiti.mapper.cust.UserMapperCust;
@@ -27,6 +28,7 @@ import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
+import redis.clients.jedis.params.SetParams;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -34,6 +36,8 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.*;
 import java.util.regex.Pattern;
+
+import static com.jxm.yiti.utils.plainUtil.getTodayRemainSec;
 
 @Service
 public class UserService {
@@ -673,8 +677,8 @@ public class UserService {
             String times = jedis.get("yt:gpt:times:" + nowTime);
             String tokens = jedis.get("yt:gpt:tokens:" + nowTime);
             res += "当日: 提问总数: " + times + ", 消耗的总token: " + tokens + "\n"
-                + "截止到目前, 总共消耗: 提问次数: " + (Long.parseLong(jedis.get("yt:gpt:times:total")) + Long.parseLong(times))
-                + ", 消耗的总token: " + (Long.parseLong(jedis.get("yt:gpt:tokens:total")) + Long.parseLong(tokens));
+                    + "截止到目前, 总共消耗: 提问次数: " + (Long.parseLong(jedis.get("yt:gpt:times:total")) + Long.parseLong(times))
+                    + ", 消耗的总token: " + (Long.parseLong(jedis.get("yt:gpt:tokens:total")) + Long.parseLong(tokens));
         } catch (Exception e) {
             LOG.error("获取当日的 [提问总数] 与 [消耗的总 token] 失败", e);
         }
@@ -797,4 +801,33 @@ public class UserService {
 
         return targetDateStr;
     }
+
+    public void signInPerDay(Long userID, CommonResp resp) {
+        try (Jedis jedis = jedisPool.getResource()) {
+            String key = "yt:spd:" + userID;
+
+            // 设置 ex, nx 选项
+            SetParams setParams = new SetParams();
+            setParams.nx().ex(getTodayRemainSec());
+
+            if (Objects.equals(jedis.set(key, "", setParams), "0")) {
+                // 设置失败, 已经存在该键
+                resp.setSuccess(false);
+                resp.setMessage("今天已经签过到嘞");
+                return;
+            } else {
+                // 设置成功
+                try {
+                    userMapperCust.balanceGetAndDecrNum(userID, 10L);
+                    resp.setMessage("签到成功!");
+                } catch (Exception e) {
+                    resp.setSuccess(false);
+                    resp.setMessage("签到出错! 请联系管理员");
+                    return;
+                }
+            }
+        }
+    }
+
+
 }

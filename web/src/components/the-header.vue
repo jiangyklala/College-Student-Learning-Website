@@ -61,8 +61,10 @@
           <a-menu>
             <a-descriptions layout="horizontal"
                             size="small"
+                            :column="descriptionColumn"
                             bordered>
               <a-descriptions-item label="用户类型">{{getUserType(userInfo.type)}}</a-descriptions-item>
+<!--              <a-descriptions-item label="每日签到"><bell-two-tone @click="signInPerDayClick" style="font-size: 18px"/></a-descriptions-item>-->
               <a-descriptions-item label="剩余提问次数">{{userInfo.balance}}   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <sync-outlined @click="userInfoClick" :spin="userInfoRefresh" /></a-descriptions-item>
             </a-descriptions>
 <!--            <a-menu-item>-->
@@ -178,7 +180,7 @@
 import {computed, defineComponent, onMounted, ref} from 'vue';
 import axios from "axios";
 import {MenuProps, message, notification} from "ant-design-vue";
-import {DownOutlined, UserOutlined, SyncOutlined} from "@ant-design/icons-vue";
+import {DownOutlined, UserOutlined, SyncOutlined, BellTwoTone} from "@ant-design/icons-vue";
 import store from "@/store";
 import {Tool} from "@/utils/tool";
 import router from "@/router";
@@ -189,6 +191,7 @@ export default defineComponent({
     SyncOutlined,
     UserOutlined,
     DownOutlined,
+    BellTwoTone,
   },
   setup: function () {
 
@@ -315,6 +318,7 @@ export default defineComponent({
       return store.state.userInfo;
     })
     const userInfoRefresh = ref(false);
+    const descriptionColumn = 1;
 
     const userInfoClick = () => {
       userInfoRefresh.value = true;
@@ -340,6 +344,20 @@ export default defineComponent({
         }
       })
     };
+
+    /**
+     * 每日签到
+     */
+    const signInPerDayClick = () => {
+      axios.post("/user/signInPerDay",userInfo.value.id).then((response) => {
+        let data = response.data;
+        if (response.data.success) {
+          message.success(data.message);
+        } else {
+          message.info(data.message);
+        }
+      })
+    }
 
     const getUserType = (type : any) => {
       if (type === 1) {
@@ -463,6 +481,7 @@ export default defineComponent({
       userInfo,
       verifyBtnDisable,
       userInfoRefresh,
+      descriptionColumn,
 
       loginByGitHub,
       loginModalOk,
@@ -476,6 +495,7 @@ export default defineComponent({
       userInfoClick,
       getInviteCode,
       getUserType,
+      signInPerDayClick,
     };
   }
 });

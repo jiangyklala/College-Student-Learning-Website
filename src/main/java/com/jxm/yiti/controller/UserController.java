@@ -46,6 +46,14 @@ public class UserController {
 //        return res ? "恭喜! 邮箱激活成功" : "出错喽, 重发激活邮件试试, 或者微信 call 我呦";
 //    }
 
+    @PostMapping("/signInPerDay")
+    @ResponseBody
+    public CommonResp signInPerDay(@RequestBody String userID) {
+        CommonResp resp = new CommonResp();
+        userService.signInPerDay(Long.valueOf(userID), resp);
+        return resp;
+    }
+
     /**
      * 设置用户类型
      *
@@ -71,7 +79,7 @@ public class UserController {
     }
 
     /**
-     * 获取进 n 日消耗信息
+     * 获取今 n 日消耗信息
      *
      * @param days 指定近几天
      */
