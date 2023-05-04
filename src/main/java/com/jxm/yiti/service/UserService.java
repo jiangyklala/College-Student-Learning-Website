@@ -830,4 +830,38 @@ public class UserService {
     }
 
 
+    public void logCookieLcOut(String userID, HttpServletResponse response, CommonResp resp) {
+        if (Objects.equals(userID, "-1")) {
+            resp.setSuccess(false);
+            resp.setMessage("用户登出异常, 请尝试关闭当前页面, 重新打开");
+            return;
+        }
+
+        // 设置: 携带cookie, 跨域的头部
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+        response.setHeader("Access-Control-Allow-Origin", myAddr);
+
+        // 删除本地唯一登录凭证 Cookie
+        Cookie cookieLoginCert = new Cookie("yiti_loginCert", "");
+        cookieLoginCert.setMaxAge(0);
+        cookieLoginCert.setPath("/");
+        response.addCookie(cookieLoginCert);
+
+        // 删除本地自动登录账号信息 Cookie
+        Cookie cookieUserID = new Cookie("yiti_userID", "");
+        cookieUserID.setMaxAge(0);
+        cookieUserID.setPath("/");
+        response.addCookie(cookieUserID);
+
+        // 删除 redis 中的凭证
+        String lcKey = "yt:lc:" + userID;
+        try (Jedis jedis = jedisPool.getResource()) {
+            jedis.del(lcKey);
+        } catch (Exception e) {
+            LOG.error("用户登出异常, useID:{}", userID, e);
+            resp.setSuccess(false);
+            resp.setMessage("用户登出异常");
+            return;
+        }
+    }
 }

@@ -11,35 +11,35 @@
           <router-link to="/Home">首页</router-link>
         </a-menu-item>
         <a-menu-item key="10">
-          <router-link to="/chatgpt/Chatgpt">GPT 3.5 </router-link>
+          <router-link to="/chatgpt/Chatgpt">GPT 3.5</router-link>
         </a-menu-item>
         <a-menu-item key="11">
           <router-link to="/chatgpt/Image">3.5 - 画图</router-link>
         </a-menu-item>
-<!--        <a-menu-item key="2">-->
-<!--          <router-link to="/download/Download">下载</router-link>-->
-<!--        </a-menu-item>-->
-<!--        <a-menu-item key="3">-->
-<!--          <router-link to="/course/Course">课程</router-link>-->
-<!--        </a-menu-item>-->
-<!--        <a-menu-item key="8">-->
-<!--          <router-link to="/column/Column">专栏</router-link>-->
-<!--        </a-menu-item>-->
-<!--        <a-menu-item key="4">-->
-<!--          <router-link to="/admin/AdminDownload">下载管理</router-link>-->
-<!--        </a-menu-item>-->
-<!--        <a-menu-item key="5">-->
-<!--          <router-link to="/admin/AdminCourse">课程及视频管理</router-link>-->
-<!--        </a-menu-item>-->
-<!--        <a-menu-item key="6">-->
-<!--          <router-link to="/admin/AdminCategory">分类管理</router-link>-->
-<!--        </a-menu-item>-->
-<!--        <a-menu-item key="9">-->
-<!--          <router-link to="/admin/AdminColumn">专栏管理</router-link>-->
-<!--        </a-menu-item>-->
-<!--        <a-menu-item key="7">-->
-<!--          <router-link to="/About">关于</router-link>-->
-<!--        </a-menu-item>-->
+        <!--        <a-menu-item key="2">-->
+        <!--          <router-link to="/download/Download">下载</router-link>-->
+        <!--        </a-menu-item>-->
+        <!--        <a-menu-item key="3">-->
+        <!--          <router-link to="/course/Course">课程</router-link>-->
+        <!--        </a-menu-item>-->
+        <!--        <a-menu-item key="8">-->
+        <!--          <router-link to="/column/Column">专栏</router-link>-->
+        <!--        </a-menu-item>-->
+        <!--        <a-menu-item key="4">-->
+        <!--          <router-link to="/admin/AdminDownload">下载管理</router-link>-->
+        <!--        </a-menu-item>-->
+        <!--        <a-menu-item key="5">-->
+        <!--          <router-link to="/admin/AdminCourse">课程及视频管理</router-link>-->
+        <!--        </a-menu-item>-->
+        <!--        <a-menu-item key="6">-->
+        <!--          <router-link to="/admin/AdminCategory">分类管理</router-link>-->
+        <!--        </a-menu-item>-->
+        <!--        <a-menu-item key="9">-->
+        <!--          <router-link to="/admin/AdminColumn">专栏管理</router-link>-->
+        <!--        </a-menu-item>-->
+        <!--        <a-menu-item key="7">-->
+        <!--          <router-link to="/About">关于</router-link>-->
+        <!--        </a-menu-item>-->
       </a-menu>
 
     </div>
@@ -51,11 +51,11 @@
         <a class="ant-dropdown-link" @click.prevent>
           <a-avatar style="background-color: #87d068">
             <template #icon>
-              <UserOutlined />
+              <UserOutlined/>
             </template>
           </a-avatar>
           {{ userInfo.username }}
-          <DownOutlined />
+          <DownOutlined/>
         </a>
         <template #overlay>
           <a-menu>
@@ -63,23 +63,30 @@
                             size="small"
                             :column="descriptionColumn"
                             bordered>
-              <a-descriptions-item label="用户类型">{{getUserType(userInfo.type)}}</a-descriptions-item>
-<!--              <a-descriptions-item label="每日签到"><bell-two-tone @click="signInPerDayClick" style="font-size: 18px"/></a-descriptions-item>-->
-              <a-descriptions-item label="剩余提问次数">{{userInfo.balance}}   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <sync-outlined @click="userInfoClick" :spin="userInfoRefresh" /></a-descriptions-item>
+              <a-descriptions-item label="用户类型">{{ getUserType(userInfo.type) }}</a-descriptions-item>
+              <!--              <a-descriptions-item label="每日签到"><bell-two-tone @click="signInPerDayClick" style="font-size: 18px"/></a-descriptions-item>-->
+              <a-descriptions-item label="剩余提问次数">{{ userInfo.balance }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <sync-outlined @click="userInfoClick" :spin="userInfoRefresh"/>
+              </a-descriptions-item>
             </a-descriptions>
-<!--            <a-menu-item>-->
-<!--              用户类型: {{getUserType(userInfo.type)}}-->
-<!--            </a-menu-item>-->
-<!--            <a-menu-item>-->
-<!--              剩余提问次数: {{userInfo.balance}}     <sync-outlined @click="userInfoClick" :spin="userInfoRefresh" />-->
-<!--            </a-menu-item>-->
+            <a-menu-item style="text-align: center">
+              <a-popconfirm placement="bottom"
+                            :cancel-button-props="{type: 'ghost'}"
+                            :ok-button-props="{type: 'ghost', danger: true}"
+                            title="确认退出登录吗?"
+                            ok-text="是"
+                            cancel-text="否"
+                            @confirm="logoutClick">
+                退出登录
+              </a-popconfirm>
+            </a-menu-item>
           </a-menu>
         </template>
       </a-dropdown>
     </div>
   </a-layout-header>
 
-<!--  登录表单-->
+  <!--  登录表单-->
   <a-modal
       title="登录"
       v-model:visible="loginModalVisible"
@@ -97,18 +104,18 @@
         <a-input-password v-model:value="userInModal.password"/>
       </a-form-item>
       <a style="text-align: center; float: right" @click="forgetPasswordHandle">忘记密码?</a>
-<!--      <div style="text-align: center">其它方式登录</div>-->
-<!--      <div-->
-<!--          style="padding-left: 20px"-->
-<!--          @click="loginByGitHub"-->
-<!--      >-->
-<!--        <img src="../assets/githubIcon.jpg" alt="githubIcon" style="width: 25px">-->
-<!--        <a>github 登录</a>-->
-<!--      </div>-->
+      <!--      <div style="text-align: center">其它方式登录</div>-->
+      <!--      <div-->
+      <!--          style="padding-left: 20px"-->
+      <!--          @click="loginByGitHub"-->
+      <!--      >-->
+      <!--        <img src="../assets/githubIcon.jpg" alt="githubIcon" style="width: 25px">-->
+      <!--        <a>github 登录</a>-->
+      <!--      </div>-->
     </a-form>
     <template #footer>
       <div class="modal-footer-div">
-        <a-button key="submit" type="primary"  @click="loginModalOk" style="width: 30%">登录</a-button>
+        <a-button key="submit" type="primary" @click="loginModalOk" style="width: 30%">登录</a-button>
       </div>
     </template>
   </a-modal>
@@ -127,19 +134,24 @@
       </a-form-item>
       <a-form-item label="密码">
         <a-input-password v-model:value="userInModal.password"/>
-        <div style="font-size: 10px; color: purple">至少两种字符, 只能包含数字和英文大小写三种字符, 且长度只在 6 - 16 位</div>
+        <div style="font-size: 10px; color: purple">至少两种字符, 只能包含数字和英文大小写三种字符, 且长度只在 6 - 16
+          位
+        </div>
       </a-form-item>
       <a-form-item label="验证码">
-        <a-input style="width: 70%" v-model:value="userInModal.verifyCode"/><a-button :disabled="verifyBtnDisable" style="float: right; width: 29%" type="dashed" @click="sendVerifyCode">发送验证码</a-button>
+        <a-input style="width: 70%" v-model:value="userInModal.verifyCode"/>
+        <a-button :disabled="verifyBtnDisable" style="float: right; width: 29%" type="dashed" @click="sendVerifyCode">
+          发送验证码
+        </a-button>
       </a-form-item>
-<!--      <a-form-item label="邀请码">-->
-<!--        <a-input v-model:value="userInModal.inviteCode"/>-->
-<!--      </a-form-item>-->
-<!--      <a style="text-align: center; float: right;" @click="getInviteCode">如何获取邀请码?</a>-->
+      <!--      <a-form-item label="邀请码">-->
+      <!--        <a-input v-model:value="userInModal.inviteCode"/>-->
+      <!--      </a-form-item>-->
+      <!--      <a style="text-align: center; float: right;" @click="getInviteCode">如何获取邀请码?</a>-->
     </a-form>
     <template #footer>
       <div class="modal-footer-div">
-        <a-button key="submit" type="primary"  @click="registerModalOk" style="width: 30%">注册</a-button>
+        <a-button key="submit" type="primary" @click="registerModalOk" style="width: 30%">注册</a-button>
       </div>
     </template>
   </a-modal>
@@ -158,18 +170,23 @@
       </a-form-item>
       <a-form-item label="新密码">
         <a-input-password v-model:value="userInModal.password"/>
-        <div style="font-size: 10px; color: purple">至少两种字符, 只能包含数字和英文大小写三种字符, 且长度只在 6 - 16 位</div>
+        <div style="font-size: 10px; color: purple">至少两种字符, 只能包含数字和英文大小写三种字符, 且长度只在 6 - 16
+          位
+        </div>
       </a-form-item>
       <a-form-item label="重复新密码">
         <a-input-password v-model:value="repeatNewPassword"/>
       </a-form-item>
       <a-form-item label="验证码">
-        <a-input style="width: 70%" v-model:value="userInModal.verifyCode"/><a-button :disabled="verifyBtnDisable" style="float: right; width: 29%" type="dashed" @click="sendVerifyCode">发送验证码</a-button>
+        <a-input style="width: 70%" v-model:value="userInModal.verifyCode"/>
+        <a-button :disabled="verifyBtnDisable" style="float: right; width: 29%" type="dashed" @click="sendVerifyCode">
+          发送验证码
+        </a-button>
       </a-form-item>
     </a-form>
     <template #footer>
       <div class="modal-footer-div">
-        <a-button key="submit" type="primary"  @click="forgetModalOk" style="width: 30%">OK</a-button>
+        <a-button key="submit" type="primary" @click="forgetModalOk" style="width: 30%">OK</a-button>
       </div>
     </template>
   </a-modal>
@@ -179,11 +196,10 @@
 <script lang="ts">
 import {computed, defineComponent, onMounted, ref} from 'vue';
 import axios from "axios";
-import {MenuProps, message, notification} from "ant-design-vue";
-import {DownOutlined, UserOutlined, SyncOutlined, BellTwoTone} from "@ant-design/icons-vue";
+import {message, notification} from "ant-design-vue";
+import {BellTwoTone, DownOutlined, SyncOutlined, UserOutlined} from "@ant-design/icons-vue";
 import store from "@/store";
 import {Tool} from "@/utils/tool";
-import router from "@/router";
 
 export default defineComponent({
   name: 'the-header',
@@ -349,7 +365,7 @@ export default defineComponent({
      * 每日签到
      */
     const signInPerDayClick = () => {
-      axios.post("/user/signInPerDay",userInfo.value.id).then((response) => {
+      axios.post("/user/signInPerDay", userInfo.value.id).then((response) => {
         let data = response.data;
         if (response.data.success) {
           message.success(data.message);
@@ -359,11 +375,11 @@ export default defineComponent({
       })
     }
 
-    const getUserType = (type : any) => {
+    const getUserType = (type: any) => {
       if (type === 1) {
         return "普通用户";
       } else if (type === 2) {
-        return "会员 剩余: " + userInfo.value.remainDays + "天" ;
+        return "会员 剩余: " + userInfo.value.remainDays + "天";
       } else if (type === 3) {
         return "超级会员";
       } else {
@@ -374,7 +390,7 @@ export default defineComponent({
     /**
      * 自动登录
      */
-    const autoLogin = (userID : string) => {
+    const autoLogin = (userID: string) => {
       axios.defaults.withCredentials = true;
       axios.post("/user/loginByID/" + userID).then((response) => {
         console.log("尝试自动登录");
@@ -408,6 +424,23 @@ export default defineComponent({
           }
 
         }  // 凭证失效, 或者 userInfo 不为空, do nothing
+      })
+    }
+
+    //-------------退出登录--------------
+
+    /**
+     * 点击退出登录
+     */
+    const logoutClick = () => {
+      axios.defaults.withCredentials = true;
+      axios.post("/user/logoutByAccount").then((response) => {
+        if (response.data.success) {
+          loginModalVisible.value = true;
+          window.location.href = process.env.VUE_APP_WEB;
+        } else {
+          message.error(response.data.message);
+        }
       })
     }
 
@@ -496,6 +529,7 @@ export default defineComponent({
       getInviteCode,
       getUserType,
       signInPerDayClick,
+      logoutClick,
     };
   }
 });
@@ -555,7 +589,7 @@ export default defineComponent({
 
 .login-menu {
   color: black;
-  width: 13%;  /*与白色页面的边对齐*/
+  width: 13%; /*与白色页面的边对齐*/
   float: right;
   /*font-weight: bold;*/
 }

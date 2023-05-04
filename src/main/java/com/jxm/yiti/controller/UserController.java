@@ -35,17 +35,6 @@ public class UserController {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
-//    /**
-//     * 激活邮件
-//     */
-//    @GetMapping ("/activeEmail/{email}")
-//    @ResponseBody
-//    public String activeEmail(@PathVariable String email) throws IOException {
-//        Boolean res = userService.activeEmail(email);
-//
-//        return res ? "恭喜! 邮箱激活成功" : "出错喽, 重发激活邮件试试, 或者微信 call 我呦";
-//    }
-
     @PostMapping("/signInPerDay")
     @ResponseBody
     public CommonResp signInPerDay(@RequestBody String userID) {
@@ -150,6 +139,17 @@ public class UserController {
     public CommonResp sendActiveEmail(@PathVariable String email) {
         CommonResp resp = new CommonResp<>();
         userService.sendActiveEmail(email, resp);
+        return resp;
+    }
+
+    /**
+     * 账号登出接口
+     */
+    @PostMapping("/logoutByAccount")
+    @ResponseBody
+    public CommonResp logoutByAccount(@CookieValue(name="yiti_userID", defaultValue = "-1", required = false) String userID, HttpServletResponse response) {
+        CommonResp resp = new CommonResp<>();
+        userService.logCookieLcOut(userID, response, resp);
         return resp;
     }
 
