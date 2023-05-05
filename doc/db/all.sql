@@ -300,6 +300,8 @@ DROP TABLE IF EXISTS `chat_record_info`;
 CREATE TABLE `chat_record_info` (
                                 `id` bigint AUTO_INCREMENT NOT NULL,
                                 `date` varchar(50) DEFAULT (NULL),
-                                `times` varchar(50) NOT NULL DEFAULT (NULL),
-                                `tokens` varchar(50) NOT NULL DEFAULT (NULL),
+                                `ntimes` varchar(50) NOT NULL DEFAULT (0),
+                                `ntokens` varchar(50) NOT NULL DEFAULT (0),
+                                `vtimes` varchar(50) NOT NULL DEFAULT (0),
+                                `vtokens` varchar(50) NOT NULL DEFAULT (0),
                                 PRIMARY KEY (`id`)) engine = innodb DEFAULT charset = utf8mb4 COMMENT = 'chatGPT 用户历史查询信息记录';

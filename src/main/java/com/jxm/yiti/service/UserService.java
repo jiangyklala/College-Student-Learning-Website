@@ -674,11 +674,17 @@ public class UserService {
         String nowTime = sdf.format(new Date());
 
         try (Jedis jedis = jedisPool.getResource()) {
-            String times = jedis.get("yt:gpt:times:" + nowTime);
-            String tokens = jedis.get("yt:gpt:tokens:" + nowTime);
-            res += "当日: 提问总数: " + times + ", 消耗的总token: " + tokens + "\n"
-                    + "截止到目前, 总共消耗: 提问次数: " + (Long.parseLong(jedis.get("yt:gpt:times:total")) + Long.parseLong(times))
-                    + ", 消耗的总token: " + (Long.parseLong(jedis.get("yt:gpt:tokens:total")) + Long.parseLong(tokens));
+            String ntimes = jedis.get("yt:gpt:ntimes:" + nowTime);
+            String ntokens = jedis.get("yt:gpt:ntokens:" + nowTime);
+            String vtimes = jedis.get("yt:gpt:vtimes:" + nowTime);
+            String vtokens = jedis.get("yt:gpt:vtokens:" + nowTime);
+            res += "当日普通用户: 提问总数: " + ntimes + ", 消耗的总token: " + ntokens + "\n"
+                    + "当日会员用户: 提问总数: " + vtimes + ", 消耗的总token: " + vtokens + "\n"
+                    + "截止到目前普通用户: 总共消耗: 提问次数: " + (Long.parseLong(jedis.get("yt:gpt:ntimes:ntotal")) + Long.parseLong(ntimes))
+                    + ", 消耗的总token: " + (Long.parseLong(jedis.get("yt:gpt:ntokens:ntotal")) + Long.parseLong(ntokens)) + "\n"
+                    + "截止到目前会员用户: 总共消耗: 提问次数: " + (Long.parseLong(jedis.get("yt:gpt:vtimes:vtotal")) + Long.parseLong(vtimes))
+                    + ", 消耗的总token: " + (Long.parseLong(jedis.get("yt:gpt:vtokens:vtotal")) + Long.parseLong(vtokens));
+
         } catch (Exception e) {
             LOG.error("获取当日的 [提问总数] 与 [消耗的总 token] 失败", e);
         }
@@ -763,15 +769,10 @@ public class UserService {
         List<ChatRecordInfo> res = null;
         ChatRecordInfoExample chatRecordInfoExample = new ChatRecordInfoExample();
         chatRecordInfoExample.setOrderByClause("id desc");      // 按 id 倒序返回, 即离现在时间最近的 20 条记录
-//        ChatRecordInfoExample.Criteria criteria = chatRecordInfoExample.createCriteria();
 
         try {
             PageHelper.startPage(1, days, true);
             res = chatRecordInfoMapper.selectByExample(chatRecordInfoExample);
-//            PageInfo<ChatRecordInfo> chatRecordInfoPageInfo = new PageInfo<>(res);
-//            LOG.info("当前页: " + chatRecordInfoPageInfo.getPageNum()
-//                    + ", 总页数: " + chatRecordInfoPageInfo.getPages()
-//                    + " , 总记录数: " + chatRecordInfoPageInfo.getTotal());
         } catch (Exception e) {
             e.printStackTrace();
             return "error";
@@ -780,7 +781,11 @@ public class UserService {
         StringBuilder resStr = new StringBuilder();
 
         for (ChatRecordInfo chatRecordInfo : res) {
-            resStr.append("日期:").append(transferDateFormat(chatRecordInfo.getDate())).append(", 消耗提问次数:").append(chatRecordInfo.getTimes()).append(", 消耗token: ").append(chatRecordInfo.getTokens()).append("\n");
+            resStr.append("日期:").append(transferDateFormat(chatRecordInfo.getDate())).append("\n")
+                    .append("普通用户消耗提问次数:").append(chatRecordInfo.getNtimes())
+                    .append(", 消耗token: ").append(chatRecordInfo.getNtokens()).append("\n")
+                    .append("会员消耗提问次数:").append(chatRecordInfo.getVtimes())
+                    .append(", 消耗token: ").append(chatRecordInfo.getVtokens()).append("\n\n");
         }
 
         return resStr.toString();

@@ -234,143 +234,283 @@ public class ChatRecordInfoExample {
             return (Criteria) this;
         }
 
-        public Criteria andTimesIsNull() {
-            addCriterion("times is null");
+        public Criteria andNtimesIsNull() {
+            addCriterion("ntimes is null");
             return (Criteria) this;
         }
 
-        public Criteria andTimesIsNotNull() {
-            addCriterion("times is not null");
+        public Criteria andNtimesIsNotNull() {
+            addCriterion("ntimes is not null");
             return (Criteria) this;
         }
 
-        public Criteria andTimesEqualTo(String value) {
-            addCriterion("times =", value, "times");
+        public Criteria andNtimesEqualTo(String value) {
+            addCriterion("ntimes =", value, "ntimes");
             return (Criteria) this;
         }
 
-        public Criteria andTimesNotEqualTo(String value) {
-            addCriterion("times <>", value, "times");
+        public Criteria andNtimesNotEqualTo(String value) {
+            addCriterion("ntimes <>", value, "ntimes");
             return (Criteria) this;
         }
 
-        public Criteria andTimesGreaterThan(String value) {
-            addCriterion("times >", value, "times");
+        public Criteria andNtimesGreaterThan(String value) {
+            addCriterion("ntimes >", value, "ntimes");
             return (Criteria) this;
         }
 
-        public Criteria andTimesGreaterThanOrEqualTo(String value) {
-            addCriterion("times >=", value, "times");
+        public Criteria andNtimesGreaterThanOrEqualTo(String value) {
+            addCriterion("ntimes >=", value, "ntimes");
             return (Criteria) this;
         }
 
-        public Criteria andTimesLessThan(String value) {
-            addCriterion("times <", value, "times");
+        public Criteria andNtimesLessThan(String value) {
+            addCriterion("ntimes <", value, "ntimes");
             return (Criteria) this;
         }
 
-        public Criteria andTimesLessThanOrEqualTo(String value) {
-            addCriterion("times <=", value, "times");
+        public Criteria andNtimesLessThanOrEqualTo(String value) {
+            addCriterion("ntimes <=", value, "ntimes");
             return (Criteria) this;
         }
 
-        public Criteria andTimesLike(String value) {
-            addCriterion("times like", value, "times");
+        public Criteria andNtimesLike(String value) {
+            addCriterion("ntimes like", value, "ntimes");
             return (Criteria) this;
         }
 
-        public Criteria andTimesNotLike(String value) {
-            addCriterion("times not like", value, "times");
+        public Criteria andNtimesNotLike(String value) {
+            addCriterion("ntimes not like", value, "ntimes");
             return (Criteria) this;
         }
 
-        public Criteria andTimesIn(List<String> values) {
-            addCriterion("times in", values, "times");
+        public Criteria andNtimesIn(List<String> values) {
+            addCriterion("ntimes in", values, "ntimes");
             return (Criteria) this;
         }
 
-        public Criteria andTimesNotIn(List<String> values) {
-            addCriterion("times not in", values, "times");
+        public Criteria andNtimesNotIn(List<String> values) {
+            addCriterion("ntimes not in", values, "ntimes");
             return (Criteria) this;
         }
 
-        public Criteria andTimesBetween(String value1, String value2) {
-            addCriterion("times between", value1, value2, "times");
+        public Criteria andNtimesBetween(String value1, String value2) {
+            addCriterion("ntimes between", value1, value2, "ntimes");
             return (Criteria) this;
         }
 
-        public Criteria andTimesNotBetween(String value1, String value2) {
-            addCriterion("times not between", value1, value2, "times");
+        public Criteria andNtimesNotBetween(String value1, String value2) {
+            addCriterion("ntimes not between", value1, value2, "ntimes");
             return (Criteria) this;
         }
 
-        public Criteria andTokensIsNull() {
-            addCriterion("tokens is null");
+        public Criteria andNtokensIsNull() {
+            addCriterion("ntokens is null");
             return (Criteria) this;
         }
 
-        public Criteria andTokensIsNotNull() {
-            addCriterion("tokens is not null");
+        public Criteria andNtokensIsNotNull() {
+            addCriterion("ntokens is not null");
             return (Criteria) this;
         }
 
-        public Criteria andTokensEqualTo(String value) {
-            addCriterion("tokens =", value, "tokens");
+        public Criteria andNtokensEqualTo(String value) {
+            addCriterion("ntokens =", value, "ntokens");
             return (Criteria) this;
         }
 
-        public Criteria andTokensNotEqualTo(String value) {
-            addCriterion("tokens <>", value, "tokens");
+        public Criteria andNtokensNotEqualTo(String value) {
+            addCriterion("ntokens <>", value, "ntokens");
             return (Criteria) this;
         }
 
-        public Criteria andTokensGreaterThan(String value) {
-            addCriterion("tokens >", value, "tokens");
+        public Criteria andNtokensGreaterThan(String value) {
+            addCriterion("ntokens >", value, "ntokens");
             return (Criteria) this;
         }
 
-        public Criteria andTokensGreaterThanOrEqualTo(String value) {
-            addCriterion("tokens >=", value, "tokens");
+        public Criteria andNtokensGreaterThanOrEqualTo(String value) {
+            addCriterion("ntokens >=", value, "ntokens");
             return (Criteria) this;
         }
 
-        public Criteria andTokensLessThan(String value) {
-            addCriterion("tokens <", value, "tokens");
+        public Criteria andNtokensLessThan(String value) {
+            addCriterion("ntokens <", value, "ntokens");
             return (Criteria) this;
         }
 
-        public Criteria andTokensLessThanOrEqualTo(String value) {
-            addCriterion("tokens <=", value, "tokens");
+        public Criteria andNtokensLessThanOrEqualTo(String value) {
+            addCriterion("ntokens <=", value, "ntokens");
             return (Criteria) this;
         }
 
-        public Criteria andTokensLike(String value) {
-            addCriterion("tokens like", value, "tokens");
+        public Criteria andNtokensLike(String value) {
+            addCriterion("ntokens like", value, "ntokens");
             return (Criteria) this;
         }
 
-        public Criteria andTokensNotLike(String value) {
-            addCriterion("tokens not like", value, "tokens");
+        public Criteria andNtokensNotLike(String value) {
+            addCriterion("ntokens not like", value, "ntokens");
             return (Criteria) this;
         }
 
-        public Criteria andTokensIn(List<String> values) {
-            addCriterion("tokens in", values, "tokens");
+        public Criteria andNtokensIn(List<String> values) {
+            addCriterion("ntokens in", values, "ntokens");
             return (Criteria) this;
         }
 
-        public Criteria andTokensNotIn(List<String> values) {
-            addCriterion("tokens not in", values, "tokens");
+        public Criteria andNtokensNotIn(List<String> values) {
+            addCriterion("ntokens not in", values, "ntokens");
             return (Criteria) this;
         }
 
-        public Criteria andTokensBetween(String value1, String value2) {
-            addCriterion("tokens between", value1, value2, "tokens");
+        public Criteria andNtokensBetween(String value1, String value2) {
+            addCriterion("ntokens between", value1, value2, "ntokens");
             return (Criteria) this;
         }
 
-        public Criteria andTokensNotBetween(String value1, String value2) {
-            addCriterion("tokens not between", value1, value2, "tokens");
+        public Criteria andNtokensNotBetween(String value1, String value2) {
+            addCriterion("ntokens not between", value1, value2, "ntokens");
+            return (Criteria) this;
+        }
+
+        public Criteria andVtimesIsNull() {
+            addCriterion("vtimes is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVtimesIsNotNull() {
+            addCriterion("vtimes is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVtimesEqualTo(String value) {
+            addCriterion("vtimes =", value, "vtimes");
+            return (Criteria) this;
+        }
+
+        public Criteria andVtimesNotEqualTo(String value) {
+            addCriterion("vtimes <>", value, "vtimes");
+            return (Criteria) this;
+        }
+
+        public Criteria andVtimesGreaterThan(String value) {
+            addCriterion("vtimes >", value, "vtimes");
+            return (Criteria) this;
+        }
+
+        public Criteria andVtimesGreaterThanOrEqualTo(String value) {
+            addCriterion("vtimes >=", value, "vtimes");
+            return (Criteria) this;
+        }
+
+        public Criteria andVtimesLessThan(String value) {
+            addCriterion("vtimes <", value, "vtimes");
+            return (Criteria) this;
+        }
+
+        public Criteria andVtimesLessThanOrEqualTo(String value) {
+            addCriterion("vtimes <=", value, "vtimes");
+            return (Criteria) this;
+        }
+
+        public Criteria andVtimesLike(String value) {
+            addCriterion("vtimes like", value, "vtimes");
+            return (Criteria) this;
+        }
+
+        public Criteria andVtimesNotLike(String value) {
+            addCriterion("vtimes not like", value, "vtimes");
+            return (Criteria) this;
+        }
+
+        public Criteria andVtimesIn(List<String> values) {
+            addCriterion("vtimes in", values, "vtimes");
+            return (Criteria) this;
+        }
+
+        public Criteria andVtimesNotIn(List<String> values) {
+            addCriterion("vtimes not in", values, "vtimes");
+            return (Criteria) this;
+        }
+
+        public Criteria andVtimesBetween(String value1, String value2) {
+            addCriterion("vtimes between", value1, value2, "vtimes");
+            return (Criteria) this;
+        }
+
+        public Criteria andVtimesNotBetween(String value1, String value2) {
+            addCriterion("vtimes not between", value1, value2, "vtimes");
+            return (Criteria) this;
+        }
+
+        public Criteria andVtokensIsNull() {
+            addCriterion("vtokens is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVtokensIsNotNull() {
+            addCriterion("vtokens is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVtokensEqualTo(String value) {
+            addCriterion("vtokens =", value, "vtokens");
+            return (Criteria) this;
+        }
+
+        public Criteria andVtokensNotEqualTo(String value) {
+            addCriterion("vtokens <>", value, "vtokens");
+            return (Criteria) this;
+        }
+
+        public Criteria andVtokensGreaterThan(String value) {
+            addCriterion("vtokens >", value, "vtokens");
+            return (Criteria) this;
+        }
+
+        public Criteria andVtokensGreaterThanOrEqualTo(String value) {
+            addCriterion("vtokens >=", value, "vtokens");
+            return (Criteria) this;
+        }
+
+        public Criteria andVtokensLessThan(String value) {
+            addCriterion("vtokens <", value, "vtokens");
+            return (Criteria) this;
+        }
+
+        public Criteria andVtokensLessThanOrEqualTo(String value) {
+            addCriterion("vtokens <=", value, "vtokens");
+            return (Criteria) this;
+        }
+
+        public Criteria andVtokensLike(String value) {
+            addCriterion("vtokens like", value, "vtokens");
+            return (Criteria) this;
+        }
+
+        public Criteria andVtokensNotLike(String value) {
+            addCriterion("vtokens not like", value, "vtokens");
+            return (Criteria) this;
+        }
+
+        public Criteria andVtokensIn(List<String> values) {
+            addCriterion("vtokens in", values, "vtokens");
+            return (Criteria) this;
+        }
+
+        public Criteria andVtokensNotIn(List<String> values) {
+            addCriterion("vtokens not in", values, "vtokens");
+            return (Criteria) this;
+        }
+
+        public Criteria andVtokensBetween(String value1, String value2) {
+            addCriterion("vtokens between", value1, value2, "vtokens");
+            return (Criteria) this;
+        }
+
+        public Criteria andVtokensNotBetween(String value1, String value2) {
+            addCriterion("vtokens not between", value1, value2, "vtokens");
             return (Criteria) this;
         }
     }

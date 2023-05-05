@@ -5,9 +5,13 @@ public class ChatRecordInfo {
 
     private String date;
 
-    private String times;
+    private String ntimes;
 
-    private String tokens;
+    private String ntokens;
+
+    private String vtimes;
+
+    private String vtokens;
 
     public Long getId() {
         return id;
@@ -25,20 +29,36 @@ public class ChatRecordInfo {
         this.date = date;
     }
 
-    public String getTimes() {
-        return times;
+    public String getNtimes() {
+        return ntimes;
     }
 
-    public void setTimes(String times) {
-        this.times = times;
+    public void setNtimes(String ntimes) {
+        this.ntimes = ntimes;
     }
 
-    public String getTokens() {
-        return tokens;
+    public String getNtokens() {
+        return ntokens;
     }
 
-    public void setTokens(String tokens) {
-        this.tokens = tokens;
+    public void setNtokens(String ntokens) {
+        this.ntokens = ntokens;
+    }
+
+    public String getVtimes() {
+        return vtimes;
+    }
+
+    public void setVtimes(String vtimes) {
+        this.vtimes = vtimes;
+    }
+
+    public String getVtokens() {
+        return vtokens;
+    }
+
+    public void setVtokens(String vtokens) {
+        this.vtokens = vtokens;
     }
 
     @Override
@@ -49,8 +69,10 @@ public class ChatRecordInfo {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", date=").append(date);
-        sb.append(", times=").append(times);
-        sb.append(", tokens=").append(tokens);
+        sb.append(", ntimes=").append(ntimes);
+        sb.append(", ntokens=").append(ntokens);
+        sb.append(", vtimes=").append(vtimes);
+        sb.append(", vtokens=").append(vtokens);
         sb.append("]");
         return sb.toString();
     }

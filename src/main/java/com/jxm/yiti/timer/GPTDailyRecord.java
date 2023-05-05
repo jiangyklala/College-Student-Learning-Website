@@ -42,31 +42,59 @@ public class GPTDailyRecord {
 
         try (Jedis jedis = UserService.jedisPool.getResource()) {
             ChatRecordInfo chatRecordInfo = new ChatRecordInfo();
-            String timesKey = "yt:gpt:times:" + yesterday;
-            String timesTotalKey = "yt:gpt:times:total";
-            String tokensKey = "yt:gpt:tokens:" + yesterday;
-            String tokensTotalKey = "yt:gpt:tokens:total";
+            String ntimesKey = "yt:gpt:ntimes:" + yesterday;        // 普通用户当日提问次数
+            String ntimesTotalKey = "yt:gpt:ntimes:ntotal";         // 普通用户总提问次数
+            String ntokensKey = "yt:gpt:ntokens:" + yesterday;      // 普通用户当日消耗 token
+            String ntokensTotalKey = "yt:gpt:ntokens:ntotal";       // 普通用户总消耗 token
+            String vtimesKey = "yt:gpt:vtimes:" + yesterday;        // 会员当日提问次数
+            String vtimesTotalKey = "yt:gpt:vtimes:vtotal";         // 会员总提问次数
+            String vtokensKey = "yt:gpt:vtokens:" + yesterday;      // 会员当日消耗 token
+            String vtokensTotalKey = "yt:gpt:vtokens:vtotal";       // 会员总消耗 token
 
-            if (jedis.exists(timesKey)) {
-                String times = jedis.get(timesKey);
-                chatRecordInfo.setTimes(times);
+            // 处理普通用户
+            if (jedis.exists(ntimesKey)) {
+                String times = jedis.get(ntimesKey);
+                chatRecordInfo.setNtimes(times);
 
                 // 自增总 time 记录
-                jedis.incrBy(timesTotalKey, Long.parseLong(times));
+                jedis.incrBy(ntimesTotalKey, Long.parseLong(times));
 
                 // 删除昨日记录
-                jedis.expire(timesKey, 0);
+                jedis.expire(ntimesKey, 0);
             }
 
-            if (jedis.exists(tokensKey)) {
-                String tokens = jedis.get(tokensKey);
-                chatRecordInfo.setTokens(tokens);
+            if (jedis.exists(ntokensKey)) {
+                String tokens = jedis.get(ntokensKey);
+                chatRecordInfo.setNtokens(tokens);
 
                 // 自增总 token 记录
-                jedis.incrBy(tokensTotalKey, Long.parseLong(tokens));
+                jedis.incrBy(ntokensTotalKey, Long.parseLong(tokens));
 
                 // 删除昨日记录
-                jedis.expire(tokensKey, 0);
+                jedis.expire(ntokensKey, 0);
+            }
+
+            // 处理会员
+            if (jedis.exists(vtimesKey)) {
+                String times = jedis.get(vtimesKey);
+                chatRecordInfo.setVtimes(times);
+
+                // 自增总 time 记录
+                jedis.incrBy(vtimesTotalKey, Long.parseLong(times));
+
+                // 删除昨日记录
+                jedis.expire(vtimesKey, 0);
+            }
+
+            if (jedis.exists(vtokensKey)) {
+                String tokens = jedis.get(vtokensKey);
+                chatRecordInfo.setVtokens(tokens);
+
+                // 自增总 token 记录
+                jedis.incrBy(vtokensTotalKey, Long.parseLong(tokens));
+
+                // 删除昨日记录
+                jedis.expire(vtokensKey, 0);
             }
 
             try {

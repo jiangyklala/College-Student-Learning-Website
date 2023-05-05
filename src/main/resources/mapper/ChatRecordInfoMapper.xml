@@ -4,8 +4,10 @@
   <resultMap id="BaseResultMap" type="com.jxm.yiti.domain.ChatRecordInfo">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="date" jdbcType="VARCHAR" property="date" />
-    <result column="times" jdbcType="VARCHAR" property="times" />
-    <result column="tokens" jdbcType="VARCHAR" property="tokens" />
+    <result column="ntimes" jdbcType="VARCHAR" property="ntimes" />
+    <result column="ntokens" jdbcType="VARCHAR" property="ntokens" />
+    <result column="vtimes" jdbcType="VARCHAR" property="vtimes" />
+    <result column="vtokens" jdbcType="VARCHAR" property="vtokens" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -66,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, `date`, times, tokens
+    id, `date`, ntimes, ntokens, vtimes, vtokens
   </sql>
   <select id="selectByExample" parameterType="com.jxm.yiti.domain.ChatRecordInfoExample" resultMap="BaseResultMap">
     select
@@ -99,10 +101,12 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.jxm.yiti.domain.ChatRecordInfo">
-    insert into chat_record_info (id, `date`, times, 
-      tokens)
-    values (#{id,jdbcType=BIGINT}, #{date,jdbcType=VARCHAR}, #{times,jdbcType=VARCHAR}, 
-      #{tokens,jdbcType=VARCHAR})
+    insert into chat_record_info (id, `date`, ntimes, 
+      ntokens, vtimes, vtokens
+      )
+    values (#{id,jdbcType=BIGINT}, #{date,jdbcType=VARCHAR}, #{ntimes,jdbcType=VARCHAR}, 
+      #{ntokens,jdbcType=VARCHAR}, #{vtimes,jdbcType=VARCHAR}, #{vtokens,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.jxm.yiti.domain.ChatRecordInfo">
     insert into chat_record_info
@@ -113,11 +117,17 @@
       <if test="date != null">
         `date`,
       </if>
-      <if test="times != null">
-        times,
+      <if test="ntimes != null">
+        ntimes,
       </if>
-      <if test="tokens != null">
-        tokens,
+      <if test="ntokens != null">
+        ntokens,
+      </if>
+      <if test="vtimes != null">
+        vtimes,
+      </if>
+      <if test="vtokens != null">
+        vtokens,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -127,11 +137,17 @@
       <if test="date != null">
         #{date,jdbcType=VARCHAR},
       </if>
-      <if test="times != null">
-        #{times,jdbcType=VARCHAR},
+      <if test="ntimes != null">
+        #{ntimes,jdbcType=VARCHAR},
       </if>
-      <if test="tokens != null">
-        #{tokens,jdbcType=VARCHAR},
+      <if test="ntokens != null">
+        #{ntokens,jdbcType=VARCHAR},
+      </if>
+      <if test="vtimes != null">
+        #{vtimes,jdbcType=VARCHAR},
+      </if>
+      <if test="vtokens != null">
+        #{vtokens,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -150,11 +166,17 @@
       <if test="record.date != null">
         `date` = #{record.date,jdbcType=VARCHAR},
       </if>
-      <if test="record.times != null">
-        times = #{record.times,jdbcType=VARCHAR},
+      <if test="record.ntimes != null">
+        ntimes = #{record.ntimes,jdbcType=VARCHAR},
       </if>
-      <if test="record.tokens != null">
-        tokens = #{record.tokens,jdbcType=VARCHAR},
+      <if test="record.ntokens != null">
+        ntokens = #{record.ntokens,jdbcType=VARCHAR},
+      </if>
+      <if test="record.vtimes != null">
+        vtimes = #{record.vtimes,jdbcType=VARCHAR},
+      </if>
+      <if test="record.vtokens != null">
+        vtokens = #{record.vtokens,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -165,8 +187,10 @@
     update chat_record_info
     set id = #{record.id,jdbcType=BIGINT},
       `date` = #{record.date,jdbcType=VARCHAR},
-      times = #{record.times,jdbcType=VARCHAR},
-      tokens = #{record.tokens,jdbcType=VARCHAR}
+      ntimes = #{record.ntimes,jdbcType=VARCHAR},
+      ntokens = #{record.ntokens,jdbcType=VARCHAR},
+      vtimes = #{record.vtimes,jdbcType=VARCHAR},
+      vtokens = #{record.vtokens,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -177,11 +201,17 @@
       <if test="date != null">
         `date` = #{date,jdbcType=VARCHAR},
       </if>
-      <if test="times != null">
-        times = #{times,jdbcType=VARCHAR},
+      <if test="ntimes != null">
+        ntimes = #{ntimes,jdbcType=VARCHAR},
       </if>
-      <if test="tokens != null">
-        tokens = #{tokens,jdbcType=VARCHAR},
+      <if test="ntokens != null">
+        ntokens = #{ntokens,jdbcType=VARCHAR},
+      </if>
+      <if test="vtimes != null">
+        vtimes = #{vtimes,jdbcType=VARCHAR},
+      </if>
+      <if test="vtokens != null">
+        vtokens = #{vtokens,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -189,8 +219,10 @@
   <update id="updateByPrimaryKey" parameterType="com.jxm.yiti.domain.ChatRecordInfo">
     update chat_record_info
     set `date` = #{date,jdbcType=VARCHAR},
-      times = #{times,jdbcType=VARCHAR},
-      tokens = #{tokens,jdbcType=VARCHAR}
+      ntimes = #{ntimes,jdbcType=VARCHAR},
+      ntokens = #{ntokens,jdbcType=VARCHAR},
+      vtimes = #{vtimes,jdbcType=VARCHAR},
+      vtokens = #{vtokens,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>
