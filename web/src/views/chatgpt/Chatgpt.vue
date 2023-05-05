@@ -7,6 +7,7 @@
     <a-button type="primary" @click="showAttention" class="show-attention-button">提<br>问<br>消<br>耗<br>规<br>则
     </a-button>
     <a-button type="primary" @click="showAddCredit" class="show-add-credit-button">充<br>值<br></a-button>
+    <a-button type="primary" @click="showChatGroup" class="show-chat-group-button">交<br>流<br>群</a-button>
 
     <a-drawer
         v-model:visible="drawerVisible"
@@ -339,6 +340,23 @@ export default defineComponent({
     }
 
     /**
+     * 显示充值页面
+     */
+    const showChatGroup = () => {
+      Modal.info({
+        title: 'GPT 交流群',
+        content: h('div', {}, [
+          h('img', {
+            src: 'https://shuaidi-picture-1257337429.cos.ap-guangzhou.myqcloud.com/temp/GPT.jpeg',
+            style: { maxWidth: '380px', width: '100%', height: 'auto'}
+          })
+        ]),
+        width: 510,
+        okText: '了然'
+      });
+    }
+
+    /**
      * 对特殊字符进行转义
      * @param str
      */
@@ -388,6 +406,7 @@ export default defineComponent({
       updateHistoryID,
       showAttention,
       showAddCredit,
+      showChatGroup,
     };
   },
 });
@@ -428,6 +447,12 @@ export default defineComponent({
     transform: scale(0.7);
     left: 0px !important;
     top: 370px !important;
+  }
+
+  .show-chat-group-button {
+    transform: scale(0.7);
+    left: 0px !important;
+    top: 430px !important;
   }
 
   .input-search {
@@ -474,6 +499,14 @@ export default defineComponent({
   height: 60px;
   left: 10px;
   top: 480px;
+}
+
+.show-chat-group-button {
+  position: fixed;
+  width: 43px;
+  height: 80px;
+  left: 10px;
+  top: 560px;
 }
 
 .input-search {
