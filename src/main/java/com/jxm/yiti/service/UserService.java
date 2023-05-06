@@ -522,13 +522,25 @@ public class UserService {
      * @param resp  回调 resp
      * @return 是否发送成功
      */
-    public boolean sendActiveEmail(String email, CommonResp resp) {
+    public void sendActiveEmail(String email, CommonResp resp) {
         Pattern pattern1 = Pattern.compile("^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$");
         if (!pattern1.matcher(email).matches()) {
             resp.setSuccess(false);
             resp.setMessage("邮箱格式错误");
+            return;
         }
-        return mailService.sendActiveEmail(email);
+
+        // 检测用户是否存在
+        if (selectAUserByEmail(email) != null) {
+            resp.setSuccess(false);
+            resp.setMessage("用户已经存在喽");
+            return;
+        }
+
+        // 发送邮件
+        if (!mailService.sendActiveEmail(email)) {
+            LOG.error("发送邮件失败, email: {}", email);
+        }
     }
 
     /**
@@ -604,9 +616,9 @@ public class UserService {
     }
 
     /**
-     * 验证用户 email 是否存在, 并
+     * 验证用户 email 是否存在; 若存在, 返回查询信息
      *
-     * @return
+     * @return 查询信息 or null
      */
     public UserQueryReq isExitsUserEmail(UserQueryReq user, CommonResp resp) {
         if (!resp.getSuccess()) return user;
