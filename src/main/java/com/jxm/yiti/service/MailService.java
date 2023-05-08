@@ -4,6 +4,9 @@ import com.jxm.yiti.domain.EmailActive;
 import com.jxm.yiti.domain.MailObject;
 import com.jxm.yiti.mapper.EmailActiveMapper;
 import jakarta.annotation.Resource;
+import jakarta.mail.internet.AddressException;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeUtility;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
@@ -11,6 +14,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 @Service
@@ -27,7 +31,8 @@ public class MailService {
 
     public boolean simpleSend(MailObject mailObject) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(mailObject.getTo());                  // 设置收件人邮箱
+        message.setTo(mailObject.getTo());                  // 设置收件人邮箱  //"GPTalk<13837774652@163.com>"
+        message.setFrom("GPTalk<13837774652@163.com>");
 //        message.setCc("xiaofeng500@qq.com");              // 设置抄报人邮箱（可以不填写）
 //        message.setBcc("575814158@qq.com");               // 设置密送人邮箱（可以不填写）
         message.setSubject(mailObject.getSubject());        // 设置邮件主题
@@ -59,6 +64,7 @@ public class MailService {
         String content = "邮箱验证码: " + verifyCode;
 
         message.setTo(email);                               // 设置收件人邮箱
+        message.setFrom("GPTalk<13837774652@163.com>");
 //        message.setCc("xiaofeng500@qq.com");              // 设置抄报人邮箱（可以不填写）
 //        message.setBcc("575814158@qq.com");               // 设置密送人邮箱（可以不填写）
         message.setSubject("激活邮箱");                      // 设置邮件主题
