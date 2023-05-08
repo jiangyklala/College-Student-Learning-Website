@@ -39,7 +39,7 @@
                  :scroll="{ x: 700 }">
           <template #bodyCell="{ column, text }">
             <template v-if="column.dataIndex === 'inviteCode'">
-              {{ text }}&nbsp;&nbsp;<a style="color: rgb(156, 160, 164)">复制链接</a>
+              {{ text }}&nbsp;&nbsp;<a style="color: rgb(156, 160, 164)" @click="copyToClipboard(text)">复制链接</a>
             </template>
           </template>
         </a-table>
@@ -87,6 +87,14 @@ export default defineComponent({
     const withdrawalsClick = () => {
       message.info("功能开发中, 敬请期待!")
     }
+
+    const copyToClipboard = (code : any) => {
+      navigator.clipboard.writeText(process.env.VUE_APP_WEB + "chatgpt/Chatgpt?register=" + code).then(() => {
+        message.success('内容已复制到剪贴板');
+      }, () => {
+        console.error('复制失败');
+      });
+    };
 
     const getInviteCode = () => {
       axios.get("/invite/getInviteCode/" + userID.value).then((response) => {
@@ -154,6 +162,7 @@ export default defineComponent({
       withdrawalsClick,
       getInviteCode,
       getMyDate,
+      copyToClipboard,
     };
   }
 })
