@@ -446,13 +446,13 @@ export default defineComponent({
   .show-add-credit-button {
     transform: scale(0.7);
     left: 0px !important;
-    top: 370px !important;
+    top: 250px !important;
   }
 
   .show-chat-group-button {
     transform: scale(0.7);
     left: 0px !important;
-    top: 430px !important;
+    top: 315px !important;
   }
 
   .input-search {
@@ -498,7 +498,7 @@ export default defineComponent({
   width: 43px;
   height: 60px;
   left: 10px;
-  top: 480px;
+  top: 305px;
 }
 
 .show-chat-group-button {
@@ -506,7 +506,7 @@ export default defineComponent({
   width: 43px;
   height: 80px;
   left: 10px;
-  top: 560px;
+  top: 400px;
 }
 
 .input-search {
