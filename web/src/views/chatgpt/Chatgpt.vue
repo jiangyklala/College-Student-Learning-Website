@@ -4,8 +4,8 @@
     <!--    历史记录--抽屉-->
     <a-button type="primary" @click="showDrawer" class="drawer-button">历<br>史<br>记<br>录</a-button>
     <a-button type="primary" @click="newChat" class="new-chat-button">新<br>对<br>话</a-button>
-    <a-button type="primary" @click="showAttention" class="show-attention-button">提<br>问<br>消<br>耗<br>规<br>则
-    </a-button>
+<!--    <a-button type="primary" @click="showAttention" class="show-attention-button">提<br>问<br>消<br>耗<br>规<br>则-->
+<!--    </a-button>-->
     <a-button type="primary" @click="showAddCredit" class="show-add-credit-button">充<br>值<br></a-button>
     <a-button type="primary" @click="showChatGroup" class="show-chat-group-button">交<br>流<br>群</a-button>
 
