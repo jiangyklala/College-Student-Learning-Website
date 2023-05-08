@@ -1,6 +1,6 @@
 <template>
   <a-layout-footer class="footer">
-    yiti
+    GPTalk
   </a-layout-footer>
 </template>
 
