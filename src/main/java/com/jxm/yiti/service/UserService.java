@@ -473,7 +473,7 @@ public class UserService {
         User userInsert = CopyUtil.copy(user, User.class);
         userInsert.setId(snowFlakeIdWorker.nextId());
         userInsert.setUsername("新用户" + userInsert.getId().toString().substring(4, 10));   // 初始名称
-        userInsert.setBalance(30L);                                                        // 用户初始提问次数
+        userInsert.setBalance(20L);                                                        // 用户初始提问次数
         userInsert.setType(1);
         try {
             if (userMapper.insert(userInsert) != 0) {
