@@ -227,6 +227,10 @@ create table `user`
 
 ALTER TABLE user CHANGE others type int default 0 COMMENT '用户类型';
 
+ALTER TABLE user ADD invite_balance int default 0 COMMENT '邀请余额';
+ALTER TABLE user DROP invite_balance;
+
+
 #
 # -- 用户表
 # drop table if exists `user_github`;
@@ -305,3 +309,39 @@ CREATE TABLE `chat_record_info` (
                                 `vtimes` varchar(50) NOT NULL DEFAULT (0),
                                 `vtokens` varchar(50) NOT NULL DEFAULT (0),
                                 PRIMARY KEY (`id`)) engine = innodb DEFAULT charset = utf8mb4 COMMENT = 'chatGPT 用户历史查询信息记录';
+
+
+# chatGPT 邀请人总信息表
+DROP TABLE IF EXISTS `gpt_inviter`;
+
+CREATE TABLE `gpt_inviter` (
+                                `id` bigint AUTO_INCREMENT NOT NULL,
+                                `inviter_id` bigint NOT NULL,
+                                `invited_count` int default 0,
+                                `invite_balance` int default 0,
+                                `earn_rate` int default 20,
+                                `earnings` int default 0,
+                                INDEX idx_inviter_id (`inviter_id`),
+                                PRIMARY KEY (`id`)) engine = innodb DEFAULT charset = utf8mb4 COMMENT = 'chatGPT 邀请人总信息表';
+
+# chatGPT 邀请表
+DROP TABLE IF EXISTS `gpt_invite_code`;
+
+CREATE TABLE `gpt_invite_code` (
+                                `id` bigint AUTO_INCREMENT NOT NULL,
+                                `invite_code` varchar(10) DEFAULT (NULL),
+                                `inviter_id` bigint NOT NULL,
+                                `create_time` DATE,
+                                FOREIGN KEY (`inviter_id`) REFERENCES gpt_inviter(`inviter_id`),
+                                PRIMARY KEY (`id`)) engine = innodb DEFAULT charset = utf8mb4 COMMENT = 'chatGPT 邀请表';
+
+# chatGPT 邀请对应表
+DROP TABLE IF EXISTS `gpt_invitee`;
+
+CREATE TABLE `gpt_invitee` (
+                                `id` bigint AUTO_INCREMENT NOT NULL,
+                                `invitee_id` varchar(50) NOT NULL DEFAULT (0),
+                                `inviter_id` bigint NOT NULL,
+                                FOREIGN KEY (`inviter_id`) REFERENCES gpt_inviter(`inviter_id`),
+                                PRIMARY KEY (`id`)) engine = innodb DEFAULT charset = utf8mb4 COMMENT = 'chatGPT 邀请对应表';
+

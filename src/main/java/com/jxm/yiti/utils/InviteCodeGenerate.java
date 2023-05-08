@@ -11,7 +11,7 @@ public class InviteCodeGenerate {
         // 定义随机数生成器
         Random random = new Random();
 
-        // 生成 6 位长度的随机字符串
+        // 生成 8 位长度的随机字符串
         StringBuilder sb = new StringBuilder(8);
         for (int i = 0; i < 8; i++) {
             // 从字符集中随机选取一个字符

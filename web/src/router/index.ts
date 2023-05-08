@@ -2,7 +2,6 @@ import {createRouter, createWebHistory, RouteRecordRaw} from 'vue-router'
 import Home from "@/views/Home.vue";
 import Chatgpt from "@/views/chatgpt/Chatgpt.vue";
 import Image from "@/views/chatgpt/Image.vue";
-import Pay from "@/views/chatgpt/Pay.vue";
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -88,7 +87,12 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: '/chatgpt/Pay',
         name: 'Pay',
-        component: Pay
+        component: () => import('../views/chatgpt/Pay.vue')
+    },
+    {
+        path: '/chatgpt/Invite',
+        name: 'Invite',
+        component: () => import('../views/chatgpt/Invite.vue')
     },
 ]
 
