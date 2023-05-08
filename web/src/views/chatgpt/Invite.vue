@@ -146,7 +146,7 @@ export default defineComponent({
 
       // console.log(`${year}/${month}/${day}`);
 
-      return `${year}/${month}/${day}`;
+      return `${year} 年 ${month} 月 ${day} 日`;
     }
 
     onMounted(() => {
