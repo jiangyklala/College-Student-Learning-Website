@@ -151,6 +151,9 @@
       <!--        <a-input v-model:value="userInModal.inviteCode"/>-->
       <!--      </a-form-item>-->
       <!--      <a style="text-align: center; float: right;" @click="getInviteCode">如何获取邀请码?</a>-->
+      <a-form-item label="邀请码">
+        <a-input style="width: 100%" v-model:value="userInModal.inviteCode" placeholder="(选填)"/>
+      </a-form-item>
     </a-form>
     <template #footer>
       <div class="modal-footer-div">
@@ -257,6 +260,7 @@ export default defineComponent({
     const registerModalVisible = ref(false);
     const registerModalLoading = ref(false);
     const verifyBtnDisable = ref(false);
+
     /**
      * 注册按钮点击
      */
@@ -302,6 +306,24 @@ export default defineComponent({
 
     const getInviteCode = () => {
       window.open("https://www.playoffer.cn/1619.html");
+    }
+
+    const isRegister = () => {
+      // 检测是否登录
+      if (Tool.isNotEmpty(userInfo.value)) {
+        return;
+      }
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const registerParam = urlParams.get('register');
+      console.log(registerParam);
+      if (Tool.isEmpty(registerParam)) {
+        console.log("aa");
+        return;
+      }
+
+      userInModal.value.inviteCode = registerParam;
+      registerModalVisible.value = true;
     }
 
     //-------------忘记密码--------------
@@ -499,6 +521,7 @@ export default defineComponent({
 
     onMounted(() => {
       checkLoginCert();
+      isRegister();
     });
 
     return {
