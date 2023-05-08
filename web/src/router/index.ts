@@ -12,6 +12,7 @@ import Column from "@/views/column/Column.vue";
 import Doc from "@/views/column/Doc.vue";
 import Chatgpt from "@/views/chatgpt/Chatgpt.vue";
 import Image from "@/views/chatgpt/Image.vue";
+import Pay from "@/views/chatgpt/Pay.vue";
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -84,6 +85,11 @@ const routes: Array<RouteRecordRaw> = [
         path: '/chatgpt/Image',
         name: 'Image',
         component: Image
+    },
+    {
+        path: '/chatgpt/Pay',
+        name: 'Pay',
+        component: Pay
     },
 ]
 
