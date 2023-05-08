@@ -84,15 +84,13 @@
 
 <script lang="ts">
 import '@wangeditor/editor/dist/css/style.css' // 引入 css
-
-import {defineComponent, onBeforeUnmount, onMounted, reactive, ref, shallowRef} from "vue";
+import {defineComponent, onMounted, ref} from "vue";
 import {message} from 'ant-design-vue';
 import axios from 'axios';
 import {Tool} from "@/utils/tool";
 import {Editor, Toolbar} from "@wangeditor/editor-for-vue";
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
-
 
 
 export default defineComponent({
