@@ -4,6 +4,7 @@ import com.jxm.yiti.domain.*;
 import com.jxm.yiti.mapper.GptInviteCodeMapper;
 import com.jxm.yiti.mapper.GptInviteeMapper;
 import com.jxm.yiti.mapper.GptInviterMapper;
+import com.jxm.yiti.mapper.cust.GptInviteCodeMapperCust;
 import com.jxm.yiti.mapper.cust.GptInviterMapperCust;
 import com.jxm.yiti.mapper.cust.UserMapperCust;
 import com.jxm.yiti.req.UserQueryReq;
@@ -41,6 +42,9 @@ public class GptInviteService {
 
     @Resource
     GptInviterMapperCust gptInviterMapperCust;
+
+    @Resource
+    GptInviteCodeMapperCust gptInviteCodeMapperCust;
 
     public void selectInfoByID(Long userID, CommonResp<GptInviterResp> resp) {
         GptInviter existInviter = isExistInviter(userID);
@@ -91,6 +95,22 @@ public class GptInviteService {
         }
 
         String inviteCode = InviteCodeGenerate.next();
+
+        // 检测邀请码是否重复
+        Long existsInviteCode = gptInviteCodeMapperCust.existsInviteCode(inviteCode);
+        log.info("existsInviteCode: {}", existsInviteCode);
+        int count = 0;
+        while (existsInviteCode != 0) {
+            log.warn("邀请码重复, 重新生成中");
+            inviteCode = InviteCodeGenerate.next();
+            existsInviteCode = gptInviteCodeMapperCust.existsInviteCode(inviteCode);
+            if (++count > 10) {
+                log.error("邀请码已重复生成: {}, 自动退出", count);
+                resp.setSuccess(false);
+                resp.setMessage("邀请码生成失败, 请重试或者联系客服");
+            }
+        }
+
         GptInviteCode gptInviteCode = new GptInviteCode();
         gptInviteCode.setInviterId(userID);
         gptInviteCode.setInviteCode(inviteCode);
@@ -158,7 +178,7 @@ public class GptInviteService {
             List<GptInviteCode> gptInviteCodes = gptInviteCodeMapper.selectByExample(gptInviteCodeExample);
             if (gptInviteCodes.isEmpty()) {
                 resp.setSuccess(false);
-                resp.setMessage(resp.getMessage() + "邀请码不存在, 请确认或联系管理员");
+                resp.setMessage(resp.getMessage() + "邀请码不存在, 请确认或联系客服");
                 log.error("邀请码不存在: {}, inviteeId: {}", user.getInviteCode(), user.getId());
             }
             Long inviterId = gptInviteCodes.get(0).getInviterId();
@@ -181,7 +201,7 @@ public class GptInviteService {
             gptInviteeMapper.insert(gptInvitee);
         } catch (RuntimeException e) {
             resp.setSuccess(false);
-            resp.setMessage(resp.getMessage() + "邀请码不存在, 请确认或联系管理员");
+            resp.setMessage(resp.getMessage() + "邀请码不存在, 请确认或联系客服");
             log.error("邀请码不存在: {}, inviteeId: {}", user.getInviteCode(), user.getId());
         }
     }
@@ -198,7 +218,7 @@ public class GptInviteService {
             resp.setContent(gptInviteeListResp);
         } catch (RuntimeException e) {
             resp.setSuccess(false);
-            resp.setMessage("查询邀请信息失败, 请重试或者联系管理员");
+            resp.setMessage("查询邀请信息失败, 请重试或者联系客服");
             log.error("查询邀请信息失败", e);
             return;
         }

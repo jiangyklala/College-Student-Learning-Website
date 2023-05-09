@@ -346,3 +346,4 @@ CREATE TABLE `gpt_invitee` (
                                 FOREIGN KEY (`inviter_id`) REFERENCES gpt_inviter(`inviter_id`),
                                 PRIMARY KEY (`id`)) engine = innodb DEFAULT charset = utf8mb4 COMMENT = 'chatGPT 邀请对应表';
 
+SELECT COUNT(*) FROM gpt_invite_code WHERE invite_code = 'YS20YlYA';

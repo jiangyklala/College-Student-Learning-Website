@@ -843,7 +843,7 @@ public class UserService {
                     resp.setMessage("签到成功!");
                 } catch (Exception e) {
                     resp.setSuccess(false);
-                    resp.setMessage("签到出错! 请联系管理员");
+                    resp.setMessage("签到出错! 请联系客服");
                     return;
                 }
             }

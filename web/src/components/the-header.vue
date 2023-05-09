@@ -69,9 +69,9 @@
                 <sync-outlined @click="userInfoClick" :spin="userInfoRefresh"/>
               </a-descriptions-item>
             </a-descriptions>
-<!--            <a-menu-item style="text-align: center">-->
-<!--              <router-link to="/chatgpt/Invite">我的邀请</router-link>-->
-<!--            </a-menu-item>-->
+            <a-menu-item style="text-align: center">
+              <router-link to="/chatgpt/Invite">我的邀请</router-link>
+            </a-menu-item>
             <a-menu-item style="text-align: center">
               <a-popconfirm placement="bottom"
                             :cancel-button-props="{type: 'ghost'}"
