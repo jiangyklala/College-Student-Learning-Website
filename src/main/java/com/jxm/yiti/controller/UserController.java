@@ -1,14 +1,11 @@
 package com.jxm.yiti.controller;
 
-import com.jxm.yiti.domain.User;
 import com.jxm.yiti.req.UserQueryReq;
 import com.jxm.yiti.resp.CommonResp;
 import com.jxm.yiti.resp.UserQueryResp;
+import com.jxm.yiti.service.GptInviteService;
 import com.jxm.yiti.service.UserService;
-import com.jxm.yiti.utils.CopyUtil;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import me.zhyd.oauth.model.AuthCallback;
 import me.zhyd.oauth.model.AuthResponse;
@@ -19,7 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.WebUtils;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -31,7 +27,10 @@ import java.util.Objects;
 public class UserController {
 
     @Resource
-    public UserService userService;
+    UserService userService;
+
+    @Resource
+    GptInviteService gptInviteService;
 
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
@@ -47,8 +46,8 @@ public class UserController {
      * 设置用户类型
      *
      * @param userEmail 用户邮箱
-     * @param type 1-普通会员, 2-会员, 3-超级会员
-     * @param days 持续天数
+     * @param type      1-普通会员, 2-会员, 3-超级会员
+     * @param days      持续天数
      */
     @PostMapping("/setUserType")
     @ResponseBody
@@ -80,8 +79,9 @@ public class UserController {
 
     /**
      * 对某用户充值提问次数
+     *
      * @param userEmail 用户 email
-     * @param count 充值次数
+     * @param count     充值次数
      */
     @PostMapping("/payWith/{userEmail}&{count}")
     @ResponseBody
@@ -93,8 +93,9 @@ public class UserController {
 
     /**
      * 对用户进行权限验证: 永久会员通行, 普通用户和普通会员扣费
+     *
      * @param userID 用户 ID
-     * @param count 扣费的多少
+     * @param count  扣费的多少
      */
     @GetMapping("/permissionValid/{userID}/{count}")
     @ResponseBody
@@ -107,6 +108,7 @@ public class UserController {
 
     /**
      * 获取邀请码 valid-24h
+     *
      * @param num 激活码的数量
      * @return 激活码列表
      * @throws IOException IOException
@@ -120,6 +122,7 @@ public class UserController {
 
     /**
      * 获取永久激活码
+     *
      * @param num 激活码的数量
      * @return 激活码列表
      * @throws IOException IOException
@@ -147,7 +150,7 @@ public class UserController {
      */
     @PostMapping("/logoutByAccount")
     @ResponseBody
-    public CommonResp logoutByAccount(@CookieValue(name="yiti_userID", defaultValue = "-1", required = false) String userID, HttpServletResponse response) {
+    public CommonResp logoutByAccount(@CookieValue(name = "yiti_userID", defaultValue = "-1", required = false) String userID, HttpServletResponse response) {
         CommonResp resp = new CommonResp<>();
         userService.logCookieLcOut(userID, response, resp);
         return resp;
@@ -207,7 +210,7 @@ public class UserController {
         CommonResp resp = new CommonResp<>();
         userService.isRegisterPassword(user.getPassword(), resp);                 // 密码强度校验
         userService.isActiveEmail(user.getEmail(), user.getVerifyCode(), resp);   // 验证码校验
-//        userService.isInvite(user.getInviteCode(), resp);                         // 邀请码校验
+        gptInviteService.isInvite(user, resp);                         // 邀请码校验
         if (resp.getSuccess()) {
             userService.encryptPassword(user, userService.setSalt(user));         // 设置盐值并密码加密
             userService.addUser(user, resp);
@@ -261,6 +264,7 @@ public class UserController {
 
     /**
      * 根据 userID 查询 user 的全部信息
+     *
      * @param userID 登录用户的 userID 值
      * @return 返回 CommonResp<UserQueryResp>
      */
@@ -274,14 +278,15 @@ public class UserController {
 
     /**
      * 检测登录凭证是否有效
+     *
      * @param loginCert 本地 cookie 值
-     * @param userID 本地 cookie 值
+     * @param userID    本地 cookie 值
      * @return 有效则返回 userID
      */
     @PostMapping("/checkLoginCert")
     @ResponseBody
     public CommonResp<String> checkLoginCert(@CookieValue(value = "yiti_loginCert", defaultValue = "null") String loginCert,
-                                                       @CookieValue(value = "yiti_userID", defaultValue = "null") String userID) throws IOException {
+                                             @CookieValue(value = "yiti_userID", defaultValue = "null") String userID) throws IOException {
         CommonResp<String> resp = new CommonResp<>();
         if (Objects.equals(loginCert, "null")
                 || Objects.equals(userID, "null")

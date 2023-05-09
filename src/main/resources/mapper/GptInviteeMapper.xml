@@ -3,8 +3,11 @@
 <mapper namespace="com.jxm.yiti.mapper.GptInviteeMapper">
   <resultMap id="BaseResultMap" type="com.jxm.yiti.domain.GptInvitee">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="invitee_id" jdbcType="VARCHAR" property="inviteeId" />
+    <result column="invitee_id" jdbcType="BIGINT" property="inviteeId" />
     <result column="inviter_id" jdbcType="BIGINT" property="inviterId" />
+    <result column="kind" jdbcType="INTEGER" property="kind" />
+    <result column="count" jdbcType="INTEGER" property="count" />
+    <result column="create_time" jdbcType="DATE" property="createTime" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -65,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, invitee_id, inviter_id
+    id, invitee_id, inviter_id, kind, `count`, create_time
   </sql>
   <select id="selectByExample" parameterType="com.jxm.yiti.domain.GptInviteeExample" resultMap="BaseResultMap">
     select
@@ -98,9 +101,11 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.jxm.yiti.domain.GptInvitee">
-    insert into gpt_invitee (id, invitee_id, inviter_id
+    insert into gpt_invitee (id, invitee_id, inviter_id, 
+      kind, `count`, create_time
       )
-    values (#{id,jdbcType=BIGINT}, #{inviteeId,jdbcType=VARCHAR}, #{inviterId,jdbcType=BIGINT}
+    values (#{id,jdbcType=BIGINT}, #{inviteeId,jdbcType=BIGINT}, #{inviterId,jdbcType=BIGINT}, 
+      #{kind,jdbcType=INTEGER}, #{count,jdbcType=INTEGER}, #{createTime,jdbcType=DATE}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.jxm.yiti.domain.GptInvitee">
@@ -115,16 +120,34 @@
       <if test="inviterId != null">
         inviter_id,
       </if>
+      <if test="kind != null">
+        kind,
+      </if>
+      <if test="count != null">
+        `count`,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
       <if test="inviteeId != null">
-        #{inviteeId,jdbcType=VARCHAR},
+        #{inviteeId,jdbcType=BIGINT},
       </if>
       <if test="inviterId != null">
         #{inviterId,jdbcType=BIGINT},
+      </if>
+      <if test="kind != null">
+        #{kind,jdbcType=INTEGER},
+      </if>
+      <if test="count != null">
+        #{count,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=DATE},
       </if>
     </trim>
   </insert>
@@ -141,10 +164,19 @@
         id = #{record.id,jdbcType=BIGINT},
       </if>
       <if test="record.inviteeId != null">
-        invitee_id = #{record.inviteeId,jdbcType=VARCHAR},
+        invitee_id = #{record.inviteeId,jdbcType=BIGINT},
       </if>
       <if test="record.inviterId != null">
         inviter_id = #{record.inviterId,jdbcType=BIGINT},
+      </if>
+      <if test="record.kind != null">
+        kind = #{record.kind,jdbcType=INTEGER},
+      </if>
+      <if test="record.count != null">
+        `count` = #{record.count,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=DATE},
       </if>
     </set>
     <if test="_parameter != null">
@@ -154,8 +186,11 @@
   <update id="updateByExample" parameterType="map">
     update gpt_invitee
     set id = #{record.id,jdbcType=BIGINT},
-      invitee_id = #{record.inviteeId,jdbcType=VARCHAR},
-      inviter_id = #{record.inviterId,jdbcType=BIGINT}
+      invitee_id = #{record.inviteeId,jdbcType=BIGINT},
+      inviter_id = #{record.inviterId,jdbcType=BIGINT},
+      kind = #{record.kind,jdbcType=INTEGER},
+      `count` = #{record.count,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=DATE}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -164,18 +199,30 @@
     update gpt_invitee
     <set>
       <if test="inviteeId != null">
-        invitee_id = #{inviteeId,jdbcType=VARCHAR},
+        invitee_id = #{inviteeId,jdbcType=BIGINT},
       </if>
       <if test="inviterId != null">
         inviter_id = #{inviterId,jdbcType=BIGINT},
+      </if>
+      <if test="kind != null">
+        kind = #{kind,jdbcType=INTEGER},
+      </if>
+      <if test="count != null">
+        `count` = #{count,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=DATE},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.jxm.yiti.domain.GptInvitee">
     update gpt_invitee
-    set invitee_id = #{inviteeId,jdbcType=VARCHAR},
-      inviter_id = #{inviterId,jdbcType=BIGINT}
+    set invitee_id = #{inviteeId,jdbcType=BIGINT},
+      inviter_id = #{inviterId,jdbcType=BIGINT},
+      kind = #{kind,jdbcType=INTEGER},
+      `count` = #{count,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=DATE}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

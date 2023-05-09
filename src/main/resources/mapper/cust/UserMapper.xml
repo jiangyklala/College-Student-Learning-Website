@@ -6,6 +6,10 @@
         update user set balance = balance - #{count} where id = #{id}
     </update>
 
+    <update id="balanceGetAndIncrNum" >
+        update user set balance = balance + #{count} where id = #{id}
+    </update>
+
     <update id="payWithCount" >
         update user set balance = balance + #{count} where email = #{userEmail}
     </update>

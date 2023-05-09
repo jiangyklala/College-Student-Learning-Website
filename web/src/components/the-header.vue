@@ -309,21 +309,23 @@ export default defineComponent({
     }
 
     const isRegister = () => {
-      // 检测是否登录
-      if (Tool.isNotEmpty(userInfo.value)) {
-        return;
-      }
-
+      // 检测链接中是否含 register 参数
       const urlParams = new URLSearchParams(window.location.search);
       const registerParam = urlParams.get('register');
       console.log(registerParam);
-      if (Tool.isEmpty(registerParam)) {
+
+      // 有 register 参数
+      if (Tool.isNotEmpty(registerParam)) {
         console.log("aa");
+        userInModal.value.inviteCode = registerParam;
+        registerModalVisible.value = true;
+        // // 检测是否登录
+        // if (Tool.isNotEmpty(userInfo.value)) {
+        //   message.info("已经登陆了呦~");
+        //   return;
+        // }
         return;
       }
-
-      userInModal.value.inviteCode = registerParam;
-      registerModalVisible.value = true;
     }
 
     //-------------忘记密码--------------
@@ -523,6 +525,7 @@ export default defineComponent({
       checkLoginCert();
       isRegister();
     });
+
 
     return {
       loginModalVisible,

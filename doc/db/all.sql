@@ -315,14 +315,12 @@ CREATE TABLE `chat_record_info` (
 DROP TABLE IF EXISTS `gpt_inviter`;
 
 CREATE TABLE `gpt_inviter` (
-                                `id` bigint AUTO_INCREMENT NOT NULL,
                                 `inviter_id` bigint NOT NULL,
                                 `invited_count` int default 0,
                                 `invite_balance` int default 0,
                                 `earn_rate` int default 20,
                                 `earnings` int default 0,
-                                INDEX idx_inviter_id (`inviter_id`),
-                                PRIMARY KEY (`id`)) engine = innodb DEFAULT charset = utf8mb4 COMMENT = 'chatGPT 邀请人总信息表';
+                                PRIMARY KEY (`inviter_id`)) engine = innodb DEFAULT charset = utf8mb4 COMMENT = 'chatGPT 邀请人总信息表';
 
 # chatGPT 邀请表
 DROP TABLE IF EXISTS `gpt_invite_code`;
@@ -340,8 +338,11 @@ DROP TABLE IF EXISTS `gpt_invitee`;
 
 CREATE TABLE `gpt_invitee` (
                                 `id` bigint AUTO_INCREMENT NOT NULL,
-                                `invitee_id` varchar(50) NOT NULL DEFAULT (0),
+                                `invitee_id` bigint NOT NULL,
                                 `inviter_id` bigint NOT NULL,
+                                `kind` int DEFAULT 0,
+                                `count` int DEFAULT 0,
+                                `create_time` DATE,
                                 FOREIGN KEY (`inviter_id`) REFERENCES gpt_inviter(`inviter_id`),
                                 PRIMARY KEY (`id`)) engine = innodb DEFAULT charset = utf8mb4 COMMENT = 'chatGPT 邀请对应表';
 

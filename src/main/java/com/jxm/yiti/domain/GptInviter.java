@@ -1,8 +1,6 @@
 package com.jxm.yiti.domain;
 
 public class GptInviter {
-    private Long id;
-
     private Long inviterId;
 
     private Integer invitedCount;
@@ -12,14 +10,6 @@ public class GptInviter {
     private Integer earnRate;
 
     private Integer earnings;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public Long getInviterId() {
         return inviterId;
@@ -67,7 +57,6 @@ public class GptInviter {
         sb.append(getClass().getSimpleName());
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
         sb.append(", inviterId=").append(inviterId);
         sb.append(", invitedCount=").append(invitedCount);
         sb.append(", inviteBalance=").append(inviteBalance);

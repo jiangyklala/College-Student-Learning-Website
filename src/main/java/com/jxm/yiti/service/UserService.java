@@ -58,13 +58,15 @@ public class UserService {
 
     public static JedisPool jedisPool;
 
-    private static SnowFlakeIdWorker snowFlakeIdWorker;
+    public static SnowFlakeIdWorker snowFlakeIdWorker;
 
     @Value("${my.addr}")
     private String myAddr;
 
     @Value("${my.redis.ip}")
     private String myRedisIP;
+
+    public static final long initBalance = 20L;
 
     @PostConstruct
     public void init() {
@@ -471,9 +473,9 @@ public class UserService {
      */
     public void addUser(UserQueryReq user, CommonResp resp) {
         User userInsert = CopyUtil.copy(user, User.class);
-        userInsert.setId(snowFlakeIdWorker.nextId());
+//        userInsert.setId(user.getId());       // 已经 copy 了
         userInsert.setUsername("新用户" + userInsert.getId().toString().substring(4, 10));   // 初始名称
-        userInsert.setBalance(20L);                                                        // 用户初始提问次数
+        userInsert.setBalance(initBalance);                                                 // 用户初始提问次数
         userInsert.setType(1);
         try {
             if (userMapper.insert(userInsert) != 0) {

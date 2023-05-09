@@ -10,7 +10,7 @@ public interface GptInviterMapper {
 
     int deleteByExample(GptInviterExample example);
 
-    int deleteByPrimaryKey(Long id);
+    int deleteByPrimaryKey(Long inviterId);
 
     int insert(GptInviter record);
 
@@ -18,7 +18,7 @@ public interface GptInviterMapper {
 
     List<GptInviter> selectByExample(GptInviterExample example);
 
-    GptInviter selectByPrimaryKey(Long id);
+    GptInviter selectByPrimaryKey(Long inviterId);
 
     int updateByExampleSelective(@Param("record") GptInviter record, @Param("example") GptInviterExample example);
 
