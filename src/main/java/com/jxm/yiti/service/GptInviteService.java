@@ -9,6 +9,7 @@ import com.jxm.yiti.mapper.cust.UserMapperCust;
 import com.jxm.yiti.req.UserQueryReq;
 import com.jxm.yiti.resp.CommonResp;
 import com.jxm.yiti.resp.GptInviteCodeResp;
+import com.jxm.yiti.resp.GptInviteeResp;
 import com.jxm.yiti.resp.GptInviterResp;
 import com.jxm.yiti.utils.CopyUtil;
 import com.jxm.yiti.utils.InviteCodeGenerate;
@@ -76,6 +77,17 @@ public class GptInviteService {
         // 邀请人不存在, 则添加 (这里确实需要吗?? 如果用户点击生成邀请码, 说明已经经过了 selectInfoByID 中的判断, 但不排除某些卡 bug 的)
         if (isExistInviter(userID) == null) {
             addInviter(userID, resp);
+        }
+
+        GptInviteCodeExample gptInviteCodeExample = new GptInviteCodeExample();
+        GptInviteCodeExample.Criteria criteria = gptInviteCodeExample.createCriteria();
+        criteria.andInviterIdEqualTo(userID);
+
+        List<GptInviteCode> gptInviteCodes = gptInviteCodeMapper.selectByExample(gptInviteCodeExample);
+        if (gptInviteCodes.size() >= 3) {
+            resp.setSuccess(false);
+            resp.setMessage("最多只能生成三个邀请码哦");
+            return;
         }
 
         String inviteCode = InviteCodeGenerate.next();
@@ -171,6 +183,24 @@ public class GptInviteService {
             resp.setSuccess(false);
             resp.setMessage(resp.getMessage() + "邀请码不存在, 请确认或联系管理员");
             log.error("邀请码不存在: {}, inviteeId: {}", user.getInviteCode(), user.getId());
+        }
+    }
+
+    public void selectAllInviteInfo(Long userID, CommonResp<List<GptInviteeResp>> resp) {
+        GptInviteeExample gptInviteeExample = new GptInviteeExample();
+        GptInviteeExample.Criteria criteria = gptInviteeExample.createCriteria();
+        criteria.andInviterIdEqualTo(userID);
+
+        try {
+            List<GptInvitee> gptInvitees = gptInviteeMapper.selectByExample(gptInviteeExample);
+            List<GptInviteeResp> gptInviteeListResp = CopyUtil.copyList(gptInvitees, GptInviteeResp.class);
+
+            resp.setContent(gptInviteeListResp);
+        } catch (RuntimeException e) {
+            resp.setSuccess(false);
+            resp.setMessage("查询邀请信息失败, 请重试或者联系管理员");
+            log.error("查询邀请信息失败", e);
+            return;
         }
     }
 }

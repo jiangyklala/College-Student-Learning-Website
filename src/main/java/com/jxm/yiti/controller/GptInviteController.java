@@ -3,6 +3,7 @@ package com.jxm.yiti.controller;
 import com.jxm.yiti.domain.ChatHistory;
 import com.jxm.yiti.resp.CommonResp;
 import com.jxm.yiti.resp.GptInviteCodeResp;
+import com.jxm.yiti.resp.GptInviteeResp;
 import com.jxm.yiti.resp.GptInviterResp;
 import com.jxm.yiti.service.GptInviteService;
 import jakarta.annotation.Resource;
@@ -48,6 +49,21 @@ public class GptInviteController {
         CommonResp<List<GptInviteCodeResp>> resp = new CommonResp<>();
 
         gptInviteService.selectAllInviteCode(userID, resp);
+
+        return resp;
+    }
+
+    /**
+     * 查询某个用户下的所有邀请码
+     * @param userID 用户 ID
+     * @return
+     */
+    @GetMapping("/selectAllInviteInfo/{userID}")
+    @ResponseBody
+    public CommonResp selectAllInviteInfo(@PathVariable Long userID) {
+        CommonResp<List<GptInviteeResp>> resp = new CommonResp<>();
+
+        gptInviteService.selectAllInviteInfo(userID, resp);
 
         return resp;
     }

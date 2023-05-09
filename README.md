@@ -151,3 +151,5 @@ create table `course_item`
 + 增加邀请人次数 gpt_inviter 表，记录信息：invitee 表
 + 红点提醒
 + 已经登录状态下是否显示注册框
++ 邀请码最多三个
++ 

@@ -473,7 +473,9 @@ public class UserService {
      */
     public void addUser(UserQueryReq user, CommonResp resp) {
         User userInsert = CopyUtil.copy(user, User.class);
-//        userInsert.setId(user.getId());       // 已经 copy 了
+        if (userInsert.getId() == null) {
+            userInsert.setId(snowFlakeIdWorker.nextId());
+        }
         userInsert.setUsername("新用户" + userInsert.getId().toString().substring(4, 10));   // 初始名称
         userInsert.setBalance(initBalance);                                                 // 用户初始提问次数
         userInsert.setType(1);
