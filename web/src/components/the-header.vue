@@ -312,11 +312,11 @@ export default defineComponent({
       // 检测链接中是否含 register 参数
       const urlParams = new URLSearchParams(window.location.search);
       const registerParam = urlParams.get('register');
-      console.log(registerParam);
+      // console.log(registerParam);
 
       // 有 register 参数
       if (Tool.isNotEmpty(registerParam)) {
-        console.log("aa");
+        // console.log("aa");
         userInModal.value.inviteCode = registerParam;
         registerModalVisible.value = true;
         // // 检测是否登录

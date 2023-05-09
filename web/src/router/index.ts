@@ -80,6 +80,11 @@ const routes: Array<RouteRecordRaw> = [
         component: Chatgpt
     },
     {
+        path: '/',
+        name: '/',
+        component: Chatgpt
+    },
+    {
         path: '/chatgpt/Image',
         name: 'Image',
         component: Image

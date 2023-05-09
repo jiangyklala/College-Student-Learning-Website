@@ -8,6 +8,7 @@
 <!--    </a-button>-->
     <a-button type="primary" @click="showAddCredit" class="show-add-credit-button">充<br>值<br></a-button>
     <a-button type="primary" @click="showChatGroup" class="show-chat-group-button">交<br>流<br>群</a-button>
+    <a-button type="primary" @click="showHelp" class="show-help-button">联<br>系<br>客<br>服</a-button>
 
     <a-drawer
         v-model:visible="drawerVisible"
@@ -325,10 +326,10 @@ export default defineComponent({
             h('strong', '月会员'), '：35元，一个月无限次提问'
           ]),
           h('p', [
-            h('strong', '季度会员'), '：75元，三个月无限次提问'
+            h('strong', '季度会员'), '：70元，三个月无限次提问'
           ]),
           h('p', [
-            h('strong', '年度会员'), '：240，一年无限次提问'
+            h('strong', '年度会员'), '：200元，一年无限次提问'
           ]),
           h('h4', '如何购买?'),
           h('p', '具体可以扫下面帅地的微信小店购买对应的面额，购买成功后联系帅地即可。'),
@@ -350,6 +351,24 @@ export default defineComponent({
             src: 'https://shuaidi-picture-1257337429.cos.ap-guangzhou.myqcloud.com/temp/GPT.jpeg',
             style: { maxWidth: '380px', width: '100%', height: 'auto'}
           })
+        ]),
+        width: 510,
+        okText: '了然'
+      });
+    }
+
+    const showHelp = () => {
+      Modal.info({
+        title: '联系客服',
+        content: h('div', {}, [
+          h('p', '如果有任何问题，都可以联系帅地进行反馈'),
+          h('p', [
+            h('strong', '邮箱'), '：1326194964@qq.com'
+          ]),
+          h('p', [
+            h('strong', '微信'), '：iamshuaidi0'
+          ]),
+          h('p', '如果是加微信，加的时候请备注来意'),
         ]),
         width: 510,
         okText: '了然'
@@ -407,6 +426,7 @@ export default defineComponent({
       showAttention,
       showAddCredit,
       showChatGroup,
+      showHelp,
     };
   },
 });
@@ -446,13 +466,19 @@ export default defineComponent({
   .show-add-credit-button {
     transform: scale(0.7);
     left: 0px !important;
-    top: 250px !important;
+    top: 255px !important;
   }
 
   .show-chat-group-button {
     transform: scale(0.7);
     left: 0px !important;
     top: 315px !important;
+  }
+
+  .show-help-button {
+    transform: scale(0.7);
+    left: 0px !important;
+    top: 385px !important;
   }
 
   .input-search {
@@ -498,7 +524,7 @@ export default defineComponent({
   width: 43px;
   height: 60px;
   left: 10px;
-  top: 305px;
+  top: 310px;
 }
 
 .show-chat-group-button {
@@ -507,6 +533,14 @@ export default defineComponent({
   height: 80px;
   left: 10px;
   top: 400px;
+}
+
+.show-help-button {
+  position: fixed;
+  width: 43px;
+  height: 100px;
+  left: 10px;
+  top: 510px;
 }
 
 .input-search {
