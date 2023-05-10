@@ -100,7 +100,7 @@ export default defineComponent({
     const gptQuestion = ref("");        // 用户提问的问题
     const searchLoading = ref(false);   // 搜索框 loading
     const mavonEditorRef = ref();             // mavonEditor
-    const chatCost = 1;
+    // const chatCost = 1;
     const historyID = ref(-1);
 
     const chatCplQueryReq = ref();            // 查询 gpt 参数
@@ -123,6 +123,9 @@ export default defineComponent({
     const updateHistoryID = (newHistoryID: any) => {
       historyID.value = newHistoryID;
       searchLoading.value = false;
+
+      // 刷新历史记录列表
+      selectHistoryList();
       // console.log("new historyID!!: " + historyID.value);
     }
 
