@@ -19,8 +19,12 @@
           <p style="float: right; color: rgb(156, 160, 164)">{{inviterInfo.earnRate}}%</p>
         </div>
         <div>
-          <p style="float: left; color: rgb(156, 160, 164); margin: 0">累计获得佣金</p>
-          <p style="float: right; color: rgb(156, 160, 164); margin: 0">{{inviterInfo.earnings}}</p>
+          <p style="float: left; color: rgb(156, 160, 164); margin: 0">累计获得佣金&nbsp;</p>
+          <a-tooltip>
+            <template #title>邀请一个人: ta 注册你可以获得提问次数，ta 充值你可以获得佣金，佣金可提现呦~</template>
+            <bell-two-tone />
+          </a-tooltip>
+          <p style="float: right; color: rgb(156, 160, 164); margin: 0">￥{{inviterInfo.earnings}}</p>
         </div>
       </a-card>
       <a-card :body-style="{ display: 'flex', flexDirection: 'column' }" style="width: 100%">
@@ -129,7 +133,7 @@ export default defineComponent({
     }
 
     const copyToClipboard = (code : any) => {
-      navigator.clipboard.writeText(process.env.VUE_APP_WEB + "chatgpt/Chatgpt?register=" + code).then(() => {
+      navigator.clipboard.writeText(process.env.VUE_APP_WEB + "/chatgpt/Chatgpt?register=" + code).then(() => {
         message.success('内容已复制到剪贴板');
       }, () => {
         console.error('复制失败');

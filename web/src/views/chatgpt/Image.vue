@@ -12,20 +12,21 @@
         @search="onSearch"
     />
 
-        <a-spin
-            class="spin"
-            tip="加载过程比较慢, 请耐心等待..."
-            :spinning="spanning">
-        </a-spin>
+    <a-spin
+        class="spin"
+        tip="加载过程比较慢, 请耐心等待..."
+        :spinning="spanning">
+    </a-spin>
 
     <div class="show-image" v-if="ifShowImage">
       <a-image
           :width="500"
           :src="href"
-      /><br><br>
-<!--      <div>-->
-<!--        图片链接: {{href}}-->
-<!--      </div>-->
+      />
+      <br><br>
+      <!--      <div>-->
+      <!--        图片链接: {{href}}-->
+      <!--      </div>-->
     </div>
   </a-layout-content>
 
@@ -39,7 +40,7 @@ import {message, Modal} from "ant-design-vue";
 import axios from "axios";
 import store from "@/store";
 
-export default defineComponent( {
+export default defineComponent({
   name: "image.vue",
   setup() {
 
@@ -67,25 +68,20 @@ export default defineComponent( {
       // const imagePromptJSON = JSON.stringify(imagePrompt.value);
       spanning.value = true;
 
-      axios.get("/user/permissionValid/" + userInfo.value.id + "/" + imageCost).then((response) => {
+      axios.post(process.env.VUE_APP_LOCAL_GPT_TEST + "/gpt/image/"
+          + btoa(encodeURIComponent(imagePrompt.value))
+          + "&"
+          + userInfo.value.id
+      ).then((response) => {
+        imagePrompt.value = "";
+        searchLoading.value = false;
+        spanning.value = false;
+        ifShowImage.value = true;
+
         if (response.data.success) {
-          // 认证通过, 进行提问逻辑 (再显示 [bot] 对话)
-          axios.post(process.env.VUE_APP_LOCAL_GPT_TEST + "/gpt/image/" + encodeURIComponent(imagePrompt.value)).then((response) => {
-            imagePrompt.value = "";
-            searchLoading.value = false;
-            spanning.value = false;
-            ifShowImage.value = true;
+          href.value = response.data.content;
 
-            if (response.data.success) {
-              href.value = response.data.content;
-
-            } else {
-              message.error(response.data.message);
-            }
-          })
         } else {
-          searchLoading.value = false;
-          spanning.value = false;
           message.error(response.data.message);
         }
       })
@@ -97,8 +93,9 @@ export default defineComponent( {
       Modal.info({
         title: '注意',
         content: h('div', {}, [
-          h('p', '每次画图，会消耗 20次提问（建议大家想好再花，画图费钱）\n'),
+          h('p', '目前画图只能「会员」使用嘞'),
           h('p', '每个生成图片的链接有效期只有 24 小时'),
+          h('p', '为了提高图片加载速度, 图片质量为 512x512'),
           h('p', '本模块没有 "历史记录", 满足要求的图片要及时保存呦'),
         ]),
         width: 500,
