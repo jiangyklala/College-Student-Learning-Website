@@ -185,7 +185,7 @@
       </a-form-item>
       <a-form-item label="验证码">
         <a-input style="width: 70%" v-model:value="userInModal.verifyCode"/>
-        <a-button :disabled="verifyBtnDisable" style="float: right; width: 29%" type="dashed" @click="sendVerifyCode">
+        <a-button :disabled="verifyBtnDisable" style="float: right; width: 29%" type="dashed" @click="sendVerifyCodeForget">
           发送验证码
         </a-button>
       </a-form-item>
@@ -284,7 +284,7 @@ export default defineComponent({
     }
 
     /**
-     * 发送邮箱验证码
+     * 发送注册时的邮箱验证码
      */
     const sendVerifyCode = () => {
       if (Tool.isEmpty(userInModal.value.email)) {
@@ -293,6 +293,27 @@ export default defineComponent({
       }
       verifyBtnDisable.value = true;
       axios.post("/user/sendActiveEmail/" + userInModal.value.email).then((response) => {
+
+        if (response.data.success) {
+          message.success("验证码发送成功", 5);
+          verifyBtnDisable.value = false;
+        } else {
+          verifyBtnDisable.value = false;
+          message.error(response.data.message);
+        }
+      })
+    }
+
+    /**
+     * 发送忘记密码时的邮箱验证码
+     */
+    const sendVerifyCodeForget = () => {
+      if (Tool.isEmpty(userInModal.value.email)) {
+        message.error("邮箱不能为空呦");
+        return;
+      }
+      verifyBtnDisable.value = true;
+      axios.post("/user/sendActiveEmailForget/" + userInModal.value.email).then((response) => {
 
         if (response.data.success) {
           message.success("验证码发送成功", 5);
@@ -560,6 +581,7 @@ export default defineComponent({
       getUserType,
       signInPerDayClick,
       logoutClick,
+      sendVerifyCodeForget,
     };
   }
 });

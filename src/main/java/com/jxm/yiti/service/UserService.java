@@ -492,13 +492,13 @@ public class UserService {
     }
 
     /**
-     * 添加用户
+     * 更新用户
      */
     public void updateUser(UserQueryReq user, CommonResp resp) {
         User userUpdate = CopyUtil.copy(user, User.class);
 
         try {
-            userMapper.updateByPrimaryKey(userUpdate);
+            userMapper.updateByPrimaryKeySelective(userUpdate);
         } catch (Exception e) {
             LOG.error("更新用户失败", e);
         }
@@ -526,7 +526,7 @@ public class UserService {
      * @param resp  回调 resp
      * @return 是否发送成功
      */
-    public void sendActiveEmail(String email, CommonResp resp) {
+    public void sendActiveEmail(String email, Boolean isExistUser, CommonResp resp) {
         Pattern pattern1 = Pattern.compile("^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$");
         if (!pattern1.matcher(email).matches()) {
             resp.setSuccess(false);
@@ -534,11 +534,14 @@ public class UserService {
             return;
         }
 
-        // 检测用户是否存在
-        if (selectAUserByEmail(email) != null) {
-            resp.setSuccess(false);
-            resp.setMessage("用户已经存在喽");
-            return;
+        // 是否需要检测用户存在性
+        if (isExistUser) {
+            // 检测用户是否存在
+            if (selectAUserByEmail(email) != null) {
+                resp.setSuccess(false);
+                resp.setMessage("用户已经存在喽");
+                return;
+            }
         }
 
         // 发送邮件

@@ -135,13 +135,24 @@ public class UserController {
     }
 
     /**
-     * 发送激活邮件
+     * 发送注册时的激活邮件
      */
     @PostMapping("/sendActiveEmail/{email}")
     @ResponseBody
     public CommonResp sendActiveEmail(@PathVariable String email) {
         CommonResp resp = new CommonResp<>();
-        userService.sendActiveEmail(email, resp);
+        userService.sendActiveEmail(email, true, resp);
+        return resp;
+    }
+
+    /**
+     * 发送忘记密码时的激活邮件
+     */
+    @PostMapping("/sendActiveEmailForget/{email}")
+    @ResponseBody
+    public CommonResp sendActiveEmailForget(@PathVariable String email) {
+        CommonResp resp = new CommonResp<>();
+        userService.sendActiveEmail(email, false, resp);
         return resp;
     }
 
@@ -210,7 +221,7 @@ public class UserController {
         CommonResp resp = new CommonResp<>();
         userService.isRegisterPassword(user.getPassword(), resp);                 // 密码强度校验
         userService.isActiveEmail(user.getEmail(), user.getVerifyCode(), resp);   // 验证码校验
-        gptInviteService.isInvite(user, resp);                         // 邀请码校验
+        gptInviteService.isInvite(user, resp);                                    // 邀请码校验
         if (resp.getSuccess()) {
             userService.encryptPassword(user, userService.setSalt(user));         // 设置盐值并密码加密
             userService.addUser(user, resp);
@@ -219,14 +230,14 @@ public class UserController {
     }
 
     /**
-     * 注册接口
+     * 忘记密码接口
      */
     @PostMapping("/forget")
     @ResponseBody
     public CommonResp forget(@RequestBody UserQueryReq user) {
         CommonResp resp = new CommonResp<>();
         userService.isRegisterPassword(user.getPassword(), resp);
-        user = userService.isExitsUserEmail(user, resp);                                 // 是否存在用户(by email)
+        user = userService.isExitsUserEmail(user, resp);                          // 是否存在用户(by email)
         userService.isActiveEmail(user.getEmail(), user.getVerifyCode(), resp);   // 验证码校验
         if (resp.getSuccess()) {
             userService.encryptPassword(user, userService.setSalt(user));         // 设置盐值并密码加密
