@@ -484,7 +484,7 @@ export default defineComponent({
       axios.defaults.withCredentials = true;
       axios.post("/user/logoutByAccount").then((response) => {
         if (response.data.success) {
-          loginModalVisible.value = true;
+          // loginModalVisible.value = true;
           store.commit("setUserInfo", {});
           window.location.href = process.env.VUE_APP_WEB;
         } else {
