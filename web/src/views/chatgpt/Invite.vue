@@ -247,7 +247,7 @@ export default defineComponent({
 
 <style scoped>
 .layout-content {
-  padding: 30px 80px;
+  padding-top: 60px;
   width: 80%;
   height: 100%;
   min-height: 200px;

@@ -146,6 +146,7 @@ export default defineComponent({
 .content {
   margin-left: 10px;
   margin-top: 10px;
+  max-width: 100%;
 }
 
 .text {

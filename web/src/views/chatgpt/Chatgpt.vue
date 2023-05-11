@@ -579,6 +579,7 @@ export default defineComponent({
 }
 
 .layout-content {
+  padding-top: 60px;
   width: 85%;
   height: 100%;
   min-height: 1100px;

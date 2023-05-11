@@ -142,7 +142,7 @@ export default defineComponent({
     position: fixed;
     width: 96.5% !important;
     left: 7% !important;
-    top: 11%;
+    top: 8%;
   }
 
   .show-attention-button {
@@ -155,6 +155,7 @@ export default defineComponent({
 }
 
 .layout-content {
+  padding-top: 60px;
   width: 85%;
   height: 100%;
   min-height: 1100px;

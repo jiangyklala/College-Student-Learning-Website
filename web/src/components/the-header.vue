@@ -47,7 +47,7 @@
       <div class="login-mark-div" v-if="!ifLoginIn">
         <a @click="loginClick">登录</a> | <a @click="registerClick">注册</a>
       </div>
-      <a-dropdown v-if="ifLoginIn">
+      <a-dropdown v-if="ifLoginIn" class="userInfo-dropdown">
         <a class="ant-dropdown-link" @click.prevent>
           <a-avatar style="background-color: #87d068">
             <template #icon>
@@ -58,10 +58,11 @@
           <DownOutlined/>
         </a>
         <template #overlay>
-          <a-menu>
+          <a-menu class="userInfo-dropdown-menu">
             <a-descriptions layout="horizontal"
                             size="small"
                             :column="descriptionColumn"
+                            class="userInfo-dropdown-menu-descrip"
                             bordered>
               <a-descriptions-item label="用户类型">{{ getUserType(userInfo.type) }}</a-descriptions-item>
               <!--              <a-descriptions-item label="每日签到"><bell-two-tone @click="signInPerDayClick" style="font-size: 18px"/></a-descriptions-item>-->
@@ -590,6 +591,11 @@ export default defineComponent({
 <style>
 
 @media (max-width: 768px) {
+
+  .userInfo-dropdown {
+    transform: scale(0.7);
+  }
+
   .header-menu {
     transform: scale(0.8);
     display: inline-block;
@@ -618,18 +624,14 @@ export default defineComponent({
 }
 
 .header {
+  position: fixed;
   padding: 0 0px !important;
+  width: 100%;
   color: white !important;
   background: white !important;
   /*text-align: center !important;*/
-
+  z-index: 100;
 }
-
-/*.header-menu {*/
-/*  display: inline-block;*/
-/*  width: 85%;*/
-/*  padding-left: 20%;*/
-/*}*/
 
 .header-menu {
   display: inline-block;
