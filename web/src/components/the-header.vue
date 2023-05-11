@@ -458,7 +458,7 @@ export default defineComponent({
      */
     const checkLoginCert = () => {
       axios.defaults.withCredentials = true;
-      axios.post("/user/checkLoginCert").then((response) => {        // 验证登录凭证是否有效
+      axios.post("/user/checkLoginCert").then((response) => {       // 验证登录凭证是否有效
         // console.log("验证登录凭证")
         // console.log(response);
 
@@ -472,7 +472,9 @@ export default defineComponent({
             ifLoginIn.value = true;
           }
 
-        }  // 凭证失效, 或者 userInfo 不为空, do nothing
+        } else {                                                        // 凭证失效, 或者 userInfo 不为空, do nothing
+          store.commit("setUserInfo", {});
+        }
       })
     }
 
