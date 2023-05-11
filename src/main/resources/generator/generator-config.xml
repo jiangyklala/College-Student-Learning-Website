@@ -47,7 +47,7 @@
 <!--        <table tableName="column_list"/>-->
 <!--        <table tableName="doc"/>-->
 <!--        <table tableName="user"/>-->
-        <table tableName="gpt_invitee"/>
+        <table tableName="chat_record_info"/>
 <!--        <table tableName="gpt_inviter"/>-->
 <!--        <table tableName="gpt_invite_code"/>-->
         <!--                <table tableName="demo" domainObjectName="Demo"/>-->

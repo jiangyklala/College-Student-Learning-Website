@@ -310,6 +310,9 @@ CREATE TABLE `chat_record_info` (
                                 `vtokens` varchar(50) NOT NULL DEFAULT (0),
                                 PRIMARY KEY (`id`)) engine = innodb DEFAULT charset = utf8mb4 COMMENT = 'chatGPT 用户历史查询信息记录';
 
+ALTER TABLE chat_record_info ADD iVtimes varchar(50) NOT NULL DEFAULT (0);
+ALTER TABLE chat_record_info DROP iVtimes;
+
 
 # chatGPT 邀请人总信息表
 DROP TABLE IF EXISTS `gpt_inviter`;

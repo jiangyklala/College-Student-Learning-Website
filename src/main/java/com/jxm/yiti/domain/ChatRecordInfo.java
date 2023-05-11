@@ -13,6 +13,8 @@ public class ChatRecordInfo {
 
     private String vtokens;
 
+    private String ivtimes;
+
     public Long getId() {
         return id;
     }
@@ -61,6 +63,14 @@ public class ChatRecordInfo {
         this.vtokens = vtokens;
     }
 
+    public String getIvtimes() {
+        return ivtimes;
+    }
+
+    public void setIvtimes(String ivtimes) {
+        this.ivtimes = ivtimes;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -73,6 +83,7 @@ public class ChatRecordInfo {
         sb.append(", ntokens=").append(ntokens);
         sb.append(", vtimes=").append(vtimes);
         sb.append(", vtokens=").append(vtokens);
+        sb.append(", ivtimes=").append(ivtimes);
         sb.append("]");
         return sb.toString();
     }

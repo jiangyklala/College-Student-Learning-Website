@@ -50,6 +50,8 @@ public class GPTDailyRecord {
             String vtimesTotalKey = "yt:gpt:vtimes:vtotal";         // 会员总提问次数
             String vtokensKey = "yt:gpt:vtokens:" + yesterday;      // 会员当日消耗 token
             String vtokensTotalKey = "yt:gpt:vtokens:vtotal";       // 会员总消耗 token
+            String iVtimesKey = "yt:gpti:vtimes:" + yesterday;      // 画图当日消耗次数
+            String iVtimesTotalKey = "yt:gpti:vtimes:vtotal";       // 画图总消耗次数
 
             // 处理普通用户
             if (jedis.exists(ntimesKey)) {
@@ -95,6 +97,17 @@ public class GPTDailyRecord {
 
                 // 删除昨日记录
                 jedis.expire(vtokensKey, 0);
+            }
+
+            if (jedis.exists(iVtimesKey)) {
+                String iVtimes = jedis.get(iVtimesKey);
+                chatRecordInfo.setIvtimes(iVtimes);
+
+                // 自增总 token 记录
+                jedis.incrBy(iVtimesTotalKey, Long.parseLong(iVtimes));
+
+                // 删除昨日记录
+                jedis.expire(iVtimesKey, 0);
             }
 
             try {

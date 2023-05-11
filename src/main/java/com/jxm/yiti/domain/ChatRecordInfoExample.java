@@ -513,6 +513,76 @@ public class ChatRecordInfoExample {
             addCriterion("vtokens not between", value1, value2, "vtokens");
             return (Criteria) this;
         }
+
+        public Criteria andIvtimesIsNull() {
+            addCriterion("iVtimes is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIvtimesIsNotNull() {
+            addCriterion("iVtimes is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIvtimesEqualTo(String value) {
+            addCriterion("iVtimes =", value, "ivtimes");
+            return (Criteria) this;
+        }
+
+        public Criteria andIvtimesNotEqualTo(String value) {
+            addCriterion("iVtimes <>", value, "ivtimes");
+            return (Criteria) this;
+        }
+
+        public Criteria andIvtimesGreaterThan(String value) {
+            addCriterion("iVtimes >", value, "ivtimes");
+            return (Criteria) this;
+        }
+
+        public Criteria andIvtimesGreaterThanOrEqualTo(String value) {
+            addCriterion("iVtimes >=", value, "ivtimes");
+            return (Criteria) this;
+        }
+
+        public Criteria andIvtimesLessThan(String value) {
+            addCriterion("iVtimes <", value, "ivtimes");
+            return (Criteria) this;
+        }
+
+        public Criteria andIvtimesLessThanOrEqualTo(String value) {
+            addCriterion("iVtimes <=", value, "ivtimes");
+            return (Criteria) this;
+        }
+
+        public Criteria andIvtimesLike(String value) {
+            addCriterion("iVtimes like", value, "ivtimes");
+            return (Criteria) this;
+        }
+
+        public Criteria andIvtimesNotLike(String value) {
+            addCriterion("iVtimes not like", value, "ivtimes");
+            return (Criteria) this;
+        }
+
+        public Criteria andIvtimesIn(List<String> values) {
+            addCriterion("iVtimes in", values, "ivtimes");
+            return (Criteria) this;
+        }
+
+        public Criteria andIvtimesNotIn(List<String> values) {
+            addCriterion("iVtimes not in", values, "ivtimes");
+            return (Criteria) this;
+        }
+
+        public Criteria andIvtimesBetween(String value1, String value2) {
+            addCriterion("iVtimes between", value1, value2, "ivtimes");
+            return (Criteria) this;
+        }
+
+        public Criteria andIvtimesNotBetween(String value1, String value2) {
+            addCriterion("iVtimes not between", value1, value2, "ivtimes");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
