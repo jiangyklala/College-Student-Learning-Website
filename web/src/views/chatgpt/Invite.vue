@@ -20,10 +20,6 @@
         </div>
         <div>
           <p style="float: left; color: rgb(156, 160, 164); margin: 0">累计获得佣金&nbsp;</p>
-          <a-tooltip>
-            <template #title>邀请一个人: ta 注册你可以获得提问次数，ta 充值你可以获得佣金，佣金可提现呦~</template>
-            <bell-two-tone />
-          </a-tooltip>
           <p style="float: right; color: rgb(156, 160, 164); margin: 0">￥{{inviterInfo.earnings}}</p>
         </div>
       </a-card>
@@ -32,6 +28,10 @@
           <p style="float: left; color: rgb(156, 160, 164); font-size: 30px">
             邀请码管理
           </p>
+          <a-tooltip>
+            <template #title>点击下面的 "复制链接" , 让朋友通过此链接注册即可</template>
+            <bell-two-tone style="padding-top: 12px; padding-left: 6px; font-size: 20px"/>
+          </a-tooltip>
           <p style="float: right; color: rgb(156, 160, 164)">
             <a-button shape="round" type="primary" size="middle" @click="getInviteCode" :disabled="generateInviteCodeBtnDisable">生成邀请码</a-button>
           </p>

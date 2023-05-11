@@ -57,6 +57,7 @@
           {{ userInfo.username }}
           <DownOutlined/>
         </a>
+
         <template #overlay>
           <a-menu class="userInfo-dropdown-menu">
             <a-descriptions layout="horizontal"
@@ -87,6 +88,14 @@
           </a-menu>
         </template>
       </a-dropdown>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+
+      <a-tooltip color="rgb(152, 198, 255)" placement="bottom">
+        <template #title>邀请一个人: ta 注册你可以获得 10 提问次数，ta 充值你可以获得佣金，佣金可提现呦~</template>
+        <router-link to="/chatgpt/Invite"><ShareAltOutlined :style="{color: 'rgb(75, 149, 255)'}"/></router-link>
+
+      </a-tooltip>
+
     </div>
   </a-layout-header>
 
@@ -204,7 +213,7 @@
 import {computed, defineComponent, onMounted, ref} from 'vue';
 import axios from "axios";
 import {message, notification} from "ant-design-vue";
-import {BellTwoTone, DownOutlined, SyncOutlined, UserOutlined} from "@ant-design/icons-vue";
+import {BellTwoTone, DownOutlined, SyncOutlined, UserOutlined, ShareAltOutlined} from "@ant-design/icons-vue";
 import store from "@/store";
 import {Tool} from "@/utils/tool";
 
@@ -214,6 +223,7 @@ export default defineComponent({
     SyncOutlined,
     UserOutlined,
     DownOutlined,
+    ShareAltOutlined,
     BellTwoTone,
   },
   setup: function () {
@@ -637,7 +647,7 @@ export default defineComponent({
 
 .header-menu {
   display: inline-block;
-  width: 85%;
+  width: 80%;
   padding-left: 6%; /*与白色页面的边对齐*/
   color: black;
   background-color: white;
@@ -645,7 +655,7 @@ export default defineComponent({
 
 .login-menu {
   color: black;
-  width: 13%; /*与白色页面的边对齐*/
+  width: 16%; /*与白色页面的边对齐*/
   float: right;
   /*font-weight: bold;*/
 }
