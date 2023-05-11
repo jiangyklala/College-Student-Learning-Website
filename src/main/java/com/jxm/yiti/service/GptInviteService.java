@@ -185,7 +185,7 @@ public class GptInviteService {
 
             // 查找被邀请人的邀请利率
             GptInviter gptInviter = gptInviterMapper.selectByPrimaryKey(inviterId);
-            long incrNum = UserService.initBalance * gptInviter.getEarnRate() / 100;
+            long incrNum = (UserService.initBalance * gptInviter.getEarnRate() / 100) + 6;
 
             // 增加被邀请人次数
             userMapperCust.balanceGetAndIncrNum(inviterId, incrNum);
