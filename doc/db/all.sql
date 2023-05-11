@@ -295,7 +295,7 @@ CREATE TABLE `email_active` (
 
 update user set balance = balance - 10 where id = 2658810919845888;
 
-update user set balance = balance + 100 where email = 'jiangyk@nwafu.edu.cn';
+update user set balance = balance + 6 where id = 2631422762942464;
 
 
 # chatGPT 信息记录表
@@ -346,4 +346,6 @@ CREATE TABLE `gpt_invitee` (
                                 FOREIGN KEY (`inviter_id`) REFERENCES gpt_inviter(`inviter_id`),
                                 PRIMARY KEY (`id`)) engine = innodb DEFAULT charset = utf8mb4 COMMENT = 'chatGPT 邀请对应表';
 
-SELECT COUNT(*) FROM gpt_invite_code WHERE invite_code = 'YS20YlYA';
+ALTER TABLE gpt_invitee ADD inviter_name varchar(50) NOT NULL;
+ALTER TABLE gpt_invitee DROP inviter_name;
+

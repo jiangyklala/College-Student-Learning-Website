@@ -15,6 +15,8 @@ public class GptInvitee {
 
     private Date createTime;
 
+    private String inviterName;
+
     public Long getId() {
         return id;
     }
@@ -63,6 +65,14 @@ public class GptInvitee {
         this.createTime = createTime;
     }
 
+    public String getInviterName() {
+        return inviterName;
+    }
+
+    public void setInviterName(String inviterName) {
+        this.inviterName = inviterName;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -75,6 +85,7 @@ public class GptInvitee {
         sb.append(", kind=").append(kind);
         sb.append(", count=").append(count);
         sb.append(", createTime=").append(createTime);
+        sb.append(", inviterName=").append(inviterName);
         sb.append("]");
         return sb.toString();
     }

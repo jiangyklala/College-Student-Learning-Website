@@ -9,6 +9,16 @@ public class GptInviteeResp {
 
     private Date createTime;
 
+    private String inviterName;
+
+    public String getInviterName() {
+        return inviterName;
+    }
+
+    public void setInviterName(String inviterName) {
+        this.inviterName = inviterName;
+    }
+
     public Integer getKind() {
         return kind;
     }
@@ -35,14 +45,11 @@ public class GptInviteeResp {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", kind=").append(kind);
-        sb.append(", count=").append(count);
-        sb.append(", createTime=").append(createTime);
-        sb.append("]");
-        return sb.toString();
+        return "GptInviteeResp{" +
+                "kind=" + kind +
+                ", count=" + count +
+                ", createTime=" + createTime +
+                ", inviterName='" + inviterName + '\'' +
+                '}';
     }
 }

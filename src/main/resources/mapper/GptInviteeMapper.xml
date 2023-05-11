@@ -8,6 +8,7 @@
     <result column="kind" jdbcType="INTEGER" property="kind" />
     <result column="count" jdbcType="INTEGER" property="count" />
     <result column="create_time" jdbcType="DATE" property="createTime" />
+    <result column="inviter_name" jdbcType="VARCHAR" property="inviterName" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -68,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, invitee_id, inviter_id, kind, `count`, create_time
+    id, invitee_id, inviter_id, kind, `count`, create_time, inviter_name
   </sql>
   <select id="selectByExample" parameterType="com.jxm.yiti.domain.GptInviteeExample" resultMap="BaseResultMap">
     select
@@ -102,11 +103,11 @@
   </delete>
   <insert id="insert" parameterType="com.jxm.yiti.domain.GptInvitee">
     insert into gpt_invitee (id, invitee_id, inviter_id, 
-      kind, `count`, create_time
-      )
+      kind, `count`, create_time, 
+      inviter_name)
     values (#{id,jdbcType=BIGINT}, #{inviteeId,jdbcType=BIGINT}, #{inviterId,jdbcType=BIGINT}, 
-      #{kind,jdbcType=INTEGER}, #{count,jdbcType=INTEGER}, #{createTime,jdbcType=DATE}
-      )
+      #{kind,jdbcType=INTEGER}, #{count,jdbcType=INTEGER}, #{createTime,jdbcType=DATE}, 
+      #{inviterName,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.jxm.yiti.domain.GptInvitee">
     insert into gpt_invitee
@@ -129,6 +130,9 @@
       <if test="createTime != null">
         create_time,
       </if>
+      <if test="inviterName != null">
+        inviter_name,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -148,6 +152,9 @@
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=DATE},
+      </if>
+      <if test="inviterName != null">
+        #{inviterName,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -178,6 +185,9 @@
       <if test="record.createTime != null">
         create_time = #{record.createTime,jdbcType=DATE},
       </if>
+      <if test="record.inviterName != null">
+        inviter_name = #{record.inviterName,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -190,7 +200,8 @@
       inviter_id = #{record.inviterId,jdbcType=BIGINT},
       kind = #{record.kind,jdbcType=INTEGER},
       `count` = #{record.count,jdbcType=INTEGER},
-      create_time = #{record.createTime,jdbcType=DATE}
+      create_time = #{record.createTime,jdbcType=DATE},
+      inviter_name = #{record.inviterName,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -213,6 +224,9 @@
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=DATE},
       </if>
+      <if test="inviterName != null">
+        inviter_name = #{inviterName,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -222,7 +236,8 @@
       inviter_id = #{inviterId,jdbcType=BIGINT},
       kind = #{kind,jdbcType=INTEGER},
       `count` = #{count,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=DATE}
+      create_time = #{createTime,jdbcType=DATE},
+      inviter_name = #{inviterName,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

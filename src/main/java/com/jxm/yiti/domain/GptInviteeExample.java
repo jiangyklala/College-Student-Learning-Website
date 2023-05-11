@@ -491,6 +491,76 @@ public class GptInviteeExample {
             addCriterionForJDBCDate("create_time not between", value1, value2, "createTime");
             return (Criteria) this;
         }
+
+        public Criteria andInviterNameIsNull() {
+            addCriterion("inviter_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterNameIsNotNull() {
+            addCriterion("inviter_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterNameEqualTo(String value) {
+            addCriterion("inviter_name =", value, "inviterName");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterNameNotEqualTo(String value) {
+            addCriterion("inviter_name <>", value, "inviterName");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterNameGreaterThan(String value) {
+            addCriterion("inviter_name >", value, "inviterName");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterNameGreaterThanOrEqualTo(String value) {
+            addCriterion("inviter_name >=", value, "inviterName");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterNameLessThan(String value) {
+            addCriterion("inviter_name <", value, "inviterName");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterNameLessThanOrEqualTo(String value) {
+            addCriterion("inviter_name <=", value, "inviterName");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterNameLike(String value) {
+            addCriterion("inviter_name like", value, "inviterName");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterNameNotLike(String value) {
+            addCriterion("inviter_name not like", value, "inviterName");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterNameIn(List<String> values) {
+            addCriterion("inviter_name in", values, "inviterName");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterNameNotIn(List<String> values) {
+            addCriterion("inviter_name not in", values, "inviterName");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterNameBetween(String value1, String value2) {
+            addCriterion("inviter_name between", value1, value2, "inviterName");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterNameNotBetween(String value1, String value2) {
+            addCriterion("inviter_name not between", value1, value2, "inviterName");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

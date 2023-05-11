@@ -180,10 +180,10 @@ export default defineComponent({
             const singleInfo = inviteInfoList.value[i];
             singleInfo.createTime = getMyDate(singleInfo.createTime);
             if (singleInfo.kind === "0") {
-              singleInfo.kind = "一位用户注册"
+              singleInfo.kind = singleInfo.inviterName + " 注册"
               singleInfo.count = "获得 " + singleInfo.count  + " 提问次数";
             } else {
-              singleInfo.kind = "一位用户充值"
+              singleInfo.kind = singleInfo.inviterName + " 充值"
               singleInfo.count = "获得 " + singleInfo.count  + " 提问次数";
             }
           }

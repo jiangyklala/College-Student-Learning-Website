@@ -90,7 +90,7 @@
       </a-dropdown>
       &nbsp;&nbsp;&nbsp;&nbsp;
 
-      <a-tooltip color="rgb(152, 198, 255)" placement="bottom">
+      <a-tooltip v-if="ifLoginIn" color="rgb(152, 198, 255)" placement="bottom">
         <template #title>邀请一个人: ta 注册你可以获得 10 提问次数，ta 充值你可以获得佣金，佣金可提现呦~</template>
         <router-link to="/chatgpt/Invite"><ShareAltOutlined :style="{color: 'rgb(75, 149, 255)'}"/></router-link>
 

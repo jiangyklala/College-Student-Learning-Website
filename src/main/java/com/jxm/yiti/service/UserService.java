@@ -473,11 +473,18 @@ public class UserService {
      */
     public void addUser(UserQueryReq user, CommonResp resp) {
         User userInsert = CopyUtil.copy(user, User.class);
+
+        // 如果没在 gptInviteService.isInvite(user, resp); 中设置的话, 在这设置ID
         if (userInsert.getId() == null) {
             userInsert.setId(snowFlakeIdWorker.nextId());
         }
-        userInsert.setUsername("新用户" + userInsert.getId().toString().substring(4, 10));   // 初始名称
-        userInsert.setBalance(initBalance);                                                 // 用户初始提问次数
+
+        // 如果没在 gptInviteService.isInvite(user, resp); 中设置的话, 在这设置昵称
+        if (userInsert.getUsername() == null) {
+            userInsert.setUsername("新用户" + userInsert.getId().toString().substring(4, 10));
+        }
+
+        userInsert.setBalance(initBalance);             // 用户初始提问次数
         userInsert.setType(1);
         try {
             if (userMapper.insert(userInsert) != 0) {

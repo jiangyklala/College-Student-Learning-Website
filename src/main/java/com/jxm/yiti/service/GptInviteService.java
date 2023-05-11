@@ -28,6 +28,7 @@ import java.util.Objects;
 @Slf4j
 public class GptInviteService {
 
+    private static final long REGISTER_WITH_COUNT = 10;
     @Resource
     GptInviterMapper gptInviterMapper;
 
@@ -184,8 +185,7 @@ public class GptInviteService {
             Long inviterId = gptInviteCodes.get(0).getInviterId();
 
             // 查找被邀请人的邀请利率
-            GptInviter gptInviter = gptInviterMapper.selectByPrimaryKey(inviterId);
-            long incrNum = (UserService.initBalance * gptInviter.getEarnRate() / 100) + 6;
+            long incrNum = REGISTER_WITH_COUNT;
 
             // 增加被邀请人次数
             userMapperCust.balanceGetAndIncrNum(inviterId, incrNum);
@@ -198,6 +198,7 @@ public class GptInviteService {
             gptInvitee.setKind(0);
             gptInvitee.setCount((int) incrNum);
             gptInvitee.setCreateTime(new Date());
+            gptInvitee.setInviterName("新用户" + user.getId().toString().substring(4, 10));        // 设置用户昵称
             gptInviteeMapper.insert(gptInvitee);
         } catch (RuntimeException e) {
             resp.setSuccess(false);
