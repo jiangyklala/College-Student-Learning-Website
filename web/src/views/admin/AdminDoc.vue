@@ -83,18 +83,16 @@
 </template>
 
 <script lang="ts">
-import '@wangeditor/editor/dist/css/style.css' // 引入 css
 import {defineComponent, onMounted, ref} from "vue";
 import {message} from 'ant-design-vue';
 import axios from 'axios';
 import {Tool} from "@/utils/tool";
-import {Editor, Toolbar} from "@wangeditor/editor-for-vue";
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 
 
 export default defineComponent({
-  components: {Editor, Toolbar},
+  components: {},
   name: "AdminDoc",
   setup: function () {
 
@@ -129,7 +127,7 @@ export default defineComponent({
     /**
      * 根据专栏 id 查询其所包含的文档
      */
-    const docByColumnIdQuery = (columnId : any) => {
+    const docByColumnIdQuery = (columnId: any) => {
       loading.value = true;
       axios.get("/doc/selectByColumnId/" + columnId).then((response) => {
 
@@ -148,7 +146,7 @@ export default defineComponent({
     /**
      * 根据文档 id 查询对应的文档内容
      */
-    const docContentByDocIdQuery = (DocId : any) => {
+    const docContentByDocIdQuery = (DocId: any) => {
       axios.get("/doc/selectContentById/" + DocId).then((response) => {
 
         if (response.data.success) {
@@ -178,40 +176,39 @@ export default defineComponent({
     // 编辑器控制表设置
     const markdownOption = {
       bold: true, // 粗体
-          italic: true, // 斜体
-          header: true, // 标题
-          underline: true, // 下划线
-          strikethrough: true, // 中划线
-          mark: true, // 标记
-          superscript: true, // 上角标
-          subscript: true, // 下角标
-          quote: true, // 引用
-          ol: true, // 有序列表
-          ul: true, // 无序列表
-          link: true, // 链接
-          imagelink: true, // 图片链接
-          code: true, // code
-          table: true, // 表格
-          fullscreen: true, // 全屏编辑
-          readmodel: true, // 沉浸式阅读
-          htmlcode: true, // 展示html源码
-          help: true, // 帮助
-          /* 1.3.5 */
-          undo: true, // 上一步
-          redo: true, // 下一步
-          trash: true, // 清空
-          save: true, // 保存（触发events中的save事件）
-          /* 1.4.2 */
-          navigation: true, // 导航目录
-          /* 2.1.8 */
-          alignleft: true, // 左对齐
-          aligncenter: true, // 居中
-          alignright: true, // 右对齐
-          /* 2.2.1 */
-          subfield: true, // 单双栏模式
-          preview: true, // 预览
+      italic: true, // 斜体
+      header: true, // 标题
+      underline: true, // 下划线
+      strikethrough: true, // 中划线
+      mark: true, // 标记
+      superscript: true, // 上角标
+      subscript: true, // 下角标
+      quote: true, // 引用
+      ol: true, // 有序列表
+      ul: true, // 无序列表
+      link: true, // 链接
+      imagelink: true, // 图片链接
+      code: true, // code
+      table: true, // 表格
+      fullscreen: true, // 全屏编辑
+      readmodel: true, // 沉浸式阅读
+      htmlcode: true, // 展示html源码
+      help: true, // 帮助
+      /* 1.3.5 */
+      undo: true, // 上一步
+      redo: true, // 下一步
+      trash: true, // 清空
+      save: true, // 保存（触发events中的save事件）
+      /* 1.4.2 */
+      navigation: true, // 导航目录
+      /* 2.1.8 */
+      alignleft: true, // 左对齐
+      aligncenter: true, // 居中
+      alignright: true, // 右对齐
+      /* 2.2.1 */
+      subfield: true, // 单双栏模式
+      preview: true, // 预览
     };
-
 
 
     const mavonEditorRef = ref();
@@ -245,7 +242,7 @@ export default defineComponent({
 
     const treeSelectData = ref();
     treeSelectData.value = [];
-    const deleteIdStr : Array<string> = [];
+    const deleteIdStr: Array<string> = [];
 
     /**
      * 表格的编辑按钮
@@ -335,7 +332,7 @@ export default defineComponent({
      * @param treeSelectData
      * @param id
      */
-    const setDisable = (treeSelectData : any, id : any) => {
+    const setDisable = (treeSelectData: any, id: any) => {
       for (let i = 0; i < treeSelectData.length; ++i) {
         const node = treeSelectData[i];
         if (node.id === id) {
@@ -358,7 +355,7 @@ export default defineComponent({
      * @param treeSelectData
      * @param parentId
      */
-    const setParentDocDisable = (treeSelectData : any, parentId : any) => {
+    const setParentDocDisable = (treeSelectData: any, parentId: any) => {
       for (let i = 0; i < treeSelectData.length; ++i) {
         const node = treeSelectData[i];
         if (node.id === parentId) {
@@ -375,7 +372,7 @@ export default defineComponent({
      * 将选择树中的所有节点的 parent 属性删除
      * @param treeSelectData
      */
-    const deleteParent = (treeSelectData : any) => {
+    const deleteParent = (treeSelectData: any) => {
       if (Tool.isEmpty(treeSelectData)) return;
 
       for (let i = 0; i < treeSelectData.length; ++i) {
@@ -392,7 +389,7 @@ export default defineComponent({
      * @param treeSelectData
      * @param id
      */
-    const getDeleteIdStr = (treeSelectData : any, id : any) => {
+    const getDeleteIdStr = (treeSelectData: any, id: any) => {
       for (let i = 0; i < treeSelectData.length; ++i) {
         const node = treeSelectData[i];
         if (node.id === id) {
@@ -409,8 +406,6 @@ export default defineComponent({
         }
       }
     }
-
-
 
     onMounted(() => {
       initEditor();
@@ -452,7 +447,7 @@ export default defineComponent({
   min-height: 1000px;
   margin: 20px auto 100px;
   overflow: hidden;
-  background: rgb(237,239,242);
+  background: rgb(237, 239, 242);
 }
 
 .doc-table {
@@ -467,7 +462,7 @@ export default defineComponent({
 
 .mavonEditor {
   position: relative;
-  z-index: 1;  /*显示在父文档的树选择之下*/
+  z-index: 1; /*显示在父文档的树选择之下*/
   padding-top: 20px;
   width: 1100px;
   /*height: 500px;*/
