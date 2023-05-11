@@ -73,7 +73,7 @@
 
 
 <script lang="ts">
-import {computed, defineComponent, h, onMounted, ref} from 'vue';
+import {computed, defineComponent, h, onMounted, ref, watch} from 'vue';
 import axios from "axios";
 import {message, Modal} from "ant-design-vue";
 import mavonEditor from "mavon-editor";
@@ -406,6 +406,12 @@ export default defineComponent({
         }
       });
     }
+
+    // 监听 count 的变化
+    watch(userInfo, (newValue: number, oldValue: number) => {
+      // console.log(`count 变化了：${oldValue} => ${newValue}`);
+      selectHistoryList();
+    });
 
     onMounted(() => {
       mavonEditorRef.value = mavonEditor.markdownIt;
