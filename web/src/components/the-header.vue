@@ -88,7 +88,7 @@
           </a-menu>
         </template>
       </a-dropdown>
-      &nbsp;&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;
 
       <a-tooltip v-if="ifLoginIn" color="rgb(152, 198, 255)" placement="bottom">
         <template #title>邀请一个人: ta 注册你可以获得 10 提问次数，ta 充值你可以获得佣金，佣金可提现呦~</template>
@@ -611,18 +611,19 @@ export default defineComponent({
   .header-menu {
     transform: scale(0.8);
     display: inline-block;
-    width: 60%;
-    max-width: 60%;
+    width: 100%;
+    max-width: 55%;
     padding-left: 0% !important;
     color: black;
     background-color: white;
   }
 
   .login-menu {
-    transform: scale(0.9);
+    transform: scale(0.8);
     color: black;
-    float: left;
-    width: 40% !important;
+    float: right !important;
+    padding-right: 0px !important;
+    width: 45% !important;
     height: 64px;
     /*font-weight: bold;*/
   }
