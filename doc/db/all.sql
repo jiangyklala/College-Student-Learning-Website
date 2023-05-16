@@ -352,3 +352,19 @@ CREATE TABLE `gpt_invitee` (
 ALTER TABLE gpt_invitee ADD inviter_name varchar(50) NOT NULL;
 ALTER TABLE gpt_invitee DROP inviter_name;
 
+# GPT 支付信息表
+DROP TABLE IF EXISTS `gpt_pay_info`;
+
+CREATE TABLE `gpt_pay_info` (
+    `id` bigint AUTO_INCREMENT NOT NULL,
+    `user_id` bigint NOT NULL COMMENT '用户ID',
+    `order_no` bigint NOT NULL COMMENT  '订单号',
+    `pay_amount` decimal(20, 2) NOT NULL COMMENT '支付金额',
+    `platform_number` varchar(200) DEFAULT NULL COMMENT '流水号',
+    `platform_status` varchar(20) DEFAULT NULL COMMENT '支付状态',
+    `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    UNIQUE KEY `uqe_order_no` (`order_no`),
+    UNIQUE KEY `uqe_platform_number` (`platform_number`),
+    PRIMARY KEY (`id`)
+) ENGINE = innodb DEFAULT CHARSET = utf8mb4 COMMENT = 'GPT 支付信息表';
