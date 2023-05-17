@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, onMounted, ref} from "vue";
+import {computed, defineComponent, onMounted, onUnmounted, ref} from "vue";
 import {useRoute} from "vue-router";
 import {Tool} from "@/utils/tool";
 import axios from "axios";
@@ -27,6 +27,8 @@ export default defineComponent ({
     const qrcode = ref();
     const orderId = ref();
     const chooseValue = ref();
+    const payWithTimerId = ref();
+    const destroyPayWithTimerId = ref();
 
     const userInfo = computed(() => {
       return store.state.userInfo;
@@ -52,7 +54,7 @@ export default defineComponent ({
             colorLight : '#ffffff', // 二维码背景色
           });
 
-          console.log(qrcodeResp);
+          // console.log(qrcodeResp);
         } else {
           message.error(response.data.message);
         }
@@ -60,15 +62,15 @@ export default defineComponent ({
     }
 
     const setTimer = () => {
-      const payWithTimerId = setInterval(() => {
-        console.log("create");
+      payWithTimerId.value = setInterval(() => {
+        // console.log("create");
         axios.post(process.env.VUE_APP_SERVER + "/pay/checkIfPay", {
           orderId: orderId.value,
         }).then((response) => {
           if (response.data.success) {
             if (response.data.content.success) {
-              console.log("success");
-              console.log(chooseValue.value);
+              // console.log("success");
+              // console.log(chooseValue.value);
 
               axios.post(process.env.VUE_APP_SERVER + "/pay/vipToUser", {
                 userId: userInfo.value.id,
@@ -83,7 +85,7 @@ export default defineComponent ({
                 }
               })
 
-              clearInterval(payWithTimerId);
+              clearInterval(payWithTimerId.value);
             }
           } else {
             message.error(response.data.message);
@@ -91,15 +93,15 @@ export default defineComponent ({
         })
       }, 2000);
 
-      const destroyPayWithTimerId = setTimeout(() => {
-        console.log("destroy");
-        clearTimeout(payWithTimerId);
-        clearTimeout(destroyPayWithTimerId);
+      destroyPayWithTimerId.value = setTimeout(() => {
+        // console.log("destroy");
+        clearInterval(payWithTimerId.value);
+        clearTimeout(destroyPayWithTimerId.value);
       }, 5 * 60 * 1000);
     }
 
     const goToChatPage = () => {
-      console.log(chooseValue);
+      // console.log(chooseValue);
       router.push({
         name: 'Chatgpt',
       });
@@ -116,11 +118,20 @@ export default defineComponent ({
       })
     }
 
+    const clearAllTimer = () => {
+      clearInterval(payWithTimerId.value);
+      clearTimeout(destroyPayWithTimerId.value);
+    }
+
     onMounted(() => {
       const route = useRoute();
       chooseValue.value = route.params.chooseValue;
       showQR();
       setTimer();
+    })
+
+    onUnmounted(() => {
+      clearAllTimer();
     })
 
     return {

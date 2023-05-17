@@ -104,13 +104,13 @@ public class PayService {
         BigDecimal amount;
         switch (vipPayWithReq.getNum()) {
             case 1:
-                amount = new BigDecimal("0.01");
+                amount = new BigDecimal("35.00");
                 break;
             case 2:
-                amount = new BigDecimal("0.02");
+                amount = new BigDecimal("70.00");
                 break;
             case 3:
-                amount = new BigDecimal("0.03");
+                amount = new BigDecimal("200.00");
                 break;
             default:
                 resp.setMessage("金额选择错误");

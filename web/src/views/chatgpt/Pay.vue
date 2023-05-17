@@ -167,7 +167,7 @@ export default defineComponent ({
     const router = useRouter();
 
     const goToPayingPage = (chooseValue : any) => {
-      console.log(chooseValue);
+      // console.log(chooseValue);
       router.push({
         name: 'Paying',
         params: {
@@ -178,7 +178,7 @@ export default defineComponent ({
 
 
     onMounted(() => {
-      console.log("lala");
+      // console.log("lala");
     })
 
     return {
