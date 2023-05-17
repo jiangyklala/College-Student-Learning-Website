@@ -50,58 +50,27 @@
     <br>
   </a-modal>
 
-  <a-modal v-model:visible="payModalVisible"
-           title="支付中"
-           :footer="null"
-           style="width: 40%; height: 40%;">
-
-    <p style="float: left; color: rgb(156, 160, 164)">请在 5 分钟内完成付款: </p>
-    <br>
-    <br>
-    <div ref="qrcode" style="padding-left: 25%"></div>
-  </a-modal>
 
 </template>
 
 <script lang="ts">
 import {computed, defineComponent, onMounted, ref, watch} from "vue";
-import QRCode from 'qrcodejs2';
-import axios from "axios";
 import {message} from "ant-design-vue";
 import store from "@/store";
+import {useRouter} from "vue-router";
 
 export default defineComponent ({
   name: "Pay",
   setup () {
 
-    const qrcode = ref();
     const userInfo = computed(() => {
       return store.state.userInfo;
     });
     const chooseValue = ref(0);
     const confirmModalVisible = ref(false);
     const userTypeName = ref("未知");
-    const payModalVisible = ref(false);
 
-    const showQR = () => {
-      axios.post(process.env.VUE_APP_SERVER + "/pay/vipPayWith", {
-        num: 1,
-      }).then((response) => {
-        if (response.data.success) {
-          const qrcodeResp = new QRCode(qrcode.value, {
-            text: response.data.content, // 二维码内容
-            width: 200, // 二维码宽度
-            height: 200, // 二维码高度
-            colorDark : '#000000', // 二维码颜色
-            colorLight : '#ffffff', // 二维码背景色
-          });
 
-          console.log(qrcodeResp);
-        } else {
-          message.error(response.data.message);
-        }
-      })
-    }
 
     const payConfirmBtnClick = () => {
       if (chooseValue.value === 0) {
@@ -114,9 +83,9 @@ export default defineComponent ({
 
     const payWithBtnClick = () => {
       confirmModalVisible.value = false;
-      payModalVisible.value = true;
 
-      showQR();
+      goToPayingPage(chooseValue.value);
+
     }
 
     const getUserTypeName = (type : number) => {
@@ -175,19 +144,29 @@ export default defineComponent ({
     //   }
     // });
 
+    const router = useRouter();
+
+    const goToPayingPage = (chooseValue : any) => {
+      console.log(chooseValue);
+      router.push({
+        name: 'Paying',
+        params: {
+          chooseValue: chooseValue
+        }
+      });
+    };
+
+
     onMounted(() => {
       console.log("lala");
     })
 
     return {
-      qrcode,
       chooseValue,
       userInfo,
       confirmModalVisible,
       userTypeName,
-      payModalVisible,
 
-      showQR,
       getUserTypeName,
       payWithBtnClick,
       getUserPayCount,

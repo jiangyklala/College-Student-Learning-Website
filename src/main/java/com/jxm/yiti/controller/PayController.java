@@ -2,10 +2,14 @@ package com.jxm.yiti.controller;
 
 import com.alibaba.fastjson2.JSON;
 import com.jxm.yiti.domain.MailObject;
+import com.jxm.yiti.req.CheckPayReq;
 import com.jxm.yiti.req.PayReq;
 import com.jxm.yiti.req.VipPayWithReq;
+import com.jxm.yiti.req.VipToUserQeq;
+import com.jxm.yiti.resp.CheckPayResp;
 import com.jxm.yiti.resp.CommonResp;
 import com.jxm.yiti.resp.PayBusinessResp;
+import com.jxm.yiti.resp.VipPayWithResp;
 import com.jxm.yiti.service.PayService;
 import jakarta.annotation.Resource;
 import jakarta.mail.MessagingException;
@@ -26,9 +30,33 @@ public class PayController {
      */
     @PostMapping("/vipPayWith")
     @ResponseBody
-    public CommonResp<String> vipPayWith(@RequestBody VipPayWithReq vipPayWithReq) {
-        CommonResp<String> resp = new CommonResp<>();
+    public CommonResp<VipPayWithResp> vipPayWith(@RequestBody VipPayWithReq vipPayWithReq) {
+        CommonResp<VipPayWithResp> resp = new CommonResp<>();
         payService.vipPayWith(vipPayWithReq, resp);
+        return resp;
+    }
+
+    /**
+     * 设置用户类型
+     *
+     */
+    @PostMapping("/vipToUser")
+    @ResponseBody
+    public CommonResp vipToUser(@RequestBody VipToUserQeq vipToUserQeq) {
+        CommonResp resp = new CommonResp();
+        log.info(vipToUserQeq.toString());
+        payService.vipToUsers(vipToUserQeq.getUserId(), vipToUserQeq.getNum(), resp);
+        return resp;
+    }
+
+    /**
+     * 生成订单
+     */
+    @PostMapping("/checkIfPay")
+    @ResponseBody
+    public CommonResp<CheckPayResp> checkIfPay(@RequestBody CheckPayReq checkPayReq) {
+        CommonResp<CheckPayResp> resp = new CommonResp<>();
+        payService.checkIfPay(checkPayReq, resp);
         return resp;
     }
 

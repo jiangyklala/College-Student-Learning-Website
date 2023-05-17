@@ -99,6 +99,11 @@ const routes: Array<RouteRecordRaw> = [
         name: 'Invite',
         component: () => import('../views/chatgpt/Invite.vue')
     },
+    {
+        path: '/chatgpt/Paying/:chooseValue',
+        name: 'Paying',
+        component: () => import('../views/chatgpt/Paying.vue')
+    },
 ]
 
 const router = createRouter({
