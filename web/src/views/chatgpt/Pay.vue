@@ -8,10 +8,10 @@
         <div >
           <p style="float: left; color: rgb(151, 188, 255); font-size: 30px;">{{getUserTypeName(userInfo.type)}}&nbsp;&nbsp;&nbsp;&nbsp;</p>
         </div>
-        <div >
+        <div v-if="userInfo.type === 2">
           <p style="float: left; color: rgb(156, 160, 164); ">剩余时间: &nbsp;&nbsp;</p>
         </div>
-        <div >
+        <div v-if="userInfo.type === 2">
           <p style="float: left; color: rgb(151, 188, 255); font-size: 30px;">{{userInfo.remainDays}} 天</p>
         </div>
       </div>
@@ -90,6 +90,13 @@ export default defineComponent ({
         message.warn("请选择需要充值的类型");
         return;
       }
+
+      if (userInfo.value.type === 2 || userInfo.value.type === 3) {
+        message.warn("暂不支持续费呦");
+        return;
+      }
+
+
       confirmModalVisible.value = true;
       // console.log(chooseValue.value);
     }

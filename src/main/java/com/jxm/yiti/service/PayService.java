@@ -117,7 +117,7 @@ public class PayService {
                 log.error("金额选择错误");
                 return;
         }
-        String orderName = "GPT 充值";
+        String orderName = "GPTalk 会员充值";
         Long orderNo = snowFlakeIdWorker.nextId();
         PayResponse payResponse = create(String.valueOf(orderNo), amount, orderName, vipPayWithReq.getUserId());
 
