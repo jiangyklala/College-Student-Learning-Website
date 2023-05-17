@@ -1,8 +1,21 @@
 <template>
   <a-layout-content class="layout-content">
     <a-card :body-style="{ display: 'flex', flexDirection: 'column' }" style="width: 100%">
-      <p style="float: left; color: rgb(156, 160, 164)">当前用户类型: </p>
-      <p style="float: left; color: rgb(151, 188, 255); font-size: 30px;">{{getUserTypeName(userInfo.type)}}</p>
+      <div>
+        <div >
+          <p style="float: left; color: rgb(156, 160, 164); ">当前用户类型: &nbsp;&nbsp;</p>
+        </div>
+        <div >
+          <p style="float: left; color: rgb(151, 188, 255); font-size: 30px;">{{getUserTypeName(userInfo.type)}}&nbsp;&nbsp;&nbsp;&nbsp;</p>
+        </div>
+        <div >
+          <p style="float: left; color: rgb(156, 160, 164); ">剩余时间: &nbsp;&nbsp;</p>
+        </div>
+        <div >
+          <p style="float: left; color: rgb(151, 188, 255); font-size: 30px;">{{userInfo.remainDays}} 天</p>
+        </div>
+      </div>
+
       <p style="float: left; color: rgb(156, 160, 164)">选择需要充值的类型: </p>
 
 
@@ -96,7 +109,7 @@ export default defineComponent ({
           userTypeNameRes = "普通用户";
           break;
         case "2":
-          userTypeNameRes =  "季度会员";
+          userTypeNameRes =  "会员";
           break;
         case "3":
           userTypeNameRes =  "超级会员";

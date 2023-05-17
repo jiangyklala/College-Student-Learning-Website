@@ -81,6 +81,7 @@ import {Tool} from "@/utils/tool";
 import store from "@/store";
 import LeftChatItem from "@/components/left-chat-item.vue";
 import RightChatItem from "@/components/right-chat-item.vue";
+import router from "@/router";
 
 // import axios from 'axios';
 
@@ -321,26 +322,30 @@ export default defineComponent({
      * 显示充值页面
      */
     const showAddCredit = () => {
-      Modal.info({
-        title: 'GPT 在线网站提问次数购买',
-        content: h('div', {}, [
-          h('p', '目前仅提供三种额度购买: '),
-          h('p', [
-            h('strong', '月会员'), '：35元，一个月无限次提问'
-          ]),
-          h('p', [
-            h('strong', '季度会员'), '：70元，三个月无限次提问'
-          ]),
-          h('p', [
-            h('strong', '年度会员'), '：200元，一年无限次提问'
-          ]),
-          h('h4', '如何购买?'),
-          h('p', '具体可以扫下面帅地的微信小店购买对应的面额，购买成功后联系帅地即可。'),
-          h('img', {src: 'https://xiaoj-1309630359.cos.ap-nanjing.myqcloud.com/202304221452920.jpg'})
-        ]),
-        width: 610,
-        okText: '了然'
-      });
+        router.push({
+          name: 'Pay',
+        });
+
+      // Modal.info({
+      //   title: 'GPT 在线网站提问次数购买',
+      //   content: h('div', {}, [
+      //     h('p', '目前仅提供三种额度购买: '),
+      //     h('p', [
+      //       h('strong', '月会员'), '：35元，一个月无限次提问'
+      //     ]),
+      //     h('p', [
+      //       h('strong', '季度会员'), '：70元，三个月无限次提问'
+      //     ]),
+      //     h('p', [
+      //       h('strong', '年度会员'), '：200元，一年无限次提问'
+      //     ]),
+      //     h('h4', '如何购买?'),
+      //     h('p', '具体可以扫下面帅地的微信小店购买对应的面额，购买成功后联系帅地即可。'),
+      //     h('img', {src: 'https://xiaoj-1309630359.cos.ap-nanjing.myqcloud.com/202304221452920.jpg'})
+      //   ]),
+      //   width: 610,
+      //   okText: '了然'
+      // });
     }
 
     /**
