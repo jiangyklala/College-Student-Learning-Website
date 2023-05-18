@@ -1,6 +1,6 @@
 <template>
   <a-layout-content class="layout-content">
-    <a-card :body-style="{ display: 'flex', flexDirection: 'column' }" style="width: 100%">
+    <a-card class="show-card" :body-style="{ display: 'flex', flexDirection: 'column' }">
       <div>
         <div >
           <p style="float: left; color: rgb(156, 160, 164); ">当前用户类型: &nbsp;&nbsp;</p>
@@ -19,12 +19,12 @@
       <p style="float: left; color: rgb(156, 160, 164)">选择需要充值的类型: </p>
 
 
-      <div style="text-align: center">
+      <div class="show-div" >
         <a-radio-group v-model:value="chooseValue">
           <a-space style="width: 100%" size="large">
-            <a-radio-button value="1">月会员 ￥35</a-radio-button>
-            <a-radio-button value="2">季度会员 ￥70</a-radio-button>
-            <a-radio-button value="3">年度会员 ￥200</a-radio-button>
+            <a-radio-button class="show-radio-button" value="1">月会员 ￥35</a-radio-button>
+            <a-radio-button class="show-radio-button" value="2">季度会员 ￥70</a-radio-button>
+            <a-radio-button class="show-radio-button" value="3">年度会员 ￥200</a-radio-button>
           </a-space>
         </a-radio-group>
       </div>
@@ -34,7 +34,7 @@
         <br>
         <br>
         <br>
-        <a-button type="primary" size="middle" @click="payConfirmBtnClick" style="width: 20%; text-align: center">充值</a-button>
+        <a-button class="pay-OK-button" type="primary" size="middle" @click="payConfirmBtnClick" style="">充值</a-button>
       </div>
 
     </a-card>
@@ -197,6 +197,25 @@ export default defineComponent ({
 </script>
 
 <style scoped>
+@media (max-width: 768px) {
+  .show-card {
+    font-size: 5px;
+  }
+
+  .show-div {
+    font-size: 1px;
+  }
+
+  .show-radio-button {
+    font-size: 1px;
+    height: 100%;
+  }
+
+  .pay-OK-button {
+    width: 30% !important;
+  }
+}
+
 .layout-content {
   padding-top: 60px;
   width: 80%;
@@ -205,5 +224,18 @@ export default defineComponent ({
   margin: 20px auto 100px;
   overflow: hidden;
   background: rgb(237, 239, 242);
+}
+
+.show-card {
+  width: 100%;
+}
+
+.show-div {
+  text-align: center
+}
+
+.pay-OK-button {
+  width: 20%;
+  text-align: center;
 }
 </style>
