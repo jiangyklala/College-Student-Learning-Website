@@ -704,7 +704,7 @@ public class UserService {
             String ntokens = jedis.get("yt:gpt:ntokens:" + nowTime);
             String vtimes = jedis.get("yt:gpt:vtimes:" + nowTime);
             String vtokens = jedis.get("yt:gpt:vtokens:" + nowTime);
-            String iVtimes = jedis.get("yt:gpti:vtimes:" + nowTime);
+            String iVtimes = JedisUtil.getIfNotToZero(jedis, "yt:gpti:vtimes:" + nowTime);
             res += "当日普通用户: 提问总数: " + ntimes + ", 消耗的总token: " + ntokens + "\n"
                     + "当日会员用户: 提问总数: " + vtimes + ", 消耗的总token: " + vtokens + "\n"
                     + "当日画图使用次数: " + iVtimes + "\n"
