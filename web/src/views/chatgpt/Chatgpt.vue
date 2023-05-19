@@ -23,7 +23,7 @@
       </span>
     </a-drawer>
 
-    <div v-for="msg in msglist" :key="msg">
+    <div v-for="msg in msglist" :key="msg" ref="msgDiv">
       <left-chat-item v-if="msg.type === 1"
                       :userID="msg.userID"
                       :historyID="msg.historyID"
@@ -241,6 +241,7 @@ export default defineComponent({
       })
 
       // console.log("点击了这个对话, historyID = " + historyID.value);
+      scrollToBottom();
 
     }
 
@@ -418,9 +419,22 @@ export default defineComponent({
       selectHistoryList();
     });
 
+    const msgDiv = ref();
+
+    const scrollToTop = () => {
+      window.scrollTo({top: 0, behavior: "smooth"});
+    }
+
+    const scrollToBottom = () => {
+      setTimeout(() => {
+        window.scrollTo({top: document.body.scrollHeight, behavior: "smooth"});
+      }, 500);
+    }
+
     onMounted(() => {
       mavonEditorRef.value = mavonEditor.markdownIt;
       selectHistoryList();
+      scrollToTop();
     })
 
 
@@ -591,10 +605,11 @@ export default defineComponent({
 
 .layout-content {
   padding-top: 60px;
+  /*padding-bottom: 30vh;*/
   width: 85%;
-  height: 100%;
-  min-height: 1100px;
-  margin: 10px auto 100px;
+  height: 110%;
+  min-height: 91vh;
+  margin: 10px auto;
   overflow: hidden;
   background: #fff;
 }
