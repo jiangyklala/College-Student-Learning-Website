@@ -19,6 +19,7 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -62,9 +63,9 @@ public class GptInviteService {
     public GptInviter addInviter(Long userID, CommonResp resp) {
         GptInviter gptInviter = new GptInviter();
         gptInviter.setInviterId(userID);
-        gptInviter.setEarnings(0);
+        gptInviter.setEarnings(BigDecimal.valueOf(0));
         gptInviter.setEarnRate(20);
-        gptInviter.setInviteBalance(0);
+        gptInviter.setInviteBalance(BigDecimal.valueOf(0));
         gptInviter.setInvitedCount(0);
 
         try {
@@ -196,7 +197,7 @@ public class GptInviteService {
             gptInvitee.setInviteeId(user.getId());
             gptInvitee.setInviterId(inviterId);
             gptInvitee.setKind(0);
-            gptInvitee.setCount((int) incrNum);
+            gptInvitee.setCount(String.valueOf(incrNum));
             gptInvitee.setCreateTime(new Date());
             gptInvitee.setInviterName("新用户" + user.getId().toString().substring(4, 10));        // 设置用户昵称
             gptInviteeMapper.insert(gptInvitee);

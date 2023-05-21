@@ -173,20 +173,22 @@ export default defineComponent({
       axios.get("/invite/selectAllInviteInfo/" + userID.value).then((response) => {
         let data = response.data;
         if (data.success) {
-          console.log(data);
+          // console.log(data);
           inviteInfoList.value = data.content;
 
           for (let i = 0; i < inviteInfoList.value.length; ++i) {
             const singleInfo = inviteInfoList.value[i];
             singleInfo.createTime = getMyDate(singleInfo.createTime);
-            if (singleInfo.kind === "0") {
+            if (singleInfo.kind === 0) {
               singleInfo.kind = singleInfo.inviterName + " 注册"
               singleInfo.count = "获得 " + singleInfo.count  + " 提问次数";
             } else {
               singleInfo.kind = singleInfo.inviterName + " 充值"
-              singleInfo.count = "获得 " + singleInfo.count  + " 提问次数";
+              singleInfo.count = "获得 " + singleInfo.count  + " 元佣金";
             }
           }
+
+          console.log(inviteInfoList.value);
         } else {
           message.error(data.message);
         }

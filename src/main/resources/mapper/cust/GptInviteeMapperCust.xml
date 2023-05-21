@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jxm.yiti.mapper.cust.GptInviteeMapperCust">
+  <resultMap id="BaseResultMap" type="com.jxm.yiti.domain.GptInvitee">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="invitee_id" jdbcType="BIGINT" property="inviteeId" />
+    <result column="inviter_id" jdbcType="BIGINT" property="inviterId" />
+    <result column="kind" jdbcType="INTEGER" property="kind" />
+    <result column="count" jdbcType="INTEGER" property="count" />
+    <result column="create_time" jdbcType="DATE" property="createTime" />
+    <result column="inviter_name" jdbcType="VARCHAR" property="inviterName" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, invitee_id, inviter_id, kind, `count`, create_time, inviter_name
+  </sql>
+
+  <select id="selectByInviteeId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from gpt_invitee
+    where invitee_id = #{invitee_id,jdbcType=BIGINT}
+  </select>
+
+</mapper>

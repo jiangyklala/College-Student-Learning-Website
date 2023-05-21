@@ -21,6 +21,6 @@
     select
     <include refid="Base_Column_List" />
     from gpt_pay_info
-    where order_no = #{id,jdbcType=BIGINT}
+    where order_no = #{order_no,jdbcType=BIGINT}
   </select>
 </mapper>

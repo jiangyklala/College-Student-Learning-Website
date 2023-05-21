@@ -11,7 +11,7 @@ public class GptInvitee {
 
     private Integer kind;
 
-    private Integer count;
+    private String count;
 
     private Date createTime;
 
@@ -49,11 +49,11 @@ public class GptInvitee {
         this.kind = kind;
     }
 
-    public Integer getCount() {
+    public String getCount() {
         return count;
     }
 
-    public void setCount(Integer count) {
+    public void setCount(String count) {
         this.count = count;
     }
 

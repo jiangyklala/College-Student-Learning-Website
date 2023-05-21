@@ -1,5 +1,6 @@
 package com.jxm.yiti.domain;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -234,52 +235,52 @@ public class GptInviterExample {
             return (Criteria) this;
         }
 
-        public Criteria andInviteBalanceEqualTo(Integer value) {
+        public Criteria andInviteBalanceEqualTo(BigDecimal value) {
             addCriterion("invite_balance =", value, "inviteBalance");
             return (Criteria) this;
         }
 
-        public Criteria andInviteBalanceNotEqualTo(Integer value) {
+        public Criteria andInviteBalanceNotEqualTo(BigDecimal value) {
             addCriterion("invite_balance <>", value, "inviteBalance");
             return (Criteria) this;
         }
 
-        public Criteria andInviteBalanceGreaterThan(Integer value) {
+        public Criteria andInviteBalanceGreaterThan(BigDecimal value) {
             addCriterion("invite_balance >", value, "inviteBalance");
             return (Criteria) this;
         }
 
-        public Criteria andInviteBalanceGreaterThanOrEqualTo(Integer value) {
+        public Criteria andInviteBalanceGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("invite_balance >=", value, "inviteBalance");
             return (Criteria) this;
         }
 
-        public Criteria andInviteBalanceLessThan(Integer value) {
+        public Criteria andInviteBalanceLessThan(BigDecimal value) {
             addCriterion("invite_balance <", value, "inviteBalance");
             return (Criteria) this;
         }
 
-        public Criteria andInviteBalanceLessThanOrEqualTo(Integer value) {
+        public Criteria andInviteBalanceLessThanOrEqualTo(BigDecimal value) {
             addCriterion("invite_balance <=", value, "inviteBalance");
             return (Criteria) this;
         }
 
-        public Criteria andInviteBalanceIn(List<Integer> values) {
+        public Criteria andInviteBalanceIn(List<BigDecimal> values) {
             addCriterion("invite_balance in", values, "inviteBalance");
             return (Criteria) this;
         }
 
-        public Criteria andInviteBalanceNotIn(List<Integer> values) {
+        public Criteria andInviteBalanceNotIn(List<BigDecimal> values) {
             addCriterion("invite_balance not in", values, "inviteBalance");
             return (Criteria) this;
         }
 
-        public Criteria andInviteBalanceBetween(Integer value1, Integer value2) {
+        public Criteria andInviteBalanceBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("invite_balance between", value1, value2, "inviteBalance");
             return (Criteria) this;
         }
 
-        public Criteria andInviteBalanceNotBetween(Integer value1, Integer value2) {
+        public Criteria andInviteBalanceNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("invite_balance not between", value1, value2, "inviteBalance");
             return (Criteria) this;
         }
@@ -354,52 +355,52 @@ public class GptInviterExample {
             return (Criteria) this;
         }
 
-        public Criteria andEarningsEqualTo(Integer value) {
+        public Criteria andEarningsEqualTo(BigDecimal value) {
             addCriterion("earnings =", value, "earnings");
             return (Criteria) this;
         }
 
-        public Criteria andEarningsNotEqualTo(Integer value) {
+        public Criteria andEarningsNotEqualTo(BigDecimal value) {
             addCriterion("earnings <>", value, "earnings");
             return (Criteria) this;
         }
 
-        public Criteria andEarningsGreaterThan(Integer value) {
+        public Criteria andEarningsGreaterThan(BigDecimal value) {
             addCriterion("earnings >", value, "earnings");
             return (Criteria) this;
         }
 
-        public Criteria andEarningsGreaterThanOrEqualTo(Integer value) {
+        public Criteria andEarningsGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("earnings >=", value, "earnings");
             return (Criteria) this;
         }
 
-        public Criteria andEarningsLessThan(Integer value) {
+        public Criteria andEarningsLessThan(BigDecimal value) {
             addCriterion("earnings <", value, "earnings");
             return (Criteria) this;
         }
 
-        public Criteria andEarningsLessThanOrEqualTo(Integer value) {
+        public Criteria andEarningsLessThanOrEqualTo(BigDecimal value) {
             addCriterion("earnings <=", value, "earnings");
             return (Criteria) this;
         }
 
-        public Criteria andEarningsIn(List<Integer> values) {
+        public Criteria andEarningsIn(List<BigDecimal> values) {
             addCriterion("earnings in", values, "earnings");
             return (Criteria) this;
         }
 
-        public Criteria andEarningsNotIn(List<Integer> values) {
+        public Criteria andEarningsNotIn(List<BigDecimal> values) {
             addCriterion("earnings not in", values, "earnings");
             return (Criteria) this;
         }
 
-        public Criteria andEarningsBetween(Integer value1, Integer value2) {
+        public Criteria andEarningsBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("earnings between", value1, value2, "earnings");
             return (Criteria) this;
         }
 
-        public Criteria andEarningsNotBetween(Integer value1, Integer value2) {
+        public Criteria andEarningsNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("earnings not between", value1, value2, "earnings");
             return (Criteria) this;
         }

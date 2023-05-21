@@ -1,9 +1,15 @@
 package com.jxm.yiti.service;
 
+import com.jxm.yiti.domain.GptInvitee;
+import com.jxm.yiti.domain.GptInviter;
 import com.jxm.yiti.domain.GptPayInfo;
 import com.jxm.yiti.domain.User;
+import com.jxm.yiti.mapper.GptInviteeMapper;
+import com.jxm.yiti.mapper.GptInviterMapper;
 import com.jxm.yiti.mapper.GptPayInfoMapper;
 import com.jxm.yiti.mapper.UserMapper;
+import com.jxm.yiti.mapper.cust.GptInviteeMapperCust;
+import com.jxm.yiti.mapper.cust.GptInviterMapperCust;
 import com.jxm.yiti.mapper.cust.GptPayInfoMapperCust;
 import com.jxm.yiti.req.CheckPayReq;
 import com.jxm.yiti.req.VipPayWithReq;
@@ -22,6 +28,9 @@ import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Date;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -42,6 +51,15 @@ public class PayService {
     @Resource
     private UserMapper userMapper;
 
+    @Resource
+    GptInviteeMapperCust gptInviteeMapperCust;
+
+    @Resource
+    GptInviterMapper gptInviterMapper;
+
+    @Resource
+    GptInviteeMapper gptInviteeMapper;
+
 
     /**
      * 生成一个订单, 并把生成的支付 URL 写进 resp
@@ -49,20 +67,19 @@ public class PayService {
      * @param orderId 订单号
      * @param amount  金额数
      */
-    public PayResponse create(String orderId, BigDecimal amount, String orderName, Long userId) {
+    public PayResponse create(Long orderId, BigDecimal amount, String orderName, Long userId) {
         // 写入数据库
         GptPayInfo gptPayInfo = new GptPayInfo();
-        gptPayInfo.setOrderNo(Long.valueOf(orderId));
+        gptPayInfo.setOrderNo(orderId);
         gptPayInfo.setPlatformStatus(OrderStatusEnum.NOTPAY.name());
         gptPayInfo.setPayAmount(amount);
-        gptPayInfo.setUserId(12312313L);
         gptPayInfo.setUserId(userId);
         gptPayInfoMapper.insertSelective(gptPayInfo);
 
 
         PayRequest request = new PayRequest();
         request.setOrderName(orderName);
-        request.setOrderId(orderId);
+        request.setOrderId(String.valueOf(orderId));
         request.setOrderAmount(amount.doubleValue());
         request.setPayTypeEnum(BestPayTypeEnum.WXPAY_NATIVE);
 
@@ -104,7 +121,8 @@ public class PayService {
         BigDecimal amount;
         switch (vipPayWithReq.getNum()) {
             case 1:
-                amount = new BigDecimal("35.00");
+//                amount = new BigDecimal("35.00");
+                amount = new BigDecimal("0.01");
                 break;
             case 2:
                 amount = new BigDecimal("70.00");
@@ -119,7 +137,7 @@ public class PayService {
         }
         String orderName = "GPTalk 会员充值";
         Long orderNo = snowFlakeIdWorker.nextId();
-        PayResponse payResponse = create(String.valueOf(orderNo), amount, orderName, vipPayWithReq.getUserId());
+        PayResponse payResponse = create(orderNo, amount, orderName, vipPayWithReq.getUserId());
 
         VipPayWithResp vipPayWithResp = new VipPayWithResp();
         vipPayWithResp.setCodeUrl(payResponse.getCodeUrl());
@@ -193,6 +211,55 @@ public class PayService {
             return;
         }
 
+        // 是否是被邀请的
+        vipToUsersInvite(userId, num);
+
         resp.setMessage("充值成功!");
+    }
+
+    public void vipToUsersInvite(Long userId, Integer num) {
+        List<GptInvitee> gptInviteeList = gptInviteeMapperCust.selectByInviteeId(userId);
+
+        if (gptInviteeList == null) {
+           return;
+        }
+        GptInvitee gptInvitee = gptInviteeList.get(0);
+        Long inviterId = gptInvitee.getInviterId();
+        GptInviter gptInviter = gptInviterMapper.selectByPrimaryKey(inviterId);
+
+        // 更新 Inviter 佣金数
+        BigDecimal earnRate = new BigDecimal(gptInviter.getEarnRate()).divide(new BigDecimal(100), 2, RoundingMode.HALF_UP);
+        log.info("eranRate: {}", earnRate);
+        BigDecimal earnBalance = earnRate.multiply(numToPayCount(num));
+        gptInviter.setInviteBalance(gptInviter.getInviteBalance().add(earnBalance));
+        gptInviterMapper.updateByPrimaryKey(gptInviter);
+
+        // 插入 Invitee 操作记录
+        gptInvitee.setId(null);
+        gptInvitee.setKind(1);
+        gptInvitee.setCount(String.valueOf(earnBalance.setScale(2, RoundingMode.HALF_UP)));
+        gptInvitee.setCreateTime(new Date());
+        gptInviteeMapper.insert(gptInvitee);
+    }
+
+    private BigDecimal numToPayCount(Integer num) {
+        BigDecimal amount;
+        switch (num) {
+            case 1:
+                amount = new BigDecimal("35.00");
+//                amount = new BigDecimal("0.01");
+                break;
+            case 2:
+                amount = new BigDecimal("70.00");
+                break;
+            case 3:
+                amount = new BigDecimal("200.00");
+                break;
+            default:
+                log.error("金额选择错误");
+                return new BigDecimal("0.00");
+        }
+
+        return amount;
     }
 }

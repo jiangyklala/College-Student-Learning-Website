@@ -1,25 +1,26 @@
 package com.jxm.yiti.resp;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class GptInviterResp {
     private Integer invitedCount;
 
-    private Integer inviteBalance;
+    private BigDecimal inviteBalance;
 
     private Integer earnRate;
 
-    private Integer earnings;
+    private BigDecimal earnings;
 
     public Integer getInvitedCount() {
         return invitedCount;
     }
 
-    public Integer getInviteBalance() {
+    public BigDecimal getInviteBalance() {
         return inviteBalance;
     }
 
-    public void setInviteBalance(Integer inviteBalance) {
+    public void setInviteBalance(BigDecimal inviteBalance) {
         this.inviteBalance = inviteBalance;
     }
 
@@ -35,11 +36,11 @@ public class GptInviterResp {
         this.invitedCount = invitedCount;
     }
 
-    public Integer getEarnings() {
+    public BigDecimal getEarnings() {
         return earnings;
     }
 
-    public void setEarnings(Integer earnings) {
+    public void setEarnings(BigDecimal earnings) {
         this.earnings = earnings;
     }
 

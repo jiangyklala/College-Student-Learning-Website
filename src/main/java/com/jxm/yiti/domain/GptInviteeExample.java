@@ -382,52 +382,62 @@ public class GptInviteeExample {
             return (Criteria) this;
         }
 
-        public Criteria andCountEqualTo(Integer value) {
+        public Criteria andCountEqualTo(String value) {
             addCriterion("`count` =", value, "count");
             return (Criteria) this;
         }
 
-        public Criteria andCountNotEqualTo(Integer value) {
+        public Criteria andCountNotEqualTo(String value) {
             addCriterion("`count` <>", value, "count");
             return (Criteria) this;
         }
 
-        public Criteria andCountGreaterThan(Integer value) {
+        public Criteria andCountGreaterThan(String value) {
             addCriterion("`count` >", value, "count");
             return (Criteria) this;
         }
 
-        public Criteria andCountGreaterThanOrEqualTo(Integer value) {
+        public Criteria andCountGreaterThanOrEqualTo(String value) {
             addCriterion("`count` >=", value, "count");
             return (Criteria) this;
         }
 
-        public Criteria andCountLessThan(Integer value) {
+        public Criteria andCountLessThan(String value) {
             addCriterion("`count` <", value, "count");
             return (Criteria) this;
         }
 
-        public Criteria andCountLessThanOrEqualTo(Integer value) {
+        public Criteria andCountLessThanOrEqualTo(String value) {
             addCriterion("`count` <=", value, "count");
             return (Criteria) this;
         }
 
-        public Criteria andCountIn(List<Integer> values) {
+        public Criteria andCountLike(String value) {
+            addCriterion("`count` like", value, "count");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountNotLike(String value) {
+            addCriterion("`count` not like", value, "count");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountIn(List<String> values) {
             addCriterion("`count` in", values, "count");
             return (Criteria) this;
         }
 
-        public Criteria andCountNotIn(List<Integer> values) {
+        public Criteria andCountNotIn(List<String> values) {
             addCriterion("`count` not in", values, "count");
             return (Criteria) this;
         }
 
-        public Criteria andCountBetween(Integer value1, Integer value2) {
+        public Criteria andCountBetween(String value1, String value2) {
             addCriterion("`count` between", value1, value2, "count");
             return (Criteria) this;
         }
 
-        public Criteria andCountNotBetween(Integer value1, Integer value2) {
+        public Criteria andCountNotBetween(String value1, String value2) {
             addCriterion("`count` not between", value1, value2, "count");
             return (Criteria) this;
         }

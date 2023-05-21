@@ -4,9 +4,9 @@
   <resultMap id="BaseResultMap" type="com.jxm.yiti.domain.GptInviter">
     <id column="inviter_id" jdbcType="BIGINT" property="inviterId" />
     <result column="invited_count" jdbcType="INTEGER" property="invitedCount" />
-    <result column="invite_balance" jdbcType="INTEGER" property="inviteBalance" />
+    <result column="invite_balance" jdbcType="DECIMAL" property="inviteBalance" />
     <result column="earn_rate" jdbcType="INTEGER" property="earnRate" />
-    <result column="earnings" jdbcType="INTEGER" property="earnings" />
+    <result column="earnings" jdbcType="DECIMAL" property="earnings" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -102,8 +102,8 @@
   <insert id="insert" parameterType="com.jxm.yiti.domain.GptInviter">
     insert into gpt_inviter (inviter_id, invited_count, invite_balance, 
       earn_rate, earnings)
-    values (#{inviterId,jdbcType=BIGINT}, #{invitedCount,jdbcType=INTEGER}, #{inviteBalance,jdbcType=INTEGER}, 
-      #{earnRate,jdbcType=INTEGER}, #{earnings,jdbcType=INTEGER})
+    values (#{inviterId,jdbcType=BIGINT}, #{invitedCount,jdbcType=INTEGER}, #{inviteBalance,jdbcType=DECIMAL}, 
+      #{earnRate,jdbcType=INTEGER}, #{earnings,jdbcType=DECIMAL})
   </insert>
   <insert id="insertSelective" parameterType="com.jxm.yiti.domain.GptInviter">
     insert into gpt_inviter
@@ -132,13 +132,13 @@
         #{invitedCount,jdbcType=INTEGER},
       </if>
       <if test="inviteBalance != null">
-        #{inviteBalance,jdbcType=INTEGER},
+        #{inviteBalance,jdbcType=DECIMAL},
       </if>
       <if test="earnRate != null">
         #{earnRate,jdbcType=INTEGER},
       </if>
       <if test="earnings != null">
-        #{earnings,jdbcType=INTEGER},
+        #{earnings,jdbcType=DECIMAL},
       </if>
     </trim>
   </insert>
@@ -158,13 +158,13 @@
         invited_count = #{record.invitedCount,jdbcType=INTEGER},
       </if>
       <if test="record.inviteBalance != null">
-        invite_balance = #{record.inviteBalance,jdbcType=INTEGER},
+        invite_balance = #{record.inviteBalance,jdbcType=DECIMAL},
       </if>
       <if test="record.earnRate != null">
         earn_rate = #{record.earnRate,jdbcType=INTEGER},
       </if>
       <if test="record.earnings != null">
-        earnings = #{record.earnings,jdbcType=INTEGER},
+        earnings = #{record.earnings,jdbcType=DECIMAL},
       </if>
     </set>
     <if test="_parameter != null">
@@ -175,9 +175,9 @@
     update gpt_inviter
     set inviter_id = #{record.inviterId,jdbcType=BIGINT},
       invited_count = #{record.invitedCount,jdbcType=INTEGER},
-      invite_balance = #{record.inviteBalance,jdbcType=INTEGER},
+      invite_balance = #{record.inviteBalance,jdbcType=DECIMAL},
       earn_rate = #{record.earnRate,jdbcType=INTEGER},
-      earnings = #{record.earnings,jdbcType=INTEGER}
+      earnings = #{record.earnings,jdbcType=DECIMAL}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -189,13 +189,13 @@
         invited_count = #{invitedCount,jdbcType=INTEGER},
       </if>
       <if test="inviteBalance != null">
-        invite_balance = #{inviteBalance,jdbcType=INTEGER},
+        invite_balance = #{inviteBalance,jdbcType=DECIMAL},
       </if>
       <if test="earnRate != null">
         earn_rate = #{earnRate,jdbcType=INTEGER},
       </if>
       <if test="earnings != null">
-        earnings = #{earnings,jdbcType=INTEGER},
+        earnings = #{earnings,jdbcType=DECIMAL},
       </if>
     </set>
     where inviter_id = #{inviterId,jdbcType=BIGINT}
@@ -203,9 +203,9 @@
   <update id="updateByPrimaryKey" parameterType="com.jxm.yiti.domain.GptInviter">
     update gpt_inviter
     set invited_count = #{invitedCount,jdbcType=INTEGER},
-      invite_balance = #{inviteBalance,jdbcType=INTEGER},
+      invite_balance = #{inviteBalance,jdbcType=DECIMAL},
       earn_rate = #{earnRate,jdbcType=INTEGER},
-      earnings = #{earnings,jdbcType=INTEGER}
+      earnings = #{earnings,jdbcType=DECIMAL}
     where inviter_id = #{inviterId,jdbcType=BIGINT}
   </update>
 </mapper>

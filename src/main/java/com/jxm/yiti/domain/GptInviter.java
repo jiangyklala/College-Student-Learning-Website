@@ -1,15 +1,17 @@
 package com.jxm.yiti.domain;
 
+import java.math.BigDecimal;
+
 public class GptInviter {
     private Long inviterId;
 
     private Integer invitedCount;
 
-    private Integer inviteBalance;
+    private BigDecimal inviteBalance;
 
     private Integer earnRate;
 
-    private Integer earnings;
+    private BigDecimal earnings;
 
     public Long getInviterId() {
         return inviterId;
@@ -27,11 +29,11 @@ public class GptInviter {
         this.invitedCount = invitedCount;
     }
 
-    public Integer getInviteBalance() {
+    public BigDecimal getInviteBalance() {
         return inviteBalance;
     }
 
-    public void setInviteBalance(Integer inviteBalance) {
+    public void setInviteBalance(BigDecimal inviteBalance) {
         this.inviteBalance = inviteBalance;
     }
 
@@ -43,11 +45,11 @@ public class GptInviter {
         this.earnRate = earnRate;
     }
 
-    public Integer getEarnings() {
+    public BigDecimal getEarnings() {
         return earnings;
     }
 
-    public void setEarnings(Integer earnings) {
+    public void setEarnings(BigDecimal earnings) {
         this.earnings = earnings;
     }
 

@@ -13,5 +13,5 @@ public interface GptPayInfoMapperCust {
      * @param orderNo 订单号
      * @return 某个订单信息
      */
-    GptPayInfo selectByOrderNo(Long orderNo);
+    GptPayInfo selectByOrderNo(@Param("order_no") Long orderNo);
 }
