@@ -6,13 +6,13 @@
           <p style="float: left; color: rgb(156, 160, 164); ">当前用户类型: &nbsp;&nbsp;</p>
         </div>
         <div >
-          <p style="float: left; color: rgb(151, 188, 255); font-size: 30px;">{{getUserTypeName(userInfo.type)}}&nbsp;&nbsp;&nbsp;&nbsp;</p>
+          <p style="float: left; color: rgb(151, 188, 255); font-size: 30px;">{{userTypeName}}&nbsp;&nbsp;&nbsp;&nbsp;</p>
         </div>
         <div v-if="userInfo.type === 2">
           <p style="float: left; color: rgb(156, 160, 164); ">剩余时间: &nbsp;&nbsp;</p>
         </div>
         <div v-if="userInfo.type === 2">
-          <p style="float: left; color: rgb(151, 188, 255); font-size: 30px;">{{userInfo.remainDays}} 天</p>
+          <p style="float: left; color: rgb(151, 188, 255); font-size: 30px;">{{userRemainDays}} 天</p>
         </div>
       </div>
 
@@ -51,14 +51,14 @@
     <p style="float: left; color: rgb(156, 160, 164)">您要充值的是: </p>
     <br>
     <br>
-    <p style="float: left; color: rgb(151, 188, 255); font-size: 25px;">{{getUserTypeName(chooseValue)}}</p>
+    <p style="float: left; color: rgb(151, 188, 255); font-size: 25px;">{{userTypeName}}</p>
     <br>
     <br>
     <br>
     <p style="float: left; color: rgb(156, 160, 164)">需要支付: </p>
     <br>
     <br>
-    <p style="float: left; color: rgb(151, 188, 255); font-size: 25px;">{{getUserPayCount(chooseValue)}} 元</p>
+    <p style="float: left; color: rgb(151, 188, 255); font-size: 25px;">{{userPayCount}} 元</p>
     <br>
     <br>
   </a-modal>
@@ -71,6 +71,7 @@ import {computed, defineComponent, onMounted, ref, watch} from "vue";
 import {message} from "ant-design-vue";
 import store from "@/store";
 import {useRouter} from "vue-router";
+import {Tool} from "@/utils/tool";
 
 export default defineComponent ({
   name: "Pay",
@@ -98,6 +99,7 @@ export default defineComponent ({
 
 
       confirmModalVisible.value = true;
+      userPayCount.value = getUserPayCount(chooseValue.value);
       // console.log(chooseValue.value);
     }
 
@@ -164,7 +166,13 @@ export default defineComponent ({
     //   }
     // });
 
+
+
     const router = useRouter();
+
+    const userRemainDays = ref("null");
+
+    const userPayCount = ref(0);
 
     const goToPayingPage = (chooseValue : any) => {
       // console.log(chooseValue);
@@ -178,7 +186,17 @@ export default defineComponent ({
 
 
     onMounted(() => {
-      // console.log("lala");
+      if (Tool.isEmpty(userInfo.value)) {
+        watch(userInfo, (newValue: any, oldValue: any) => {
+          userTypeName.value = getUserTypeName(newValue.type);
+          userRemainDays.value = newValue.remainDays;
+        });
+      } else {
+        userTypeName.value = getUserTypeName(userInfo.value.type);
+        userRemainDays.value = userInfo.value.remainDays;
+      }
+
+
     })
 
     return {
@@ -186,6 +204,8 @@ export default defineComponent ({
       userInfo,
       confirmModalVisible,
       userTypeName,
+      userRemainDays,
+      userPayCount,
 
       getUserTypeName,
       payWithBtnClick,
