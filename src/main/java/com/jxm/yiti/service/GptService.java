@@ -11,6 +11,7 @@ import com.jxm.yiti.domain.ChatHistoryExample;
 import com.jxm.yiti.domain.DownloadList;
 import com.jxm.yiti.mapper.ChatHistoryContentMapper;
 import com.jxm.yiti.mapper.ChatHistoryMapper;
+import com.jxm.yiti.mapper.cust.ChatHistoryMapperCust;
 import com.jxm.yiti.req.ChatCplQueryReq;
 import com.jxm.yiti.resp.ChatCplQueryResp;
 import com.jxm.yiti.utils.SnowFlakeIdWorker;
@@ -48,6 +49,11 @@ public class GptService {
     @Resource
     private ChatHistoryContentMapper chatHistoryContentMapper;
 
+    @Resource
+    ChatHistoryMapperCust chatHistoryMapperCust;
+
+    private static final Integer REMAINCOUNT = 20;
+
     private static final Logger LOG = LoggerFactory.getLogger(GptService.class);
 
     /**
@@ -61,12 +67,16 @@ public class GptService {
         criteria.andUserIdEqualTo(userID);
 
         try {
-            PageHelper.startPage(1, 20, true);
+            PageHelper.startPage(1, REMAINCOUNT, true);
             res = chatHistoryMapper.selectByExample(chatHistoryExample);
             PageInfo<ChatHistory> downloadListPageInfo = new PageInfo<>(res);
             LOG.info("当前页: " + downloadListPageInfo.getPageNum()
                     + ", 总页数: " + downloadListPageInfo.getPages()
                     + " , 总记录数: " + downloadListPageInfo.getTotal());
+
+            if (downloadListPageInfo.getTotal() > REMAINCOUNT) {
+                chatHistoryMapperCust.deleteChatHistory(userID, REMAINCOUNT);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

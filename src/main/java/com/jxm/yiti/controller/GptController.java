@@ -3,6 +3,7 @@ package com.jxm.yiti.controller;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.jxm.yiti.domain.ChatHistory;
+import com.jxm.yiti.mapper.cust.ChatHistoryMapperCust;
 import com.jxm.yiti.req.ChatCplQueryReq;
 import com.jxm.yiti.resp.ChatCplQueryResp;
 import com.jxm.yiti.resp.CommonResp;
