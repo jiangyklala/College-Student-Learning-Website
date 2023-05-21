@@ -19,7 +19,10 @@
         @after-visible-change="afterVisibleChange"
     >
       <span v-for="item in historyList" v-bind:key="item">
-        <a style="font-size: 18px; padding-left: 13px" @click="historyItemClick(item.id)">--> {{ item.title }}</a><br>
+        <edit-two-tone />
+        <a style="font-size: 18px; padding-left: 13px" @click="historyItemClick(item.id)">{{ item.title }}</a>
+        <a-divider style="margin: 1px 0"/>
+        <br>
       </span>
     </a-drawer>
 
