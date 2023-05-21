@@ -1,4 +1,4 @@
-import {createRouter, createWebHistory, RouteRecordRaw} from 'vue-router'
+import {createRouter, createWebHistory, NavigationGuardNext, RouteLocationNormalized, RouteRecordRaw} from 'vue-router'
 import Home from "@/views/Home.vue";
 import Chatgpt from "@/views/chatgpt/Chatgpt.vue";
 import Image from "@/views/chatgpt/Image.vue";
@@ -110,5 +110,15 @@ const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
     routes
 })
+
+router.beforeEach((to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
+    if (to.name === 'Paying' && from.name !== 'Pay') {
+        // 如果目标页面是TargetPage，但来源页面不是SourcePage，则重定向到来源页面
+        next({ name: 'Pay' });
+    } else {
+        // 其他情况继续导航
+        next();
+    }
+});
 
 export default router
