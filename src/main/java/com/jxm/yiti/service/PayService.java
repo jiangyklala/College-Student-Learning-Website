@@ -9,7 +9,6 @@ import com.jxm.yiti.mapper.GptInviterMapper;
 import com.jxm.yiti.mapper.GptPayInfoMapper;
 import com.jxm.yiti.mapper.UserMapper;
 import com.jxm.yiti.mapper.cust.GptInviteeMapperCust;
-import com.jxm.yiti.mapper.cust.GptInviterMapperCust;
 import com.jxm.yiti.mapper.cust.GptPayInfoMapperCust;
 import com.jxm.yiti.req.CheckPayReq;
 import com.jxm.yiti.req.VipPayWithReq;
@@ -121,8 +120,8 @@ public class PayService {
         BigDecimal amount;
         switch (vipPayWithReq.getNum()) {
             case 1:
-//                amount = new BigDecimal("35.00");
-                amount = new BigDecimal("0.01");
+                amount = new BigDecimal("35.00");
+//                amount = new BigDecimal("0.01");
                 break;
             case 2:
                 amount = new BigDecimal("70.00");

@@ -277,6 +277,26 @@ CREATE TABLE `chat_history` (
 
 ALTER TABLE chat_history ADD total_token bigint;
 
+# 保留按 content_id 字段排序的前 20 条数据，并删除其它数据
+DELETE
+FROM chat_history
+WHERE user_id = 2658810919845888 and content_id NOT IN (
+    SELECT content_id
+    FROM (
+             SELECT content_id
+             FROM chat_history
+             where user_id = 2658810919845888
+             ORDER BY content_id DESC
+             LIMIT 20
+         ) AS subquery
+);
+
+SELECT *
+FROM chat_history
+WHERE user_id = 2658810919845888
+ORDER BY content_id DESC
+LIMIT 20;
+
 # chatGPT 用户历史查询信息记录的 content 字段
 DROP TABLE IF EXISTS `chat_history_content`;
 
@@ -301,17 +321,26 @@ update user set balance = balance + 6 where id = 2631422762942464;
 # chatGPT 信息记录表
 DROP TABLE IF EXISTS `chat_record_info`;
 
-CREATE TABLE `chat_record_info` (
-                                `id` bigint AUTO_INCREMENT NOT NULL,
-                                `date` varchar(50) DEFAULT (NULL),
-                                `ntimes` varchar(50) NOT NULL DEFAULT (0),
-                                `ntokens` varchar(50) NOT NULL DEFAULT (0),
-                                `vtimes` varchar(50) NOT NULL DEFAULT (0),
-                                `vtokens` varchar(50) NOT NULL DEFAULT (0),
-                                PRIMARY KEY (`id`)) engine = innodb DEFAULT charset = utf8mb4 COMMENT = 'chatGPT 用户历史查询信息记录';
+create table chat_record_info
+(
+    id      bigint auto_increment
+        primary key,
+    date    varchar(50) default (NULL) null,
+    ntimes  varchar(50) default (0)    not null,
+    ntokens varchar(50) default (0)    not null,
+    vtimes  varchar(50) default (0)    not null,
+    vtokens varchar(50) default (0)    not null,
+    iVtimes varchar(50) default (0)    not null
+)
+    comment 'chatGPT 用户历史查询信息记录' charset = utf8mb4;
 
-ALTER TABLE chat_record_info ADD iVtimes varchar(50) NOT NULL DEFAULT (0);
-ALTER TABLE chat_record_info DROP iVtimes;
+ALTER TABLE chat_record_info CHANGE ntimes ntimes varchar(50) default (0);
+ALTER TABLE chat_record_info CHANGE ntokens ntokens varchar(50) default (0);
+ALTER TABLE chat_record_info CHANGE vtimes vtimes varchar(50) default (0);
+ALTER TABLE chat_record_info CHANGE vtokens vtokens varchar(50) default (0);
+ALTER TABLE chat_record_info CHANGE iVtimes iVtimes varchar(50) default (0);
+
+DESCRIBE chat_record_info;
 
 
 # chatGPT 邀请人总信息表
@@ -324,6 +353,10 @@ CREATE TABLE `gpt_inviter` (
                                 `earn_rate` int default 20,
                                 `earnings` int default 0,
                                 PRIMARY KEY (`inviter_id`)) engine = innodb DEFAULT charset = utf8mb4 COMMENT = 'chatGPT 邀请人总信息表';
+
+ALTER TABLE gpt_inviter CHANGE invite_balance invite_balance decimal(20, 2) default 0.00 COMMENT '待提现佣金';
+ALTER TABLE gpt_inviter CHANGE earnings earnings decimal(20, 2) default 0.00 COMMENT '已提现金额';
+
 
 # chatGPT 邀请表
 DROP TABLE IF EXISTS `gpt_invite_code`;
@@ -351,6 +384,8 @@ CREATE TABLE `gpt_invitee` (
 
 ALTER TABLE gpt_invitee ADD inviter_name varchar(50) NOT NULL;
 ALTER TABLE gpt_invitee DROP inviter_name;
+ALTER TABLE gpt_invitee CHANGE count count varchar(10) default '0' COMMENT '数额';
+
 
 # GPT 支付信息表
 DROP TABLE IF EXISTS `gpt_pay_info`;

@@ -54,7 +54,7 @@ public class WebSocketServer {
      */
     @OnError
     public void onError(Session session, Throwable error) {
-        LOG.error("发生错误", error);
+        LOG.error("WebSocket 发生错误");
     }
 
     /**

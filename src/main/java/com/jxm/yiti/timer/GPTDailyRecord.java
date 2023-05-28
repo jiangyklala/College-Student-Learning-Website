@@ -112,7 +112,7 @@ public class GPTDailyRecord {
 
             try {
                 chatRecordInfo.setDate(yesterday);
-                chatRecordInfoMapper.insert(chatRecordInfo);
+                chatRecordInfoMapper.insertSelective(chatRecordInfo);
             } catch (RuntimeException e) {
                 LOG.error("更新记录失败", e);
             }
