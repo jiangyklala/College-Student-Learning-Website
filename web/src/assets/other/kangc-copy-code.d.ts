@@ -1,0 +1,1 @@
+declare module '@kangc/v-md-editor/lib/plugins/copy-code/index';

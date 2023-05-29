@@ -9,10 +9,24 @@ import axios from "axios";
 import VideoPlayer from '@videojs-player/vue';
 import mavonEditor from 'mavon-editor';
 import 'mavon-editor/dist/css/index.css';
+import VueMarkdownEditor from '@kangc/v-md-editor';
+// 引入你所使用的主题 此处以 github 主题为例
+import githubTheme from '@kangc/v-md-editor/lib/theme/github';
+import '@kangc/v-md-editor/lib/theme/style/github.css';
+import createCopyCodePlugin from '@kangc/v-md-editor/lib/plugins/copy-code/index';
+import '@kangc/v-md-editor/lib/plugins/copy-code/copy-code.css';
+// highlightjs
+import hljs from 'highlight.js';
+
+VueMarkdownEditor.use(githubTheme, {
+    Hljs: hljs,
+}).use(createCopyCodePlugin());
+
+
 axios.defaults.baseURL = process.env.VUE_APP_SERVER;
 
 const app = createApp(App);
-app.use(store).use(router).use(Antd).use(VideoPlayer).use(mavonEditor).mount('#app');
+app.use(store).use(router).use(Antd).use(VideoPlayer).use(mavonEditor).use(VueMarkdownEditor).mount('#app');
 
 
 // 全局使用图标
@@ -44,6 +58,5 @@ if (process.env.NODE_ENV === "development") {
     console.log('服务端:', process.env.VUE_APP_SERVER);
     console.log('WS 服务端:', process.env.VUE_APP_WS_SERVER);
 }
-
 
 

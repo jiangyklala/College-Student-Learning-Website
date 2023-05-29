@@ -4,15 +4,9 @@
 
     <div class="content">
       <div class="text">
-        <div :innerHTML="contentMD"
-             id="my-editor-content-view"
-             class="my-editor-content-view"
-             @click="copyToClipboard">
-        </div>
-
+        <v-md-editor v-model="markdownText" @copy-code-success="handleCopyCodeSuccess" mode="preview"/>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -20,8 +14,6 @@
 
 import {defineComponent, onMounted, ref} from "vue";
 import {FireTwoTone} from '@ant-design/icons-vue';
-import mavonEditor from "mavon-editor";
-import 'mavon-editor/dist/css/index.css';
 import {message} from "ant-design-vue";
 
 
@@ -31,23 +23,11 @@ export default defineComponent({
   props: ['queryStr', 'userID', 'historyID','totalTokens', 'isStatic', 'userType'],
   components: {
     FireTwoTone,
-    mavonEditor,
   },
   setup: function (props: any, {emit}) {
 
-    const mavonEditorRef = ref();
-
-    const contentMD = ref("");      // 显示出来的经 markdown 渲染过的文本
-    const contentPlain = ref("");   // 返回答案的原始文本
     const eventSource = ref();
-
-    const copyToClipboard = () => {
-      navigator.clipboard.writeText(contentPlain.value.replace(/<br>/g, '\n')).then(() => {
-        message.success('内容已复制到剪贴板');
-      }, () => {
-        console.error('复制失败');
-      });
-    };
+    const markdownText = ref("");
 
     const openEventListener = () => {
       console.log("open!!");
@@ -65,11 +45,7 @@ export default defineComponent({
         eventSource.value.close();
         removeListen();
       } else {
-        // 将 \n 替换成 <br> 以正确显示换行
-        contentPlain.value += resJson.message.replace(/\n/g, '<br>');
-
-        // 进行 markdown 渲染时需要再将其转换过来
-        contentMD.value = mavonEditorRef.value.render(contentPlain.value.replace(/<br>/g, '\n'));
+        markdownText.value += resJson.message;
       }
     };
 
@@ -110,14 +86,15 @@ export default defineComponent({
     }
 
     const showMessage = () => {
-      contentPlain.value =  props.queryStr;      // 粘贴板
-      contentMD.value = mavonEditorRef.value.render(props.queryStr);
+      markdownText.value = props.queryStr;
+    }
+
+    const handleCopyCodeSuccess = () => {
+      message.success("Copy Success!")
     }
 
 
     onMounted(() => {
-      mavonEditorRef.value = mavonEditor.markdownIt;
-
       // 判断是 [静态消息] 还是需要监听接口 (动态)
       if (props.isStatic) {
         showMessage();
@@ -127,8 +104,8 @@ export default defineComponent({
     })
 
     return {
-      contentMD,
-      copyToClipboard,
+      markdownText,
+      handleCopyCodeSuccess,
     }
 
   }
@@ -160,66 +137,5 @@ export default defineComponent({
 * {
   margin-bottom: 0 !important;
 }
-
-/*p {*/
-/*  margin-top: 0;*/
-/*  margin-bottom: 12em !important;*/
-/*  */
-/*}*/
-
-.my-editor-content-view {
-  padding: 0 10px;
-}
-
-.my-editor-content-view p, li {
-  white-space: pre-wrap; /* 保留空格 */
-  font-size: 14px !important;
-  /*margin-top: 0;*/
-  /*margin-bottom: 0em !important;*/
-}
-
-.my-editor-content-view blockquote {
-  border-left: 8px solid #d0e5f2;
-  padding: 10px 10px;
-  margin: 10px 0;
-  background-color: #f1f1f1;
-}
-
-.my-editor-content-view code {
-  font-family: monospace;
-  background-color: #eee;
-  padding: 3px;
-  border-radius: 3px;
-}
-
-.my-editor-content-view pre > code {
-  display: block;
-  padding: 10px;
-}
-
-.my-editor-content-view table {
-  border-collapse: collapse;
-}
-
-.my-editor-content-view td,
-.my-editor-content-view th {
-  border: 1px solid #ccc;
-  min-width: 50px;
-  height: 20px;
-}
-
-.my-editor-content-view th {
-  background-color: #f1f1f1;
-}
-
-.my-editor-content-view ul,
-.my-editor-content-view ol {
-  padding-left: 20px;
-}
-
-.my-editor-content-view input[type="checkbox"] {
-  margin-right: 5px;
-}
-
 
 </style>
