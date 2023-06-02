@@ -25,7 +25,7 @@ public class GPTDailyRecord {
     ChatRecordInfoMapper chatRecordInfoMapper;
 
     @ConditionalOnProperty(
-            value = "gptDailyRecord.enabled",
+            value = "gpt.daily.record.enabled",
             havingValue = "true",
             matchIfMissing = false
     )
