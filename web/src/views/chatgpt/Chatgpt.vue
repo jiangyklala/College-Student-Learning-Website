@@ -45,16 +45,19 @@
                 enter-button
                 class="input-search"
                 :autoSize="{ minRows: 2, maxRows: 6 }"/>
-    <a-button type="primary"
-              shape="circle"
-              size="large"
-              :disabled="searchLoading"
-              class="search-icon-btn"
-              @click="onSearch(gptQuestion)">
-      <template #icon>
-        <rocket-two-tone class="search-icon"/>
-      </template>
-    </a-button>
+    <a-tooltip title="⌘/⌃ + ⏎ ">
+      <a-button type="primary"
+                shape="circle"
+                size="large"
+                :disabled="searchLoading"
+                class="search-icon-btn"
+                @click="onSearch(gptQuestion)">
+        <template #icon>
+          <rocket-two-tone class="search-icon"/>
+        </template>
+      </a-button>
+    </a-tooltip>
+
 
     <!--    <a-input-search-->
     <!--        class="input-search"-->
@@ -95,6 +98,12 @@ export default defineComponent({
     LeftChatItem
   },
   name: 'Chatgpt',
+  created() {
+    window.addEventListener('keydown', this.handleSendMesKeyDown);
+  },
+  beforeUnmount() {
+    window.removeEventListener('keydown', this.handleSendMesKeyDown);
+  },
   setup() {
 
     const userInfo = computed(() => {
@@ -132,6 +141,13 @@ export default defineComponent({
       selectHistoryList();
       // console.log("new historyID!!: " + historyID.value);
       // TODO
+    }
+
+    const handleSendMesKeyDown = (event: KeyboardEvent) => {
+      // console.log("keydown");
+      if ((event.ctrlKey && event.key === 'Enter') || (event.metaKey && event.key === 'Enter'))  {
+        onSearch(gptQuestion.value);
+      }
     }
 
     /**
@@ -459,6 +475,7 @@ export default defineComponent({
       showAddCredit,
       showChatGroup,
       showHelp,
+      handleSendMesKeyDown,
     };
   },
 });
@@ -580,6 +597,7 @@ export default defineComponent({
   width: 45%;
   left: 26%;
   bottom: 5%;
+  border-radius: 10px;
 }
 
 .search-icon-btn {
