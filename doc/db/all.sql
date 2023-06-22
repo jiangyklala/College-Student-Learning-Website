@@ -342,6 +342,10 @@ ALTER TABLE chat_record_info CHANGE iVtimes iVtimes varchar(50) default (0);
 
 DESCRIBE chat_record_info;
 
+ALTER TABLE chat_record_info
+    ADD CONSTRAINT uq_date UNIQUE (date);
+
+
 
 # chatGPT 邀请人总信息表
 DROP TABLE IF EXISTS `gpt_inviter`;
@@ -356,6 +360,8 @@ CREATE TABLE `gpt_inviter` (
 
 ALTER TABLE gpt_inviter CHANGE invite_balance invite_balance decimal(20, 2) default 0.00 COMMENT '待提现佣金';
 ALTER TABLE gpt_inviter CHANGE earnings earnings decimal(20, 2) default 0.00 COMMENT '已提现金额';
+
+UPDATE gpt_inviter SET earn_rate = 40; # 将所有人的佣金比例设置为 40%
 
 
 # chatGPT 邀请表
@@ -403,3 +409,20 @@ CREATE TABLE `gpt_pay_info` (
     UNIQUE KEY `uqe_platform_number` (`platform_number`),
     PRIMARY KEY (`id`)
 ) ENGINE = innodb DEFAULT CHARSET = utf8mb4 COMMENT = 'GPT 支付信息表';
+
+# 题目信息表
+DROP TABLE IF EXISTS `question_detail`;
+
+CREATE TABLE `question_detail` (
+                                `id` bigint AUTO_INCREMENT NOT NULL,
+                                `name` varchar(20) NOT NULL COMMENT '题目名称',
+                                `type` int NOT NULL COMMENT  '题目类型',
+                                `category_id1` bigint not null default 0 comment '分类1',
+                                `category_id2` bigint comment '分类2',
+                                `a` varchar(200) DEFAULT NULL COMMENT 'A',
+                                `b` varchar(200) DEFAULT NULL COMMENT 'B',
+                                `c` varchar(200) DEFAULT NULL COMMENT 'C',
+                                `d` varchar(200) DEFAULT NULL COMMENT 'D',
+                                `answer` int NOT NULL COMMENT '题目答案',
+                                PRIMARY KEY (`id`)
+) ENGINE = innodb DEFAULT CHARSET = utf8mb4 COMMENT = '题目信息表';
