@@ -220,7 +220,7 @@ export default defineComponent({
 <style scoped>
 .layout-content {
   /*position: absolute;*/
-  padding: 20px 20px 30px 80px;
+  padding: 70px 20px 30px 80px;
   width: 1200px;
   height: 100%;
   min-height: 800px;

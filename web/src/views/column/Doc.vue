@@ -111,6 +111,7 @@ export default defineComponent({
 <style>
 
 .layout-content {
+  padding-top: 70px;
   width: 1400px;
   height: 100%;
   min-height: 1100px;

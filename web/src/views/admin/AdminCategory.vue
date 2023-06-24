@@ -1,5 +1,5 @@
 <template>
-  <a-layout-content style="padding: 0px 250px">
+  <a-layout-content class="layout-content">
     <div class="body">
       <a-space direction="horizontal" size="large">
         <a-button type="primary" @click="addCategoryItem">
@@ -220,5 +220,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
+.layout-content {
+  padding: 70px 0px 250px
+}
 </style>

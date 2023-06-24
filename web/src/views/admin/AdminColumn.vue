@@ -356,13 +356,13 @@ export default defineComponent({
 <style scoped>
 
 .layout-content {
-  padding: 30px 80px;
+  padding: 70px 30px 80px;
   width: 1000px;
   height: 800px;
   min-height: 200px;
   margin: 20px auto 100px;
   overflow: hidden;
-  background: rgb(237,239,242);
+  background: rgb(237, 239, 242);
 }
 
 .column-table {

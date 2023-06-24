@@ -304,7 +304,7 @@ export default defineComponent({
 <style scoped>
 
 .layout-content {
-  padding: 30px 150px;
+  padding: 70px 150px;
   width: 1200px;
   height: 100%;
   min-height: 1000px;
@@ -323,10 +323,6 @@ export default defineComponent({
 .pagination {
   text-align: center;
   padding-top: 10px;
-}
-
-.layout-content {
-  padding: 10px 250px;
 }
 
 .thunderbolt {

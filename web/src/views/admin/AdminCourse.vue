@@ -1,5 +1,5 @@
 <template>
-  <a-layout-content style="padding: 0 250px" class="layout-content">
+  <a-layout-content class="layout-content">
     <div class="body">
       <a-space direction="horizontal" size="large">
         <div class="course-list-info">
@@ -549,8 +549,9 @@ export default defineComponent({
 </script>
 
 <style scoped>
+
 .layout-content {
-  padding: 30px 150px;
+  padding: 70px 30px 150px;
   width: 1200px;
   height: 1020px;
   min-height: 200px;
