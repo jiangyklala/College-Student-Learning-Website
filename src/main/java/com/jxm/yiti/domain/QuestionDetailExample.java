@@ -414,283 +414,283 @@ public class QuestionDetailExample {
             return (Criteria) this;
         }
 
-        public Criteria andAIsNull() {
-            addCriterion("`a` is null");
+        public Criteria andOptionAIsNull() {
+            addCriterion("option_a is null");
             return (Criteria) this;
         }
 
-        public Criteria andAIsNotNull() {
-            addCriterion("`a` is not null");
+        public Criteria andOptionAIsNotNull() {
+            addCriterion("option_a is not null");
             return (Criteria) this;
         }
 
-        public Criteria andAEqualTo(String value) {
-            addCriterion("`a` =", value, "a");
+        public Criteria andOptionAEqualTo(String value) {
+            addCriterion("option_a =", value, "optionA");
             return (Criteria) this;
         }
 
-        public Criteria andANotEqualTo(String value) {
-            addCriterion("`a` <>", value, "a");
+        public Criteria andOptionANotEqualTo(String value) {
+            addCriterion("option_a <>", value, "optionA");
             return (Criteria) this;
         }
 
-        public Criteria andAGreaterThan(String value) {
-            addCriterion("`a` >", value, "a");
+        public Criteria andOptionAGreaterThan(String value) {
+            addCriterion("option_a >", value, "optionA");
             return (Criteria) this;
         }
 
-        public Criteria andAGreaterThanOrEqualTo(String value) {
-            addCriterion("`a` >=", value, "a");
+        public Criteria andOptionAGreaterThanOrEqualTo(String value) {
+            addCriterion("option_a >=", value, "optionA");
             return (Criteria) this;
         }
 
-        public Criteria andALessThan(String value) {
-            addCriterion("`a` <", value, "a");
+        public Criteria andOptionALessThan(String value) {
+            addCriterion("option_a <", value, "optionA");
             return (Criteria) this;
         }
 
-        public Criteria andALessThanOrEqualTo(String value) {
-            addCriterion("`a` <=", value, "a");
+        public Criteria andOptionALessThanOrEqualTo(String value) {
+            addCriterion("option_a <=", value, "optionA");
             return (Criteria) this;
         }
 
-        public Criteria andALike(String value) {
-            addCriterion("`a` like", value, "a");
+        public Criteria andOptionALike(String value) {
+            addCriterion("option_a like", value, "optionA");
             return (Criteria) this;
         }
 
-        public Criteria andANotLike(String value) {
-            addCriterion("`a` not like", value, "a");
+        public Criteria andOptionANotLike(String value) {
+            addCriterion("option_a not like", value, "optionA");
             return (Criteria) this;
         }
 
-        public Criteria andAIn(List<String> values) {
-            addCriterion("`a` in", values, "a");
+        public Criteria andOptionAIn(List<String> values) {
+            addCriterion("option_a in", values, "optionA");
             return (Criteria) this;
         }
 
-        public Criteria andANotIn(List<String> values) {
-            addCriterion("`a` not in", values, "a");
+        public Criteria andOptionANotIn(List<String> values) {
+            addCriterion("option_a not in", values, "optionA");
             return (Criteria) this;
         }
 
-        public Criteria andABetween(String value1, String value2) {
-            addCriterion("`a` between", value1, value2, "a");
+        public Criteria andOptionABetween(String value1, String value2) {
+            addCriterion("option_a between", value1, value2, "optionA");
             return (Criteria) this;
         }
 
-        public Criteria andANotBetween(String value1, String value2) {
-            addCriterion("`a` not between", value1, value2, "a");
+        public Criteria andOptionANotBetween(String value1, String value2) {
+            addCriterion("option_a not between", value1, value2, "optionA");
             return (Criteria) this;
         }
 
-        public Criteria andBIsNull() {
-            addCriterion("b is null");
+        public Criteria andOptionBIsNull() {
+            addCriterion("option_b is null");
             return (Criteria) this;
         }
 
-        public Criteria andBIsNotNull() {
-            addCriterion("b is not null");
+        public Criteria andOptionBIsNotNull() {
+            addCriterion("option_b is not null");
             return (Criteria) this;
         }
 
-        public Criteria andBEqualTo(String value) {
-            addCriterion("b =", value, "b");
+        public Criteria andOptionBEqualTo(String value) {
+            addCriterion("option_b =", value, "optionB");
             return (Criteria) this;
         }
 
-        public Criteria andBNotEqualTo(String value) {
-            addCriterion("b <>", value, "b");
+        public Criteria andOptionBNotEqualTo(String value) {
+            addCriterion("option_b <>", value, "optionB");
             return (Criteria) this;
         }
 
-        public Criteria andBGreaterThan(String value) {
-            addCriterion("b >", value, "b");
+        public Criteria andOptionBGreaterThan(String value) {
+            addCriterion("option_b >", value, "optionB");
             return (Criteria) this;
         }
 
-        public Criteria andBGreaterThanOrEqualTo(String value) {
-            addCriterion("b >=", value, "b");
+        public Criteria andOptionBGreaterThanOrEqualTo(String value) {
+            addCriterion("option_b >=", value, "optionB");
             return (Criteria) this;
         }
 
-        public Criteria andBLessThan(String value) {
-            addCriterion("b <", value, "b");
+        public Criteria andOptionBLessThan(String value) {
+            addCriterion("option_b <", value, "optionB");
             return (Criteria) this;
         }
 
-        public Criteria andBLessThanOrEqualTo(String value) {
-            addCriterion("b <=", value, "b");
+        public Criteria andOptionBLessThanOrEqualTo(String value) {
+            addCriterion("option_b <=", value, "optionB");
             return (Criteria) this;
         }
 
-        public Criteria andBLike(String value) {
-            addCriterion("b like", value, "b");
+        public Criteria andOptionBLike(String value) {
+            addCriterion("option_b like", value, "optionB");
             return (Criteria) this;
         }
 
-        public Criteria andBNotLike(String value) {
-            addCriterion("b not like", value, "b");
+        public Criteria andOptionBNotLike(String value) {
+            addCriterion("option_b not like", value, "optionB");
             return (Criteria) this;
         }
 
-        public Criteria andBIn(List<String> values) {
-            addCriterion("b in", values, "b");
+        public Criteria andOptionBIn(List<String> values) {
+            addCriterion("option_b in", values, "optionB");
             return (Criteria) this;
         }
 
-        public Criteria andBNotIn(List<String> values) {
-            addCriterion("b not in", values, "b");
+        public Criteria andOptionBNotIn(List<String> values) {
+            addCriterion("option_b not in", values, "optionB");
             return (Criteria) this;
         }
 
-        public Criteria andBBetween(String value1, String value2) {
-            addCriterion("b between", value1, value2, "b");
+        public Criteria andOptionBBetween(String value1, String value2) {
+            addCriterion("option_b between", value1, value2, "optionB");
             return (Criteria) this;
         }
 
-        public Criteria andBNotBetween(String value1, String value2) {
-            addCriterion("b not between", value1, value2, "b");
+        public Criteria andOptionBNotBetween(String value1, String value2) {
+            addCriterion("option_b not between", value1, value2, "optionB");
             return (Criteria) this;
         }
 
-        public Criteria andCIsNull() {
-            addCriterion("`c` is null");
+        public Criteria andOptionCIsNull() {
+            addCriterion("option_c is null");
             return (Criteria) this;
         }
 
-        public Criteria andCIsNotNull() {
-            addCriterion("`c` is not null");
+        public Criteria andOptionCIsNotNull() {
+            addCriterion("option_c is not null");
             return (Criteria) this;
         }
 
-        public Criteria andCEqualTo(String value) {
-            addCriterion("`c` =", value, "c");
+        public Criteria andOptionCEqualTo(String value) {
+            addCriterion("option_c =", value, "optionC");
             return (Criteria) this;
         }
 
-        public Criteria andCNotEqualTo(String value) {
-            addCriterion("`c` <>", value, "c");
+        public Criteria andOptionCNotEqualTo(String value) {
+            addCriterion("option_c <>", value, "optionC");
             return (Criteria) this;
         }
 
-        public Criteria andCGreaterThan(String value) {
-            addCriterion("`c` >", value, "c");
+        public Criteria andOptionCGreaterThan(String value) {
+            addCriterion("option_c >", value, "optionC");
             return (Criteria) this;
         }
 
-        public Criteria andCGreaterThanOrEqualTo(String value) {
-            addCriterion("`c` >=", value, "c");
+        public Criteria andOptionCGreaterThanOrEqualTo(String value) {
+            addCriterion("option_c >=", value, "optionC");
             return (Criteria) this;
         }
 
-        public Criteria andCLessThan(String value) {
-            addCriterion("`c` <", value, "c");
+        public Criteria andOptionCLessThan(String value) {
+            addCriterion("option_c <", value, "optionC");
             return (Criteria) this;
         }
 
-        public Criteria andCLessThanOrEqualTo(String value) {
-            addCriterion("`c` <=", value, "c");
+        public Criteria andOptionCLessThanOrEqualTo(String value) {
+            addCriterion("option_c <=", value, "optionC");
             return (Criteria) this;
         }
 
-        public Criteria andCLike(String value) {
-            addCriterion("`c` like", value, "c");
+        public Criteria andOptionCLike(String value) {
+            addCriterion("option_c like", value, "optionC");
             return (Criteria) this;
         }
 
-        public Criteria andCNotLike(String value) {
-            addCriterion("`c` not like", value, "c");
+        public Criteria andOptionCNotLike(String value) {
+            addCriterion("option_c not like", value, "optionC");
             return (Criteria) this;
         }
 
-        public Criteria andCIn(List<String> values) {
-            addCriterion("`c` in", values, "c");
+        public Criteria andOptionCIn(List<String> values) {
+            addCriterion("option_c in", values, "optionC");
             return (Criteria) this;
         }
 
-        public Criteria andCNotIn(List<String> values) {
-            addCriterion("`c` not in", values, "c");
+        public Criteria andOptionCNotIn(List<String> values) {
+            addCriterion("option_c not in", values, "optionC");
             return (Criteria) this;
         }
 
-        public Criteria andCBetween(String value1, String value2) {
-            addCriterion("`c` between", value1, value2, "c");
+        public Criteria andOptionCBetween(String value1, String value2) {
+            addCriterion("option_c between", value1, value2, "optionC");
             return (Criteria) this;
         }
 
-        public Criteria andCNotBetween(String value1, String value2) {
-            addCriterion("`c` not between", value1, value2, "c");
+        public Criteria andOptionCNotBetween(String value1, String value2) {
+            addCriterion("option_c not between", value1, value2, "optionC");
             return (Criteria) this;
         }
 
-        public Criteria andDIsNull() {
-            addCriterion("d is null");
+        public Criteria andOptionDIsNull() {
+            addCriterion("option_d is null");
             return (Criteria) this;
         }
 
-        public Criteria andDIsNotNull() {
-            addCriterion("d is not null");
+        public Criteria andOptionDIsNotNull() {
+            addCriterion("option_d is not null");
             return (Criteria) this;
         }
 
-        public Criteria andDEqualTo(String value) {
-            addCriterion("d =", value, "d");
+        public Criteria andOptionDEqualTo(String value) {
+            addCriterion("option_d =", value, "optionD");
             return (Criteria) this;
         }
 
-        public Criteria andDNotEqualTo(String value) {
-            addCriterion("d <>", value, "d");
+        public Criteria andOptionDNotEqualTo(String value) {
+            addCriterion("option_d <>", value, "optionD");
             return (Criteria) this;
         }
 
-        public Criteria andDGreaterThan(String value) {
-            addCriterion("d >", value, "d");
+        public Criteria andOptionDGreaterThan(String value) {
+            addCriterion("option_d >", value, "optionD");
             return (Criteria) this;
         }
 
-        public Criteria andDGreaterThanOrEqualTo(String value) {
-            addCriterion("d >=", value, "d");
+        public Criteria andOptionDGreaterThanOrEqualTo(String value) {
+            addCriterion("option_d >=", value, "optionD");
             return (Criteria) this;
         }
 
-        public Criteria andDLessThan(String value) {
-            addCriterion("d <", value, "d");
+        public Criteria andOptionDLessThan(String value) {
+            addCriterion("option_d <", value, "optionD");
             return (Criteria) this;
         }
 
-        public Criteria andDLessThanOrEqualTo(String value) {
-            addCriterion("d <=", value, "d");
+        public Criteria andOptionDLessThanOrEqualTo(String value) {
+            addCriterion("option_d <=", value, "optionD");
             return (Criteria) this;
         }
 
-        public Criteria andDLike(String value) {
-            addCriterion("d like", value, "d");
+        public Criteria andOptionDLike(String value) {
+            addCriterion("option_d like", value, "optionD");
             return (Criteria) this;
         }
 
-        public Criteria andDNotLike(String value) {
-            addCriterion("d not like", value, "d");
+        public Criteria andOptionDNotLike(String value) {
+            addCriterion("option_d not like", value, "optionD");
             return (Criteria) this;
         }
 
-        public Criteria andDIn(List<String> values) {
-            addCriterion("d in", values, "d");
+        public Criteria andOptionDIn(List<String> values) {
+            addCriterion("option_d in", values, "optionD");
             return (Criteria) this;
         }
 
-        public Criteria andDNotIn(List<String> values) {
-            addCriterion("d not in", values, "d");
+        public Criteria andOptionDNotIn(List<String> values) {
+            addCriterion("option_d not in", values, "optionD");
             return (Criteria) this;
         }
 
-        public Criteria andDBetween(String value1, String value2) {
-            addCriterion("d between", value1, value2, "d");
+        public Criteria andOptionDBetween(String value1, String value2) {
+            addCriterion("option_d between", value1, value2, "optionD");
             return (Criteria) this;
         }
 
-        public Criteria andDNotBetween(String value1, String value2) {
-            addCriterion("d not between", value1, value2, "d");
+        public Criteria andOptionDNotBetween(String value1, String value2) {
+            addCriterion("option_d not between", value1, value2, "optionD");
             return (Criteria) this;
         }
 

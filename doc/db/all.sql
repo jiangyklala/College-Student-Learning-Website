@@ -419,10 +419,10 @@ CREATE TABLE `question_detail` (
                                 `type` int NOT NULL COMMENT  '题目类型',
                                 `category_id1` bigint not null default 0 comment '分类1',
                                 `category_id2` bigint comment '分类2',
-                                `a` varchar(200) DEFAULT NULL COMMENT 'A',
-                                `b` varchar(200) DEFAULT NULL COMMENT 'B',
-                                `c` varchar(200) DEFAULT NULL COMMENT 'C',
-                                `d` varchar(200) DEFAULT NULL COMMENT 'D',
+                                `option_a` varchar(200) DEFAULT NULL COMMENT 'A',
+                                `option_b` varchar(200) DEFAULT NULL COMMENT 'B',
+                                `option_c` varchar(200) DEFAULT NULL COMMENT 'C',
+                                `option_d` varchar(200) DEFAULT NULL COMMENT 'D',
                                 `answer` int NOT NULL COMMENT '题目答案',
                                 PRIMARY KEY (`id`)
 ) ENGINE = innodb DEFAULT CHARSET = utf8mb4 COMMENT = '题目信息表';

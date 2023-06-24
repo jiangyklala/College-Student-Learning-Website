@@ -1,6 +1,6 @@
-package com.jxm.yiti.domain;
+package com.jxm.yiti.resp;
 
-public class QuestionDetail {
+public class QuestionDetailQueryResp {
     private Long id;
 
     private String name;

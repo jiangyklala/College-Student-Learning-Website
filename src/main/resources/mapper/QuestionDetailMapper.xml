@@ -7,10 +7,10 @@
     <result column="type" jdbcType="INTEGER" property="type" />
     <result column="category_id1" jdbcType="BIGINT" property="categoryId1" />
     <result column="category_id2" jdbcType="BIGINT" property="categoryId2" />
-    <result column="a" jdbcType="VARCHAR" property="a" />
-    <result column="b" jdbcType="VARCHAR" property="b" />
-    <result column="c" jdbcType="VARCHAR" property="c" />
-    <result column="d" jdbcType="VARCHAR" property="d" />
+    <result column="option_a" jdbcType="VARCHAR" property="optionA" />
+    <result column="option_b" jdbcType="VARCHAR" property="optionB" />
+    <result column="option_c" jdbcType="VARCHAR" property="optionC" />
+    <result column="option_d" jdbcType="VARCHAR" property="optionD" />
     <result column="answer" jdbcType="INTEGER" property="answer" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -72,7 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, `name`, `type`, category_id1, category_id2, `a`, b, `c`, d, answer
+    id, `name`, `type`, category_id1, category_id2, option_a, option_b, option_c, option_d, 
+    answer
   </sql>
   <select id="selectByExample" parameterType="com.jxm.yiti.domain.QuestionDetailExample" resultMap="BaseResultMap">
     select
@@ -106,13 +107,13 @@
   </delete>
   <insert id="insert" parameterType="com.jxm.yiti.domain.QuestionDetail">
     insert into question_detail (id, `name`, `type`, 
-      category_id1, category_id2, `a`, 
-      b, `c`, d, answer
-      )
+      category_id1, category_id2, option_a, 
+      option_b, option_c, option_d, 
+      answer)
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
-      #{categoryId1,jdbcType=BIGINT}, #{categoryId2,jdbcType=BIGINT}, #{a,jdbcType=VARCHAR}, 
-      #{b,jdbcType=VARCHAR}, #{c,jdbcType=VARCHAR}, #{d,jdbcType=VARCHAR}, #{answer,jdbcType=INTEGER}
-      )
+      #{categoryId1,jdbcType=BIGINT}, #{categoryId2,jdbcType=BIGINT}, #{optionA,jdbcType=VARCHAR}, 
+      #{optionB,jdbcType=VARCHAR}, #{optionC,jdbcType=VARCHAR}, #{optionD,jdbcType=VARCHAR}, 
+      #{answer,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.jxm.yiti.domain.QuestionDetail">
     insert into question_detail
@@ -132,17 +133,17 @@
       <if test="categoryId2 != null">
         category_id2,
       </if>
-      <if test="a != null">
-        `a`,
+      <if test="optionA != null">
+        option_a,
       </if>
-      <if test="b != null">
-        b,
+      <if test="optionB != null">
+        option_b,
       </if>
-      <if test="c != null">
-        `c`,
+      <if test="optionC != null">
+        option_c,
       </if>
-      <if test="d != null">
-        d,
+      <if test="optionD != null">
+        option_d,
       </if>
       <if test="answer != null">
         answer,
@@ -164,17 +165,17 @@
       <if test="categoryId2 != null">
         #{categoryId2,jdbcType=BIGINT},
       </if>
-      <if test="a != null">
-        #{a,jdbcType=VARCHAR},
+      <if test="optionA != null">
+        #{optionA,jdbcType=VARCHAR},
       </if>
-      <if test="b != null">
-        #{b,jdbcType=VARCHAR},
+      <if test="optionB != null">
+        #{optionB,jdbcType=VARCHAR},
       </if>
-      <if test="c != null">
-        #{c,jdbcType=VARCHAR},
+      <if test="optionC != null">
+        #{optionC,jdbcType=VARCHAR},
       </if>
-      <if test="d != null">
-        #{d,jdbcType=VARCHAR},
+      <if test="optionD != null">
+        #{optionD,jdbcType=VARCHAR},
       </if>
       <if test="answer != null">
         #{answer,jdbcType=INTEGER},
@@ -205,17 +206,17 @@
       <if test="record.categoryId2 != null">
         category_id2 = #{record.categoryId2,jdbcType=BIGINT},
       </if>
-      <if test="record.a != null">
-        `a` = #{record.a,jdbcType=VARCHAR},
+      <if test="record.optionA != null">
+        option_a = #{record.optionA,jdbcType=VARCHAR},
       </if>
-      <if test="record.b != null">
-        b = #{record.b,jdbcType=VARCHAR},
+      <if test="record.optionB != null">
+        option_b = #{record.optionB,jdbcType=VARCHAR},
       </if>
-      <if test="record.c != null">
-        `c` = #{record.c,jdbcType=VARCHAR},
+      <if test="record.optionC != null">
+        option_c = #{record.optionC,jdbcType=VARCHAR},
       </if>
-      <if test="record.d != null">
-        d = #{record.d,jdbcType=VARCHAR},
+      <if test="record.optionD != null">
+        option_d = #{record.optionD,jdbcType=VARCHAR},
       </if>
       <if test="record.answer != null">
         answer = #{record.answer,jdbcType=INTEGER},
@@ -232,10 +233,10 @@
       `type` = #{record.type,jdbcType=INTEGER},
       category_id1 = #{record.categoryId1,jdbcType=BIGINT},
       category_id2 = #{record.categoryId2,jdbcType=BIGINT},
-      `a` = #{record.a,jdbcType=VARCHAR},
-      b = #{record.b,jdbcType=VARCHAR},
-      `c` = #{record.c,jdbcType=VARCHAR},
-      d = #{record.d,jdbcType=VARCHAR},
+      option_a = #{record.optionA,jdbcType=VARCHAR},
+      option_b = #{record.optionB,jdbcType=VARCHAR},
+      option_c = #{record.optionC,jdbcType=VARCHAR},
+      option_d = #{record.optionD,jdbcType=VARCHAR},
       answer = #{record.answer,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -256,17 +257,17 @@
       <if test="categoryId2 != null">
         category_id2 = #{categoryId2,jdbcType=BIGINT},
       </if>
-      <if test="a != null">
-        `a` = #{a,jdbcType=VARCHAR},
+      <if test="optionA != null">
+        option_a = #{optionA,jdbcType=VARCHAR},
       </if>
-      <if test="b != null">
-        b = #{b,jdbcType=VARCHAR},
+      <if test="optionB != null">
+        option_b = #{optionB,jdbcType=VARCHAR},
       </if>
-      <if test="c != null">
-        `c` = #{c,jdbcType=VARCHAR},
+      <if test="optionC != null">
+        option_c = #{optionC,jdbcType=VARCHAR},
       </if>
-      <if test="d != null">
-        d = #{d,jdbcType=VARCHAR},
+      <if test="optionD != null">
+        option_d = #{optionD,jdbcType=VARCHAR},
       </if>
       <if test="answer != null">
         answer = #{answer,jdbcType=INTEGER},
@@ -280,10 +281,10 @@
       `type` = #{type,jdbcType=INTEGER},
       category_id1 = #{categoryId1,jdbcType=BIGINT},
       category_id2 = #{categoryId2,jdbcType=BIGINT},
-      `a` = #{a,jdbcType=VARCHAR},
-      b = #{b,jdbcType=VARCHAR},
-      `c` = #{c,jdbcType=VARCHAR},
-      d = #{d,jdbcType=VARCHAR},
+      option_a = #{optionA,jdbcType=VARCHAR},
+      option_b = #{optionB,jdbcType=VARCHAR},
+      option_c = #{optionC,jdbcType=VARCHAR},
+      option_d = #{optionD,jdbcType=VARCHAR},
       answer = #{answer,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>

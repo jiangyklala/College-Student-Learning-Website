@@ -1,6 +1,6 @@
-package com.jxm.yiti.domain;
+package com.jxm.yiti.req;
 
-public class QuestionDetail {
+public class QuestionDetailQueryReq extends PageReq {
     private Long id;
 
     private String name;

@@ -8,7 +8,7 @@
             size="large"
             @search="onSearch"
         />
-        <a-button type="primary" @click="addDownloadItem">
+        <a-button type="primary" @click="addQuestionItem">
           新增
         </a-button>
       </a-space>
@@ -55,11 +55,11 @@
       @ok="handleModalOk"
   >
     <a-form
-        :model="downloadList"
+        :model="practice"
         :label-col="{ span : 4 }"
     >
       <a-form-item label="名称">
-        <a-input v-model:value="downloadList.name"/>
+        <a-input v-model:value="practice.name"/>
       </a-form-item>
       <a-form-item label="分类">
         <!--        级联选择-->
@@ -68,9 +68,9 @@
             :field-names="{ label: 'name', value: 'id', children: 'children' }"
             :options="categoryTree"/>
       </a-form-item>
-      <a-form-item label="下载链接">
-        <a-textarea v-model:value="downloadList.downloadLink"/>
-      </a-form-item>
+<!--      <a-form-item label="下载链接">-->
+<!--        <a-textarea v-model:value="practice.QuestionLink"/>-->
+<!--      </a-form-item>-->
     </a-form>
   </a-modal>
 </template>
@@ -83,31 +83,26 @@ import {Tool} from "@/utils/tool";
 
 export default defineComponent({
   components: {},
-  name: "AdminDownload",
+  name: "AdminQuestion",
   setup: function () {
 
 
 
     const columns = [
       {
-        title: '名称',
+        title: '题目描述',
         dataIndex: 'name',
-        width: '20%',
+        width: '30%',
       },
       {
         title: '分类',
         slots: {customRender: 'category'},
-        width: '40%',
+        width: '30%',
       },
       {
-        title: '大小',
-        dataIndex: 'size',
+        title: '题目类型',
+        dataIndex: 'type',
         width: '10%',
-      },
-      {
-        title: '点赞数',
-        dataIndex: 'downloadCount',
-        width: '15%',
       },
       {
         title: '操作',
@@ -126,8 +121,8 @@ export default defineComponent({
      * 下载列表数据查询
      * @param p
      */
-    const downloadListALlQuery = (p: any) => {
-      axios.get("/downloadList/selectAll", {
+    const QuestionListALlQuery = (p: any) => {
+      axios.get("/practice/selectAll", {
         params: {
           page: p.current,
           size: p.pageSize,
@@ -159,7 +154,7 @@ export default defineComponent({
           categorys = response.data.content;
           categoryTree.value = Tool.array2Tree(response.data.content, 0);
 
-          downloadListALlQuery({   // 下载列表的显示需要用到分类的信息, 由于 axios 是异步的, 所以必须在分类查询完成后再进行下载列表的查询显示
+          QuestionListALlQuery({   // 下载列表的显示需要用到分类的信息, 由于 axios 是异步的, 所以必须在分类查询完成后再进行下载列表的查询显示
             current: pagination.value.current,
             pageSize: pagination.value.pageSize,
           });
@@ -176,9 +171,9 @@ export default defineComponent({
      * 新增按钮
      * 注: 这里不需要写具体的新增逻辑, 已经在对话框的"确认"按钮的逻辑中写过了
      */
-    const addDownloadItem = () => {
+    const addQuestionItem = () => {
       modalVisible.value = true;
-      downloadList.value = {};  // 清空当前的数据信息
+      practice.value = {};  // 清空当前的数据信息
     };
 
     /**
@@ -186,19 +181,19 @@ export default defineComponent({
      */
     const buttonEdit = (record: any) => {
       modalVisible.value = true;
-      downloadList.value = Tool.copy(record);
-      categoryIds.value = [downloadList.value.categoryId1, downloadList.value.categoryId2];  // 编辑时表单的分类显示需要再从 downloadList 中提取出来
+      practice.value = Tool.copy(record);
+      categoryIds.value = [practice.value.categoryId1, practice.value.categoryId2];  // 编辑时表单的分类显示需要再从 practice 中提取出来
     };
 
     /**
      * 表格的删除按钮
      */
     const buttonDelete = (id: number) => {
-      axios.delete("/downloadList/delete/" + id).then((response) => {
+      axios.delete("/practice/delete/" + id).then((response) => {
         const data = response.data;
         if (data.success) {
           // 重新加载列表
-          downloadListALlQuery({
+          QuestionListALlQuery({
             current: pagination.value.current,
             pageSize: pagination.value.pageSize,
           });
@@ -208,7 +203,7 @@ export default defineComponent({
 
 
     //-------------表单--------------
-    const downloadList = ref();
+    const practice = ref();
     const modalVisible = ref(false);
     const modalLoading = ref(false);
     const categoryIds = ref();
@@ -219,10 +214,10 @@ export default defineComponent({
      */
     const handleModalOk = () => {
       modalLoading.value = true;
-      downloadList.value.categoryId1 = categoryIds.value[0];  // 保存之前先把两个分类从表单中提取出来
-      downloadList.value.categoryId2 = categoryIds.value[1];
+      practice.value.categoryId1 = categoryIds.value[0];  // 保存之前先把两个分类从表单中提取出来
+      practice.value.categoryId2 = categoryIds.value[1];
 
-      axios.post("/downloadList/save", downloadList.value).then((response) => {
+      axios.post("/practice/save", practice.value).then((response) => {
         // console.log(response);
         const data = response.data;
         modalLoading.value = false;
@@ -232,7 +227,7 @@ export default defineComponent({
           modalVisible.value = false;
 
           // 重新加载列表
-          downloadListALlQuery({
+          QuestionListALlQuery({
             current: pagination.value.current,
             pageSize: pagination.value.pageSize,
           });
@@ -258,7 +253,7 @@ export default defineComponent({
      */
     const handleTableChange = (pagination: any) => {
       // console.log("pagination:" + pagination);
-      downloadListALlQuery({
+      QuestionListALlQuery({
         current: pagination.current,
         pageSize: pagination.pageSize,
       });
@@ -267,7 +262,7 @@ export default defineComponent({
 
     //-------------搜索框--------------
     const onSearch = (searchValue: string) => {
-      downloadListALlQuery({
+      QuestionListALlQuery({
         current: 1,
         pageSize: pagination.value.pageSize,
         name: searchValue,
@@ -304,10 +299,10 @@ export default defineComponent({
       getCategoryNameById,
 
       buttonEdit,
-      addDownloadItem,
+      addQuestionItem,
       buttonDelete,
 
-      downloadList,
+      practice,
       modalVisible,
       modalLoading,
       handleModalOk,

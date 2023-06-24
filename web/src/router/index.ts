@@ -33,6 +33,12 @@ const routes: Array<RouteRecordRaw> = [
 
     },
     {
+        path: '/admin/AdminQuestion',
+        name: 'AdminQuestion',
+        component: () => import('../views/admin/AdminQuestion.vue')
+
+    },
+    {
         path: '/admin/AdminCategory',
         name: 'AdminCategory',
         component: () => import('../views/admin/AdminCategory.vue')
@@ -103,6 +109,11 @@ const routes: Array<RouteRecordRaw> = [
         path: '/chatgpt/Paying/:chooseValue',
         name: 'Paying',
         component: () => import('../views/chatgpt/Paying.vue')
+    },
+    {
+        path: '/online-problems/Problems',
+        name: 'Problems',
+        component: () => import('../views/online-problems/Problems.vue')
     },
 ]
 
