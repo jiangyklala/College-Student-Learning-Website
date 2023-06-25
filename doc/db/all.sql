@@ -1,11 +1,19 @@
-drop table if exists `demo`;
-create table `demo` (
-                        `id` bigint not null comment 'id',
-                        `name` varchar(50) comment '名称',
-                        primary key (`id`)
-) engine=innodb default charset=utf8mb4 comment='测试';
+# 查看某个表状态
+SHOW TABLE STATUS LIKE 'chat_history';
 
-insert into `demo` (id, name) values (1, '测试');
+
+
+drop table if exists `demo`;
+create table `demo`
+(
+    `id`   bigint not null comment 'id',
+    `name` varchar(50) comment '名称',
+    primary key (`id`)
+) engine = innodb
+  default charset = utf8mb4 comment ='测试';
+
+insert into `demo` (id, name)
+values (1, '测试');
 
 # 下载列表
 drop table if exists `download_list`;
@@ -413,13 +421,14 @@ CREATE TABLE `gpt_pay_info` (
 # 题目信息表
 DROP TABLE IF EXISTS `question_detail`;
 
-CREATE TABLE `question_detail`(
-                                  `id`           bigint AUTO_INCREMENT NOT NULL,
-                                  `name`         varchar(20)           NOT NULL COMMENT '题目名称',
-                                  `type`         int                   NOT NULL COMMENT '题目类型',
-                                  `category_id1` bigint                not null default 0 comment '分类1',
-                                  `category_id2` bigint comment '分类2',
-                                  `content`      varchar(500)                   DEFAULT NULL COMMENT '题目的内容, 为 JSON 格式',
-                                  `answer`       int                   NOT NULL COMMENT '题目答案',
-                                  PRIMARY KEY (`id`)
+CREATE TABLE `question_detail`
+(
+    `id`           bigint AUTO_INCREMENT NOT NULL,
+    `name`         varchar(20)           NOT NULL COMMENT '题目名称',
+    `type`         int                   NOT NULL COMMENT '题目类型',
+    `category_id1` bigint                NOT NULL DEFAULT 0 comment '分类1',
+    `category_id2` bigint comment '分类2',
+    `content`      varchar(500)          NOT NULL DEFAULT '{}' COMMENT '题目的内容, 为 JSON 格式',
+    `answer`       int                   NOT NULL COMMENT '题目答案',
+    PRIMARY KEY (`id`)
 ) ENGINE = innodb DEFAULT CHARSET = utf8mb4 COMMENT = '题目信息表';

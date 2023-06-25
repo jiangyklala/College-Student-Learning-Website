@@ -58,9 +58,23 @@
         :model="practice"
         :label-col="{ span : 4 }"
     >
-      <a-form-item label="名称">
+      <a-form-item label="题目描述">
         <a-input v-model:value="practice.name"/>
       </a-form-item>
+      <a-form-item label="题目类型">
+        <a-select
+            ref="select"
+            :v-model:value="practice.type"
+            :placeholder="getPracticeTypeName(practice.type)"
+            style="width: 120px"
+            @change="practiceTypeSelectChange"
+        >
+          <!--          注意将 value 的类型改为 number 的格式-->
+          <a-select-option :value=1>选择题</a-select-option>
+          <a-select-option :value=2>判断题</a-select-option>
+        </a-select>
+      </a-form-item>
+
       <a-form-item label="分类">
         <!--        级联选择-->
         <a-cascader
@@ -68,9 +82,37 @@
             :field-names="{ label: 'name', value: 'id', children: 'children' }"
             :options="categoryTree"/>
       </a-form-item>
-<!--      <a-form-item label="下载链接">-->
-<!--        <a-textarea v-model:value="practice.QuestionLink"/>-->
-<!--      </a-form-item>-->
+      <a-form-item v-if="practice.type === 1" label="A选项">
+        <a-input v-model:value="practice.content.optA"/>
+      </a-form-item>
+      <a-form-item v-if="practice.type === 1" label="B选项">
+        <a-input v-model:value="practice.content.optB"/>
+      </a-form-item>
+      <a-form-item v-if="practice.type === 1" label="C选项">
+        <a-input v-model:value="practice.content.optC"/>
+      </a-form-item>
+      <a-form-item v-if="practice.type === 1" label="D选项">
+        <a-input v-model:value="practice.content.optD"/>
+      </a-form-item>
+      <a-form-item label="答案">
+        <a-select
+            ref="select"
+            :v-model:value="practice.answer"
+            :placeholder="getPracticeAnswerName(practice.answer)"
+            style="width: 120px"
+            @change="practiceAnswerNameSelectChange"
+        >
+          <!--          注意将 value 的类型改为 number 的格式-->
+          <a-select-option v-if="practice.type === 1" :value=1>A</a-select-option>
+          <a-select-option v-if="practice.type === 1" :value=2>B</a-select-option>
+          <a-select-option v-if="practice.type === 1" :value=3>C</a-select-option>
+          <a-select-option v-if="practice.type === 1" :value=4>D</a-select-option>
+
+
+          <a-select-option v-if="practice.type === 2" :value=1>正确</a-select-option>
+          <a-select-option v-if="practice.type === 2" :value=2>错误</a-select-option>
+        </a-select>
+      </a-form-item>
     </a-form>
   </a-modal>
 </template>
@@ -87,7 +129,6 @@ export default defineComponent({
   setup: function () {
 
 
-
     const columns = [
       {
         title: '题目描述',
@@ -102,12 +143,12 @@ export default defineComponent({
       {
         title: '题目类型',
         dataIndex: 'type',
-        width: '10%',
+        width: '15%',
       },
       {
         title: '操作',
         dataIndex: 'action',
-        width: '30%',
+        width: '25%',
       },
     ];
 
@@ -133,6 +174,9 @@ export default defineComponent({
         if (response.data.success) {  // 判断后端接口返回是否出错
           loading.value = false;
           listData.value = response.data.content.list;  // 显示内容
+          // console.log(listData.value[0]);
+          // listData.value[0].content = JSON.parse(listData.value[0].content);
+          // console.log(listData.value[0]);
 
           // 重置分页按钮
           pagination.value.current = p.current;
@@ -174,6 +218,7 @@ export default defineComponent({
     const addQuestionItem = () => {
       modalVisible.value = true;
       practice.value = {};  // 清空当前的数据信息
+      practice.value.content = {};   // 显式指定题目的选项为一个 {}
     };
 
     /**
@@ -182,7 +227,12 @@ export default defineComponent({
     const buttonEdit = (record: any) => {
       modalVisible.value = true;
       practice.value = Tool.copy(record);
-      categoryIds.value = [practice.value.categoryId1, practice.value.categoryId2];  // 编辑时表单的分类显示需要再从 practice 中提取出来
+
+      // 编辑时表单的分类显示需要再从 practice 中提取出来
+      categoryIds.value = [practice.value.categoryId1, practice.value.categoryId2];
+
+      // 将题目(practice) 的选项内容转为 JSON
+      practice.value.content = JSON.parse(practice.value.content);
     };
 
     /**
@@ -208,6 +258,7 @@ export default defineComponent({
     const modalLoading = ref(false);
     const categoryIds = ref();
     const categoryTree = ref();
+    const questionContent = ref();
 
     /**
      * 表单确认按钮
@@ -216,6 +267,8 @@ export default defineComponent({
       modalLoading.value = true;
       practice.value.categoryId1 = categoryIds.value[0];  // 保存之前先把两个分类从表单中提取出来
       practice.value.categoryId2 = categoryIds.value[1];
+      practice.value.content = JSON.stringify(practice.value.content);
+      console.log(practice.value);
 
       axios.post("/practice/save", practice.value).then((response) => {
         // console.log(response);
@@ -238,6 +291,16 @@ export default defineComponent({
 
     };
 
+    /**
+     * 题目类型选择
+     */
+    const practiceTypeSelectChange = (value: any) => {
+      practice.value.type = value;
+    }
+
+    const practiceAnswerNameSelectChange = (value: any) => {
+      practice.value.answer = value;
+    }
 
     //-------------分页--------------
 
@@ -285,9 +348,40 @@ export default defineComponent({
       return result;
     }
 
+    const getPracticeTypeName = (type: number): string => {
+      let res = '';
+      switch (type) {
+        case 1:
+          res = '选择题';
+          break;
+        case 2:
+          res = '判断题';
+          break;
+      }
+      return res;
+    }
+
+    const getPracticeAnswerName = (type: number): string => {
+      let res = '';
+      switch (type) {
+        case 1:
+          res = 'A';
+          break;
+        case 2:
+          res = 'B';
+          break;
+        case 3:
+          res = 'C';
+          break;
+        case 4:
+          res = 'D';
+          break;
+      }
+      return res;
+    }
+
     onMounted(() => {
       handleQueryCategory();
-
     });
 
     return {
@@ -301,6 +395,10 @@ export default defineComponent({
       buttonEdit,
       addQuestionItem,
       buttonDelete,
+      practiceTypeSelectChange,
+      getPracticeTypeName,
+      getPracticeAnswerName,
+      practiceAnswerNameSelectChange,
 
       practice,
       modalVisible,
