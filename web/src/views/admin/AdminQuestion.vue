@@ -22,10 +22,13 @@
         :pagination="pagination" @change="handleTableChange"
         :loading="loading"
         bordered>
-      <template v-slot:category="{ text, record }">
-        <span>{{ getCategoryNameById(record.categoryId1) }} / {{ getCategoryNameById(record.categoryId2) }}</span>
-      </template>
       <template v-slot:bodyCell="{ column, record, index }">
+        <template v-if="column.dataIndex === 'category'">
+          <span>{{ getCategoryNameById(record.categoryId1) }} / {{ getCategoryNameById(record.categoryId2) }}</span>
+        </template>
+        <template v-if="column.dataIndex === 'type'">
+          <span>{{ getPracticeTypeName(record.type) }}</span>
+        </template>
         <template v-if="column.dataIndex === 'action'">
           <a-space size="small">
             <a-button type="link" @click="buttonEdit(record)">
@@ -137,7 +140,8 @@ export default defineComponent({
       },
       {
         title: '分类',
-        slots: {customRender: 'category'},
+        // slots: {customRender: 'category'},
+        dataIndex: 'category',
         width: '30%',
       },
       {
