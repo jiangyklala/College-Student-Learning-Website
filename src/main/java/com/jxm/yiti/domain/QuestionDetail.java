@@ -11,13 +11,7 @@ public class QuestionDetail {
 
     private Long categoryId2;
 
-    private String optionA;
-
-    private String optionB;
-
-    private String optionC;
-
-    private String optionD;
+    private String content;
 
     private Integer answer;
 
@@ -61,36 +55,12 @@ public class QuestionDetail {
         this.categoryId2 = categoryId2;
     }
 
-    public String getOptionA() {
-        return optionA;
+    public String getContent() {
+        return content;
     }
 
-    public void setOptionA(String optionA) {
-        this.optionA = optionA;
-    }
-
-    public String getOptionB() {
-        return optionB;
-    }
-
-    public void setOptionB(String optionB) {
-        this.optionB = optionB;
-    }
-
-    public String getOptionC() {
-        return optionC;
-    }
-
-    public void setOptionC(String optionC) {
-        this.optionC = optionC;
-    }
-
-    public String getOptionD() {
-        return optionD;
-    }
-
-    public void setOptionD(String optionD) {
-        this.optionD = optionD;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public Integer getAnswer() {
@@ -112,10 +82,7 @@ public class QuestionDetail {
         sb.append(", type=").append(type);
         sb.append(", categoryId1=").append(categoryId1);
         sb.append(", categoryId2=").append(categoryId2);
-        sb.append(", optionA=").append(optionA);
-        sb.append(", optionB=").append(optionB);
-        sb.append(", optionC=").append(optionC);
-        sb.append(", optionD=").append(optionD);
+        sb.append(", content=").append(content);
         sb.append(", answer=").append(answer);
         sb.append("]");
         return sb.toString();

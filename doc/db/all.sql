@@ -413,16 +413,13 @@ CREATE TABLE `gpt_pay_info` (
 # 题目信息表
 DROP TABLE IF EXISTS `question_detail`;
 
-CREATE TABLE `question_detail` (
-                                `id` bigint AUTO_INCREMENT NOT NULL,
-                                `name` varchar(20) NOT NULL COMMENT '题目名称',
-                                `type` int NOT NULL COMMENT  '题目类型',
-                                `category_id1` bigint not null default 0 comment '分类1',
-                                `category_id2` bigint comment '分类2',
-                                `option_a` varchar(200) DEFAULT NULL COMMENT 'A',
-                                `option_b` varchar(200) DEFAULT NULL COMMENT 'B',
-                                `option_c` varchar(200) DEFAULT NULL COMMENT 'C',
-                                `option_d` varchar(200) DEFAULT NULL COMMENT 'D',
-                                `answer` int NOT NULL COMMENT '题目答案',
-                                PRIMARY KEY (`id`)
+CREATE TABLE `question_detail`(
+                                  `id`           bigint AUTO_INCREMENT NOT NULL,
+                                  `name`         varchar(20)           NOT NULL COMMENT '题目名称',
+                                  `type`         int                   NOT NULL COMMENT '题目类型',
+                                  `category_id1` bigint                not null default 0 comment '分类1',
+                                  `category_id2` bigint comment '分类2',
+                                  `content`      varchar(500)                   DEFAULT NULL COMMENT '题目的内容, 为 JSON 格式',
+                                  `answer`       int                   NOT NULL COMMENT '题目答案',
+                                  PRIMARY KEY (`id`)
 ) ENGINE = innodb DEFAULT CHARSET = utf8mb4 COMMENT = '题目信息表';

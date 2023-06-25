@@ -11,13 +11,7 @@ public class QuestionDetailQueryReq extends PageReq {
 
     private Long categoryId2;
 
-    private String optionA;
-
-    private String optionB;
-
-    private String optionC;
-
-    private String optionD;
+    private String content;
 
     private Integer answer;
 
@@ -35,6 +29,14 @@ public class QuestionDetailQueryReq extends PageReq {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public Integer getType() {
@@ -61,38 +63,6 @@ public class QuestionDetailQueryReq extends PageReq {
         this.categoryId2 = categoryId2;
     }
 
-    public String getOptionA() {
-        return optionA;
-    }
-
-    public void setOptionA(String optionA) {
-        this.optionA = optionA;
-    }
-
-    public String getOptionB() {
-        return optionB;
-    }
-
-    public void setOptionB(String optionB) {
-        this.optionB = optionB;
-    }
-
-    public String getOptionC() {
-        return optionC;
-    }
-
-    public void setOptionC(String optionC) {
-        this.optionC = optionC;
-    }
-
-    public String getOptionD() {
-        return optionD;
-    }
-
-    public void setOptionD(String optionD) {
-        this.optionD = optionD;
-    }
-
     public Integer getAnswer() {
         return answer;
     }
@@ -103,21 +73,14 @@ public class QuestionDetailQueryReq extends PageReq {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", name=").append(name);
-        sb.append(", type=").append(type);
-        sb.append(", categoryId1=").append(categoryId1);
-        sb.append(", categoryId2=").append(categoryId2);
-        sb.append(", optionA=").append(optionA);
-        sb.append(", optionB=").append(optionB);
-        sb.append(", optionC=").append(optionC);
-        sb.append(", optionD=").append(optionD);
-        sb.append(", answer=").append(answer);
-        sb.append("]");
-        return sb.toString();
+        return "QuestionDetailQueryReq{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", type=" + type +
+                ", categoryId1=" + categoryId1 +
+                ", categoryId2=" + categoryId2 +
+                ", content='" + content + '\'' +
+                ", answer=" + answer +
+                '}';
     }
 }
