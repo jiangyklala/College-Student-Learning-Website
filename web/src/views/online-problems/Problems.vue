@@ -8,7 +8,7 @@
       <a-row :gutter="16">
         <div v-for="category in categoryNode.children" v-bind:key="category">
           <a-col class="gutter-row" :span="6">
-            <a-card style="width: 180px; background-color: rgb(246, 246, 246)">
+            <a-card style="width: 180px; background-color: rgb(246, 246, 246)" @click="examOnClick(category)">
               <a-card-meta :title="category.name">
 
               </a-card-meta>
@@ -26,6 +26,7 @@ import {defineComponent, onMounted, ref} from "vue";
 import axios from "axios";
 import {message} from "ant-design-vue";
 import {Tool} from "@/utils/tool";
+import router from "@/router";
 
 export default defineComponent({
 	name: "Problems",
@@ -91,6 +92,23 @@ export default defineComponent({
 			return result;
 		}
 		
+		//-------------分类点击--------------
+		
+		/**
+		 * 点击分类跳转的刷题界面
+		 * @param categoryItem
+		 */
+		const examOnClick = (categoryItem: any) => {
+			console.log(categoryItem);
+			const routeData = router.resolve({
+				path: "/online-problems/DoExam",
+			});
+			
+			sessionStorage.setItem("ExamCategory", JSON.stringify(categoryItem));                   // 临时存储
+			
+			window.open(routeData.href, '在线刷题');
+		}
+		
 		
 		const question = {
 			title: '这是一个问题的标题',
@@ -125,6 +143,7 @@ export default defineComponent({
 			
 			getCategoryNameById,
 			submitAnswer,
+			examOnClick,
 		}
 	}
 })
