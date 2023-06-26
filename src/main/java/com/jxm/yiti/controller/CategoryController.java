@@ -37,7 +37,7 @@ public class CategoryController {
     }
 
     /**
-     * 查询下载列表的所有数据, 并根据 sort 字段排序
+     * 查询分类列表的所有分类, 并根据 sort 字段排序
      */
     @GetMapping("/selectAllOBSort")
     @ResponseBody
@@ -45,6 +45,20 @@ public class CategoryController {
         CommonResp<List<CategoryQueryResp>> resp = new CommonResp<>();
 
         List<CategoryQueryResp> list = categoryService.selectAllOBSort();
+
+        resp.setContent(list);
+        return resp;
+    }
+
+    /**
+     * 查询分类列表关于刷题的分类, 并根据 sort 字段排序
+     */
+    @GetMapping("/selectPracticeOBSort")
+    @ResponseBody
+    public CommonResp selectPracticeOBSort() {
+        CommonResp<List<CategoryQueryResp>> resp = new CommonResp<>();
+
+        List<CategoryQueryResp> list = categoryService.selectPracticeOBSort();
 
         resp.setContent(list);
         return resp;

@@ -1,16 +1,17 @@
 package com.jxm.yiti.controller;
 
 import com.jxm.yiti.req.QuestionDetailQueryReq;
-import com.jxm.yiti.req.DownloadListSaveReq;
 import com.jxm.yiti.req.QuestionDetailSaveReq;
 import com.jxm.yiti.resp.CommonResp;
-import com.jxm.yiti.resp.QuestionDetailQueryResp;
 import com.jxm.yiti.resp.PageResp;
+import com.jxm.yiti.resp.QuestionDetailQueryResp;
 import com.jxm.yiti.service.PracticeProblemsService;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/practice")
@@ -82,6 +83,21 @@ public class PracticeProblemsController {
         CommonResp<PageResp<QuestionDetailQueryResp>> resp = new CommonResp<>();
 
         PageResp<QuestionDetailQueryResp> list = practiceProblemsService.selectByCategoryId(req);
+
+        resp.setContent(list);
+        return resp;
+    }
+
+
+    /**
+     * 查询所有题目, 按 categoryId1 分组, 按 categoryId2 升序排序
+     */
+    @GetMapping("/selectAllGpByCgId1")
+    @ResponseBody
+    public CommonResp selectAllGpByCgId2() {
+        CommonResp<List<List<QuestionDetailQueryResp>>> resp = new CommonResp<>();
+
+        List<List<QuestionDetailQueryResp>> list = practiceProblemsService.selectAllGpByCgId1();
 
         resp.setContent(list);
         return resp;
