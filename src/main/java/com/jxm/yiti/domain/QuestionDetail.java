@@ -7,6 +7,8 @@ public class QuestionDetail {
 
     private Integer type;
 
+    private Integer level;
+
     private Long categoryId1;
 
     private Long categoryId2;
@@ -37,6 +39,14 @@ public class QuestionDetail {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
     }
 
     public Long getCategoryId1() {
@@ -80,6 +90,7 @@ public class QuestionDetail {
         sb.append(", id=").append(id);
         sb.append(", name=").append(name);
         sb.append(", type=").append(type);
+        sb.append(", level=").append(level);
         sb.append(", categoryId1=").append(categoryId1);
         sb.append(", categoryId2=").append(categoryId2);
         sb.append(", content=").append(content);

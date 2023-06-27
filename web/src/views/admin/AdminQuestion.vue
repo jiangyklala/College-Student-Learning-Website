@@ -66,27 +66,42 @@
       </a-form-item>
       <a-form-item label="题目类型">
         <a-select
-            ref="select"
-            :v-model:value="practice.type"
-            :placeholder="getPracticeTypeName(practice.type)"
-            style="width: 120px"
-            @change="practiceTypeSelectChange"
+		        ref="select"
+		        :v-model:value="practice.type"
+		        :placeholder="getPracticeTypeName(practice.type)"
+		        style="width: 120px"
+		        @change="practiceTypeSelectChange"
         >
-          <!--          注意将 value 的类型改为 number 的格式-->
-          <a-select-option :value=1>选择题</a-select-option>
-          <a-select-option :value=2>判断题</a-select-option>
+	        <!--          注意将 value 的类型改为 number 的格式-->
+	        <a-select-option :value=1>选择题</a-select-option>
+	        <a-select-option :value=2>判断题</a-select-option>
         </a-select>
       </a-form-item>
-
-      <a-form-item label="分类">
-        <!--        级联选择-->
-        <a-cascader
-            v-model:value="categoryIds"
-            :field-names="{ label: 'name', value: 'id', children: 'children' }"
-            :options="categoryTree"/>
-      </a-form-item>
-      <a-form-item v-if="practice.type === 1" label="A选项">
-        <a-input v-model:value="practice.content.optA"/>
+	    <a-form-item label="题目难度">
+		    <a-select
+				    ref="select"
+				    :v-model:value="practice.level"
+				    :placeholder="getPracticeLevelName(practice.level)"
+				    style="width: 120px"
+				    @change="practiceLevelSelectChange"
+		    >
+			    <a-select-option :value=1>入门</a-select-option>
+			    <a-select-option :value=2>简单</a-select-option>
+			    <a-select-option :value=3>中等</a-select-option>
+			    <a-select-option :value=4>较难</a-select-option>
+			    <a-select-option :value=5>困难</a-select-option>
+		    </a-select>
+	    </a-form-item>
+	
+	    <a-form-item label="分类">
+		    <!--        级联选择-->
+		    <a-cascader
+				    v-model:value="categoryIds"
+				    :field-names="{ label: 'name', value: 'id', children: 'children' }"
+				    :options="categoryTree"/>
+	    </a-form-item>
+	    <a-form-item v-if="practice.type === 1" label="A选项">
+		    <a-input v-model:value="practice.content.optA"/>
       </a-form-item>
       <a-form-item v-if="practice.type === 1" label="B选项">
         <a-input v-model:value="practice.content.optB"/>
@@ -220,9 +235,11 @@ export default defineComponent({
      * 注: 这里不需要写具体的新增逻辑, 已经在对话框的"确认"按钮的逻辑中写过了
      */
     const addQuestionItem = () => {
-      modalVisible.value = true;
-      practice.value = {};  // 清空当前的数据信息
-      practice.value.content = {};   // 显式指定题目的选项为一个 {}
+	    practice.value = {};  // 清空当前的数据信息
+	    practice.value.content = {};   // 显式指定题目的选项为一个 {}
+	    categoryIds.value = [];
+	    console.log(practice);
+	    modalVisible.value = true;
     };
 
     /**
@@ -294,27 +311,31 @@ export default defineComponent({
       })
 
     };
-
-    /**
-     * 题目类型选择
-     */
-    const practiceTypeSelectChange = (value: any) => {
-      practice.value.type = value;
-    }
-
-    const practiceAnswerNameSelectChange = (value: any) => {
-      practice.value.answer = value;
-    }
-
-    //-------------分页--------------
-
-    const pagination = ref({
-      current: 1,
-      pageSize: 10,
-      total: 0
-    });
-
-    /**
+	
+	  /**
+	   * 题目类型选择
+	   */
+	  const practiceTypeSelectChange = (value: any) => {
+		  practice.value.type = value;
+	  }
+	
+	  const practiceAnswerNameSelectChange = (value: any) => {
+		  practice.value.answer = value;
+	  }
+	
+	  const practiceLevelSelectChange = (value: any) => {
+		  practice.value.level = value;
+	  }
+	
+	  //-------------分页--------------
+	
+	  const pagination = ref({
+		  current: 1,
+		  pageSize: 10,
+		  total: 0
+	  });
+	
+	  /**
      * 分页的跳转页面处理
      * @param pagination
      */
@@ -373,46 +394,71 @@ export default defineComponent({
           break;
         case 2:
           res = 'B';
-          break;
-        case 3:
-          res = 'C';
-          break;
-        case 4:
-          res = 'D';
-          break;
+	        break;
+	      case 3:
+		      res = 'C';
+		      break;
+	      case 4:
+		      res = 'D';
+		      break;
       }
-      return res;
+	    return res;
     }
-
-    onMounted(() => {
-      handleQueryCategory();
-    });
-
-    return {
-      loading,
-      listData,
-      pagination,
-      columns,
-      handleTableChange,
-      getCategoryNameById,
-
-      buttonEdit,
-      addQuestionItem,
-      buttonDelete,
-      practiceTypeSelectChange,
-      getPracticeTypeName,
-      getPracticeAnswerName,
-      practiceAnswerNameSelectChange,
-
-      practice,
-      modalVisible,
-      modalLoading,
-      handleModalOk,
-
-      onSearch,
-
-      categoryIds,
-      categoryTree,
+	
+	  const getPracticeLevelName = (level: number): string => {
+		  let res = '';
+		  switch (level) {
+			  case 1:
+				  res = '入门';
+				  break;
+			  case 2:
+				  res = '简单';
+				  break;
+			  case 3:
+				  res = '中等';
+				  break;
+			  case 4:
+				  res = '较难';
+				  break;
+			  case 5:
+				  res = '困难';
+				  break;
+		  }
+		  console.log("level = " + res);
+		  return res;
+	  }
+	
+	  onMounted(() => {
+		  handleQueryCategory();
+	  });
+	
+	  return {
+		  loading,
+		  listData,
+		  pagination,
+		  columns,
+		  handleTableChange,
+		  getCategoryNameById,
+		
+		  buttonEdit,
+		  addQuestionItem,
+		  buttonDelete,
+		  practiceTypeSelectChange,
+		  getPracticeTypeName,
+		  getPracticeAnswerName,
+		  practiceAnswerNameSelectChange,
+		  getPracticeLevelName,
+		  practiceLevelSelectChange,
+		
+		  practice,
+		  modalVisible,
+		  modalLoading,
+		  handleModalOk,
+		
+		  onSearch,
+		
+		  categoryIds,
+		  categoryTree,
     };
 
   },

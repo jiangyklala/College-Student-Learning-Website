@@ -5,9 +5,10 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="level" jdbcType="INTEGER" property="level"/>
     <result column="category_id1" jdbcType="BIGINT" property="categoryId1" />
     <result column="category_id2" jdbcType="BIGINT" property="categoryId2" />
-    <result column="content" jdbcType="VARCHAR" property="content"/>
+      <result column="content" jdbcType="VARCHAR" property="content"/>
     <result column="answer" jdbcType="INTEGER" property="answer" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -70,7 +71,7 @@
   </sql>
   <sql id="Base_Column_List">
       id
-      , `name`, `type`, category_id1, category_id2, content, answer
+      , `name`, `type`, `level`, category_id1, category_id2, content, answer
   </sql>
   <select id="selectByExample" parameterType="com.jxm.yiti.domain.QuestionDetailExample" resultMap="BaseResultMap">
     select
@@ -104,60 +105,66 @@
   </delete>
   <insert id="insert" parameterType="com.jxm.yiti.domain.QuestionDetail">
       insert into question_detail (id, `name`, `type`,
-                                   category_id1, category_id2, content,
-                                   answer)
+                                   `level`, category_id1, category_id2,
+                                   content, answer)
       values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER},
-              #{categoryId1,jdbcType=BIGINT}, #{categoryId2,jdbcType=BIGINT}, #{content,jdbcType=VARCHAR},
-              #{answer,jdbcType=INTEGER})
+              #{level,jdbcType=INTEGER}, #{categoryId1,jdbcType=BIGINT}, #{categoryId2,jdbcType=BIGINT},
+              #{content,jdbcType=VARCHAR}, #{answer,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.jxm.yiti.domain.QuestionDetail">
     insert into question_detail
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="name != null">
-        `name`,
-      </if>
-        <if test="type != null">
-            `type`,
-        </if>
-        <if test="categoryId1 != null">
-            category_id1,
-        </if>
-        <if test="categoryId2 != null">
-            category_id2,
-        </if>
-        <if test="content != null">
-            content,
-        </if>
-        <if test="answer != null">
-            answer,
-        </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=BIGINT},
-      </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
-      </if>
-        <if test="type != null">
-            #{type,jdbcType=INTEGER},
-        </if>
-        <if test="categoryId1 != null">
-            #{categoryId1,jdbcType=BIGINT},
-        </if>
-        <if test="categoryId2 != null">
-            #{categoryId2,jdbcType=BIGINT},
-        </if>
-        <if test="content != null">
-            #{content,jdbcType=VARCHAR},
-        </if>
-        <if test="answer != null">
-            #{answer,jdbcType=INTEGER},
-        </if>
-    </trim>
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="id != null">
+              id,
+          </if>
+          <if test="name != null">
+              `name`,
+          </if>
+          <if test="type != null">
+              `type`,
+          </if>
+          <if test="level != null">
+              `level`,
+          </if>
+          <if test="categoryId1 != null">
+              category_id1,
+          </if>
+          <if test="categoryId2 != null">
+              category_id2,
+          </if>
+          <if test="content != null">
+              content,
+          </if>
+          <if test="answer != null">
+              answer,
+          </if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides=",">
+          <if test="id != null">
+              #{id,jdbcType=BIGINT},
+          </if>
+          <if test="name != null">
+              #{name,jdbcType=VARCHAR},
+          </if>
+          <if test="type != null">
+              #{type,jdbcType=INTEGER},
+          </if>
+          <if test="level != null">
+              #{level,jdbcType=INTEGER},
+          </if>
+          <if test="categoryId1 != null">
+              #{categoryId1,jdbcType=BIGINT},
+          </if>
+          <if test="categoryId2 != null">
+              #{categoryId2,jdbcType=BIGINT},
+          </if>
+          <if test="content != null">
+              #{content,jdbcType=VARCHAR},
+          </if>
+          <if test="answer != null">
+              #{answer,jdbcType=INTEGER},
+          </if>
+      </trim>
   </insert>
   <select id="countByExample" parameterType="com.jxm.yiti.domain.QuestionDetailExample" resultType="java.lang.Long">
     select count(*) from question_detail
@@ -167,29 +174,32 @@
   </select>
   <update id="updateByExampleSelective" parameterType="map">
     update question_detail
-    <set>
-      <if test="record.id != null">
-        id = #{record.id,jdbcType=BIGINT},
-      </if>
-      <if test="record.name != null">
-        `name` = #{record.name,jdbcType=VARCHAR},
-      </if>
-        <if test="record.type != null">
-            `type` = #{record.type,jdbcType=INTEGER},
-        </if>
-        <if test="record.categoryId1 != null">
-            category_id1 = #{record.categoryId1,jdbcType=BIGINT},
-        </if>
-        <if test="record.categoryId2 != null">
-            category_id2 = #{record.categoryId2,jdbcType=BIGINT},
-        </if>
-        <if test="record.content != null">
-            content = #{record.content,jdbcType=VARCHAR},
-        </if>
-        <if test="record.answer != null">
-            answer = #{record.answer,jdbcType=INTEGER},
-        </if>
-    </set>
+      <set>
+          <if test="record.id != null">
+              id = #{record.id,jdbcType=BIGINT},
+          </if>
+          <if test="record.name != null">
+              `name` = #{record.name,jdbcType=VARCHAR},
+          </if>
+          <if test="record.type != null">
+              `type` = #{record.type,jdbcType=INTEGER},
+          </if>
+          <if test="record.level != null">
+              `level` = #{record.level,jdbcType=INTEGER},
+          </if>
+          <if test="record.categoryId1 != null">
+              category_id1 = #{record.categoryId1,jdbcType=BIGINT},
+          </if>
+          <if test="record.categoryId2 != null">
+              category_id2 = #{record.categoryId2,jdbcType=BIGINT},
+          </if>
+          <if test="record.content != null">
+              content = #{record.content,jdbcType=VARCHAR},
+          </if>
+          <if test="record.answer != null">
+              answer = #{record.answer,jdbcType=INTEGER},
+          </if>
+      </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -199,42 +209,47 @@
       set id = #{record.id,jdbcType=BIGINT},
       `name` = #{record.name,jdbcType=VARCHAR},
       `type` = #{record.type,jdbcType=INTEGER},
+      `level` = #{record.level,jdbcType=INTEGER},
       category_id1 = #{record.categoryId1,jdbcType=BIGINT},
       category_id2 = #{record.categoryId2,jdbcType=BIGINT},
       content = #{record.content,jdbcType=VARCHAR},
       answer = #{record.answer,jdbcType=INTEGER}
       <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
+          <include refid="Update_By_Example_Where_Clause"/>
+      </if>
   </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.jxm.yiti.domain.QuestionDetail">
     update question_detail
-    <set>
-      <if test="name != null">
-        `name` = #{name,jdbcType=VARCHAR},
-      </if>
-        <if test="type != null">
-            `type` = #{type,jdbcType=INTEGER},
-        </if>
-        <if test="categoryId1 != null">
-            category_id1 = #{categoryId1,jdbcType=BIGINT},
-        </if>
-        <if test="categoryId2 != null">
-            category_id2 = #{categoryId2,jdbcType=BIGINT},
-        </if>
-        <if test="content != null">
-            content = #{content,jdbcType=VARCHAR},
-        </if>
-        <if test="answer != null">
-            answer = #{answer,jdbcType=INTEGER},
-        </if>
-    </set>
+      <set>
+          <if test="name != null">
+              `name` = #{name,jdbcType=VARCHAR},
+          </if>
+          <if test="type != null">
+              `type` = #{type,jdbcType=INTEGER},
+          </if>
+          <if test="level != null">
+              `level` = #{level,jdbcType=INTEGER},
+          </if>
+          <if test="categoryId1 != null">
+              category_id1 = #{categoryId1,jdbcType=BIGINT},
+          </if>
+          <if test="categoryId2 != null">
+              category_id2 = #{categoryId2,jdbcType=BIGINT},
+          </if>
+          <if test="content != null">
+              content = #{content,jdbcType=VARCHAR},
+          </if>
+          <if test="answer != null">
+              answer = #{answer,jdbcType=INTEGER},
+          </if>
+      </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.jxm.yiti.domain.QuestionDetail">
       update question_detail
       set `name`       = #{name,jdbcType=VARCHAR},
           `type`       = #{type,jdbcType=INTEGER},
+          `level`      = #{level,jdbcType=INTEGER},
           category_id1 = #{categoryId1,jdbcType=BIGINT},
           category_id2 = #{categoryId2,jdbcType=BIGINT},
           content      = #{content,jdbcType=VARCHAR},

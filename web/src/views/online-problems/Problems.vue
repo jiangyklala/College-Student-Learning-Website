@@ -1,6 +1,10 @@
 <template>
 	<a-layout-content class="layout-content">
-    <span v-for="categoryNode in categoryTree" v-bind:key="categoryNode">
+		<div class="practiceSettings-div" @click="practiceSettingsClick">
+			<setting-outlined/>
+			题目设置
+		</div>
+		<span v-for="categoryNode in categoryTree" v-bind:key="categoryNode">
        <div class="mainTags-div">
         <tag-two-tone/>
         {{ categoryNode.name }}
@@ -19,14 +23,60 @@
 
     </span>
 	</a-layout-content>
+	
+	<a-modal v-model:visible="practiceSettingsVisible" title="刷题设置" @ok="practiceSettingsModalOK">
+		<a-form
+				:model="practiceSettingsState"
+				name="basic"
+				:label-col="{ span: 5 }"
+				:wrapper-col="{ span: 16 }"
+		>
+			
+			<a-form-item label="题目数量" :wrapper-col="{ offset: 1, span: 16 }">
+				<a-radio-group v-model:value="practiceSettingsState.problemCount" name="problemCountGroup">
+					<a-radio value="5">5</a-radio>
+					<a-radio value="15">15</a-radio>
+					<a-radio value="20">20</a-radio>
+					<a-radio value="25">25</a-radio>
+				</a-radio-group>
+			</a-form-item>
+			
+			<a-form-item label="题目来源" :wrapper-col="{ offset: 1, span: 16 }">
+				<a-radio-group v-model:value="practiceSettingsState.problemSource" name="problemSourceGroup">
+					<a-radio value="1">只出新题</a-radio>
+					<a-radio value="2">错题 + 新题</a-radio>
+					<a-radio value="3">只出错题</a-radio>
+					<a-radio value="4">不限来源</a-radio>
+				</a-radio-group>
+			</a-form-item>
+			
+			<a-form-item label="题目难度" :wrapper-col="{ offset: 1, span: 16 }">
+				<a-radio-group v-model:value="practiceSettingsState.problemLevel" name="problemLevelGroup">
+					<a-radio value="1">入门</a-radio>
+					<a-radio value="2">简单</a-radio>
+					<a-radio value="3">中等</a-radio>
+					<a-radio value="4">较难</a-radio>
+					<a-radio value="5">困难</a-radio>
+				</a-radio-group>
+			</a-form-item>
+		
+		</a-form>
+	</a-modal>
+
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, ref} from "vue";
+import {defineComponent, onMounted, reactive, ref} from "vue";
 import axios from "axios";
 import {message} from "ant-design-vue";
 import {Tool} from "@/utils/tool";
 import router from "@/router";
+
+interface PracticeSettingsState {
+	problemCount: number;
+	problemSource: number;
+	problemLevel: number;
+}
 
 export default defineComponent({
 	name: "Problems",
@@ -106,9 +156,26 @@ export default defineComponent({
 			
 			sessionStorage.setItem("ExamCategory", JSON.stringify(categoryItem));                   // 临时存储
 			
-			window.open(routeData.href, '在线刷题');
+			// window.open(routeData.href, '在线刷题');
+			// 页内跳转
+			router.push('/online-problems/DoExam');
 		}
 		
+		const practiceSettingsVisible = ref(true);
+		
+		const practiceSettingsClick = () => {
+			practiceSettingsVisible.value = true;
+		}
+		
+		const practiceSettingsState = reactive<PracticeSettingsState>({
+			problemCount: 1,
+			problemSource: 1,
+			problemLevel: 1,
+		});
+		
+		const practiceSettingsModalOK = () => {
+			console.log("Ok");
+		}
 		
 		const question = {
 			title: '这是一个问题的标题',
@@ -141,9 +208,14 @@ export default defineComponent({
 			mainLoading,
 			categoryTree,
 			
+			practiceSettingsState,
+			practiceSettingsVisible,
+			
 			getCategoryNameById,
 			submitAnswer,
 			examOnClick,
+			practiceSettingsClick,
+			practiceSettingsModalOK,
 		}
 	}
 })
@@ -166,5 +238,10 @@ export default defineComponent({
 	height: 80px;
 	font-weight: 700;
 	font-size: 25px;
+}
+
+.practiceSettings-div {
+	font-size: 20px;
+	color: #7d8293;
 }
 </style>
