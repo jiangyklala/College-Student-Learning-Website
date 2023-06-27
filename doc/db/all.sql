@@ -496,3 +496,19 @@ CREATE TABLE `question_detail`
     PRIMARY KEY (`id`)
 ) ENGINE = innodb
   DEFAULT CHARSET = utf8mb4 COMMENT = '题目信息表';
+
+
+# 用户刷题信息记录表
+DROP TABLE IF EXISTS `practice_user`
+
+CREATE TABLE `practice_user`
+(
+    `user_id`       bigint NOT NULL,
+    `settings_obj`  BLOB   NOT NULL COMMENT '刷题设置',
+    `done_id_list`  BLOB   NOT NULL COMMENT '已刷题目',
+    `wrong_id_list` BLOB   NOT NULL COMMENT '题目设置',
+    `mark_id_list`  BLOB   NOT NULL COMMENT '题目设置',
+    `other`         BLOB   NOT NULL COMMENT 'other',
+    PRIMARY KEY (`user_id`)
+) ENGINE = innodb
+  DEFAULT CHARSET = utf8mb4 COMMENT = '用户刷题信息记录表';

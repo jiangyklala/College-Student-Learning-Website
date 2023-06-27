@@ -40,17 +40,7 @@
                              targetPackage="com.jxm.yiti.mapper"
                              type="XMLMAPPER"/>
 
-        <!--                <table tableName="record_log" domainObjectName="RecordLog"/>-->
-        <!--        <table tableName="category"/>-->
-        <!--        <table tableName="course_list"/>-->
-<!--        <table tableName="course_item"/>-->
-<!--        <table tableName="column_list"/>-->
-<!--        <table tableName="doc"/>-->
-<!--        <table tableName="user"/>-->
-<!--        <table tableName="gpt_pay_info"/>-->
-        <table tableName="question_detail"/>
-<!--        <table tableName="gpt_invite_code"/>-->
-        <!--                <table tableName="demo" domainObjectName="Demo"/>-->
-        <!--                <table tableName="disallow_word" domainObjectName="Disallow_word"/>-->
+        <table tableName="practice_user"/>
+
     </context>
 </generatorConfiguration>
