@@ -4,6 +4,7 @@ import com.jxm.yiti.req.QuestionDetailQueryReq;
 import com.jxm.yiti.req.QuestionDetailSaveReq;
 import com.jxm.yiti.resp.CommonResp;
 import com.jxm.yiti.resp.PageResp;
+import com.jxm.yiti.resp.PracticeUserQueryResp;
 import com.jxm.yiti.resp.QuestionDetailQueryResp;
 import com.jxm.yiti.service.PracticeProblemsService;
 import jakarta.annotation.Resource;
@@ -88,7 +89,6 @@ public class PracticeProblemsController {
         return resp;
     }
 
-
     /**
      * 查询所有题目, 按 categoryId1 分组, 按 categoryId2 升序排序
      */
@@ -103,4 +103,17 @@ public class PracticeProblemsController {
         return resp;
     }
 
+    /**
+     * 查询某个用户的刷题设置信息
+     */
+    @GetMapping("/selectSettingsInfo/{userID}")
+    @ResponseBody
+    public CommonResp selectSettingsInfo(@PathVariable Long userID) {
+        CommonResp<PracticeUserQueryResp> resp = new CommonResp<>();
+
+        PracticeUserQueryResp practiceUserQueryResp = practiceProblemsService.selectSettingsInfo(userID);
+        resp.setContent(practiceUserQueryResp);
+
+        return resp;
+    }
 }

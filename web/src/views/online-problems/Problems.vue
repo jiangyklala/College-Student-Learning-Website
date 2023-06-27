@@ -24,39 +24,41 @@
     </span>
 	</a-layout-content>
 	
-	<a-modal v-model:visible="practiceSettingsVisible" title="刷题设置" @ok="practiceSettingsModalOK">
+	<a-modal v-model:visible="practiceSettingsVisible"
+	         width="700px"
+	         title="刷题设置"
+	         @ok="practiceSettingsModalOK">
 		<a-form
 				:model="practiceSettingsState"
 				name="basic"
-				:label-col="{ span: 5 }"
-				:wrapper-col="{ span: 16 }"
+				:label-col="{ span: 4 }"
 		>
-			
 			<a-form-item label="题目数量" :wrapper-col="{ offset: 1, span: 16 }">
 				<a-radio-group v-model:value="practiceSettingsState.problemCount" name="problemCountGroup">
-					<a-radio value="5">5</a-radio>
-					<a-radio value="15">15</a-radio>
-					<a-radio value="20">20</a-radio>
-					<a-radio value="25">25</a-radio>
+					<a-radio value="FIVE">5</a-radio>
+					<a-radio value="TEN">15</a-radio>
+					<a-radio value="FIFTEEN">20</a-radio>
+					<a-radio value="TWENTY">25</a-radio>
+					<a-radio value="THIRTY">30</a-radio>
 				</a-radio-group>
 			</a-form-item>
 			
 			<a-form-item label="题目来源" :wrapper-col="{ offset: 1, span: 16 }">
 				<a-radio-group v-model:value="practiceSettingsState.problemSource" name="problemSourceGroup">
-					<a-radio value="1">只出新题</a-radio>
-					<a-radio value="2">错题 + 新题</a-radio>
-					<a-radio value="3">只出错题</a-radio>
-					<a-radio value="4">不限来源</a-radio>
+					<a-radio value="NEW">只出新题</a-radio>
+					<a-radio value="WRONGANDNEW">错题 + 新题</a-radio>
+					<a-radio value="WRONG">只出错题</a-radio>
+					<a-radio value="ALL">不限来源</a-radio>
 				</a-radio-group>
 			</a-form-item>
 			
 			<a-form-item label="题目难度" :wrapper-col="{ offset: 1, span: 16 }">
 				<a-radio-group v-model:value="practiceSettingsState.problemLevel" name="problemLevelGroup">
-					<a-radio value="1">入门</a-radio>
-					<a-radio value="2">简单</a-radio>
-					<a-radio value="3">中等</a-radio>
-					<a-radio value="4">较难</a-radio>
-					<a-radio value="5">困难</a-radio>
+					<a-radio value="BEGINNER">入门</a-radio>
+					<a-radio value="EASY">简单</a-radio>
+					<a-radio value="INTERMEDIATE">中等</a-radio>
+					<a-radio value="DIFFICULT">较难</a-radio>
+					<a-radio value="CHALLENGING">困难</a-radio>
 				</a-radio-group>
 			</a-form-item>
 		
@@ -66,16 +68,17 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, reactive, ref} from "vue";
+import {computed, defineComponent, onMounted, ref} from "vue";
 import axios from "axios";
 import {message} from "ant-design-vue";
 import {Tool} from "@/utils/tool";
 import router from "@/router";
+import store from "@/store";
 
 interface PracticeSettingsState {
-	problemCount: number;
-	problemSource: number;
-	problemLevel: number;
+	problemCount: string;
+	problemSource: string;
+	problemLevel: string;
 }
 
 export default defineComponent({
@@ -85,6 +88,9 @@ export default defineComponent({
 		//-------------页面--------------
 		const mainLoading = ref();
 		const listData = ref();
+		const userID = computed(() => {
+			return store.state.userInfo.id;
+		});
 		
 		/**
 		 * 题目列表查询
@@ -161,17 +167,22 @@ export default defineComponent({
 			router.push('/online-problems/DoExam');
 		}
 		
-		const practiceSettingsVisible = ref(true);
+		const practiceSettingsVisible = ref(false);
+		const practiceSettingsState = ref();
+		practiceSettingsState.value = [];
 		
 		const practiceSettingsClick = () => {
+			practiceSettingsState.value.problemCount = settingsInfo.value.settingsObj.problemCount;
+			practiceSettingsState.value.problemSource = settingsInfo.value.settingsObj.problemSource;
+			practiceSettingsState.value.problemLevel = settingsInfo.value.settingsObj.problemLevel;
 			practiceSettingsVisible.value = true;
 		}
 		
-		const practiceSettingsState = reactive<PracticeSettingsState>({
-			problemCount: 1,
-			problemSource: 1,
-			problemLevel: 1,
-		});
+		// const practiceSettingsState = reactive<PracticeSettingsState>({
+		// 	problemCount: settingsInfo.value.problemCount,
+		// 	problemSource: 1,
+		// 	problemLevel: 1,
+		// });
 		
 		const practiceSettingsModalOK = () => {
 			console.log("Ok");
@@ -196,8 +207,23 @@ export default defineComponent({
 			showResult.value = true;
 		}
 		
+		const settingsInfo = ref();
+		const settingsInfoQuery = () => {
+			axios.get("/practice/selectSettingsInfo/" + userID.value).then((response) => {
+				let data = response.data;
+				if (data.success) {
+					console.log(data);
+					settingsInfo.value = data.content;
+					// settingsInfo.value.content = JSON.parse(settingsInfo.value.content);
+				} else {
+					message.error(data.message);
+				}
+			})
+		}
+		
 		onMounted(() => {
 			handleQueryCategory();
+			settingsInfoQuery();
 		})
 		
 		return {

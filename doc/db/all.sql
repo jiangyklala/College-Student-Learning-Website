@@ -489,8 +489,8 @@ CREATE TABLE `question_detail`
     `name`         varchar(20)           NOT NULL COMMENT '题目名称',
     `type`         int                   NOT NULL COMMENT '题目类型',
     `level`        int                            DEFAULT 1 COMMENT '题目难度',
-    `category_id1` bigint                NOT NULL DEFAULT 0 comment '分类1',
-    `category_id2` bigint comment '分类2',
+    `category_id1` bigint                NOT NULL DEFAULT 0 COMMENT '分类1',
+    `category_id2` bigint COMMENT '分类2',
     `content`      varchar(500)          NOT NULL DEFAULT '{}' COMMENT '题目的内容, 为 JSON 格式',
     `answer`       int                   NOT NULL COMMENT '题目答案',
     PRIMARY KEY (`id`)
@@ -506,9 +506,9 @@ CREATE TABLE `practice_user`
     `user_id`       bigint NOT NULL,
     `settings_obj`  BLOB   NOT NULL COMMENT '刷题设置',
     `done_id_list`  BLOB   NOT NULL COMMENT '已刷题目',
-    `wrong_id_list` BLOB   NOT NULL COMMENT '题目设置',
-    `mark_id_list`  BLOB   NOT NULL COMMENT '题目设置',
-    `other`         BLOB   NOT NULL COMMENT 'other',
+    `wrong_id_list` BLOB   NOT NULL COMMENT '错误题目',
+    `mark_id_list`  BLOB   NOT NULL COMMENT '收藏题目',
+    `other`         BLOB COMMENT 'other',
     PRIMARY KEY (`user_id`)
 ) ENGINE = innodb
   DEFAULT CHARSET = utf8mb4 COMMENT = '用户刷题信息记录表';

@@ -1,13 +1,21 @@
 package com.jxm.yiti.service;
 
+import com.alibaba.fastjson2.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.jxm.yiti.domain.PracticeUser;
 import com.jxm.yiti.domain.QuestionDetail;
 import com.jxm.yiti.domain.QuestionDetailExample;
+import com.jxm.yiti.domain.cust.PracticeSettings;
+import com.jxm.yiti.enums.ProblemCount;
+import com.jxm.yiti.enums.ProblemLevel;
+import com.jxm.yiti.enums.ProblemSource;
+import com.jxm.yiti.mapper.PracticeUserMapper;
 import com.jxm.yiti.mapper.QuestionDetailMapper;
 import com.jxm.yiti.req.QuestionDetailQueryReq;
 import com.jxm.yiti.req.QuestionDetailSaveReq;
 import com.jxm.yiti.resp.PageResp;
+import com.jxm.yiti.resp.PracticeUserQueryResp;
 import com.jxm.yiti.resp.QuestionDetailQueryResp;
 import com.jxm.yiti.utils.CopyUtil;
 import com.jxm.yiti.utils.SnowFlakeIdWorker;
@@ -20,6 +28,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
@@ -30,6 +39,9 @@ public class PracticeProblemsService {
 
     @Resource
     private QuestionDetailMapper questionDetailMapper;
+
+    @Resource
+    private PracticeUserMapper practiceUserMapper;
 
     private static final Logger LOG = LoggerFactory.getLogger(PracticeProblemsService.class);
 
@@ -138,5 +150,71 @@ public class PracticeProblemsService {
         });
 
         return resList;
+    }
+
+    /**
+     * 查询某个用户的刷题设置信息
+     */
+    public PracticeUserQueryResp selectSettingsInfo(Long userID) {
+        PracticeUserQueryResp practiceUserQueryResp;
+
+        PracticeUser practiceUser = practiceUserMapper.selectByPrimaryKey(userID);
+        // 用户刷题信息表不存在
+        if (practiceUser == null) {
+            // 向表中增加用户刷题信息记录
+            addUserPracticeSettings(userID);
+            practiceUser = practiceUserMapper.selectByPrimaryKey(userID);
+        }
+        practiceUserQueryResp = toPracticeUserQueryResp(practiceUser);
+
+        return practiceUserQueryResp;
+    }
+
+    /**
+     * 将 practiceUser 转化为 practiceUserQueryResp 类型
+     */
+    private PracticeUserQueryResp toPracticeUserQueryResp(PracticeUser practiceUser) {
+        PracticeUserQueryResp practiceUserQueryResp = new PracticeUserQueryResp();
+        practiceUserQueryResp.setSettingsObj(JSON.parseObject(practiceUser.getSettingsObj(),
+                PracticeSettings.class));
+        practiceUserQueryResp.setDoneIdList(JSON.parseObject(practiceUser.getDoneIdList(),
+                List.class));
+        practiceUserQueryResp.setWrongIdList(JSON.parseObject(practiceUser.getWrongIdList(),
+                List.class));
+        practiceUserQueryResp.setMarkIdList(JSON.parseObject(practiceUser.getMarkIdList(),
+                List.class));
+        practiceUserQueryResp.setOther(JSON.parseObject(practiceUser.getOther(),
+                List.class));
+
+        return practiceUserQueryResp;
+    }
+
+    /**
+     * 向[用户刷题信息表]中增加用户刷题信息记录
+     */
+    private void addUserPracticeSettings(Long userID) {
+        PracticeUser practiceUser = new PracticeUser();
+        practiceUser.setUserId(userID);
+
+        PracticeSettings practiceSettings = new PracticeSettings();
+        practiceSettings.setProblemSource(ProblemSource.NEW);
+        practiceSettings.setProblemCount(ProblemCount.FIVE);
+        practiceSettings.setProblemLevel(ProblemLevel.INTERMEDIATE);
+        practiceUser.setSettingsObj(JSON.toJSONBytes(practiceSettings));
+
+        List<Long> doneIdList = new LinkedList<>();
+        practiceUser.setDoneIdList(JSON.toJSONBytes(doneIdList));
+
+        List<Long> markIdList = new LinkedList<>();
+        practiceUser.setMarkIdList(JSON.toJSONBytes(markIdList));
+
+        List<Long> wrongIdList = new LinkedList<>();
+        practiceUser.setWrongIdList(JSON.toJSONBytes(wrongIdList));
+
+        try {
+            practiceUserMapper.insert(practiceUser);
+        } catch (RuntimeException e) {
+            LOG.error("插入用户刷题设置信息失败", e);
+        }
     }
 }

@@ -225,7 +225,7 @@ export default defineComponent({
     }
 
     onMounted(() => {
-      console.log("lala");
+      // console.log("lala");
       inviterInfoQuery();
       allInviteCodeQuery();
       selectAllInviteInfo();
