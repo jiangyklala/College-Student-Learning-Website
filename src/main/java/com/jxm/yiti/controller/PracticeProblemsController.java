@@ -122,12 +122,12 @@ public class PracticeProblemsController {
     /**
      * 查询某个用户的刷题设置信息
      */
-    @GetMapping("/selectSettingsInfo/{userID}")
+    @GetMapping("/selectPracticeUserInfo/{userID}")
     @ResponseBody
-    public CommonResp selectSettingsInfo(@PathVariable Long userID) {
+    public CommonResp selectPracticeUserInfo(@PathVariable Long userID) {
         CommonResp<PracticeUserQueryResp> resp = new CommonResp<>();
 
-        PracticeUserQueryResp practiceUserQueryResp = practiceProblemsService.selectSettingsInfo(userID);
+        PracticeUserQueryResp practiceUserQueryResp = practiceProblemsService.selectPracticeUserInfo(userID);
         resp.setContent(practiceUserQueryResp);
 
         return resp;

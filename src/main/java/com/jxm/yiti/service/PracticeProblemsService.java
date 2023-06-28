@@ -159,7 +159,7 @@ public class PracticeProblemsService {
     /**
      * 查询某个用户的刷题设置信息
      */
-    public PracticeUserQueryResp selectSettingsInfo(Long userID) {
+    public PracticeUserQueryResp selectPracticeUserInfo(Long userID) {
         PracticeUserQueryResp practiceUserQueryResp;
 
         PracticeUser practiceUser = practiceUserMapper.selectByPrimaryKey(userID);
@@ -230,7 +230,7 @@ public class PracticeProblemsService {
      */
     public void saveSettings(PracticeSettingsSaveReq req, CommonResp resp) {
         PracticeUser practiceUser = new PracticeUser();
-        practiceUser.setUserId(req.getUserID());
+        practiceUser.setUserId(req.getUserId());
         PracticeSettings practiceSettings = CopyUtil.copy(req, PracticeSettings.class);
         practiceUser.setSettingsObj(JSON.toJSONBytes(practiceSettings));
 

@@ -34,7 +34,8 @@
 				:label-col="{ span: 4 }"
 		>
 			<a-form-item label="题目数量" :wrapper-col="{ offset: 1, span: 16 }">
-				<a-radio-group v-model:value="practiceSettingsState.problemCount" name="problemCountGroup">
+				<a-radio-group v-model:value="practiceSettingsState.problemCount"
+				               name="problemCountGroup">
 					<a-radio value="FIVE">5</a-radio>
 					<a-radio value="TEN">15</a-radio>
 					<a-radio value="FIFTEEN">20</a-radio>
@@ -104,8 +105,6 @@ export default defineComponent({
 					
 					console.log(listData);
 					
-					// autoLayoutHeight();   // 自动调整布局
-					
 				} else {
 					message.error(response.data.message);
 				}
@@ -169,67 +168,52 @@ export default defineComponent({
 		
 		const practiceSettingsVisible = ref(false);
 		const practiceSettingsState = ref();
-		practiceSettingsState.value = [];
+		practiceSettingsState.value = {};
 		
 		const practiceSettingsClick = () => {
-			practiceSettingsState.value.problemCount = settingsInfo.value.settingsObj.problemCount;
-			practiceSettingsState.value.problemSource = settingsInfo.value.settingsObj.problemSource;
-			practiceSettingsState.value.problemLevel = settingsInfo.value.settingsObj.problemLevel;
 			practiceSettingsVisible.value = true;
 		}
-		
-		// const practiceSettingsState = reactive<PracticeSettingsState>({
-		// 	problemCount: settingsInfo.value.problemCount,
-		// 	problemSource: 1,
-		// 	problemLevel: 1,
-		// });
+
 		
 		const practiceSettingsModalOK = () => {
-			console.log("Ok");
+			practiceSettingsState.value.userId = userID.value;
+			// console.log(practiceSettingsState.value);
+			axios.post("/practice/saveSettings", practiceSettingsState.value).then((response) => {
+				const data = response.data;
+				if (data.success) {
+					message.success("保存成功!");
+					practiceSettingsVisible.value = false;
+				} else {
+					message.error(response.data.message);
+				}
+			});
 		}
 		
-		const question = {
-			title: '这是一个问题的标题',
-			options: [
-				{id: 1, label: '选项1'},
-				{id: 2, label: '选项2'},
-				{id: 3, label: '选项3'},
-				{id: 4, label: '选项4'}
-			],
-			correctOption: 2
-		};
-		
-		const selectedOption = ref<number>(0);
-		
-		const showResult = ref(false);
-		
-		const submitAnswer = () => {
-			showResult.value = true;
-		}
-		
-		const settingsInfo = ref();
-		const settingsInfoQuery = () => {
-			axios.get("/practice/selectSettingsInfo/" + userID.value).then((response) => {
+		const practiceUserInfo = ref();
+		const practiceUserInfoQuery = () => {
+			axios.get("/practice/selectPracticeUserInfo/" + userID.value).then((response) => {
 				let data = response.data;
 				if (data.success) {
-					console.log(data);
-					settingsInfo.value = data.content;
-					// settingsInfo.value.content = JSON.parse(settingsInfo.value.content);
+					practiceUserInfo.value = data.content;
+					
+					// 将总用户刷题信息里的设置信息提取出来
+					practiceSettingsState.value.problemCount = practiceUserInfo.value.settingsObj.problemCount;
+					practiceSettingsState.value.problemSource = practiceUserInfo.value.settingsObj.problemSource;
+					practiceSettingsState.value.problemLevel = practiceUserInfo.value.settingsObj.problemLevel;
+					
 				} else {
 					message.error(data.message);
 				}
 			})
 		}
 		
+		
 		onMounted(() => {
 			handleQueryCategory();
-			settingsInfoQuery();
+			practiceUserInfoQuery();
 		})
 		
 		return {
-			question,
-			selectedOption,
-			showResult,
 			listData,
 			mainLoading,
 			categoryTree,
@@ -238,7 +222,6 @@ export default defineComponent({
 			practiceSettingsVisible,
 			
 			getCategoryNameById,
-			submitAnswer,
 			examOnClick,
 			practiceSettingsClick,
 			practiceSettingsModalOK,
