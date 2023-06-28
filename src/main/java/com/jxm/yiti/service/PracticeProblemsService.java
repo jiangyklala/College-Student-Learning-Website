@@ -10,10 +10,14 @@ import com.jxm.yiti.domain.cust.PracticeSettings;
 import com.jxm.yiti.enums.ProblemCount;
 import com.jxm.yiti.enums.ProblemLevel;
 import com.jxm.yiti.enums.ProblemSource;
+import com.jxm.yiti.exception.BusinessException;
+import com.jxm.yiti.exception.BusinessExceptionCode;
 import com.jxm.yiti.mapper.PracticeUserMapper;
 import com.jxm.yiti.mapper.QuestionDetailMapper;
+import com.jxm.yiti.req.PracticeSettingsSaveReq;
 import com.jxm.yiti.req.QuestionDetailQueryReq;
 import com.jxm.yiti.req.QuestionDetailSaveReq;
+import com.jxm.yiti.resp.CommonResp;
 import com.jxm.yiti.resp.PageResp;
 import com.jxm.yiti.resp.PracticeUserQueryResp;
 import com.jxm.yiti.resp.QuestionDetailQueryResp;
@@ -162,7 +166,9 @@ public class PracticeProblemsService {
         // 用户刷题信息表不存在
         if (practiceUser == null) {
             // 向表中增加用户刷题信息记录
-            addUserPracticeSettings(userID);
+            if (addUserPracticeSettings(userID) != 1) {
+                throw new BusinessException(BusinessExceptionCode.SYSTEM_ERROR);
+            }
             practiceUser = practiceUserMapper.selectByPrimaryKey(userID);
         }
         practiceUserQueryResp = toPracticeUserQueryResp(practiceUser);
@@ -192,7 +198,7 @@ public class PracticeProblemsService {
     /**
      * 向[用户刷题信息表]中增加用户刷题信息记录
      */
-    private void addUserPracticeSettings(Long userID) {
+    private int addUserPracticeSettings(Long userID) {
         PracticeUser practiceUser = new PracticeUser();
         practiceUser.setUserId(userID);
 
@@ -212,9 +218,28 @@ public class PracticeProblemsService {
         practiceUser.setWrongIdList(JSON.toJSONBytes(wrongIdList));
 
         try {
-            practiceUserMapper.insert(practiceUser);
+            return practiceUserMapper.insert(practiceUser);
         } catch (RuntimeException e) {
-            LOG.error("插入用户刷题设置信息失败", e);
+            LOG.error("插入用户刷题设置信息失败, practiceUser = {}", practiceUser, e);
+            return -1;
+        }
+    }
+
+    /**
+     * 保存用户刷题设置信息
+     */
+    public void saveSettings(PracticeSettingsSaveReq req, CommonResp resp) {
+        PracticeUser practiceUser = new PracticeUser();
+        practiceUser.setUserId(req.getUserID());
+        PracticeSettings practiceSettings = CopyUtil.copy(req, PracticeSettings.class);
+        practiceUser.setSettingsObj(JSON.toJSONBytes(practiceSettings));
+
+        try {
+            practiceUserMapper.updateByPrimaryKeySelective(practiceUser);
+        } catch (RuntimeException e) {
+            LOG.error("保存用户刷题设置信息失败, PracticeSettingsSaveReq = {}", req, e);
+            resp.setSuccess(false);
+            resp.setMessage("保存用户刷题设置信息失败");
         }
     }
 }

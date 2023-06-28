@@ -1,5 +1,6 @@
 package com.jxm.yiti.controller;
 
+import com.jxm.yiti.req.PracticeSettingsSaveReq;
 import com.jxm.yiti.req.QuestionDetailQueryReq;
 import com.jxm.yiti.req.QuestionDetailSaveReq;
 import com.jxm.yiti.resp.CommonResp;
@@ -52,6 +53,21 @@ public class PracticeProblemsController {
             resp.setSuccess(false);
             resp.setMessage("保存下载项失败");
         }
+
+        return resp;
+    }
+
+    /**
+     * 保存(更新)用户的刷题设置
+     *
+     * @param req 保存参数
+     */
+    @PostMapping("/saveSettings")
+    @ResponseBody
+    public CommonResp saveSettings(@RequestBody @Valid PracticeSettingsSaveReq req) {  // 以 json 方式提交
+        CommonResp resp = new CommonResp();
+
+        practiceProblemsService.saveSettings(req, resp);
 
         return resp;
     }
