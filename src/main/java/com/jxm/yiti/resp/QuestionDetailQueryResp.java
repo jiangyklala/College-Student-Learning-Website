@@ -11,9 +11,19 @@ public class QuestionDetailQueryResp {
 
     private Long categoryId2;
 
+    private Integer level;
+
     private String content;
 
     private Integer answer;
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
 
     public Long getId() {
         return id;
@@ -79,6 +89,7 @@ public class QuestionDetailQueryResp {
                 ", type=" + type +
                 ", categoryId1=" + categoryId1 +
                 ", categoryId2=" + categoryId2 +
+                ", level=" + level +
                 ", content='" + content + '\'' +
                 ", answer=" + answer +
                 '}';

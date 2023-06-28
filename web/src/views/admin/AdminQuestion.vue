@@ -238,7 +238,7 @@ export default defineComponent({
 	    practice.value = {};  // 清空当前的数据信息
 	    practice.value.content = {};   // 显式指定题目的选项为一个 {}
 	    categoryIds.value = [];
-	    console.log(practice);
+	    // console.log(practice);
 	    modalVisible.value = true;
     };
 
@@ -289,7 +289,7 @@ export default defineComponent({
       practice.value.categoryId1 = categoryIds.value[0];  // 保存之前先把两个分类从表单中提取出来
       practice.value.categoryId2 = categoryIds.value[1];
       practice.value.content = JSON.stringify(practice.value.content);
-      console.log(practice.value);
+	    // console.log(practice.value);
 
       axios.post("/practice/save", practice.value).then((response) => {
         // console.log(response);
@@ -404,8 +404,8 @@ export default defineComponent({
       }
 	    return res;
     }
-	
-	  const getPracticeLevelName = (level: number): string => {
+	  
+	  const getPracticeLevelName = (level: any): string => {
 		  let res = '';
 		  switch (level) {
 			  case 1:
@@ -424,7 +424,7 @@ export default defineComponent({
 				  res = '困难';
 				  break;
 		  }
-		  console.log("level = " + res);
+		  // console.log("level = " + res);
 		  return res;
 	  }
 	
