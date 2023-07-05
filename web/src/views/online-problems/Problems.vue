@@ -154,14 +154,20 @@ export default defineComponent({
 		 * @param categoryItem
 		 */
 		const examOnClick = (categoryItem: any) => {
-			console.log(categoryItem);
+			// console.log(categoryItem);
 			const routeData = router.resolve({
 				path: "/online-problems/DoExam",
 			});
 			
-			sessionStorage.setItem("ExamCategory", JSON.stringify(categoryItem));                   // 临时存储
+			const extractProblemSetting = {
+				categoryId2: categoryItem.id,
+				problemCount: practiceSettingsState.value.problemCount,
+				problemSource: practiceSettingsState.value.problemSource,
+				problemLevel: practiceSettingsState.value.problemLevel,
+			};
+			// console.log(extractProblemSetting);
+			sessionStorage.setItem("ExtractProblemSetting", JSON.stringify(extractProblemSetting));                   // 临时存储
 			
-			// window.open(routeData.href, '在线刷题');
 			// 页内跳转
 			router.push('/online-problems/DoExam');
 		}

@@ -76,9 +76,9 @@ public class PracticeProblemsController {
     /**
      * 根据用户的设置挑选题目
      */
-    @PostMapping("/extractProblems")
+    @GetMapping("/extractProblems")
     @ResponseBody
-    public CommonResp<List<QuestionDetailQueryResp>> extractProblems(@RequestBody @Valid PracticeSettingsReq req) {  // 以 json 方式提交
+    public CommonResp<List<QuestionDetailQueryResp>> extractProblems(@Valid PracticeSettingsReq req) {
         CommonResp<List<QuestionDetailQueryResp>> resp = new CommonResp<>();
 
         practiceProblemsService.extractProblems(req, resp);

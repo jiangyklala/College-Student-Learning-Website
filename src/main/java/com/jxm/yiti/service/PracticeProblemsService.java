@@ -250,10 +250,10 @@ public class PracticeProblemsService {
 
     public void extractProblems(PracticeSettingsReq req, CommonResp<List<QuestionDetailQueryResp>> resp) {
         ArrayList<Long> idList = new ArrayList<>();
-        idList.add(3072529551851520L);
-        idList.add(3077251139108864L);
+//        idList.add(3072529551851520L);
+//        idList.add(3077251139108864L);
 
-        PracticeUser practiceUser = practiceUserMapper.selectByPrimaryKey(2658810919845888L);
+        PracticeUser practiceUser = practiceUserMapper.selectByPrimaryKey(req.getUserId());
         List<Long> doneIdList = JSON.parseObject(practiceUser.getDoneIdList(), List.class);
         List<Long> wrongIdList = JSON.parseObject(practiceUser.getWrongIdList(), List.class);
 //        doneIdList.add(3114027356389376L);
@@ -267,18 +267,21 @@ public class PracticeProblemsService {
                 idList.addAll(doneIdList);
                 idList.addAll(wrongIdList);
 
-                questionDetails = questionDetailMapperCust.selectProblemsExc(idList, req.getProblemCount().getValue());
+                questionDetails = questionDetailMapperCust.selectProblemsExc(idList, req.getProblemCount().getValue(), req.getCategoryId2());
             }
             case WRONGANDNEW -> {
                 idList.addAll(doneIdList);
 
-                questionDetails = questionDetailMapperCust.selectProblemsExc(idList, req.getProblemCount().getValue());
+                questionDetails = questionDetailMapperCust.selectProblemsExc(idList, req.getProblemCount().getValue(), req.getCategoryId2());
 
             }
             case WRONG -> {
                 idList.addAll(wrongIdList);
 
-                questionDetails = questionDetailMapperCust.selectProblemsInc(idList, req.getProblemCount().getValue());
+                questionDetails = questionDetailMapperCust.selectProblemsInc(idList, req.getProblemCount().getValue(), req.getCategoryId2());
+            }
+            case ALL -> {
+                questionDetails = questionDetailMapperCust.selectProblemsExc(idList, req.getProblemCount().getValue(), req.getCategoryId2());
             }
             default -> {
                 questionDetails = new ArrayList<>();

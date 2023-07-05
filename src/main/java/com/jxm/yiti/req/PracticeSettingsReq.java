@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PracticeSettingsReq {
+    Long userId;
+    Integer categoryId2;
     ProblemCount problemCount;
     ProblemSource problemSource;
     ProblemLevel problemLevel;

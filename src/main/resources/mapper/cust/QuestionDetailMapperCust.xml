@@ -16,17 +16,25 @@
         , `name`, `type`, `level`, category_id1, category_id2, content, answer
     </sql>
     <select id="selectProblemsExc" parameterType="map" resultMap="BaseResultMap">
-        select * from question_detail where id not in
-        (<foreach collection="ids" item="id" separator=",">
-        #{id}
-    </foreach>)
+        select * from question_detail
+        where category_id2 = #{categoryId2}
+        <if test="ids != null and ids.size() > 0">
+            and id not in
+            (<foreach collection="ids" item="id" separator=",">
+            #{id}
+        </foreach>)
+        </if>
         limit #{count}
     </select>
     <select id="selectProblemsInc" parameterType="map" resultMap="BaseResultMap">
-        select * from question_detail where id in
-        (<foreach collection="ids" item="id" separator=",">
-        #{id}
-    </foreach>)
+        select * from question_detail
+        where category_id2 = #{categoryId2}
+        <if test="ids != null and ids.size() > 0">
+            and id in
+            (<foreach collection="ids" item="id" separator=",">
+            #{id}
+        </foreach>)
+        </if>
         limit #{count}
     </select>
 </mapper>
