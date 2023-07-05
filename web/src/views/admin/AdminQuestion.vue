@@ -67,7 +67,7 @@
       <a-form-item label="题目类型">
         <a-select
 		        ref="select"
-		        :v-model:value="practice.type"
+		        v-model:value="practice.type"
 		        :placeholder="getPracticeTypeName(practice.type)"
 		        style="width: 120px"
 		        @change="practiceTypeSelectChange"
@@ -80,7 +80,7 @@
 	    <a-form-item label="题目难度">
 		    <a-select
 				    ref="select"
-				    :v-model:value="practice.level"
+				    v-model:value="practice.level"
 				    :placeholder="getPracticeLevelName(practice.level)"
 				    style="width: 120px"
 				    @change="practiceLevelSelectChange"
@@ -114,11 +114,11 @@
       </a-form-item>
       <a-form-item label="答案">
         <a-select
-            ref="select"
-            :v-model:value="practice.answer"
-            :placeholder="getPracticeAnswerName(practice.answer)"
-            style="width: 120px"
-            @change="practiceAnswerNameSelectChange"
+		        ref="select"
+		        v-model:value="practice.answer"
+		        :placeholder="getPracticeAnswerName(practice.answer)"
+		        style="width: 120px"
+		        @change="practiceAnswerNameSelectChange"
         >
           <!--          注意将 value 的类型改为 number 的格式-->
           <a-select-option v-if="practice.type === 1" :value=1>A</a-select-option>

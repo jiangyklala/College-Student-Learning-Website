@@ -14,6 +14,8 @@ import com.jxm.yiti.exception.BusinessException;
 import com.jxm.yiti.exception.BusinessExceptionCode;
 import com.jxm.yiti.mapper.PracticeUserMapper;
 import com.jxm.yiti.mapper.QuestionDetailMapper;
+import com.jxm.yiti.mapper.cust.QuestionDetailMapperCust;
+import com.jxm.yiti.req.PracticeSettingsReq;
 import com.jxm.yiti.req.PracticeSettingsSaveReq;
 import com.jxm.yiti.req.QuestionDetailQueryReq;
 import com.jxm.yiti.req.QuestionDetailSaveReq;
@@ -46,6 +48,9 @@ public class PracticeProblemsService {
 
     @Resource
     private PracticeUserMapper practiceUserMapper;
+
+    @Resource
+    private QuestionDetailMapperCust questionDetailMapperCust;
 
     private static final Logger LOG = LoggerFactory.getLogger(PracticeProblemsService.class);
 
@@ -241,5 +246,46 @@ public class PracticeProblemsService {
             resp.setSuccess(false);
             resp.setMessage("保存用户刷题设置信息失败");
         }
+    }
+
+    public void extractProblems(PracticeSettingsReq req, CommonResp<List<QuestionDetailQueryResp>> resp) {
+        ArrayList<Long> idList = new ArrayList<>();
+        idList.add(3072529551851520L);
+        idList.add(3077251139108864L);
+
+        PracticeUser practiceUser = practiceUserMapper.selectByPrimaryKey(2658810919845888L);
+        List<Long> doneIdList = JSON.parseObject(practiceUser.getDoneIdList(), List.class);
+        List<Long> wrongIdList = JSON.parseObject(practiceUser.getWrongIdList(), List.class);
+//        doneIdList.add(3114027356389376L);
+//        wrongIdList.add(3114013114564608L);
+//        practiceUser.setDoneIdList(JSON.toJSONBytes(doneIdList));
+//        practiceUser.setWrongIdList(JSON.toJSONBytes(wrongIdList));
+//        practiceUserMapper.updateByPrimaryKeySelective(practiceUser);
+        List<QuestionDetail> questionDetails;
+        switch (req.getProblemSource()) {
+            case NEW -> {
+                idList.addAll(doneIdList);
+                idList.addAll(wrongIdList);
+
+                questionDetails = questionDetailMapperCust.selectProblemsExc(idList, req.getProblemCount().getValue());
+            }
+            case WRONGANDNEW -> {
+                idList.addAll(doneIdList);
+
+                questionDetails = questionDetailMapperCust.selectProblemsExc(idList, req.getProblemCount().getValue());
+
+            }
+            case WRONG -> {
+                idList.addAll(wrongIdList);
+
+                questionDetails = questionDetailMapperCust.selectProblemsInc(idList, req.getProblemCount().getValue());
+            }
+            default -> {
+                questionDetails = new ArrayList<>();
+            }
+        }
+
+        List<QuestionDetailQueryResp> questionDetailQueryResps = CopyUtil.copyList(questionDetails, QuestionDetailQueryResp.class);
+        resp.setContent(questionDetailQueryResps);
     }
 }

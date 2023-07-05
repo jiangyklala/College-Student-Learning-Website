@@ -7,13 +7,13 @@ import java.util.List;
 public class PracticeUserQueryResp {
     private PracticeSettings settingsObj;
 
-    private List<Integer> doneIdList;
+    private List<Long> doneIdList;
 
-    private List<Integer> wrongIdList;
+    private List<Long> wrongIdList;
 
-    private List<Integer> markIdList;
+    private List<Long> markIdList;
 
-    private List<Integer> other;
+    private List<Long> other;
 
     public PracticeSettings getSettingsObj() {
         return settingsObj;
@@ -23,35 +23,35 @@ public class PracticeUserQueryResp {
         this.settingsObj = settingsObj;
     }
 
-    public List<Integer> getDoneIdList() {
+    public List<Long> getDoneIdList() {
         return doneIdList;
     }
 
-    public void setDoneIdList(List<Integer> doneIdList) {
+    public void setDoneIdList(List<Long> doneIdList) {
         this.doneIdList = doneIdList;
     }
 
-    public List<Integer> getWrongIdList() {
+    public List<Long> getWrongIdList() {
         return wrongIdList;
     }
 
-    public void setWrongIdList(List<Integer> wrongIdList) {
+    public void setWrongIdList(List<Long> wrongIdList) {
         this.wrongIdList = wrongIdList;
     }
 
-    public List<Integer> getMarkIdList() {
+    public List<Long> getMarkIdList() {
         return markIdList;
     }
 
-    public void setMarkIdList(List<Integer> markIdList) {
+    public void setMarkIdList(List<Long> markIdList) {
         this.markIdList = markIdList;
     }
 
-    public List<Integer> getOther() {
+    public List<Long> getOther() {
         return other;
     }
 
-    public void setOther(List<Integer> other) {
+    public void setOther(List<Long> other) {
         this.other = other;
     }
 

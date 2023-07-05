@@ -1,5 +1,6 @@
 package com.jxm.yiti.controller;
 
+import com.jxm.yiti.req.PracticeSettingsReq;
 import com.jxm.yiti.req.PracticeSettingsSaveReq;
 import com.jxm.yiti.req.QuestionDetailQueryReq;
 import com.jxm.yiti.req.QuestionDetailSaveReq;
@@ -68,6 +69,19 @@ public class PracticeProblemsController {
         CommonResp resp = new CommonResp();
 
         practiceProblemsService.saveSettings(req, resp);
+
+        return resp;
+    }
+
+    /**
+     * 根据用户的设置挑选题目
+     */
+    @PostMapping("/extractProblems")
+    @ResponseBody
+    public CommonResp<List<QuestionDetailQueryResp>> extractProblems(@RequestBody @Valid PracticeSettingsReq req) {  // 以 json 方式提交
+        CommonResp<List<QuestionDetailQueryResp>> resp = new CommonResp<>();
+
+        practiceProblemsService.extractProblems(req, resp);
 
         return resp;
     }

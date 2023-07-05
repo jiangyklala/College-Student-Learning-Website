@@ -512,3 +512,9 @@ CREATE TABLE `practice_user`
     PRIMARY KEY (`user_id`)
 ) ENGINE = innodb
   DEFAULT CHARSET = utf8mb4 COMMENT = '用户刷题信息记录表';
+
+
+select *
+from question_detail
+where id not in (3072529551851520)
+limit 4;
