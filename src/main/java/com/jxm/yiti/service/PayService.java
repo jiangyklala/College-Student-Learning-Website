@@ -28,8 +28,13 @@ import redis.clients.jedis.Jedis;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -260,5 +265,27 @@ public class PayService {
         }
 
         return amount;
+    }
+
+    public String payHistory(String from, String to) {
+        if (Objects.equals(to, "")) {
+            to = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        }
+
+
+        StringBuilder res = new StringBuilder();
+        List<GptPayInfo> gptPayInfos = gptPayInfoMapperCust.selectPayHistory(from, to);
+        String pattern = "yyyy-MM-dd HH:mm:ss";
+
+        // 创建 SimpleDateFormat 对象，使用指定的模式
+        SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+
+        ListIterator<GptPayInfo> gptPayInfoListIterator = gptPayInfos.listIterator(gptPayInfos.size());
+        while (gptPayInfoListIterator.hasPrevious()) {
+            GptPayInfo gptPayInfo = gptPayInfoListIterator.previous();
+            res.append("userID: ").append(gptPayInfo.getUserId()).append("  购买余额: ").append(gptPayInfo.getPayAmount()).append("  支付状态: ").append(gptPayInfo.getPlatformStatus()).append("  下单时间:").append(dateFormat.format(gptPayInfo.getCreateTime())).append("  支付时间: ").append(dateFormat.format(gptPayInfo.getUpdateTime())).append("\n\n");
+        }
+
+        return res.toString();
     }
 }

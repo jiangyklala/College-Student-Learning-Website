@@ -480,6 +480,10 @@ CREATE TABLE `gpt_pay_info`
 ) ENGINE = innodb
   DEFAULT CHARSET = utf8mb4 COMMENT = 'GPT 支付信息表';
 
+SELECT *
+FROM gpt_pay_info
+WHERE DATE(create_time) BETWEEN '2023-07-01' AND '2023-08-03';
+
 # 题目信息表
 DROP TABLE IF EXISTS `question_detail`;
 

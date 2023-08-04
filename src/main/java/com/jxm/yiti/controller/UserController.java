@@ -67,7 +67,7 @@ public class UserController {
     }
 
     /**
-     * 获取今 n 日消耗信息
+     * 获取进 n 日消耗信息
      *
      * @param days 指定近几天
      */

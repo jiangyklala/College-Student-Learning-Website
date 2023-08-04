@@ -197,6 +197,7 @@ export default defineComponent({
 		
 		const practiceUserInfo = ref();
 		const practiceUserInfoQuery = () => {
+			// console.log(userID.value);
 			axios.get("/practice/selectPracticeUserInfo/" + userID.value).then((response) => {
 				let data = response.data;
 				if (data.success) {

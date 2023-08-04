@@ -1,5 +1,32 @@
 <template>
-	<p>afaf</p>
+	<a-layout-content class="layout-content">
+		<span v-for="(problem, index) in problems" v-bind:key="index">
+			<a-card style="width: 800px">
+				<p>{{ problem.name }}</p>
+					<a-radio-group v-model:value="answers[index]" name="radioGroup" @change="radioGroupChange">
+						<template v-if="problem.type === 1">
+              <a-radio value="1">{{ problem.content.optA }}</a-radio>
+              <a-radio value="2">{{ problem.content.optB }}</a-radio>
+              <a-radio value="3">{{ problem.content.optC }}</a-radio>
+              <a-radio value="4">{{ problem.content.optD }}</a-radio>
+						</template>
+						<template v-if="problem.type === 2">
+							<a-radio value="1">对</a-radio><br>
+              <a-radio value="2">错</a-radio>
+						</template>
+        </a-radio-group>
+      </a-card>
+			<div style="height: 30px">
+<!--			填充-->
+			</div>
+		</span>
+		
+		<div style="height: 30px">
+			<!--			填充-->
+		</div>
+		<a-button type="primary" class="submit-btn">提交</a-button>
+	
+	</a-layout-content>
 </template>
 
 <script lang="ts">
@@ -18,6 +45,9 @@ export default defineComponent({
 		const userID = computed(() => {
 			return store.state.userInfo.id;
 		});
+		const problems = ref(); // 题目数组
+		const answers = ref();  // 答案数组
+		answers.value = [];
 		
 		/**
 		 * 页面初始化
@@ -46,6 +76,10 @@ export default defineComponent({
 				
 				if (response.data.success) {
 					
+					problems.value = response.data.content;
+					for (const problem of problems.value) {
+						problem.content = JSON.parse(problem.content);
+					}
 					console.log(response.data);
 					
 				} else {
@@ -54,16 +88,38 @@ export default defineComponent({
 			})
 		}
 		
+		const radioGroupChange = () => {
+			// console.log(answers.value);
+		}
+		
 		onMounted(() => {
 			initData();
 			showProblems();
 		})
 		
-		return {}
+		return {
+			problems,
+			answers,
+			
+			radioGroupChange,
+		}
 	}
 })
 </script>
 
 <style scoped>
+.layout-content {
+	padding: 70px 150px;
+	width: 1200px;
+	height: 100%;
+	min-height: 1000px;
+	margin: 20px auto 100px;
+	overflow: hidden;
+	background: #fff;
+}
 
+.submit-btn {
+	width: 10%;
+	margin-left: 45%;
+}
 </style>

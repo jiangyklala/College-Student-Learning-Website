@@ -13,14 +13,24 @@
   </resultMap>
 
   <sql id="Base_Column_List">
-    id, user_id, order_no, pay_amount, platform_number, platform_status, create_time,
+    id
+    , user_id, order_no, pay_amount, platform_number, platform_status, create_time,
     update_time
   </sql>
 
   <select id="selectByOrderNo" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select
-    <include refid="Base_Column_List" />
+    <include refid="Base_Column_List"/>
     from gpt_pay_info
     where order_no = #{order_no,jdbcType=BIGINT}
   </select>
+
+  <select id="selectPayHistory" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from gpt_pay_info
+    where DATE(create_time) BETWEEN #{from} AND #{to};
+  </select>
+
+
 </mapper>
