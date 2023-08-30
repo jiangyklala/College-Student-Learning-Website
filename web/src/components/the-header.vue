@@ -1,12 +1,13 @@
 <template>
   <a-layout-header class="header">
     <div class="header-menu">
-
+	    
+	    <!--	    自行控制发布时选用哪个菜单栏-->
       <a-menu
-          v-if="ifShowMenu === 'false'"
-          theme="light"
-          mode="horizontal"
-          class="a-menu"
+		      v-if="ifShowMenu === 'true'"
+		      theme="light"
+		      mode="horizontal"
+		      class="a-menu"
       >
         <a-menu-item key="1">
           <router-link to="/Home">首页</router-link>
@@ -20,10 +21,10 @@
       </a-menu>
 
       <a-menu
-          v-if="ifShowMenu === 'true'"
-          theme="light"
-          mode="horizontal"
-          class="a-menu"
+		      v-if="ifShowMenu === 'false'"
+		      theme="light"
+		      mode="horizontal"
+		      class="a-menu"
       >
         <a-menu-item key="1">
           <router-link to="/Home">首页</router-link>
@@ -237,7 +238,7 @@
 import {computed, defineComponent, onMounted, ref} from 'vue';
 import axios from "axios";
 import {message, notification} from "ant-design-vue";
-import {BellTwoTone, DownOutlined, SyncOutlined, UserOutlined, ShareAltOutlined} from "@ant-design/icons-vue";
+import {BellTwoTone, DownOutlined, ShareAltOutlined, SyncOutlined, UserOutlined} from "@ant-design/icons-vue";
 import store from "@/store";
 import {Tool} from "@/utils/tool";
 
