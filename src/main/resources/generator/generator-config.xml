@@ -22,7 +22,7 @@
         </commentGenerator>
 
         <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
-                        connectionURL="jdbc:mysql://rm-uf61j5404z15i733ggo.mysql.rds.aliyuncs.com:3306/yitidev?characterEncoding=UTF8&amp;antoReconnect=true&amp;serverTimezone=Asia/Shanghai"
+                        connectionURL="jdbc:mysql://124.223.184.187:3306/yiti_dev?characterEncoding=UTF8&amp;autoReconnect=true&amp;serverTimezone=Asia/Shanghai"
                         userId="ac_yitidev"
                         password="Y&amp;738j8Lh4vY6XG">
         </jdbcConnection>
@@ -40,7 +40,7 @@
                              targetPackage="com.jxm.yiti.mapper"
                              type="XMLMAPPER"/>
 
-        <table tableName="practice_user"/>
+        <table tableName="wx_user_info"/>
 
     </context>
 </generatorConfiguration>
