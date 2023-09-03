@@ -16,10 +16,6 @@ import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-import me.zhyd.oauth.config.AuthConfig;
-import me.zhyd.oauth.model.AuthUser;
-import me.zhyd.oauth.request.AuthGithubRequest;
-import me.zhyd.oauth.request.AuthRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -125,13 +121,13 @@ public class UserService {
         return config;
     }
 
-    public AuthRequest getAuthRequest() {
-        return new AuthGithubRequest(AuthConfig.builder()
-                .clientId("7f64b8527592ce2d4d7c")
-                .clientSecret("bc5d42bee691771f547351fec23f445676aeb10b")
-                .redirectUri(myAddr + "/user/github/callback")
-                .build());
-    }
+//    public AuthRequest getAuthRequest() {
+//        return new AuthGithubRequest(AuthConfig.builder()
+//                .clientId("7f64b8527592ce2d4d7c")
+//                .clientSecret("bc5d42bee691771f547351fec23f445676aeb10b")
+//                .redirectUri(myAddr + "/user/github/callback")
+//                .build());
+//    }
 
     /**
      * 设置用户登录凭证
@@ -175,35 +171,35 @@ public class UserService {
         }
     }
 
-    /**
-     * 获取 userID, 并选择进行添加新用户操作
-     *
-     * @param authUser GitHub 登录成功后返回的用户信息
-     * @return DB 中的 userID
-     */
-    public Long signInOrUp(AuthUser authUser) {
-        UserExample userExample = new UserExample();
-        UserExample.Criteria criteria = userExample.createCriteria();
-        criteria.andGithubIdEqualTo(authUser.getUuid());
-
-        List<User> resList = userMapper.selectByExample(userExample);
-        if (resList.isEmpty()) {
-            // 为新用户
-            User user = new User();
-            user.setId(snowFlakeIdWorker.nextId());
-            user.setUsername("新用户" + user.getId().toString().substring(4, 10));   // 初始名称
-            user.setGithubId(authUser.getUuid());
-            user.setEmail(authUser.getEmail());
-            user.setBalance(100L);                                                    // 初始余额设为 100
-
-            if (userMapper.insert(user) <= 0) {
-                return -1L;
-            }
-            return user.getId();
-        }
-
-        return resList.get(0).getId();
-    }
+//    /**
+//     * 获取 userID, 并选择进行添加新用户操作
+//     *
+//     * @param authUser GitHub 登录成功后返回的用户信息
+//     * @return DB 中的 userID
+//     */
+//    public Long signInOrUp(AuthUser authUser) {
+//        UserExample userExample = new UserExample();
+//        UserExample.Criteria criteria = userExample.createCriteria();
+//        criteria.andGithubIdEqualTo(authUser.getUuid());
+//
+//        List<User> resList = userMapper.selectByExample(userExample);
+//        if (resList.isEmpty()) {
+//            // 为新用户
+//            User user = new User();
+//            user.setId(snowFlakeIdWorker.nextId());
+//            user.setUsername("新用户" + user.getId().toString().substring(4, 10));   // 初始名称
+//            user.setGithubId(authUser.getUuid());
+//            user.setEmail(authUser.getEmail());
+//            user.setBalance(100L);                                                    // 初始余额设为 100
+//
+//            if (userMapper.insert(user) <= 0) {
+//                return -1L;
+//            }
+//            return user.getId();
+//        }
+//
+//        return resList.get(0).getId();
+//    }
 
     /**
      * 根据用户 ID 获取用户信息

@@ -7,11 +7,6 @@ import com.jxm.yiti.service.GptInviteService;
 import com.jxm.yiti.service.UserService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
-import me.zhyd.oauth.model.AuthCallback;
-import me.zhyd.oauth.model.AuthResponse;
-import me.zhyd.oauth.model.AuthUser;
-import me.zhyd.oauth.request.AuthRequest;
-import me.zhyd.oauth.utils.AuthStateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -263,15 +258,15 @@ public class UserController {
         return resp;
     }
 
-    /**
-     * GitHub 登录页面
-     */
-    @GetMapping("/render")
-    @ResponseBody
-    public void renderAuth(HttpServletResponse response) throws IOException {
-        AuthRequest authRequest = userService.getAuthRequest();
-        response.sendRedirect(authRequest.authorize(AuthStateUtils.createState()));
-    }
+//    /**
+//     * GitHub 登录页面
+//     */
+//    @GetMapping("/render")
+//    @ResponseBody
+//    public void renderAuth(HttpServletResponse response) throws IOException {
+//        AuthRequest authRequest = userService.getAuthRequest();
+//        response.sendRedirect(authRequest.authorize(AuthStateUtils.createState()));
+//    }
 
     /**
      * 根据 userID 查询 user 的全部信息
@@ -311,22 +306,22 @@ public class UserController {
         return resp;
     }
 
-    /**
-     * GitHub 登录成功后的回调函数
-     */
-    @GetMapping("/github/callback")
-    public void githubCallback(AuthCallback callback, HttpServletResponse response) throws IOException {
-        AuthRequest authRequest = userService.getAuthRequest();
-        AuthResponse<AuthUser> authResponse = authRequest.login(callback);
-
-        LOG.info("code= " + authResponse.getCode());
-        if (authResponse.getCode() == 2000) {
-            Long userID = userService.signInOrUp(authResponse.getData());                 // 通过(新增/查找已经存在的)用户, 获取 userID
-            if (userID == -1L) return;
-            userService.setOnlyLoginCert(userID, response);                               // 设置唯一登录凭证
-        }
-
-        response.sendRedirect("http://165.154.36.46:8110/");
-    }
+//    /**
+//     * GitHub 登录成功后的回调函数
+//     */
+//    @GetMapping("/github/callback")
+//    public void githubCallback(AuthCallback callback, HttpServletResponse response) throws IOException {
+//        AuthRequest authRequest = userService.getAuthRequest();
+//        AuthResponse<AuthUser> authResponse = authRequest.login(callback);
+//
+//        LOG.info("code= " + authResponse.getCode());
+//        if (authResponse.getCode() == 2000) {
+//            Long userID = userService.signInOrUp(authResponse.getData());                 // 通过(新增/查找已经存在的)用户, 获取 userID
+//            if (userID == -1L) return;
+//            userService.setOnlyLoginCert(userID, response);                               // 设置唯一登录凭证
+//        }
+//
+//        response.sendRedirect("http://165.154.36.46:8110/");
+//    }
 
 }
