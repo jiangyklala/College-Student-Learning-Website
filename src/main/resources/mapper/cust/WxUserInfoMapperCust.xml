@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jxm.yiti.mapper.cust.WxUserInfoMapperCust">
+    <resultMap id="BaseResultMap" type="com.jxm.yiti.domain.WxUserInfo">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="open_id" jdbcType="VARCHAR" property="openId"/>
+        <result column="points" jdbcType="INTEGER" property="points"/>
+        <result column="other_1" jdbcType="VARCHAR" property="other1"/>
+        <result column="other_2" jdbcType="INTEGER" property="other2"/>
+    </resultMap>
+
+    <select id="selectAllByOpenId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT *
+        FROM wx_user_info
+        WHERE open_id = #{openId}
+    </select>
+</mapper>
