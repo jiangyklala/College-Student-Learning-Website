@@ -1,6 +1,8 @@
 package com.jxm.yiti.domain;
 
 public class WxUserInfo {
+    private Integer id;
+
     private String openId;
 
     private Integer points;
@@ -8,6 +10,14 @@ public class WxUserInfo {
     private String other1;
 
     private Integer other2;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getOpenId() {
         return openId;
@@ -47,6 +57,7 @@ public class WxUserInfo {
         sb.append(getClass().getSimpleName());
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
+        sb.append(", id=").append(id);
         sb.append(", openId=").append(openId);
         sb.append(", points=").append(points);
         sb.append(", other1=").append(other1);

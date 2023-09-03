@@ -11,7 +11,7 @@ public interface WxUserInfoMapper {
 
     int deleteByExample(WxUserInfoExample example);
 
-    int deleteByPrimaryKey(String openId);
+    int deleteByPrimaryKey(Integer id);
 
     int insert(WxUserInfo record);
 
@@ -19,7 +19,7 @@ public interface WxUserInfoMapper {
 
     List<WxUserInfo> selectByExample(WxUserInfoExample example);
 
-    WxUserInfo selectByPrimaryKey(String openId);
+    WxUserInfo selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") WxUserInfo record, @Param("example") WxUserInfoExample example);
 
