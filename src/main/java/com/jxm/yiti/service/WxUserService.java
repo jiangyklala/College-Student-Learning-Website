@@ -5,8 +5,11 @@ import com.alibaba.fastjson2.JSONObject;
 import com.jxm.yiti.domain.WxUserInfo;
 import com.jxm.yiti.mapper.WxUserInfoMapper;
 import com.jxm.yiti.mapper.cust.WxUserInfoMapperCust;
-import com.jxm.yiti.resp.CommonResp;
+import com.jxm.yiti.resp.CommonResp2;
 import com.jxm.yiti.resp.WxLoginResp;
+import com.jxm.yiti.resp.WxUserInfoResp;
+import com.jxm.yiti.utils.CopyUtil;
+import com.jxm.yiti.utils.GenerateTokenUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hc.core5.net.URIBuilder;
@@ -21,6 +24,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Duration;
 
 @Slf4j
 @Service
@@ -32,6 +36,9 @@ public class WxUserService {
     @Value("${wxApp.appId}")
     private String appId;
 
+    @Value("${wxApp.login.secret}")
+    private String loginSecret;
+
     @Resource
     private WxUserInfoMapperCust wxUserInfoMapperCust;
 
@@ -39,7 +46,7 @@ public class WxUserService {
     private WxUserInfoMapper wxUserInfoMapper;
 
     // 登录接口
-    public void login(CommonResp<WxLoginResp> commonResp, String code) throws IOException, URISyntaxException {
+    public void login(CommonResp2<WxLoginResp> commonResp, String code) throws IOException, URISyntaxException {
         WxLoginResp wxLoginResp = new WxLoginResp();
         String open_id = null;
         String session_key = null;
@@ -69,8 +76,7 @@ public class WxUserService {
 
             if (wxUserInfo != null) {
                 // 用户已注册
-                wxLoginResp.setUserToken(open_id);
-                wxLoginResp.setWxUserInfo(wxUserInfo);
+                // TODO
             } else {
                 // 用户未注册
                 WxUserInfo newUser = new WxUserInfo();
@@ -78,10 +84,20 @@ public class WxUserService {
                 newUser.setPoints(0);
                 wxUserInfoMapper.insertSelective(newUser);
 
-                wxLoginResp.setUserToken(open_id);
-                wxLoginResp.setWxUserInfo(wxUserInfoMapperCust.selectAllByOpenId(open_id));
+                wxUserInfo = wxUserInfoMapperCust.selectAllByOpenId(open_id);
             }
+
+            // 设置 auth_token 加密信息
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("user_id", wxUserInfo.getId());
+            String encryptUserInfo = jsonObject.toString();
+            // 生成 auth_token
+            wxLoginResp.setAuthToken(GenerateTokenUtil.wxAppAuthToken(encryptUserInfo, loginSecret, Duration.ofHours(1)));
+            // 设置返回的用户信息
+            wxLoginResp.setWxUserInfoResp(CopyUtil.copy(wxUserInfo, WxUserInfoResp.class));
+
         } catch (RuntimeException e) {
+            commonResp.setCode(401);
             commonResp.setSuccess(false);
             commonResp.setMessage("用户登录失败!");
             log.error("用户登录失败", e);
@@ -90,5 +106,7 @@ public class WxUserService {
 
         commonResp.setContent(wxLoginResp);
         commonResp.setMessage("登录成功");
+//        GenerateTokenUtil.decryptToken(wxLoginResp.getAuthToken(), loginSecret);
+//        GenerateTokenUtil.checkIfExpired(wxLoginResp.getAuthToken(), loginSecret);
     }
 }

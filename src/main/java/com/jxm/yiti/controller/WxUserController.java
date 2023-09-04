@@ -2,12 +2,10 @@ package com.jxm.yiti.controller;
 
 import com.jxm.yiti.mapper.WxUserInfoMapper;
 import com.jxm.yiti.req.WxLoginReq;
-import com.jxm.yiti.resp.CommonResp;
+import com.jxm.yiti.resp.CommonResp2;
 import com.jxm.yiti.resp.WxLoginResp;
 import com.jxm.yiti.service.WxUserService;
-import com.jxm.yiti.utils.JwtUtil;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
+import com.jxm.yiti.utils.GenerateTokenUtil;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -30,40 +28,24 @@ public class WxUserController {
      */
     @PostMapping("/login")
     @ResponseBody
-    public CommonResp Login(@RequestBody WxLoginReq wxLoginReq) throws IOException, URISyntaxException {
-        CommonResp<WxLoginResp> commonResp = new CommonResp<>();
+    public CommonResp2 Login(@RequestBody WxLoginReq wxLoginReq) throws IOException, URISyntaxException {
+        CommonResp2<WxLoginResp> commonResp = new CommonResp2<>();
         wxUserService.login(commonResp, wxLoginReq.getCode());
 
         return commonResp;
     }
 
-    @GetMapping("/createToken")
+    @GetMapping("/encryptTest")
     @ResponseBody
-    public String createToken() {
-        String token = null;
+    public String encryptTest() {
 
-        Claims claims = (Claims) Jwts.claims().put("user_id", "user_id");
-        token = JwtUtil.createToken(claims);
+        String token = "ODyFhTWaRPmgqTnS9Z6FMWqXxMtYNuBQrdaZ+JI8oPl81tUKll0l41nF/cxUiLSn";
 
-        return token;
+        System.out.println(GenerateTokenUtil.decryptToken(token, "USDjsfi2234jsdf1"));
+//        System.out.println(GenerateTokenUtil.checkIfExpired(token, "USDjsfi2234jsdf1"));
+
+        return "";
     }
 
-    @GetMapping("/refreshToken/{token}")
-    @ResponseBody
-    public String refreshToken(@PathVariable String token) {
-
-        token = JwtUtil.refreshToken(token);
-
-        return token;
-    }
-
-    @GetMapping("/getUserId/{token}")
-    @ResponseBody
-    public String getUserId(@PathVariable String token) {
-
-        token = JwtUtil.getUserId(token);
-
-        return token;
-    }
 
 }
