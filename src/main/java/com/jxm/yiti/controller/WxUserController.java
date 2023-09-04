@@ -5,7 +5,6 @@ import com.jxm.yiti.req.WxLoginReq;
 import com.jxm.yiti.resp.CommonResp2;
 import com.jxm.yiti.resp.WxLoginResp;
 import com.jxm.yiti.service.WxUserService;
-import com.jxm.yiti.utils.GenerateTokenUtil;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -35,14 +34,11 @@ public class WxUserController {
         return commonResp;
     }
 
-    @GetMapping("/encryptTest")
+    @GetMapping("/test")
     @ResponseBody
-    public String encryptTest() {
+    public String test() {
 
-        String token = "ODyFhTWaRPmgqTnS9Z6FMWqXxMtYNuBQrdaZ+JI8oPl81tUKll0l41nF/cxUiLSn";
-
-        System.out.println(GenerateTokenUtil.decryptToken(token, "USDjsfi2234jsdf1"));
-//        System.out.println(GenerateTokenUtil.checkIfExpired(token, "USDjsfi2234jsdf1"));
+        System.out.println("lala");
 
         return "";
     }

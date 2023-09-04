@@ -9,7 +9,7 @@ import com.jxm.yiti.resp.CommonResp2;
 import com.jxm.yiti.resp.WxLoginResp;
 import com.jxm.yiti.resp.WxUserInfoResp;
 import com.jxm.yiti.utils.CopyUtil;
-import com.jxm.yiti.utils.GenerateTokenUtil;
+import com.jxm.yiti.utils.TokenUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hc.core5.net.URIBuilder;
@@ -92,7 +92,7 @@ public class WxUserService {
             jsonObject.put("user_id", wxUserInfo.getId());
             String encryptUserInfo = jsonObject.toString();
             // 生成 auth_token
-            wxLoginResp.setAuthToken(GenerateTokenUtil.wxAppAuthToken(encryptUserInfo, loginSecret, Duration.ofHours(1)));
+            wxLoginResp.setAuthToken(TokenUtil.wxAppAuthToken(encryptUserInfo, loginSecret, Duration.ofHours(1)));
             // 设置返回的用户信息
             wxLoginResp.setWxUserInfoResp(CopyUtil.copy(wxUserInfo, WxUserInfoResp.class));
 

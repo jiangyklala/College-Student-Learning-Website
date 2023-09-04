@@ -13,7 +13,7 @@ import java.time.Instant;
 import java.util.Base64;
 
 @Slf4j
-public class GenerateTokenUtil {
+public class TokenUtil {
 
     // 加密算法选择
     private static final String ALGORITHM = "AES";
@@ -90,21 +90,26 @@ public class GenerateTokenUtil {
      * @param loginSecret 密钥
      */
     public static boolean checkIfExpired(String token, String loginSecret) {
-        // 获取到 Expired 字段
-        String data = decryptToken(token, loginSecret);
-        JSONObject jsonObject = JSON.parseObject(data);
-        String expiredTimestamp = jsonObject.getString("Expired");
+        try {
+            // 获取到 Expired 字段
+            String data = decryptToken(token, loginSecret);
+            JSONObject jsonObject = JSON.parseObject(data);
+            String expiredTimestamp = jsonObject.getString("Expired");
 
-        // 获取当前时间
-        Instant now = Instant.now();
 
-        // 将 Expired 转换为Instant对象
-        Instant expiration = Instant.ofEpochSecond(Long.parseLong(expiredTimestamp));
+            // 获取当前时间
+            Instant now = Instant.now();
 
-        log.info("expiration = {}", expiration.toString());
+            // 将 Expired 转换为Instant对象
+            Instant expiration = Instant.ofEpochSecond(Long.parseLong(expiredTimestamp));
 
-        // 检查Token是否过期
-        return now.isBefore(expiration);
+            log.info("expiration = {}", expiration.toString());
+
+            // 检查Token是否过期
+            return now.isBefore(expiration);
+        } catch (RuntimeException e) {
+            return false;
+        }
     }
 
 }
