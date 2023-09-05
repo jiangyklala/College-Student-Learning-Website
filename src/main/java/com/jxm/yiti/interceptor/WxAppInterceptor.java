@@ -22,6 +22,7 @@ public class WxAppInterceptor implements HandlerInterceptor {
         String authorization = request.getHeader("Authorization");
         if (authorization == null || authorization.length() < 7) {
             log.warn("auth_token 验证失败");
+            response.setStatus(401);
             return false;
         }
         String authToken = authorization.substring(7);
