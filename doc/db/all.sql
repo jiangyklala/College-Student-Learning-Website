@@ -503,7 +503,7 @@ CREATE TABLE `question_detail`
 
 
 # 用户刷题信息记录表
-DROP TABLE IF EXISTS `practice_user`
+DROP TABLE IF EXISTS `practice_user`;
 
 CREATE TABLE `practice_user`
 (

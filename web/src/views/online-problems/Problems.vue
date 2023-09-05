@@ -195,6 +195,9 @@ export default defineComponent({
 			});
 		}
 		
+		/**
+		 * 查询用户刷题信息
+		 */
 		const practiceUserInfo = ref();
 		const practiceUserInfoQuery = () => {
 			// console.log(userID.value);

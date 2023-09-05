@@ -7,6 +7,8 @@ public class QuestionDetailSaveReq {
 
     private Integer type;
 
+    private Integer level;
+
     private Long categoryId1;
 
     private Long categoryId2;
@@ -67,6 +69,14 @@ public class QuestionDetailSaveReq {
         return answer;
     }
 
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+
     public void setAnswer(Integer answer) {
         this.answer = answer;
     }
@@ -77,10 +87,12 @@ public class QuestionDetailSaveReq {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", type=" + type +
+                ", level=" + level +
                 ", categoryId1=" + categoryId1 +
                 ", categoryId2=" + categoryId2 +
                 ", content='" + content + '\'' +
                 ", answer=" + answer +
                 '}';
     }
+
 }
