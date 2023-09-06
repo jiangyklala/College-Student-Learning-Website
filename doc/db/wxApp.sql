@@ -20,4 +20,19 @@ LIMIT 1;
 
 SELECT *
 FROM wx_user_info
-WHERE open_id = "1111"
+WHERE open_id = '1111';
+
+# 题库表
+DROP TABLE IF EXISTS `wx_question`;
+
+CREATE TABLE `wx_question`
+(
+    `id`       integer AUTO_INCREMENT NOT NULL,
+    `title`    varchar(128)           NOT NULL COMMENT '题目标识',
+    `category` bigint                 NOT NULL COMMENT '分类',
+    `answer`   mediumtext             NOT NULL COMMENT '答案',
+    `like`     integer DEFAULT 0 COMMENT '点赞数',
+    `collect`  integer DEFAULT 0 COMMENT '收藏数',
+    PRIMARY KEY (`id`)
+) ENGINE = innodb
+  DEFAULT CHARSET = utf8mb4 COMMENT = '题库表';
