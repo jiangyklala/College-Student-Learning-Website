@@ -413,6 +413,66 @@ public class WxQuestionExample {
             addCriterion("`collect` not between", value1, value2, "collect");
             return (Criteria) this;
         }
+
+        public Criteria andPointsIsNull() {
+            addCriterion("points is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPointsIsNotNull() {
+            addCriterion("points is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPointsEqualTo(Integer value) {
+            addCriterion("points =", value, "points");
+            return (Criteria) this;
+        }
+
+        public Criteria andPointsNotEqualTo(Integer value) {
+            addCriterion("points <>", value, "points");
+            return (Criteria) this;
+        }
+
+        public Criteria andPointsGreaterThan(Integer value) {
+            addCriterion("points >", value, "points");
+            return (Criteria) this;
+        }
+
+        public Criteria andPointsGreaterThanOrEqualTo(Integer value) {
+            addCriterion("points >=", value, "points");
+            return (Criteria) this;
+        }
+
+        public Criteria andPointsLessThan(Integer value) {
+            addCriterion("points <", value, "points");
+            return (Criteria) this;
+        }
+
+        public Criteria andPointsLessThanOrEqualTo(Integer value) {
+            addCriterion("points <=", value, "points");
+            return (Criteria) this;
+        }
+
+        public Criteria andPointsIn(List<Integer> values) {
+            addCriterion("points in", values, "points");
+            return (Criteria) this;
+        }
+
+        public Criteria andPointsNotIn(List<Integer> values) {
+            addCriterion("points not in", values, "points");
+            return (Criteria) this;
+        }
+
+        public Criteria andPointsBetween(Integer value1, Integer value2) {
+            addCriterion("points between", value1, value2, "points");
+            return (Criteria) this;
+        }
+
+        public Criteria andPointsNotBetween(Integer value1, Integer value2) {
+            addCriterion("points not between", value1, value2, "points");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

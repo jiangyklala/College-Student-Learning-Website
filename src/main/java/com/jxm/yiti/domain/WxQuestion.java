@@ -11,6 +11,8 @@ public class WxQuestion {
 
     private Integer collect;
 
+    private Integer points;
+
     private String answer;
 
     public Integer getId() {
@@ -53,6 +55,14 @@ public class WxQuestion {
         this.collect = collect;
     }
 
+    public Integer getPoints() {
+        return points;
+    }
+
+    public void setPoints(Integer points) {
+        this.points = points;
+    }
+
     public String getAnswer() {
         return answer;
     }
@@ -72,6 +82,7 @@ public class WxQuestion {
         sb.append(", category=").append(category);
         sb.append(", like=").append(like);
         sb.append(", collect=").append(collect);
+        sb.append(", points=").append(points);
         sb.append(", answer=").append(answer);
         sb.append("]");
         return sb.toString();

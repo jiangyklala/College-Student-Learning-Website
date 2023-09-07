@@ -7,6 +7,7 @@
         <result column="category" jdbcType="BIGINT" property="category"/>
         <result column="like" jdbcType="INTEGER" property="like"/>
         <result column="collect" jdbcType="INTEGER" property="collect"/>
+        <result column="points" jdbcType="INTEGER" property="points"/>
     </resultMap>
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.jxm.yiti.domain.WxQuestion">
         <result column="answer" jdbcType="LONGVARCHAR" property="answer"/>
@@ -73,7 +74,7 @@
     </sql>
     <sql id="Base_Column_List">
         id
-        , title, category, `like`, `collect`
+        , title, category, `like`, `collect`, points
     </sql>
     <sql id="Blob_Column_List">
         answer
@@ -130,9 +131,11 @@
     </delete>
     <insert id="insert" parameterType="com.jxm.yiti.domain.WxQuestion">
         insert into wx_question (id, title, category,
-                                 `like`, `collect`, answer)
+                                 `like`, `collect`, points,
+                                 answer)
         values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{category,jdbcType=BIGINT},
-                #{like,jdbcType=INTEGER}, #{collect,jdbcType=INTEGER}, #{answer,jdbcType=LONGVARCHAR})
+                #{like,jdbcType=INTEGER}, #{collect,jdbcType=INTEGER}, #{points,jdbcType=INTEGER},
+                #{answer,jdbcType=LONGVARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.jxm.yiti.domain.WxQuestion">
         insert into wx_question
@@ -151,6 +154,9 @@
             </if>
             <if test="collect != null">
                 `collect`,
+            </if>
+            <if test="points != null">
+                points,
             </if>
             <if test="answer != null">
                 answer,
@@ -171,6 +177,9 @@
             </if>
             <if test="collect != null">
                 #{collect,jdbcType=INTEGER},
+            </if>
+            <if test="points != null">
+                #{points,jdbcType=INTEGER},
             </if>
             <if test="answer != null">
                 #{answer,jdbcType=LONGVARCHAR},
@@ -201,6 +210,9 @@
             <if test="record.collect != null">
                 `collect` = #{record.collect,jdbcType=INTEGER},
             </if>
+            <if test="record.points != null">
+                points = #{record.points,jdbcType=INTEGER},
+            </if>
             <if test="record.answer != null">
                 answer = #{record.answer,jdbcType=LONGVARCHAR},
             </if>
@@ -216,6 +228,7 @@
         category = #{record.category,jdbcType=BIGINT},
         `like` = #{record.like,jdbcType=INTEGER},
         `collect` = #{record.collect,jdbcType=INTEGER},
+        points = #{record.points,jdbcType=INTEGER},
         answer = #{record.answer,jdbcType=LONGVARCHAR}
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
@@ -227,7 +240,8 @@
         title = #{record.title,jdbcType=VARCHAR},
         category = #{record.category,jdbcType=BIGINT},
         `like` = #{record.like,jdbcType=INTEGER},
-        `collect` = #{record.collect,jdbcType=INTEGER}
+        `collect` = #{record.collect,jdbcType=INTEGER},
+        points = #{record.points,jdbcType=INTEGER}
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
         </if>
@@ -247,6 +261,9 @@
             <if test="collect != null">
                 `collect` = #{collect,jdbcType=INTEGER},
             </if>
+            <if test="points != null">
+                points = #{points,jdbcType=INTEGER},
+            </if>
             <if test="answer != null">
                 answer = #{answer,jdbcType=LONGVARCHAR},
             </if>
@@ -259,6 +276,7 @@
             category  = #{category,jdbcType=BIGINT},
             `like`    = #{like,jdbcType=INTEGER},
             `collect` = #{collect,jdbcType=INTEGER},
+            points    = #{points,jdbcType=INTEGER},
             answer    = #{answer,jdbcType=LONGVARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
@@ -267,7 +285,8 @@
         set title     = #{title,jdbcType=VARCHAR},
             category  = #{category,jdbcType=BIGINT},
             `like`    = #{like,jdbcType=INTEGER},
-            `collect` = #{collect,jdbcType=INTEGER}
+            `collect` = #{collect,jdbcType=INTEGER},
+            points    = #{points,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
     </update>
 </mapper>
