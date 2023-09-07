@@ -29,7 +29,7 @@ CREATE TABLE `wx_question`
 (
     `id`               integer AUTO_INCREMENT NOT NULL,
     `title`            varchar(128)           NOT NULL COMMENT '题目标识',
-    `category`         bigint                 NOT NULL COMMENT '分类',
+    `category_id`      bigint                 NOT NULL COMMENT '分类',
     `answer`           mediumtext             NOT NULL COMMENT '答案',
     `like`             integer DEFAULT 0 COMMENT '点赞数',
     `collect`          integer DEFAULT 0 COMMENT '收藏数',

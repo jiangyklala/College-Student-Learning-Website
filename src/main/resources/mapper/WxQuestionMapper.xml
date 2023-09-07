@@ -4,10 +4,11 @@
     <resultMap id="BaseResultMap" type="com.jxm.yiti.domain.WxQuestion">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="title" jdbcType="VARCHAR" property="title"/>
-        <result column="category" jdbcType="BIGINT" property="category"/>
+        <result column="category_id" jdbcType="BIGINT" property="categoryId"/>
         <result column="like" jdbcType="INTEGER" property="like"/>
         <result column="collect" jdbcType="INTEGER" property="collect"/>
         <result column="points" jdbcType="INTEGER" property="points"/>
+        <result column="importance_level" jdbcType="INTEGER" property="importanceLevel"/>
     </resultMap>
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.jxm.yiti.domain.WxQuestion">
         <result column="answer" jdbcType="LONGVARCHAR" property="answer"/>
@@ -74,7 +75,7 @@
     </sql>
     <sql id="Base_Column_List">
         id
-        , title, category, `like`, `collect`, points
+        , title, category_id, `like`, `collect`, points, importance_level
     </sql>
     <sql id="Blob_Column_List">
         answer
@@ -130,12 +131,12 @@
         </if>
     </delete>
     <insert id="insert" parameterType="com.jxm.yiti.domain.WxQuestion">
-        insert into wx_question (id, title, category,
+        insert into wx_question (id, title, category_id,
                                  `like`, `collect`, points,
-                                 answer)
-        values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{category,jdbcType=BIGINT},
+                                 importance_level, answer)
+        values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{categoryId,jdbcType=BIGINT},
                 #{like,jdbcType=INTEGER}, #{collect,jdbcType=INTEGER}, #{points,jdbcType=INTEGER},
-                #{answer,jdbcType=LONGVARCHAR})
+                #{importanceLevel,jdbcType=INTEGER}, #{answer,jdbcType=LONGVARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.jxm.yiti.domain.WxQuestion">
         insert into wx_question
@@ -146,8 +147,8 @@
             <if test="title != null">
                 title,
             </if>
-            <if test="category != null">
-                category,
+            <if test="categoryId != null">
+                category_id,
             </if>
             <if test="like != null">
                 `like`,
@@ -157,6 +158,9 @@
             </if>
             <if test="points != null">
                 points,
+            </if>
+            <if test="importanceLevel != null">
+                importance_level,
             </if>
             <if test="answer != null">
                 answer,
@@ -169,8 +173,8 @@
             <if test="title != null">
                 #{title,jdbcType=VARCHAR},
             </if>
-            <if test="category != null">
-                #{category,jdbcType=BIGINT},
+            <if test="categoryId != null">
+                #{categoryId,jdbcType=BIGINT},
             </if>
             <if test="like != null">
                 #{like,jdbcType=INTEGER},
@@ -180,6 +184,9 @@
             </if>
             <if test="points != null">
                 #{points,jdbcType=INTEGER},
+            </if>
+            <if test="importanceLevel != null">
+                #{importanceLevel,jdbcType=INTEGER},
             </if>
             <if test="answer != null">
                 #{answer,jdbcType=LONGVARCHAR},
@@ -201,8 +208,8 @@
             <if test="record.title != null">
                 title = #{record.title,jdbcType=VARCHAR},
             </if>
-            <if test="record.category != null">
-                category = #{record.category,jdbcType=BIGINT},
+            <if test="record.categoryId != null">
+                category_id = #{record.categoryId,jdbcType=BIGINT},
             </if>
             <if test="record.like != null">
                 `like` = #{record.like,jdbcType=INTEGER},
@@ -212,6 +219,9 @@
             </if>
             <if test="record.points != null">
                 points = #{record.points,jdbcType=INTEGER},
+            </if>
+            <if test="record.importanceLevel != null">
+                importance_level = #{record.importanceLevel,jdbcType=INTEGER},
             </if>
             <if test="record.answer != null">
                 answer = #{record.answer,jdbcType=LONGVARCHAR},
@@ -225,10 +235,11 @@
         update wx_question
         set id = #{record.id,jdbcType=INTEGER},
         title = #{record.title,jdbcType=VARCHAR},
-        category = #{record.category,jdbcType=BIGINT},
+        category_id = #{record.categoryId,jdbcType=BIGINT},
         `like` = #{record.like,jdbcType=INTEGER},
         `collect` = #{record.collect,jdbcType=INTEGER},
         points = #{record.points,jdbcType=INTEGER},
+        importance_level = #{record.importanceLevel,jdbcType=INTEGER},
         answer = #{record.answer,jdbcType=LONGVARCHAR}
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
@@ -238,10 +249,11 @@
         update wx_question
         set id = #{record.id,jdbcType=INTEGER},
         title = #{record.title,jdbcType=VARCHAR},
-        category = #{record.category,jdbcType=BIGINT},
+        category_id = #{record.categoryId,jdbcType=BIGINT},
         `like` = #{record.like,jdbcType=INTEGER},
         `collect` = #{record.collect,jdbcType=INTEGER},
-        points = #{record.points,jdbcType=INTEGER}
+        points = #{record.points,jdbcType=INTEGER},
+        importance_level = #{record.importanceLevel,jdbcType=INTEGER}
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
         </if>
@@ -252,8 +264,8 @@
             <if test="title != null">
                 title = #{title,jdbcType=VARCHAR},
             </if>
-            <if test="category != null">
-                category = #{category,jdbcType=BIGINT},
+            <if test="categoryId != null">
+                category_id = #{categoryId,jdbcType=BIGINT},
             </if>
             <if test="like != null">
                 `like` = #{like,jdbcType=INTEGER},
@@ -264,6 +276,9 @@
             <if test="points != null">
                 points = #{points,jdbcType=INTEGER},
             </if>
+            <if test="importanceLevel != null">
+                importance_level = #{importanceLevel,jdbcType=INTEGER},
+            </if>
             <if test="answer != null">
                 answer = #{answer,jdbcType=LONGVARCHAR},
             </if>
@@ -272,21 +287,23 @@
     </update>
     <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.jxm.yiti.domain.WxQuestion">
         update wx_question
-        set title     = #{title,jdbcType=VARCHAR},
-            category  = #{category,jdbcType=BIGINT},
-            `like`    = #{like,jdbcType=INTEGER},
-            `collect` = #{collect,jdbcType=INTEGER},
-            points    = #{points,jdbcType=INTEGER},
-            answer    = #{answer,jdbcType=LONGVARCHAR}
+        set title            = #{title,jdbcType=VARCHAR},
+            category_id      = #{categoryId,jdbcType=BIGINT},
+            `like`           = #{like,jdbcType=INTEGER},
+            `collect`        = #{collect,jdbcType=INTEGER},
+            points           = #{points,jdbcType=INTEGER},
+            importance_level = #{importanceLevel,jdbcType=INTEGER},
+            answer           = #{answer,jdbcType=LONGVARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.jxm.yiti.domain.WxQuestion">
         update wx_question
-        set title     = #{title,jdbcType=VARCHAR},
-            category  = #{category,jdbcType=BIGINT},
-            `like`    = #{like,jdbcType=INTEGER},
-            `collect` = #{collect,jdbcType=INTEGER},
-            points    = #{points,jdbcType=INTEGER}
+        set title            = #{title,jdbcType=VARCHAR},
+            category_id      = #{categoryId,jdbcType=BIGINT},
+            `like`           = #{like,jdbcType=INTEGER},
+            `collect`        = #{collect,jdbcType=INTEGER},
+            points           = #{points,jdbcType=INTEGER},
+            importance_level = #{importanceLevel,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
     </update>
 </mapper>

@@ -234,63 +234,63 @@ public class WxQuestionExample {
             return (Criteria) this;
         }
 
-        public Criteria andCategoryIsNull() {
-            addCriterion("category is null");
+        public Criteria andCategoryIdIsNull() {
+            addCriterion("category_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryIsNotNull() {
-            addCriterion("category is not null");
+        public Criteria andCategoryIdIsNotNull() {
+            addCriterion("category_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryEqualTo(Long value) {
-            addCriterion("category =", value, "category");
+        public Criteria andCategoryIdEqualTo(Long value) {
+            addCriterion("category_id =", value, "categoryId");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryNotEqualTo(Long value) {
-            addCriterion("category <>", value, "category");
+        public Criteria andCategoryIdNotEqualTo(Long value) {
+            addCriterion("category_id <>", value, "categoryId");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryGreaterThan(Long value) {
-            addCriterion("category >", value, "category");
+        public Criteria andCategoryIdGreaterThan(Long value) {
+            addCriterion("category_id >", value, "categoryId");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryGreaterThanOrEqualTo(Long value) {
-            addCriterion("category >=", value, "category");
+        public Criteria andCategoryIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("category_id >=", value, "categoryId");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryLessThan(Long value) {
-            addCriterion("category <", value, "category");
+        public Criteria andCategoryIdLessThan(Long value) {
+            addCriterion("category_id <", value, "categoryId");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryLessThanOrEqualTo(Long value) {
-            addCriterion("category <=", value, "category");
+        public Criteria andCategoryIdLessThanOrEqualTo(Long value) {
+            addCriterion("category_id <=", value, "categoryId");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryIn(List<Long> values) {
-            addCriterion("category in", values, "category");
+        public Criteria andCategoryIdIn(List<Long> values) {
+            addCriterion("category_id in", values, "categoryId");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryNotIn(List<Long> values) {
-            addCriterion("category not in", values, "category");
+        public Criteria andCategoryIdNotIn(List<Long> values) {
+            addCriterion("category_id not in", values, "categoryId");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryBetween(Long value1, Long value2) {
-            addCriterion("category between", value1, value2, "category");
+        public Criteria andCategoryIdBetween(Long value1, Long value2) {
+            addCriterion("category_id between", value1, value2, "categoryId");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryNotBetween(Long value1, Long value2) {
-            addCriterion("category not between", value1, value2, "category");
+        public Criteria andCategoryIdNotBetween(Long value1, Long value2) {
+            addCriterion("category_id not between", value1, value2, "categoryId");
             return (Criteria) this;
         }
 
@@ -471,6 +471,66 @@ public class WxQuestionExample {
 
         public Criteria andPointsNotBetween(Integer value1, Integer value2) {
             addCriterion("points not between", value1, value2, "points");
+            return (Criteria) this;
+        }
+
+        public Criteria andImportanceLevelIsNull() {
+            addCriterion("importance_level is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andImportanceLevelIsNotNull() {
+            addCriterion("importance_level is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andImportanceLevelEqualTo(Integer value) {
+            addCriterion("importance_level =", value, "importanceLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andImportanceLevelNotEqualTo(Integer value) {
+            addCriterion("importance_level <>", value, "importanceLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andImportanceLevelGreaterThan(Integer value) {
+            addCriterion("importance_level >", value, "importanceLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andImportanceLevelGreaterThanOrEqualTo(Integer value) {
+            addCriterion("importance_level >=", value, "importanceLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andImportanceLevelLessThan(Integer value) {
+            addCriterion("importance_level <", value, "importanceLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andImportanceLevelLessThanOrEqualTo(Integer value) {
+            addCriterion("importance_level <=", value, "importanceLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andImportanceLevelIn(List<Integer> values) {
+            addCriterion("importance_level in", values, "importanceLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andImportanceLevelNotIn(List<Integer> values) {
+            addCriterion("importance_level not in", values, "importanceLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andImportanceLevelBetween(Integer value1, Integer value2) {
+            addCriterion("importance_level between", value1, value2, "importanceLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andImportanceLevelNotBetween(Integer value1, Integer value2) {
+            addCriterion("importance_level not between", value1, value2, "importanceLevel");
             return (Criteria) this;
         }
     }

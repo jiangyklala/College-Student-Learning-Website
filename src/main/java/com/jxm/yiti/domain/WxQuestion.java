@@ -5,13 +5,15 @@ public class WxQuestion {
 
     private String title;
 
-    private Long category;
+    private Long categoryId;
 
     private Integer like;
 
     private Integer collect;
 
     private Integer points;
+
+    private Integer importanceLevel;
 
     private String answer;
 
@@ -31,12 +33,12 @@ public class WxQuestion {
         this.title = title;
     }
 
-    public Long getCategory() {
-        return category;
+    public Long getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory(Long category) {
-        this.category = category;
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 
     public Integer getLike() {
@@ -63,6 +65,14 @@ public class WxQuestion {
         this.points = points;
     }
 
+    public Integer getImportanceLevel() {
+        return importanceLevel;
+    }
+
+    public void setImportanceLevel(Integer importanceLevel) {
+        this.importanceLevel = importanceLevel;
+    }
+
     public String getAnswer() {
         return answer;
     }
@@ -79,10 +89,11 @@ public class WxQuestion {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", title=").append(title);
-        sb.append(", category=").append(category);
+        sb.append(", categoryId=").append(categoryId);
         sb.append(", like=").append(like);
         sb.append(", collect=").append(collect);
         sb.append(", points=").append(points);
+        sb.append(", importanceLevel=").append(importanceLevel);
         sb.append(", answer=").append(answer);
         sb.append("]");
         return sb.toString();
