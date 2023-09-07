@@ -1,10 +1,17 @@
 package com.jxm.yiti.req;
 
 public class WxQuestionQueryReq extends PageReq {
-
     private String title;
 
-    private Long category;
+    private Long categoryId;
+
+    private Integer like;
+
+    private Integer collect;
+
+    private Integer points;
+
+    private Integer importanceLevel;
 
     private String answer;
 
@@ -16,12 +23,44 @@ public class WxQuestionQueryReq extends PageReq {
         this.title = title;
     }
 
-    public Long getCategory() {
-        return category;
+    public Long getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory(Long category) {
-        this.category = category;
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public Integer getLike() {
+        return like;
+    }
+
+    public void setLike(Integer like) {
+        this.like = like;
+    }
+
+    public Integer getCollect() {
+        return collect;
+    }
+
+    public void setCollect(Integer collect) {
+        this.collect = collect;
+    }
+
+    public Integer getPoints() {
+        return points;
+    }
+
+    public void setPoints(Integer points) {
+        this.points = points;
+    }
+
+    public Integer getImportanceLevel() {
+        return importanceLevel;
+    }
+
+    public void setImportanceLevel(Integer importanceLevel) {
+        this.importanceLevel = importanceLevel;
     }
 
     public String getAnswer() {
@@ -39,7 +78,11 @@ public class WxQuestionQueryReq extends PageReq {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", title=").append(title);
-        sb.append(", category=").append(category);
+        sb.append(", categoryId=").append(categoryId);
+        sb.append(", like=").append(like);
+        sb.append(", collect=").append(collect);
+        sb.append(", points=").append(points);
+        sb.append(", importanceLevel=").append(importanceLevel);
         sb.append(", answer=").append(answer);
         sb.append("]");
         return sb.toString();

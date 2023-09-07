@@ -35,4 +35,15 @@ public class WxQuestionController {
         resp.setContent(list);
         return resp;
     }
+
+    @GetMapping("/selectByCategoryId")
+    @ResponseBody
+    public CommonResp selectByCategoryId(@Valid WxQuestionQueryReq req) {
+        CommonResp<PageResp<WxQuestionQueryResp>> resp = new CommonResp<>();
+
+        PageResp<WxQuestionQueryResp> list = wxQuestionService.selectByCategoryId(req);
+
+        resp.setContent(list);
+        return resp;
+    }
 }

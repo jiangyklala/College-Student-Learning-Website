@@ -44,4 +44,24 @@ public class WxQuestionService {
 
         return resp;
     }
+
+    public PageResp<WxQuestionQueryResp> selectByCategoryId(WxQuestionQueryReq req) {
+        WxQuestionExample wxQuestionExample = new WxQuestionExample();
+        WxQuestionExample.Criteria criteria = wxQuestionExample.createCriteria();
+        criteria.andCategoryIdEqualTo(req.getCategoryId());
+
+        PageHelper.startPage(req.getPage(), req.getSize(), true);
+        List<WxQuestion> wxQuestionList = wxQuestionMapper.selectByExample(wxQuestionExample);
+
+        PageInfo<WxQuestion> wxQuestionPageInfo = new PageInfo<>(wxQuestionList);
+        log.info("当前页: " + wxQuestionPageInfo.getPageNum()
+                + ", 总页数: " + wxQuestionPageInfo.getPages()
+                + " , 总记录数: " + wxQuestionPageInfo.getTotal());
+
+        PageResp<WxQuestionQueryResp> resp = new PageResp<>();
+        resp.setList(CopyUtil.copyList(wxQuestionList, WxQuestionQueryResp.class));
+        resp.setTotal(wxQuestionPageInfo.getTotal());
+
+        return resp;
+    }
 }
