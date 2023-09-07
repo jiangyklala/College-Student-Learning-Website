@@ -60,12 +60,14 @@ public class CategoryService {
         Category res = CopyUtil.copy(req, Category.class);
 
         try {
-            if (ObjectUtils.isEmpty(req.getId())) {
-                res.setId(Long.valueOf(res.getSort()));     // 如果是新增操作, 则令其 sort 字段的值作为 id
-                return categoryMapper.insert(res);
-            } else {
-                return categoryMapper.updateByPrimaryKey(res);
+            // 如果是新增操作, 则令其 sort 字段的值作为 id;  如果是更新操作, 也要令其 sort == id, 需要先删除原来的记录, 再插入新的记录 (不能按照 id primary_key 更新)
+            if (!ObjectUtils.isEmpty(req.getId())) {
+                LOG.info("need delete");
+                categoryMapper.deleteByPrimaryKey(req.getId());
             }
+
+            res.setId(Long.valueOf(req.getSort()));
+            return categoryMapper.insert(res);
         } catch (DataIntegrityViolationException e) {
             LOG.info("错误: 插入或更新错误");
             return -1;
