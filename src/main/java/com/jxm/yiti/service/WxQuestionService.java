@@ -3,7 +3,9 @@ package com.jxm.yiti.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jxm.yiti.domain.WxQuestion;
+import com.jxm.yiti.domain.WxQuestionAnswer;
 import com.jxm.yiti.domain.WxQuestionExample;
+import com.jxm.yiti.mapper.WxQuestionAnswerMapper;
 import com.jxm.yiti.mapper.WxQuestionMapper;
 import com.jxm.yiti.req.WxQuestionQueryReq;
 import com.jxm.yiti.resp.PageResp;
@@ -22,6 +24,9 @@ public class WxQuestionService {
 
     @Resource
     WxQuestionMapper wxQuestionMapper;
+
+    @Resource
+    WxQuestionAnswerMapper wxQuestionAnswerMapper;
 
     public PageResp<WxQuestionQueryResp> selectAll(WxQuestionQueryReq req) {
         WxQuestionExample wxQuestionExample = new WxQuestionExample();
@@ -63,5 +68,18 @@ public class WxQuestionService {
         resp.setTotal(wxQuestionPageInfo.getTotal());
 
         return resp;
+    }
+
+    public String selectAnswer(Integer answerId) {
+        WxQuestionAnswer wxQuestionAnswer = null;
+
+        try {
+            wxQuestionAnswer = wxQuestionAnswerMapper.selectByPrimaryKey(answerId);
+        } catch (Exception e) {
+            log.info("查找文档内容失败");
+            return null;
+        }
+
+        return wxQuestionAnswer.getAnswer();
     }
 }

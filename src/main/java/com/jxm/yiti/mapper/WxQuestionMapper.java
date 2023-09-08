@@ -17,21 +17,15 @@ public interface WxQuestionMapper {
 
     int insertSelective(WxQuestion record);
 
-    List<WxQuestion> selectByExampleWithBLOBs(WxQuestionExample example);
-
     List<WxQuestion> selectByExample(WxQuestionExample example);
 
     WxQuestion selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") WxQuestion record, @Param("example") WxQuestionExample example);
 
-    int updateByExampleWithBLOBs(@Param("record") WxQuestion record, @Param("example") WxQuestionExample example);
-
     int updateByExample(@Param("record") WxQuestion record, @Param("example") WxQuestionExample example);
 
     int updateByPrimaryKeySelective(WxQuestion record);
-
-    int updateByPrimaryKeyWithBLOBs(WxQuestion record);
 
     int updateByPrimaryKey(WxQuestion record);
 }

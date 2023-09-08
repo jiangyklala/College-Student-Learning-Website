@@ -46,4 +46,21 @@ public class WxQuestionController {
         resp.setContent(list);
         return resp;
     }
+
+    @GetMapping("/selectAnswer")
+    @ResponseBody
+    public CommonResp selectAnswer(Integer answerId) {
+        CommonResp<String> resp = new CommonResp<>();
+
+        String answer = wxQuestionService.selectAnswer(answerId);
+        if (answer == null) {
+            resp.setSuccess(false);
+            resp.setMessage("查找问题答案失败");
+        }
+
+        resp.setContent(answer);
+        return resp;
+    }
+
+
 }

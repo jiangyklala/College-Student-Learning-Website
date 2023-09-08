@@ -13,7 +13,7 @@ public class WxQuestionQueryResp {
 
     private Integer importanceLevel;
 
-    private String answer;
+    private Integer answerId;
 
     public String getTitle() {
         return title;
@@ -59,32 +59,28 @@ public class WxQuestionQueryResp {
         return importanceLevel;
     }
 
+    public Integer getAnswerId() {
+        return answerId;
+    }
+
+    public void setAnswerId(Integer answerId) {
+        this.answerId = answerId;
+    }
+
     public void setImportanceLevel(Integer importanceLevel) {
         this.importanceLevel = importanceLevel;
     }
 
-    public String getAnswer() {
-        return answer;
-    }
-
-    public void setAnswer(String answer) {
-        this.answer = answer;
-    }
-
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", title=").append(title);
-        sb.append(", categoryId=").append(categoryId);
-        sb.append(", like=").append(like);
-        sb.append(", collect=").append(collect);
-        sb.append(", points=").append(points);
-        sb.append(", importanceLevel=").append(importanceLevel);
-        sb.append(", answer=").append(answer);
-        sb.append("]");
-        return sb.toString();
+        return "WxQuestionQueryResp{" +
+                "title='" + title + '\'' +
+                ", categoryId=" + categoryId +
+                ", like=" + like +
+                ", collect=" + collect +
+                ", points=" + points +
+                ", importanceLevel=" + importanceLevel +
+                ", answerId=" + answerId +
+                '}';
     }
 }

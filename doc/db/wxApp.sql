@@ -30,7 +30,7 @@ CREATE TABLE `wx_question`
     `id`               integer AUTO_INCREMENT NOT NULL,
     `title`            varchar(128)           NOT NULL COMMENT '题目标识',
     `category_id`      bigint                 NOT NULL COMMENT '分类',
-    `answer`           mediumtext             NOT NULL COMMENT '答案',
+    `answer_id`        integer                NOT NULL COMMENT '答案表项ID',
     `like`             integer DEFAULT 0 COMMENT '点赞数',
     `collect`          integer DEFAULT 0 COMMENT '收藏数',
     `points`           integer                NOT NULL COMMENT '所需积分数',
@@ -38,3 +38,14 @@ CREATE TABLE `wx_question`
     PRIMARY KEY (`id`)
 ) ENGINE = innodb
   DEFAULT CHARSET = utf8mb4 COMMENT = '题库表';
+
+# 题目答案表
+DROP TABLE IF EXISTS `wx_question_answer`;
+
+CREATE TABLE `wx_question_answer`
+(
+    `id`     integer AUTO_INCREMENT NOT NULL,
+    `answer` mediumtext             NOT NULL COMMENT '答案',
+    PRIMARY KEY (`id`)
+) ENGINE = innodb
+  DEFAULT CHARSET = utf8mb4 COMMENT = '题目答案表';

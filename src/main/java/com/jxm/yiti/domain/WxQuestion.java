@@ -7,6 +7,8 @@ public class WxQuestion {
 
     private Long categoryId;
 
+    private Integer answerId;
+
     private Integer like;
 
     private Integer collect;
@@ -14,8 +16,6 @@ public class WxQuestion {
     private Integer points;
 
     private Integer importanceLevel;
-
-    private String answer;
 
     public Integer getId() {
         return id;
@@ -39,6 +39,14 @@ public class WxQuestion {
 
     public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public Integer getAnswerId() {
+        return answerId;
+    }
+
+    public void setAnswerId(Integer answerId) {
+        this.answerId = answerId;
     }
 
     public Integer getLike() {
@@ -73,14 +81,6 @@ public class WxQuestion {
         this.importanceLevel = importanceLevel;
     }
 
-    public String getAnswer() {
-        return answer;
-    }
-
-    public void setAnswer(String answer) {
-        this.answer = answer;
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -90,11 +90,11 @@ public class WxQuestion {
         sb.append(", id=").append(id);
         sb.append(", title=").append(title);
         sb.append(", categoryId=").append(categoryId);
+        sb.append(", answerId=").append(answerId);
         sb.append(", like=").append(like);
         sb.append(", collect=").append(collect);
         sb.append(", points=").append(points);
         sb.append(", importanceLevel=").append(importanceLevel);
-        sb.append(", answer=").append(answer);
         sb.append("]");
         return sb.toString();
     }
