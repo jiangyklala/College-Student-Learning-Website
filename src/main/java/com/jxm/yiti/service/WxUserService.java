@@ -125,4 +125,12 @@ public class WxUserService {
             commonResp.setMessage("服务异常");
         }
     }
+
+    public void refreshUserInfo(CommonResp2<WxUserInfoResp> commonResp, Integer wxUserId) {
+        WxUserInfo wxUserInfo = wxUserInfoMapper.selectByPrimaryKey(wxUserId);
+        WxUserInfoResp wxUserInfoResp = CopyUtil.copy(wxUserInfo, WxUserInfoResp.class);
+
+        commonResp.setContent(wxUserInfoResp);
+
+    }
 }

@@ -6,6 +6,7 @@ import com.jxm.yiti.req.PaymentReq;
 import com.jxm.yiti.req.WxLoginReq;
 import com.jxm.yiti.resp.CommonResp2;
 import com.jxm.yiti.resp.WxLoginResp;
+import com.jxm.yiti.resp.WxUserInfoResp;
 import com.jxm.yiti.service.WxUserService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
@@ -44,6 +45,19 @@ public class WxUserController {
     public CommonResp2 payForQuestion(@RequestBody PaymentReq paymentReq) {
         CommonResp2 commonResp = new CommonResp2<>();
         wxUserService.payForQuestion(commonResp, paymentReq, WxAppInterceptor.getWxUserId());
+
+        return commonResp;
+    }
+
+    /**
+     * 刷新用户积分等信息
+     */
+    @PostMapping("/refreshUserInfo")
+    @ResponseBody
+    public CommonResp2<WxUserInfoResp> refreshUserInfo() {
+        CommonResp2<WxUserInfoResp> commonResp = new CommonResp2<>();
+
+        wxUserService.refreshUserInfo(commonResp, WxAppInterceptor.getWxUserId());
 
         return commonResp;
     }
