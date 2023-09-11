@@ -36,7 +36,7 @@ public class TokenUtil {
             jsonObject.put("Expired", expirationTimestamp);
             encryptInfo = jsonObject.toJSONString();
 
-            log.info("encryptInfo = {}", encryptInfo);
+//            log.info("encryptInfo = {}", encryptInfo);
 
             // 将密钥转化为 SecretKeySpec 对象
             Key secretKey = new SecretKeySpec(loginSecret.getBytes(StandardCharsets.UTF_8), ALGORITHM);
@@ -74,7 +74,7 @@ public class TokenUtil {
 
             String encryptInfo = new String(decryptedBytes, StandardCharsets.UTF_8);
 
-            log.info("encryptInfo = {}", encryptInfo);
+//            log.info("encryptInfo = {}", encryptInfo);
 
             return encryptInfo;
         } catch (Exception e) {
@@ -103,7 +103,7 @@ public class TokenUtil {
             // 将 Expired 转换为Instant对象
             Instant expiration = Instant.ofEpochSecond(Long.parseLong(expiredTimestamp));
 
-            log.info("expiration = {}", expiration.toString());
+//            log.info("expiration = {}", expiration.toString());
 
             // 检查Token是否过期
             return now.isBefore(expiration);

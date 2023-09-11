@@ -16,7 +16,8 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
 
         registry.addInterceptor(wxAppInterceptor)
-                .addPathPatterns("/wxUser/**")
+                .addPathPatterns("/wxUser/**",
+                        "/wxQuestion/**")
                 .excludePathPatterns("/wxUser/login");
     }
 }
