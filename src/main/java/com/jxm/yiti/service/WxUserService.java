@@ -79,10 +79,10 @@ public class WxUserService {
                 // 用户已注册
                 // TODO
             } else {
-                // 用户未注册
+                // 用户未注册, 进行注册步骤
                 WxUserInfo newUser = new WxUserInfo();
                 newUser.setOpenId(open_id);
-                newUser.setPoints(0);
+                newUser.setPoints(100);  // 初始 100 积分
                 wxUserInfoMapper.insertSelective(newUser);
 
                 wxUserInfo = wxUserInfoMapperCust.selectAllByOpenId(open_id);
