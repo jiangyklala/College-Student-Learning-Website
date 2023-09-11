@@ -5,6 +5,7 @@ import com.alibaba.fastjson2.JSONObject;
 import com.jxm.yiti.domain.WxUserInfo;
 import com.jxm.yiti.mapper.WxUserInfoMapper;
 import com.jxm.yiti.mapper.cust.WxUserInfoMapperCust;
+import com.jxm.yiti.req.PaymentReq;
 import com.jxm.yiti.resp.CommonResp2;
 import com.jxm.yiti.resp.WxLoginResp;
 import com.jxm.yiti.resp.WxUserInfoResp;
@@ -108,5 +109,20 @@ public class WxUserService {
         commonResp.setMessage("登录成功");
 //        GenerateTokenUtil.decryptToken(wxLoginResp.getAuthToken(), loginSecret);
 //        GenerateTokenUtil.checkIfExpired(wxLoginResp.getAuthToken(), loginSecret);
+    }
+
+    public void payForQuestion(CommonResp2 commonResp, PaymentReq paymentReq, Integer wxUserId) {
+        try {
+            Integer userPoints = wxUserInfoMapperCust.selectPointsById(wxUserId);
+            if (userPoints < paymentReq.getPoints()) {
+                commonResp.setCode(410);
+                commonResp.setMessage("积分不足");
+                return;
+            }
+            wxUserInfoMapperCust.payWithPoints(wxUserId, paymentReq.getPoints());
+        } catch (RuntimeException e) {
+            commonResp.setCode(400);
+            commonResp.setMessage("服务异常");
+        }
     }
 }

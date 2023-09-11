@@ -49,3 +49,11 @@ CREATE TABLE `wx_question_answer`
     PRIMARY KEY (`id`)
 ) ENGINE = innodb
   DEFAULT CHARSET = utf8mb4 COMMENT = '题目答案表';
+
+SELECT points
+FROM wx_user_info
+WHERE id = 1;
+
+UPDATE wx_user_info
+SET points = points - 10
+WHERE id = 1;

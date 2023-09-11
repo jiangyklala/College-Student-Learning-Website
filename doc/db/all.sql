@@ -522,3 +522,7 @@ select *
 from question_detail
 where id not in (3072529551851520)
 limit 4;
+
+SELECT COUNT(*)
+FROM user
+WHERE balance < 0; # 9.11 - 65 条

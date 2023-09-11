@@ -14,4 +14,17 @@
         FROM wx_user_info
         WHERE open_id = #{openId}
     </select>
+
+
+    <select id="selectPointsById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT points
+        FROM wx_user_info
+        WHERE id = #{userId};
+    </select>
+
+    <update id="payWithPoints" parameterType="java.lang.Integer">
+        UPDATE wx_user_info
+        SET points = points - #{points}
+        WHERE id = #{userId};
+    </update>
 </mapper>

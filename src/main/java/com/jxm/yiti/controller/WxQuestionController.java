@@ -36,6 +36,9 @@ public class WxQuestionController {
         return resp;
     }
 
+    /**
+     * 根据所属目录 id 查该目录下的所有题目列表
+     */
     @GetMapping("/selectByCategoryId")
     @ResponseBody
     public CommonResp selectByCategoryId(@Valid WxQuestionQueryReq req) {
@@ -47,6 +50,9 @@ public class WxQuestionController {
         return resp;
     }
 
+    /**
+     * 根据某个题目的答案 id 查该题的答案
+     */
     @GetMapping("/selectAnswer")
     @ResponseBody
     public CommonResp selectAnswer(Integer answerId) {

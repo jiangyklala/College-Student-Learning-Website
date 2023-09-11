@@ -1,5 +1,6 @@
 package com.jxm.yiti.interceptor;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.jxm.yiti.utils.TokenUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,6 +17,9 @@ public class WxAppInterceptor implements HandlerInterceptor {
     @Value("${wxApp.login.secret}")
     private String loginSecret;
 
+    private static final ThreadLocal<Integer> wxUserIdTL = new ThreadLocal<>();
+
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
@@ -28,8 +32,12 @@ public class WxAppInterceptor implements HandlerInterceptor {
         String authToken = authorization.substring(7);
 
         boolean ifExpired = TokenUtil.checkIfExpired(authToken, loginSecret);
+        JSONObject jsonObject = JSONObject.parseObject(TokenUtil.decryptToken(authToken, loginSecret));
+        if (jsonObject == null) return false;
+        wxUserIdTL.set(Integer.valueOf(jsonObject.getString("user_id")));
+//        log.info("jsonInfo = {}", jsonObject.getString("user_id"));
 
-        log.info("interceptor = {}", ifExpired);
+//        log.info("interceptor = {}", ifExpired);
 
         return ifExpired;
     }
@@ -42,5 +50,9 @@ public class WxAppInterceptor implements HandlerInterceptor {
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
+    }
+
+    public static Integer getWxUserId() {
+        return wxUserIdTL.get();
     }
 }
