@@ -41,7 +41,7 @@ public class WxQuestionController {
      */
     @GetMapping("/selectByCategoryId")
     @ResponseBody
-    public CommonResp selectByCategoryId(@Valid WxQuestionQueryReq req) {
+    public CommonResp<PageResp<WxQuestionQueryResp>> selectByCategoryId(@Valid WxQuestionQueryReq req) {
         CommonResp<PageResp<WxQuestionQueryResp>> resp = new CommonResp<>();
 
         PageResp<WxQuestionQueryResp> list = wxQuestionService.selectByCategoryId(req);

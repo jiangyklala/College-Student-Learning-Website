@@ -1,7 +1,6 @@
 package com.jxm.yiti.controller;
 
 import com.jxm.yiti.interceptor.WxAppInterceptor;
-import com.jxm.yiti.mapper.WxUserInfoMapper;
 import com.jxm.yiti.req.PaymentReq;
 import com.jxm.yiti.req.WxLoginReq;
 import com.jxm.yiti.resp.CommonResp2;
@@ -22,8 +21,6 @@ public class WxUserController {
     @Resource
     WxUserService wxUserService;
 
-    @Resource
-    WxUserInfoMapper wxUserInfoMapper;
 
     /**
      * 微信小程序登录
@@ -32,13 +29,14 @@ public class WxUserController {
     @ResponseBody
     public CommonResp2 Login(@RequestBody WxLoginReq wxLoginReq) throws IOException, URISyntaxException {
         CommonResp2<WxLoginResp> commonResp = new CommonResp2<>();
+
         wxUserService.login(commonResp, wxLoginReq.getCode());
 
         return commonResp;
     }
 
     /**
-     * 验证是否扣有足够的积分, 并扣除
+     * 验证是否已购买此题, 或者有足够的积分, 并扣除
      */
     @PostMapping("/payForQuestion")
     @ResponseBody

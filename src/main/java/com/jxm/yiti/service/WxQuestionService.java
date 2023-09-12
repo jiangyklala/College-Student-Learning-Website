@@ -5,8 +5,10 @@ import com.github.pagehelper.PageInfo;
 import com.jxm.yiti.domain.WxQuestion;
 import com.jxm.yiti.domain.WxQuestionAnswer;
 import com.jxm.yiti.domain.WxQuestionExample;
+import com.jxm.yiti.mapper.QuestionUserInfoMapper;
 import com.jxm.yiti.mapper.WxQuestionAnswerMapper;
 import com.jxm.yiti.mapper.WxQuestionMapper;
+import com.jxm.yiti.mapper.cust.QuestionUserInfoMapperCust;
 import com.jxm.yiti.req.WxQuestionQueryReq;
 import com.jxm.yiti.resp.PageResp;
 import com.jxm.yiti.resp.WxQuestionQueryResp;
@@ -27,6 +29,12 @@ public class WxQuestionService {
 
     @Resource
     WxQuestionAnswerMapper wxQuestionAnswerMapper;
+
+    @Resource
+    QuestionUserInfoMapper questionUserInfoMapper;
+
+    @Resource
+    QuestionUserInfoMapperCust questionUserInfoMapperCust;
 
     public PageResp<WxQuestionQueryResp> selectAll(WxQuestionQueryReq req) {
         WxQuestionExample wxQuestionExample = new WxQuestionExample();

@@ -9,4 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PaymentReq {
     Integer points;
+
+    Integer questionId;
 }

@@ -1,6 +1,8 @@
 package com.jxm.yiti.resp;
 
 public class WxQuestionQueryResp {
+    private Integer id;
+
     private String title;
 
     private Long categoryId;
@@ -29,6 +31,14 @@ public class WxQuestionQueryResp {
 
     public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getLike() {
@@ -74,7 +84,8 @@ public class WxQuestionQueryResp {
     @Override
     public String toString() {
         return "WxQuestionQueryResp{" +
-                "title='" + title + '\'' +
+                "id=" + id +
+                ", title='" + title + '\'' +
                 ", categoryId=" + categoryId +
                 ", like=" + like +
                 ", collect=" + collect +
