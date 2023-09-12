@@ -57,3 +57,18 @@ WHERE id = 1;
 UPDATE wx_user_info
 SET points = points - 10
 WHERE id = 1;
+
+# 用户题目信息记录表
+DROP TABLE IF EXISTS `question_user_info`;
+
+CREATE TABLE `question_user_info`
+(
+    `id`            integer AUTO_INCREMENT NOT NULL,
+    `user_id`       integer                NOT NULL COMMENT '用户ID',
+    `payed_id_set`  BLOB                   NOT NULL COMMENT '已付费题目集合',
+    `marked_id_set` BLOB                   NOT NULL COMMENT '收藏题目集合',
+    `other`         BLOB COMMENT 'other',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY (`user_id`)
+) ENGINE = innodb
+  DEFAULT CHARSET = utf8mb4 COMMENT = '用户题目信息记录表';
