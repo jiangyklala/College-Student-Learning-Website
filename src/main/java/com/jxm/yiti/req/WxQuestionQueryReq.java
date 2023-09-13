@@ -13,7 +13,7 @@ public class WxQuestionQueryReq extends PageReq {
 
     private Integer importanceLevel;
 
-    private Integer answerId;
+    private Long answerId;
 
     public String getTitle() {
         return title;
@@ -55,11 +55,11 @@ public class WxQuestionQueryReq extends PageReq {
         this.points = points;
     }
 
-    public Integer getAnswerId() {
+    public Long getAnswerId() {
         return answerId;
     }
 
-    public void setAnswerId(Integer answerId) {
+    public void setAnswerId(Long answerId) {
         this.answerId = answerId;
     }
 

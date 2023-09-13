@@ -10,11 +10,14 @@ import com.jxm.yiti.mapper.WxQuestionAnswerMapper;
 import com.jxm.yiti.mapper.WxQuestionMapper;
 import com.jxm.yiti.mapper.cust.QuestionUserInfoMapperCust;
 import com.jxm.yiti.req.WxQuestionQueryReq;
+import com.jxm.yiti.req.WxQuestionSaveReq;
 import com.jxm.yiti.resp.PageResp;
 import com.jxm.yiti.resp.WxQuestionQueryResp;
 import com.jxm.yiti.utils.CopyUtil;
+import com.jxm.yiti.utils.SnowFlakeIdWorker;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -35,6 +38,9 @@ public class WxQuestionService {
 
     @Resource
     QuestionUserInfoMapperCust questionUserInfoMapperCust;
+
+    @Resource
+    SnowFlakeIdWorker snowFlakeIdWorker;
 
     public PageResp<WxQuestionQueryResp> selectAll(WxQuestionQueryReq req) {
         WxQuestionExample wxQuestionExample = new WxQuestionExample();
@@ -78,7 +84,7 @@ public class WxQuestionService {
         return resp;
     }
 
-    public String selectAnswer(Integer answerId) {
+    public String selectAnswer(Long answerId) {
         WxQuestionAnswer wxQuestionAnswer = null;
 
         try {
@@ -89,5 +95,41 @@ public class WxQuestionService {
         }
 
         return wxQuestionAnswer.getAnswer();
+    }
+
+    public int save(WxQuestionSaveReq req) {
+        WxQuestion res = CopyUtil.copy(req, WxQuestion.class);
+
+        try {
+            if (ObjectUtils.isEmpty(req.getId())) {
+                // 先插入答案表
+                long answerId = snowFlakeIdWorker.nextId();
+                WxQuestionAnswer wxQuestionAnswer = new WxQuestionAnswer();
+                wxQuestionAnswer.setId(answerId);
+                wxQuestionAnswer.setAnswer(req.getAnswer());
+                wxQuestionAnswerMapper.insert(wxQuestionAnswer);
+
+                // 插入题目表
+                res.setAnswerId(answerId);
+                return wxQuestionMapper.insert(res);
+            } else {
+                return wxQuestionMapper.updateByPrimaryKey(res);
+            }
+        } catch (DataIntegrityViolationException e) {
+            log.info("错误: 插入或更新错误");
+            e.printStackTrace();
+            return -1;
+        }
+
+    }
+
+    public int delete(Integer id) {
+        int res = wxQuestionMapper.deleteByPrimaryKey(id);
+        if (res != 1) {
+            log.info("删除 1 个课程项失败");
+            return 0;
+        } else {
+            return res;
+        }
     }
 }

@@ -1,13 +1,11 @@
-package com.jxm.yiti.domain;
+package com.jxm.yiti.req;
 
-public class WxQuestion {
+public class WxQuestionSaveReq {
     private Integer id;
 
     private String title;
 
     private Long categoryId;
-
-    private Long answerId;
 
     private Integer like;
 
@@ -17,12 +15,22 @@ public class WxQuestion {
 
     private Integer importanceLevel;
 
+    private String answer;
+
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
     }
 
     public String getTitle() {
@@ -39,14 +47,6 @@ public class WxQuestion {
 
     public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
-    }
-
-    public Long getAnswerId() {
-        return answerId;
-    }
-
-    public void setAnswerId(Long answerId) {
-        this.answerId = answerId;
     }
 
     public Integer getLike() {
@@ -83,19 +83,15 @@ public class WxQuestion {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", title=").append(title);
-        sb.append(", categoryId=").append(categoryId);
-        sb.append(", answerId=").append(answerId);
-        sb.append(", like=").append(like);
-        sb.append(", collect=").append(collect);
-        sb.append(", points=").append(points);
-        sb.append(", importanceLevel=").append(importanceLevel);
-        sb.append("]");
-        return sb.toString();
+        return "WxQuestionSaveReq{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", categoryId=" + categoryId +
+                ", like=" + like +
+                ", collect=" + collect +
+                ", points=" + points +
+                ", importanceLevel=" + importanceLevel +
+                ", answer='" + answer + '\'' +
+                '}';
     }
 }

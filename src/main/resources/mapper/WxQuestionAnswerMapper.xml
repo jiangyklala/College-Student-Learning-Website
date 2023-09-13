@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jxm.yiti.mapper.WxQuestionAnswerMapper">
     <resultMap id="BaseResultMap" type="com.jxm.yiti.domain.WxQuestionAnswer">
-        <id column="id" jdbcType="INTEGER" property="id"/>
+        <id column="id" jdbcType="BIGINT" property="id"/>
     </resultMap>
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.jxm.yiti.domain.WxQuestionAnswer">
         <result column="answer" jdbcType="LONGVARCHAR" property="answer"/>
@@ -104,18 +104,18 @@
             order by ${orderByClause}
         </if>
     </select>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
         select
         <include refid="Base_Column_List"/>
         ,
         <include refid="Blob_Column_List"/>
         from wx_question_answer
-        where id = #{id,jdbcType=INTEGER}
+        where id = #{id,jdbcType=BIGINT}
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete
         from wx_question_answer
-        where id = #{id,jdbcType=INTEGER}
+        where id = #{id,jdbcType=BIGINT}
     </delete>
     <delete id="deleteByExample" parameterType="com.jxm.yiti.domain.WxQuestionAnswerExample">
         delete from wx_question_answer
@@ -125,7 +125,7 @@
     </delete>
     <insert id="insert" parameterType="com.jxm.yiti.domain.WxQuestionAnswer">
         insert into wx_question_answer (id, answer)
-        values (#{id,jdbcType=INTEGER}, #{answer,jdbcType=LONGVARCHAR})
+        values (#{id,jdbcType=BIGINT}, #{answer,jdbcType=LONGVARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.jxm.yiti.domain.WxQuestionAnswer">
         insert into wx_question_answer
@@ -139,7 +139,7 @@
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
-                #{id,jdbcType=INTEGER},
+                #{id,jdbcType=BIGINT},
             </if>
             <if test="answer != null">
                 #{answer,jdbcType=LONGVARCHAR},
@@ -156,7 +156,7 @@
         update wx_question_answer
         <set>
             <if test="record.id != null">
-                id = #{record.id,jdbcType=INTEGER},
+                id = #{record.id,jdbcType=BIGINT},
             </if>
             <if test="record.answer != null">
                 answer = #{record.answer,jdbcType=LONGVARCHAR},
@@ -168,7 +168,7 @@
     </update>
     <update id="updateByExampleWithBLOBs" parameterType="map">
         update wx_question_answer
-        set id = #{record.id,jdbcType=INTEGER},
+        set id = #{record.id,jdbcType=BIGINT},
         answer = #{record.answer,jdbcType=LONGVARCHAR}
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
@@ -176,7 +176,7 @@
     </update>
     <update id="updateByExample" parameterType="map">
         update wx_question_answer
-        set id = #{record.id,jdbcType=INTEGER}
+        set id = #{record.id,jdbcType=BIGINT}
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
         </if>
@@ -188,11 +188,11 @@
                 answer = #{answer,jdbcType=LONGVARCHAR},
             </if>
         </set>
-        where id = #{id,jdbcType=INTEGER}
+        where id = #{id,jdbcType=BIGINT}
     </update>
     <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.jxm.yiti.domain.WxQuestionAnswer">
         update wx_question_answer
         set answer = #{answer,jdbcType=LONGVARCHAR}
-        where id = #{id,jdbcType=INTEGER}
+        where id = #{id,jdbcType=BIGINT}
     </update>
 </mapper>

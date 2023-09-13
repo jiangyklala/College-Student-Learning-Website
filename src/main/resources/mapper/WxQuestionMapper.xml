@@ -2,14 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jxm.yiti.mapper.WxQuestionMapper">
   <resultMap id="BaseResultMap" type="com.jxm.yiti.domain.WxQuestion">
-    <id column="id" jdbcType="INTEGER" property="id"/>
-    <result column="title" jdbcType="VARCHAR" property="title"/>
-    <result column="category_id" jdbcType="BIGINT" property="categoryId"/>
-    <result column="answer_id" jdbcType="INTEGER" property="answerId"/>
-    <result column="like" jdbcType="INTEGER" property="like"/>
-    <result column="collect" jdbcType="INTEGER" property="collect"/>
-    <result column="points" jdbcType="INTEGER" property="points"/>
-    <result column="importance_level" jdbcType="INTEGER" property="importanceLevel"/>
+      <id column="id" jdbcType="INTEGER" property="id"/>
+      <result column="title" jdbcType="VARCHAR" property="title"/>
+      <result column="category_id" jdbcType="BIGINT" property="categoryId"/>
+      <result column="answer_id" jdbcType="BIGINT" property="answerId"/>
+      <result column="like" jdbcType="INTEGER" property="like"/>
+      <result column="collect" jdbcType="INTEGER" property="collect"/>
+      <result column="points" jdbcType="INTEGER" property="points"/>
+      <result column="importance_level" jdbcType="INTEGER" property="importanceLevel"/>
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -70,47 +70,47 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id
-    , title, category_id, answer_id, `like`, `collect`, points, importance_level
+      id
+      , title, category_id, answer_id, `like`, `collect`, points, importance_level
   </sql>
   <select id="selectByExample" parameterType="com.jxm.yiti.domain.WxQuestionExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
-    <include refid="Base_Column_List"/>
+      <include refid="Base_Column_List"/>
     from wx_question
     <if test="_parameter != null">
-      <include refid="Example_Where_Clause"/>
+        <include refid="Example_Where_Clause"/>
     </if>
     <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from wx_question
-    where id = #{id,jdbcType=INTEGER}
-  </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from wx_question
+        where id = #{id,jdbcType=INTEGER}
+    </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete
-    from wx_question
-    where id = #{id,jdbcType=INTEGER}
+      delete
+      from wx_question
+      where id = #{id,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByExample" parameterType="com.jxm.yiti.domain.WxQuestionExample">
     delete from wx_question
     <if test="_parameter != null">
-      <include refid="Example_Where_Clause"/>
+        <include refid="Example_Where_Clause"/>
     </if>
   </delete>
   <insert id="insert" parameterType="com.jxm.yiti.domain.WxQuestion">
-    insert into wx_question (id, title, category_id,
-                             answer_id, `like`, `collect`,
-                             points, importance_level)
-    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{categoryId,jdbcType=BIGINT},
-            #{answerId,jdbcType=INTEGER}, #{like,jdbcType=INTEGER}, #{collect,jdbcType=INTEGER},
-            #{points,jdbcType=INTEGER}, #{importanceLevel,jdbcType=INTEGER})
+      insert into wx_question (id, title, category_id,
+                               answer_id, `like`, `collect`,
+                               points, importance_level)
+      values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{categoryId,jdbcType=BIGINT},
+              #{answerId,jdbcType=BIGINT}, #{like,jdbcType=INTEGER}, #{collect,jdbcType=INTEGER},
+              #{points,jdbcType=INTEGER}, #{importanceLevel,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.jxm.yiti.domain.WxQuestion">
     insert into wx_question
@@ -151,7 +151,7 @@
         #{categoryId,jdbcType=BIGINT},
       </if>
       <if test="answerId != null">
-        #{answerId,jdbcType=INTEGER},
+          #{answerId,jdbcType=BIGINT},
       </if>
       <if test="like != null">
         #{like,jdbcType=INTEGER},
@@ -170,7 +170,7 @@
   <select id="countByExample" parameterType="com.jxm.yiti.domain.WxQuestionExample" resultType="java.lang.Long">
     select count(*) from wx_question
     <if test="_parameter != null">
-      <include refid="Example_Where_Clause"/>
+        <include refid="Example_Where_Clause"/>
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
@@ -186,7 +186,7 @@
         category_id = #{record.categoryId,jdbcType=BIGINT},
       </if>
       <if test="record.answerId != null">
-        answer_id = #{record.answerId,jdbcType=INTEGER},
+          answer_id = #{record.answerId,jdbcType=BIGINT},
       </if>
       <if test="record.like != null">
         `like` = #{record.like,jdbcType=INTEGER},
@@ -202,21 +202,21 @@
       </if>
     </set>
     <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause"/>
+        <include refid="Update_By_Example_Where_Clause"/>
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update wx_question
-    set id = #{record.id,jdbcType=INTEGER},
-    title = #{record.title,jdbcType=VARCHAR},
-    category_id = #{record.categoryId,jdbcType=BIGINT},
-    answer_id = #{record.answerId,jdbcType=INTEGER},
-    `like` = #{record.like,jdbcType=INTEGER},
-    `collect` = #{record.collect,jdbcType=INTEGER},
-    points = #{record.points,jdbcType=INTEGER},
-    importance_level = #{record.importanceLevel,jdbcType=INTEGER}
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause"/>
+      update wx_question
+      set id = #{record.id,jdbcType=INTEGER},
+      title = #{record.title,jdbcType=VARCHAR},
+      category_id = #{record.categoryId,jdbcType=BIGINT},
+      answer_id = #{record.answerId,jdbcType=BIGINT},
+      `like` = #{record.like,jdbcType=INTEGER},
+      `collect` = #{record.collect,jdbcType=INTEGER},
+      points = #{record.points,jdbcType=INTEGER},
+      importance_level = #{record.importanceLevel,jdbcType=INTEGER}
+      <if test="_parameter != null">
+          <include refid="Update_By_Example_Where_Clause"/>
     </if>
   </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.jxm.yiti.domain.WxQuestion">
@@ -229,7 +229,7 @@
         category_id = #{categoryId,jdbcType=BIGINT},
       </if>
       <if test="answerId != null">
-        answer_id = #{answerId,jdbcType=INTEGER},
+          answer_id = #{answerId,jdbcType=BIGINT},
       </if>
       <if test="like != null">
         `like` = #{like,jdbcType=INTEGER},
@@ -247,14 +247,14 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.jxm.yiti.domain.WxQuestion">
-    update wx_question
-    set title            = #{title,jdbcType=VARCHAR},
-        category_id      = #{categoryId,jdbcType=BIGINT},
-        answer_id        = #{answerId,jdbcType=INTEGER},
-        `like`           = #{like,jdbcType=INTEGER},
-        `collect`        = #{collect,jdbcType=INTEGER},
-        points           = #{points,jdbcType=INTEGER},
-        importance_level = #{importanceLevel,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
+      update wx_question
+      set title            = #{title,jdbcType=VARCHAR},
+          category_id      = #{categoryId,jdbcType=BIGINT},
+          answer_id        = #{answerId,jdbcType=BIGINT},
+          `like`           = #{like,jdbcType=INTEGER},
+          `collect`        = #{collect,jdbcType=INTEGER},
+          points           = #{points,jdbcType=INTEGER},
+          importance_level = #{importanceLevel,jdbcType=INTEGER}
+      where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -40,7 +40,7 @@
                              targetPackage="com.jxm.yiti.mapper"
                              type="XMLMAPPER"/>
 
-        <table tableName="question_user_info"/>
+        <table tableName="wx_question_answer"/>
 
     </context>
 </generatorConfiguration>

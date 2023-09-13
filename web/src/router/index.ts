@@ -57,6 +57,12 @@ const routes: Array<RouteRecordRaw> = [
 
     },
     {
+        path: '/admin/AdminWxQuestion',
+        name: 'AdminWxQuestion',
+        component: () => import('../views/admin/AdminWxQuestion.vue')
+
+    },
+    {
         path: '/column/Column',
         name: 'Column',
         component: () => import('../views/column/Column.vue')

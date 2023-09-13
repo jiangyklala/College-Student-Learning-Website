@@ -304,52 +304,52 @@ public class WxQuestionExample {
             return (Criteria) this;
         }
 
-        public Criteria andAnswerIdEqualTo(Integer value) {
+        public Criteria andAnswerIdEqualTo(Long value) {
             addCriterion("answer_id =", value, "answerId");
             return (Criteria) this;
         }
 
-        public Criteria andAnswerIdNotEqualTo(Integer value) {
+        public Criteria andAnswerIdNotEqualTo(Long value) {
             addCriterion("answer_id <>", value, "answerId");
             return (Criteria) this;
         }
 
-        public Criteria andAnswerIdGreaterThan(Integer value) {
+        public Criteria andAnswerIdGreaterThan(Long value) {
             addCriterion("answer_id >", value, "answerId");
             return (Criteria) this;
         }
 
-        public Criteria andAnswerIdGreaterThanOrEqualTo(Integer value) {
+        public Criteria andAnswerIdGreaterThanOrEqualTo(Long value) {
             addCriterion("answer_id >=", value, "answerId");
             return (Criteria) this;
         }
 
-        public Criteria andAnswerIdLessThan(Integer value) {
+        public Criteria andAnswerIdLessThan(Long value) {
             addCriterion("answer_id <", value, "answerId");
             return (Criteria) this;
         }
 
-        public Criteria andAnswerIdLessThanOrEqualTo(Integer value) {
+        public Criteria andAnswerIdLessThanOrEqualTo(Long value) {
             addCriterion("answer_id <=", value, "answerId");
             return (Criteria) this;
         }
 
-        public Criteria andAnswerIdIn(List<Integer> values) {
+        public Criteria andAnswerIdIn(List<Long> values) {
             addCriterion("answer_id in", values, "answerId");
             return (Criteria) this;
         }
 
-        public Criteria andAnswerIdNotIn(List<Integer> values) {
+        public Criteria andAnswerIdNotIn(List<Long> values) {
             addCriterion("answer_id not in", values, "answerId");
             return (Criteria) this;
         }
 
-        public Criteria andAnswerIdBetween(Integer value1, Integer value2) {
+        public Criteria andAnswerIdBetween(Long value1, Long value2) {
             addCriterion("answer_id between", value1, value2, "answerId");
             return (Criteria) this;
         }
 
-        public Criteria andAnswerIdNotBetween(Integer value1, Integer value2) {
+        public Criteria andAnswerIdNotBetween(Long value1, Long value2) {
             addCriterion("answer_id not between", value1, value2, "answerId");
             return (Criteria) this;
         }

@@ -53,18 +53,21 @@
         <a-menu-item key="5">
           <router-link to="/admin/AdminCourse">课程及视频管理</router-link>
         </a-menu-item>
-        <a-menu-item key="6">
-          <router-link to="/admin/AdminCategory">分类管理</router-link>
-        </a-menu-item>
-        <a-menu-item key="9">
-          <router-link to="/admin/AdminColumn">专栏管理</router-link>
-        </a-menu-item>
-        <a-menu-item key="12">
-          <router-link to="/admin/AdminQuestion">刷题管理</router-link>
-        </a-menu-item>
-        <a-menu-item key="7">
-          <router-link to="/About">关于</router-link>
-        </a-menu-item>
+	      <a-menu-item key="6">
+		      <router-link to="/admin/AdminCategory">分类管理</router-link>
+	      </a-menu-item>
+	      <a-menu-item key="9">
+		      <router-link to="/admin/AdminColumn">专栏管理</router-link>
+	      </a-menu-item>
+	      <a-menu-item key="12">
+		      <router-link to="/admin/AdminQuestion">刷题管理</router-link>
+	      </a-menu-item>
+	      <a-menu-item key="13">
+		      <router-link to="/admin/AdminWxQuestion">微信题目管理</router-link>
+	      </a-menu-item>
+	      <a-menu-item key="7">
+		      <router-link to="/About">关于</router-link>
+	      </a-menu-item>
       </a-menu>
 
     </div>

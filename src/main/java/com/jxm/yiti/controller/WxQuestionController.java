@@ -1,6 +1,7 @@
 package com.jxm.yiti.controller;
 
 import com.jxm.yiti.req.WxQuestionQueryReq;
+import com.jxm.yiti.req.WxQuestionSaveReq;
 import com.jxm.yiti.resp.CommonResp;
 import com.jxm.yiti.resp.PageResp;
 import com.jxm.yiti.resp.WxQuestionQueryResp;
@@ -8,9 +9,7 @@ import com.jxm.yiti.service.WxQuestionService;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/wxQuestion")
@@ -55,7 +54,7 @@ public class WxQuestionController {
      */
     @GetMapping("/selectAnswer")
     @ResponseBody
-    public CommonResp selectAnswer(Integer answerId) {
+    public CommonResp selectAnswer(Long answerId) {
         CommonResp<String> resp = new CommonResp<>();
 
         String answer = wxQuestionService.selectAnswer(answerId);
@@ -68,5 +67,43 @@ public class WxQuestionController {
         return resp;
     }
 
+
+    /**
+     * 新增或者更新一个题目
+     *
+     * @param req 保存参数
+     */
+    @PostMapping("/save")
+    @ResponseBody
+    public CommonResp save(@RequestBody @Valid WxQuestionSaveReq req) {  // 以 json 方式提交
+        CommonResp resp = new CommonResp();
+
+        if (wxQuestionService.save(req) != 1) {
+            resp.setSuccess(false);
+            resp.setMessage("保存题目失败");
+        }
+
+        return resp;
+    }
+
+
+    /**
+     * 删除一个 id = ? 的题目
+     *
+     * @param id 所删除题目的 id
+     * @return CommonResp
+     */
+    @DeleteMapping("/delete/{id}")
+    @ResponseBody
+    public CommonResp delete(@PathVariable Integer id) {  // 拿到 "/delete/{id}" 里的 id
+        CommonResp resp = new CommonResp();
+
+        if (wxQuestionService.delete(id) != 1) {
+            resp.setSuccess(false);
+            resp.setMessage("删除题目失败");
+        }
+
+        return resp;
+    }
 
 }

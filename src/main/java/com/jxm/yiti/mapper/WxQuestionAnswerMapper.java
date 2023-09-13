@@ -11,7 +11,7 @@ public interface WxQuestionAnswerMapper {
 
     int deleteByExample(WxQuestionAnswerExample example);
 
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(Long id);
 
     int insert(WxQuestionAnswer record);
 
@@ -21,7 +21,7 @@ public interface WxQuestionAnswerMapper {
 
     List<WxQuestionAnswer> selectByExample(WxQuestionAnswerExample example);
 
-    WxQuestionAnswer selectByPrimaryKey(Integer id);
+    WxQuestionAnswer selectByPrimaryKey(Long id);
 
     int updateByExampleSelective(@Param("record") WxQuestionAnswer record, @Param("example") WxQuestionAnswerExample example);
 
