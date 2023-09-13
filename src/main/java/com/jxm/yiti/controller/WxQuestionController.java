@@ -56,7 +56,7 @@ public class WxQuestionController {
      */
     @GetMapping("/selectAnswer")
     @ResponseBody
-    public CommonResp selectAnswer(Long answerId) {
+    public CommonResp selectAnswer(@RequestParam("answerId") Long answerId) {
         CommonResp<String> resp = new CommonResp<>();
 
         String answer = wxQuestionService.selectAnswer(answerId);

@@ -205,6 +205,19 @@ export default defineComponent({
 			
 			// 编辑时表单的分类显示需要再从 question 中提取出来
 			categoryIds.value = question.value.categoryId;
+			
+			// 查找题目对应的答案
+			axios.get("/wxQuestion/selectAnswer", {
+				params: {
+					answerId: record.answerId,
+				}
+			}).then((response) => {
+				if (response.data.success) {
+					question.value.answer = response.data.content;
+				} else {
+					message.error(response.data.message);
+				}
+			});
 		};
 		
 		/**
