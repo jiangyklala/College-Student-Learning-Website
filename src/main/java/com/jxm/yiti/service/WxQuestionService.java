@@ -9,8 +9,10 @@ import com.jxm.yiti.mapper.QuestionUserInfoMapper;
 import com.jxm.yiti.mapper.WxQuestionAnswerMapper;
 import com.jxm.yiti.mapper.WxQuestionMapper;
 import com.jxm.yiti.mapper.cust.QuestionUserInfoMapperCust;
+import com.jxm.yiti.req.WxQuestionDelReq;
 import com.jxm.yiti.req.WxQuestionQueryReq;
 import com.jxm.yiti.req.WxQuestionSaveReq;
+import com.jxm.yiti.resp.CommonResp2;
 import com.jxm.yiti.resp.PageResp;
 import com.jxm.yiti.resp.WxQuestionQueryResp;
 import com.jxm.yiti.utils.CopyUtil;
@@ -111,7 +113,7 @@ public class WxQuestionService {
 
                 // 插入题目表
                 res.setAnswerId(answerId);
-                return wxQuestionMapper.insert(res);
+                return wxQuestionMapper.insertSelective(res);
             } else {
                 return wxQuestionMapper.updateByPrimaryKey(res);
             }
@@ -123,13 +125,16 @@ public class WxQuestionService {
 
     }
 
-    public int delete(Integer id) {
-        int res = wxQuestionMapper.deleteByPrimaryKey(id);
-        if (res != 1) {
-            log.info("删除 1 个课程项失败");
-            return 0;
-        } else {
-            return res;
+    public void delete(CommonResp2 resp, WxQuestionDelReq req) {
+        try {
+            // 先删除答案记录
+            wxQuestionAnswerMapper.deleteByPrimaryKey(req.getWxQuestionAnswerId());
+
+            // 再删除题目记录
+            wxQuestionMapper.deleteByPrimaryKey(req.getWxQuestionId());
+        } catch (RuntimeException e) {
+            resp.setCode(420);
+            e.printStackTrace();
         }
     }
 }

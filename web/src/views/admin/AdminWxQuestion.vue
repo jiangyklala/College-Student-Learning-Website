@@ -38,7 +38,7 @@
 								title="确认删除吗"
 								ok-text="确认"
 								cancel-text="取消"
-								@confirm="buttonDelete(record.id)"
+								@confirm="buttonDelete(record)"
 						>
 							<a-button type="link">
 								删除
@@ -204,17 +204,19 @@ export default defineComponent({
 			question.value = Tool.copy(record);
 			
 			// 编辑时表单的分类显示需要再从 question 中提取出来
-			categoryIds.value = [question.value.categoryId1, question.value.categoryId2];
-			
-			// 将题目(question) 的选项内容转为 JSON
-			question.value.content = JSON.parse(question.value.content);
+			categoryIds.value = question.value.categoryId;
 		};
 		
 		/**
 		 * 表格的删除按钮
 		 */
-		const buttonDelete = (id: number) => {
-			axios.delete("/wxQuestion/delete/" + id).then((response) => {
+		const buttonDelete = (record: any) => {
+			axios.delete("/wxQuestion/delete", {
+				data: {
+					wxQuestionId: record.id,
+					wxQuestionAnswerId: record.answerId,
+				},
+			}).then((response) => {
 				const data = response.data;
 				if (data.success) {
 					// 重新加载列表

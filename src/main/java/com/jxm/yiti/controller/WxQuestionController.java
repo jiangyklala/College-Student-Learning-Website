@@ -1,8 +1,10 @@
 package com.jxm.yiti.controller;
 
+import com.jxm.yiti.req.WxQuestionDelReq;
 import com.jxm.yiti.req.WxQuestionQueryReq;
 import com.jxm.yiti.req.WxQuestionSaveReq;
 import com.jxm.yiti.resp.CommonResp;
+import com.jxm.yiti.resp.CommonResp2;
 import com.jxm.yiti.resp.PageResp;
 import com.jxm.yiti.resp.WxQuestionQueryResp;
 import com.jxm.yiti.service.WxQuestionService;
@@ -93,15 +95,12 @@ public class WxQuestionController {
      * @param id 所删除题目的 id
      * @return CommonResp
      */
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete")
     @ResponseBody
-    public CommonResp delete(@PathVariable Integer id) {  // 拿到 "/delete/{id}" 里的 id
-        CommonResp resp = new CommonResp();
+    public CommonResp delete(@RequestBody WxQuestionDelReq req) {  // 拿到 "/delete/{id}" 里的 id
+        CommonResp2 resp = new CommonResp2();
 
-        if (wxQuestionService.delete(id) != 1) {
-            resp.setSuccess(false);
-            resp.setMessage("删除题目失败");
-        }
+        wxQuestionService.delete(resp, req);
 
         return resp;
     }
