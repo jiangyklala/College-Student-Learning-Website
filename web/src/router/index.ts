@@ -142,7 +142,20 @@ const router = createRouter({
 router.beforeEach((to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
     if (to.name === 'Paying' && from.name !== 'Pay') {
         // 如果目标页面是TargetPage，但来源页面不是SourcePage，则重定向到来源页面
-        next({ name: 'Pay' });
+        next({name: 'Pay'});
+    } else if (to.name === 'AdminDownload' && from.name !== 'Admin') {
+        console.log(from);
+        next({name: 'Admin'});
+    } else if (to.name === 'AdminCourse' && from.name !== 'Admin') {
+        next({name: 'Admin'});
+    } else if (to.name === 'AdminCategory' && from.name !== 'Admin') {
+        next({name: 'Admin'});
+    } else if (to.name === 'AdminColumn' && from.name !== 'Admin') {
+        next({name: 'Admin'});
+    } else if (to.name === 'AdminQuestion' && from.name !== 'Admin') {
+        next({name: 'Admin'});
+    } else if (to.name === 'AdminWxQuestion' && from.name !== 'Admin') {
+        next({name: 'Admin'});
     } else {
         // 其他情况继续导航
         next();

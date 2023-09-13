@@ -1,23 +1,23 @@
 <template>
 	<a-layout-content class="layout-content">
 		<div v-if="showAll">
-			<a-button @click="onTap('/admin/AdminDownload')">
-				下载管理
+			<a-button>
+				<router-link to="/admin/AdminDownload">下载管理</router-link>
 			</a-button>
-			<a-button @click="onTap('/admin/AdminCourse')">
-				课程及视频管理
+			<a-button>
+				<router-link to="/admin/AdminCourse">课程及视频管理</router-link>
 			</a-button>
-			<a-button @click="onTap('/admin/AdminCategory')">
-				分类管理
+			<a-button>
+				<router-link to="/admin/AdminCategory">分类管理</router-link>
 			</a-button>
-			<a-button @click="onTap('/admin/AdminColumn')">
-				专栏管理
+			<a-button>
+				<router-link to="/admin/AdminColumn">专栏管理</router-link>
 			</a-button>
-			<a-button @click="onTap('/admin/AdminQuestion')">
-				刷题管理
+			<a-button>
+				<router-link to="/admin/AdminQuestion">刷题管理</router-link>
 			</a-button>
-			<a-button @click="onTap('/admin/AdminWxQuestion')">
-				微信题目管理
+			<a-button>
+				<router-link to="/admin/AdminWxQuestion">微信题目管理</router-link>
 			</a-button>
 		</div>
 	</a-layout-content>
