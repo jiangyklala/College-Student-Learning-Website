@@ -4,7 +4,6 @@
 	    
 	    <!--	    自行控制发布时选用哪个菜单栏-->
       <a-menu
-		      v-if="ifShowMenu === 'true'"
 		      theme="light"
 		      mode="horizontal"
 		      class="a-menu"
@@ -18,56 +17,6 @@
         <a-menu-item key="11">
           <router-link to="/chatgpt/Image">3.5 - 画图</router-link>
         </a-menu-item>
-      </a-menu>
-
-      <a-menu
-		      v-if="ifShowMenu === 'false'"
-		      theme="light"
-		      mode="horizontal"
-		      class="a-menu"
-      >
-        <a-menu-item key="1">
-          <router-link to="/Home">首页</router-link>
-        </a-menu-item>
-        <a-menu-item key="10">
-          <router-link to="/chatgpt/Chatgpt">GPT 3.5</router-link>
-        </a-menu-item>
-        <a-menu-item key="11">
-          <router-link to="/chatgpt/Image">3.5 - 画图</router-link>
-        </a-menu-item>
-        <a-menu-item key="2">
-          <router-link to="/download/Download">下载</router-link>
-        </a-menu-item>
-        <a-menu-item key="3">
-          <router-link to="/course/Course">课程</router-link>
-        </a-menu-item>
-        <a-menu-item key="8">
-          <router-link to="/column/Column">专栏</router-link>
-        </a-menu-item>
-        <a-menu-item key="13">
-          <router-link to="/online-problems/Problems">刷题</router-link>
-        </a-menu-item>
-        <a-menu-item key="4">
-          <router-link to="/admin/AdminDownload">下载管理</router-link>
-        </a-menu-item>
-        <a-menu-item key="5">
-          <router-link to="/admin/AdminCourse">课程及视频管理</router-link>
-        </a-menu-item>
-	      <a-menu-item key="6">
-		      <router-link to="/admin/AdminCategory">分类管理</router-link>
-	      </a-menu-item>
-	      <a-menu-item key="9">
-		      <router-link to="/admin/AdminColumn">专栏管理</router-link>
-	      </a-menu-item>
-	      <a-menu-item key="12">
-		      <router-link to="/admin/AdminQuestion">刷题管理</router-link>
-	      </a-menu-item>
-	      <a-menu-item key="13">
-		      <router-link to="/admin/AdminWxQuestion">微信题目管理</router-link>
-	      </a-menu-item>
-	      <a-menu-item key="7">
-		      <router-link to="/About">关于</router-link>
-	      </a-menu-item>
       </a-menu>
 
     </div>
@@ -256,7 +205,6 @@ export default defineComponent({
   },
   setup: function () {
 
-    const ifShowMenu = process.env.VUE_APP_SHOW_MENU;
 
     //-------------登录表单--------------
     const loginModalVisible = ref(false);
@@ -609,7 +557,6 @@ export default defineComponent({
       verifyBtnDisable,
       userInfoRefresh,
       descriptionColumn,
-      ifShowMenu,
 
       loginByGitHub,
       loginModalOk,

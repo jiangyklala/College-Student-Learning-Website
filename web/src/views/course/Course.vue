@@ -108,7 +108,7 @@ export default defineComponent({
         path: "/course/VideosPlayer",
       });
 
-      console.log("item==" + item.name);
+      // console.log("item==" + item.name);
       sessionStorage.setItem("CourseItem", item.name);                   // 临时存储
       sessionStorage.setItem("CourseItemInfo", JSON.stringify(item));
 
