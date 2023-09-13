@@ -132,6 +132,8 @@ public class WxQuestionService {
 
             // 再删除题目记录
             wxQuestionMapper.deleteByPrimaryKey(req.getWxQuestionId());
+
+            log.info("题目删除: wxQuestionAnswerId: {}, wxQuestionId: {}", req.getWxQuestionAnswerId(), req.getWxQuestionId());
         } catch (RuntimeException e) {
             resp.setCode(420);
             e.printStackTrace();

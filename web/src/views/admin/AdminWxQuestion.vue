@@ -35,7 +35,7 @@
 							编辑
 						</a-button>
 						<a-popconfirm
-								title="确认删除吗"
+								title="确认删除吗, 删除之后用户对这道题花的积分就无意义了"
 								ok-text="确认"
 								cancel-text="取消"
 								@confirm="buttonDelete(record)"
