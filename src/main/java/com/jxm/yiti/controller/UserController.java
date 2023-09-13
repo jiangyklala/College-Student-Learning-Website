@@ -1,5 +1,7 @@
 package com.jxm.yiti.controller;
 
+import com.jxm.yiti.req.AddAdminPermissionReq;
+import com.jxm.yiti.req.AdminPermissionReq;
 import com.jxm.yiti.req.UserQueryReq;
 import com.jxm.yiti.resp.CommonResp;
 import com.jxm.yiti.resp.UserQueryResp;
@@ -302,6 +304,32 @@ public class UserController {
         } else {
             resp.setContent(userID);
         }
+
+        return resp;
+    }
+
+    /**
+     * 页面管理权限验证
+     */
+    @PostMapping("/checkAdminPermission")
+    @ResponseBody
+    public CommonResp checkAdminPermission(@RequestBody AdminPermissionReq req) {
+        CommonResp resp = new CommonResp<>();
+
+        userService.checkAdminPermission(resp, req.getUserId());
+
+        return resp;
+    }
+
+    /**
+     * 增加页面管理权限
+     */
+    @PostMapping("/addAdminPermission")
+    @ResponseBody
+    public CommonResp addAdminPermission(@RequestBody AddAdminPermissionReq req) {
+        CommonResp resp = new CommonResp<>();
+
+        userService.addAdminPermission(resp, req.getUserId());
 
         return resp;
     }

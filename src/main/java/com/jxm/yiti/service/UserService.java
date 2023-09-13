@@ -64,6 +64,8 @@ public class UserService {
 
     public static final long initBalance = 20L;
 
+    private final String ADMINSETKEY = "yt:ac:ad";
+
     @PostConstruct
     public void init() {
         snowFlakeIdWorker = new SnowFlakeIdWorker(0, 0);            // 初始化雪花ID生成器
@@ -893,6 +895,34 @@ public class UserService {
             resp.setSuccess(false);
             resp.setMessage("用户登出异常");
             return;
+        }
+    }
+
+    public void checkAdminPermission(CommonResp resp, Long userId) {
+        try (Jedis jedis = jedisPool.getResource()) {
+            boolean res = jedis.sismember(ADMINSETKEY, String.valueOf(userId));
+            if (!res) {
+                resp.setSuccess(false);
+                resp.setMessage("无权限!");
+            }
+        } catch (RuntimeException e) {
+            resp.setSuccess(false);
+            resp.setMessage("error!");
+            LOG.error("error", e);
+        }
+    }
+
+    public void addAdminPermission(CommonResp resp, Long userId) {
+        try (Jedis jedis = jedisPool.getResource()) {
+            long res = jedis.sadd(ADMINSETKEY, String.valueOf(userId));
+            if (res != 1) {
+                resp.setSuccess(false);
+                resp.setMessage("添加管理用户失败");
+            }
+        } catch (RuntimeException e) {
+            resp.setSuccess(false);
+            resp.setMessage("error!");
+            LOG.error("error", e);
         }
     }
 }
