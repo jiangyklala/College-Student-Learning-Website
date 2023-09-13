@@ -113,12 +113,36 @@ export default defineComponent({
 				title: '分类',
 				// slots: {customRender: 'category'},
 				dataIndex: 'category',
-				width: '30%',
+				width: '20%',
+			},
+			{
+				title: '点赞数',
+				// slots: {customRender: 'category'},
+				dataIndex: 'like',
+				width: '9%',
+			},
+			{
+				title: '收藏数',
+				// slots: {customRender: 'category'},
+				dataIndex: 'collect',
+				width: '9%',
+			},
+			{
+				title: '所需积分',
+				// slots: {customRender: 'category'},
+				dataIndex: 'points',
+				width: '12%',
+			},
+			{
+				title: '重要程度',
+				// slots: {customRender: 'category'},
+				dataIndex: 'importanceLevel',
+				width: '12%',
 			},
 			{
 				title: '操作',
 				dataIndex: 'action',
-				width: '25%',
+				width: '15%',
 			},
 		];
 		
