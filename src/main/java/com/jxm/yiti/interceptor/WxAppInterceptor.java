@@ -32,6 +32,11 @@ public class WxAppInterceptor implements HandlerInterceptor {
         String authToken = authorization.substring(7);
 
         boolean ifExpired = TokenUtil.checkIfExpired(authToken, loginSecret);
+        if (!ifExpired) {
+            log.warn("auth_token 错误或失效");
+            response.setStatus(401);
+            return false;
+        }
         JSONObject jsonObject = JSONObject.parseObject(TokenUtil.decryptToken(authToken, loginSecret));
         if (jsonObject == null) return false;
         wxUserIdTL.set(Integer.valueOf(jsonObject.getString("user_id")));
@@ -39,7 +44,7 @@ public class WxAppInterceptor implements HandlerInterceptor {
 
 //        log.info("interceptor = {}", ifExpired);
 
-        return ifExpired;
+        return true;
     }
 
     @Override
