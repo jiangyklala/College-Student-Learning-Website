@@ -115,6 +115,14 @@ public class WxQuestionService {
                 res.setAnswerId(answerId);
                 return wxQuestionMapper.insertSelective(res);
             } else {
+                // 先更新答案表
+                WxQuestionAnswer wxQuestionAnswer = new WxQuestionAnswer();
+                wxQuestionAnswer.setAnswer(req.getAnswer());
+                wxQuestionAnswer.setId(res.getAnswerId());
+                wxQuestionAnswerMapper.updateByPrimaryKeyWithBLOBs(wxQuestionAnswer);
+
+                // 再更新题目表
+
                 return wxQuestionMapper.updateByPrimaryKey(res);
             }
         } catch (DataIntegrityViolationException e) {

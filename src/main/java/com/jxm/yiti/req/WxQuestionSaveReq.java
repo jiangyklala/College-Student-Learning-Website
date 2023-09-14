@@ -17,12 +17,22 @@ public class WxQuestionSaveReq {
 
     private String answer;
 
+    private Long answerId;
+
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Long getAnswerId() {
+        return answerId;
+    }
+
+    public void setAnswerId(Long answerId) {
+        this.answerId = answerId;
     }
 
     public String getAnswer() {
@@ -92,6 +102,7 @@ public class WxQuestionSaveReq {
                 ", points=" + points +
                 ", importanceLevel=" + importanceLevel +
                 ", answer='" + answer + '\'' +
+                ", answerId=" + answerId +
                 '}';
     }
 }
