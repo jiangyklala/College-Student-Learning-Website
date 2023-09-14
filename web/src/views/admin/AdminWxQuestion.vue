@@ -278,9 +278,9 @@ export default defineComponent({
 		 */
 		const handleModalOk = () => {
 			modalLoading.value = true;
-			question.value.categoryId = categoryIds.value;  // 保存之前先把两个分类从表单中提取出来
+			question.value.categoryId = categoryIds.value[categoryIds.value.length - 1];  // 保存之前先把两个分类从表单中提取出来
 			// question.value.content = JSON.stringify(question.value.content);
-			// console.log(categoryIds.value);
+			// console.log(categoryIds.value[categoryIds.value.length - 1]);
 			
 			axios.post("/wxQuestion/save", question.value).then((response) => {
 				// console.log(response);
