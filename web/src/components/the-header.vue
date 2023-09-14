@@ -193,6 +193,7 @@ import {message, notification} from "ant-design-vue";
 import {BellTwoTone, DownOutlined, ShareAltOutlined, SyncOutlined, UserOutlined} from "@ant-design/icons-vue";
 import store from "@/store";
 import {Tool} from "@/utils/tool";
+import {useRouter} from "vue-router";
 
 export default defineComponent({
   name: 'the-header',
@@ -204,7 +205,7 @@ export default defineComponent({
     BellTwoTone,
   },
   setup: function () {
-
+	  const router = useRouter()
 
     //-------------登录表单--------------
     const loginModalVisible = ref(false);
@@ -237,8 +238,9 @@ export default defineComponent({
       }
       axios.post("/user/loginByEmail", userInModal.value).then((response) => {
         if (response.data.success) {    // 登录成功
-          loginModalVisible.value = false;
-          window.location.href = process.env.VUE_APP_WEB;
+	        loginModalVisible.value = false;
+	        checkLoginCert();
+	        router.go(0);
         } else {
           message.error(response.data.message);
         }
@@ -430,8 +432,8 @@ export default defineComponent({
     const autoLogin = (userID: string) => {
       axios.defaults.withCredentials = true;
       axios.post("/user/loginByID/" + userID).then((response) => {
-        console.log("尝试自动登录");
-        // console.log(response);
+	      // console.log("尝试自动登录");
+	      // console.log(response);
 
         if (response.data.success) {   // 成功则加载用户信息
           store.commit("setUserInfo", response.data.content);
