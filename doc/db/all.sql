@@ -100,6 +100,10 @@ values (502, 500, '开发工具', 502);
 insert into `category` (id, parent, name, sort)
 values (503, 500, '热门服务端语言', 503);
 
+# 增加 total 列
+ALTER TABLE category
+    ADD total int default 0 COMMENT '该分类下的题目总数';
+
 # 课程目录表
 drop table if exists `course_list`;
 create table `course_list`

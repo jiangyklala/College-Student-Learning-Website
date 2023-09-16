@@ -6,6 +6,7 @@
         <result column="parent" jdbcType="BIGINT" property="parent"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="sort" jdbcType="INTEGER" property="sort"/>
+        <result column="total" jdbcType="INTEGER" property="total"/>
     </resultMap>
     <sql id="Example_Where_Clause">
         <where>
@@ -69,7 +70,7 @@
     </sql>
     <sql id="Base_Column_List">
         id
-        , parent, `name`, sort
+        , parent, `name`, sort, total
     </sql>
     <select id="selectByExample" parameterType="com.jxm.yiti.domain.CategoryExample" resultMap="BaseResultMap">
         select
@@ -104,9 +105,9 @@
     </delete>
     <insert id="insert" parameterType="com.jxm.yiti.domain.Category">
         insert into category (id, parent, `name`,
-                              sort)
+                              sort, total)
         values (#{id,jdbcType=BIGINT}, #{parent,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR},
-                #{sort,jdbcType=INTEGER})
+                #{sort,jdbcType=INTEGER}, #{total,jdbcType=INTEGER})
     </insert>
     <insert id="insertSelective" parameterType="com.jxm.yiti.domain.Category">
         insert into category
@@ -123,6 +124,9 @@
             <if test="sort != null">
                 sort,
             </if>
+            <if test="total != null">
+                total,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -136,6 +140,9 @@
             </if>
             <if test="sort != null">
                 #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="total != null">
+                #{total,jdbcType=INTEGER},
             </if>
         </trim>
     </insert>
@@ -160,6 +167,9 @@
             <if test="record.sort != null">
                 sort = #{record.sort,jdbcType=INTEGER},
             </if>
+            <if test="record.total != null">
+                total = #{record.total,jdbcType=INTEGER},
+            </if>
         </set>
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
@@ -170,7 +180,8 @@
         set id = #{record.id,jdbcType=BIGINT},
         parent = #{record.parent,jdbcType=BIGINT},
         `name` = #{record.name,jdbcType=VARCHAR},
-        sort = #{record.sort,jdbcType=INTEGER}
+        sort = #{record.sort,jdbcType=INTEGER},
+        total = #{record.total,jdbcType=INTEGER}
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
         </if>
@@ -187,6 +198,9 @@
             <if test="sort != null">
                 sort = #{sort,jdbcType=INTEGER},
             </if>
+            <if test="total != null">
+                total = #{total,jdbcType=INTEGER},
+            </if>
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
@@ -194,7 +208,8 @@
         update category
         set parent = #{parent,jdbcType=BIGINT},
             `name` = #{name,jdbcType=VARCHAR},
-            sort   = #{sort,jdbcType=INTEGER}
+            sort   = #{sort,jdbcType=INTEGER},
+            total  = #{total,jdbcType=INTEGER}
         where id = #{id,jdbcType=BIGINT}
     </update>
 </mapper>

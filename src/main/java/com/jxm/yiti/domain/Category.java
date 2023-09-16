@@ -9,6 +9,8 @@ public class Category {
 
     private Integer sort;
 
+    private Integer total;
+
     public Long getId() {
         return id;
     }
@@ -41,6 +43,14 @@ public class Category {
         this.sort = sort;
     }
 
+    public Integer getTotal() {
+        return total;
+    }
+
+    public void setTotal(Integer total) {
+        this.total = total;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -51,6 +61,7 @@ public class Category {
         sb.append(", parent=").append(parent);
         sb.append(", name=").append(name);
         sb.append(", sort=").append(sort);
+        sb.append(", total=").append(total);
         sb.append("]");
         return sb.toString();
     }
