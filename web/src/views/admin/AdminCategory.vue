@@ -88,21 +88,26 @@ export default defineComponent({
         dataIndex: 'name',
         width: '40%',
       },
-      {
-        title: '父分类',
-        dataIndex: 'parent',
-        width: '20%',
-      },
-      {
-        title: '排序',
-        dataIndex: 'sort',
-        width: '20%',
-      },
-      {
-        title: '操作',
-        dataIndex: 'action',
-        width: '30%',
-      },
+	    {
+		    title: '父分类',
+		    dataIndex: 'parent',
+		    width: '15%',
+	    },
+	    {
+		    title: '排序',
+		    dataIndex: 'sort',
+		    width: '15%',
+	    },
+	    {
+		    title: '总数',
+		    dataIndex: 'total',
+		    width: '10%',
+	    },
+	    {
+		    title: '操作',
+		    dataIndex: 'action',
+		    width: '30%',
+	    },
     ];
 
 
