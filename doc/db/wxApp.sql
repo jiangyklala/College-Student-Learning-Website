@@ -72,3 +72,22 @@ CREATE TABLE `question_user_info`
     UNIQUE KEY (`user_id`)
 ) ENGINE = innodb
   DEFAULT CHARSET = utf8mb4 COMMENT = '用户题目信息记录表';
+
+# 触发器: 题目表增加一道题, 就在其对应分类下的 total 字段 + 1
+DELIMITER //
+CREATE TRIGGER incr_category_total
+    AFTER INSERT
+    ON wx_question
+    FOR EACH ROW
+BEGIN
+    -- 获取插入行的信息
+    DECLARE category_id BIGINT;
+    SET category_id = NEW.category_id;
+
+    -- 在这里执行更新操作
+    UPDATE category SET total = total + 1 WHERE id = category_id;
+END;
+//
+DELIMITER ;
+
+SHOW TRIGGERS FROM yiti_dev;
