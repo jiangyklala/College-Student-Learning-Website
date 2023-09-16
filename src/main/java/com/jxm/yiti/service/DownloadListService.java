@@ -6,23 +6,18 @@ import com.jxm.yiti.domain.DownloadList;
 import com.jxm.yiti.domain.DownloadListExample;
 import com.jxm.yiti.mapper.DownloadListMapper;
 import com.jxm.yiti.mapper.cust.DownloadListMapperCust;
-import com.jxm.yiti.rabbitmq.MessageInfoRabbit;
-import com.jxm.yiti.rabbitmq.ReceiverRabbit;
-import com.jxm.yiti.rabbitmq.SenderRabbit;
 import com.jxm.yiti.req.DownloadListQueryReq;
 import com.jxm.yiti.req.DownloadListSaveReq;
 import com.jxm.yiti.resp.DownloadListQueryResp;
 import com.jxm.yiti.resp.PageResp;
 import com.jxm.yiti.utils.CopyUtil;
 import com.jxm.yiti.utils.SnowFlakeIdWorker;
-import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-import redis.clients.jedis.JedisPool;
 
 import java.io.IOException;
 import java.util.List;
@@ -40,14 +35,15 @@ public class DownloadListService {
     private static final Logger LOG = LoggerFactory.getLogger(DownloadListService.class);
 
 
-    @PostConstruct
-    public void init() throws IOException, TimeoutException {
-        ReceiverRabbit receiverRabbit = new ReceiverRabbit("yiti_new_download_item");  // 启用 RabbitMQ Receiver
-         new Thread(receiverRabbit).start();
+//    @PostConstruct
+//    public void init() throws IOException, TimeoutException {
+//        ReceiverRabbit receiverRabbit = new ReceiverRabbit("yiti_new_download_item");  // 启用 RabbitMQ Receiver
+//         new Thread(receiverRabbit).start();
+//    }
+
+
+    public DownloadListService() throws IOException, TimeoutException {
     }
-
-
-    public DownloadListService() throws IOException, TimeoutException { }
 
     /**
      * 查询下载列表的所有数据, 带有模糊匹配功能
@@ -86,10 +82,10 @@ public class DownloadListService {
                 res.setId(snowFlakeIdWorker.nextId());
                 int insertRes = downloadListMapper.insert(res);
 //                rocketMQ.convertAndSend("yiti_newItem_notifyAll", "有新文档发布");
-                if (insertRes == 1) {
-                    LOG.info("开始发送消息力");
-                    new SenderRabbit("yiti_new_download_item").sendMessage(new MessageInfoRabbit("lala", "有新的下载资料发布呦~"));
-                }
+//                if (insertRes == 1) {
+//                    LOG.info("开始发送消息力");
+//                    new SenderRabbit("yiti_new_download_item").sendMessage(new MessageInfoRabbit("lala", "有新的下载资料发布呦~"));
+//                }
                 return insertRes;
             } else {
                 return downloadListMapper.updateByPrimaryKey(res);
@@ -98,8 +94,6 @@ public class DownloadListService {
             LOG.info("错误: 插入或更新错误");
             e.printStackTrace();
             return -1;
-        } catch (IOException | TimeoutException e) {
-            throw new RuntimeException(e);
         }
     }
 

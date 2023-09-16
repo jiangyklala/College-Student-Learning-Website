@@ -1,13 +1,10 @@
 package com.jxm.yiti.service;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.jxm.yiti.domain.Doc;
 import com.jxm.yiti.domain.DocContent;
 import com.jxm.yiti.domain.DocExample;
 import com.jxm.yiti.mapper.DocContentMapper;
 import com.jxm.yiti.mapper.DocMapper;
-import com.jxm.yiti.rabbitmq.ReceiverRabbit;
 import com.jxm.yiti.req.DocQueryReq;
 import com.jxm.yiti.req.DocSaveReq;
 import com.jxm.yiti.resp.DocQueryResp;
@@ -20,7 +17,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
