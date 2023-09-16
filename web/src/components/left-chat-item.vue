@@ -30,7 +30,7 @@ export default defineComponent({
     const markdownText = ref("");
 
     const openEventListener = () => {
-      console.log("open!!");
+      // console.log("open!!");
     };
 
     const messageEventListener = (res: any) => {

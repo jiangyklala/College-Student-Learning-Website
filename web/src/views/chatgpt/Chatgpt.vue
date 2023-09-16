@@ -124,9 +124,13 @@ export default defineComponent({
     };
 
     const newChat = () => {
-      // msglist.value = [];
-      // historyID.value = -1;
-      location.reload();
+	    msglist.value = [];
+	    historyID.value = -1;
+	    chatCplQueryReq.value.historyID = -1;
+	    chatCplQueryReq.value.queryStr = "";
+	    gptQuestion.value = "";
+	    
+	    // location.reload();
     }
 
     /**
