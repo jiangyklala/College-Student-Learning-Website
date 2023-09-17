@@ -228,7 +228,8 @@ export default defineComponent({
 			question.value = Tool.copy(record);
 			
 			// 编辑时表单的分类显示需要再从 question 中提取出来
-			categoryIds.value = question.value.categoryId;
+			let categoryId = question.value.categoryId;
+			categoryIds.value = [categoryId - (categoryId % 1000), categoryId];
 			
 			// 查找题目对应的答案
 			axios.get("/wxQuestion/selectAnswer", {
