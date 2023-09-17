@@ -28,7 +28,7 @@ public class WxQuestionController {
      */
     @GetMapping("/selectAll")
     @ResponseBody
-    public CommonResp list(@Valid WxQuestionQueryReq req) {
+    public CommonResp<PageResp<WxQuestionQueryResp>> list(@Valid WxQuestionQueryReq req) {
         CommonResp<PageResp<WxQuestionQueryResp>> resp = new CommonResp<>();
 
         PageResp<WxQuestionQueryResp> list = wxQuestionService.selectAll(req);

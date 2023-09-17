@@ -19,7 +19,6 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/wxUser/**",
                         "/wxQuestion/**")
                 .excludePathPatterns("/wxUser/login",
-                        "/wxQuestion/selectAll",
                         "/wxQuestion/save",
                         "/wxQuestion/delete/**",
                         "/wxQuestion/selectAnswer");
