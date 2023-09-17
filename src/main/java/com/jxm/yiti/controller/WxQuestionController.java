@@ -22,13 +22,29 @@ public class WxQuestionController {
 
 
     /**
-     * 查询题库中的所有题目
+     * 查询题库中的所有题目, 拦截器中拦截
      *
      * @param req 查询参数
      */
     @GetMapping("/selectAll")
     @ResponseBody
     public CommonResp<PageResp<WxQuestionQueryResp>> list(@Valid WxQuestionQueryReq req) {
+        CommonResp<PageResp<WxQuestionQueryResp>> resp = new CommonResp<>();
+
+        PageResp<WxQuestionQueryResp> list = wxQuestionService.selectAll(req);
+
+        resp.setContent(list);
+        return resp;
+    }
+
+    /**
+     * Admin 下查询题库中的所有题目, 拦截器中不拦截
+     *
+     * @param req 查询参数
+     */
+    @GetMapping("/selectAllAdmin")
+    @ResponseBody
+    public CommonResp<PageResp<WxQuestionQueryResp>> selectAllAdmin(@Valid WxQuestionQueryReq req) {
         CommonResp<PageResp<WxQuestionQueryResp>> resp = new CommonResp<>();
 
         PageResp<WxQuestionQueryResp> list = wxQuestionService.selectAll(req);

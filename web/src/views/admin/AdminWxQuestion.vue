@@ -157,7 +157,7 @@ export default defineComponent({
 		 * @param p
 		 */
 		const QuestionListALlQuery = (p: any) => {
-			axios.get("/wxQuestion/selectAll", {
+			axios.get("/wxQuestion/selectAllAdmin", {
 				params: {
 					page: p.current,
 					size: p.pageSize,
