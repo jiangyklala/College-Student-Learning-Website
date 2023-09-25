@@ -107,7 +107,7 @@ public class WxUserService {
             jsonObject.put("user_id", wxUserInfo.getId());
             String encryptUserInfo = jsonObject.toString();
             // 生成 auth_token
-            wxLoginResp.setAuthToken(TokenUtil.wxAppAuthToken(encryptUserInfo, loginSecret, Duration.ofHours(1)));
+            wxLoginResp.setAuthToken(TokenUtil.wxAppAuthToken(encryptUserInfo, loginSecret, Duration.ofDays(30)));
             // 设置返回的用户信息
             wxLoginResp.setWxUserInfoResp(CopyUtil.copy(wxUserInfo, WxUserInfoResp.class));
 
