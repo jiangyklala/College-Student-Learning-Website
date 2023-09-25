@@ -1,31 +1,37 @@
 package com.jxm.yiti.req;
 
-import jakarta.validation.constraints.NotNull;
-
 public class CategorySaveReq {
-    private Long id;
+    private Integer id;
 
-    private Long parent;
+    private Integer parent;
 
-    @NotNull(message = "[名称] 不能为空")
     private String name;
 
-    @NotNull(message = "[排序] 不能为空")
-    private Integer sort;
+    private Integer level;
 
-    public Long getId() {
-        return id;
-    }
+    private Integer type;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getParent() {
+    public Integer getParent() {
         return parent;
     }
 
-    public void setParent(Long parent) {
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setParent(Integer parent) {
         this.parent = parent;
     }
 
@@ -37,25 +43,22 @@ public class CategorySaveReq {
         this.name = name;
     }
 
-    public Integer getSort() {
-        return sort;
+    public Integer getLevel() {
+        return level;
     }
 
-    public void setSort(Integer sort) {
-        this.sort = sort;
+    public void setLevel(Integer level) {
+        this.level = level;
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", parent=").append(parent);
-        sb.append(", name=").append(name);
-        sb.append(", sort=").append(sort);
-        sb.append("]");
-        return sb.toString();
+        return "CategorySaveReq{" +
+                "id=" + id +
+                ", parent=" + parent +
+                ", name='" + name + '\'' +
+                ", level=" + level +
+                ", type=" + type +
+                '}';
     }
 }

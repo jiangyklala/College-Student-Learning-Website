@@ -8,6 +8,7 @@ import com.jxm.yiti.mapper.CategoryMapper;
 import com.jxm.yiti.req.CategoryQueryReq;
 import com.jxm.yiti.req.CategorySaveReq;
 import com.jxm.yiti.resp.CategoryQueryResp;
+import com.jxm.yiti.resp.CommonResp;
 import com.jxm.yiti.resp.PageResp;
 import com.jxm.yiti.utils.CopyUtil;
 import jakarta.annotation.Resource;
@@ -32,10 +33,10 @@ public class CategoryService {
      */
     public PageResp<CategoryQueryResp> selectAll(CategoryQueryReq req) {
         CategoryExample categoryExample = new CategoryExample();
-        categoryExample.setOrderByClause("sort asc");
+//        categoryExample.setOrderByClause("sort asc");
         CategoryExample.Criteria criteria = categoryExample.createCriteria();
-        if (!ObjectUtils.isEmpty(req.getName())) {                                              // 动态 SQL
-            criteria.andNameLike("%" + req.getName() + "%");                                    // 模糊匹配条件
+        if (!ObjectUtils.isEmpty(req.getName())) {
+            criteria.andNameLike("%" + req.getName() + "%");
         }
 
         PageHelper.startPage(req.getPage(), req.getSize(), true);
@@ -54,55 +55,63 @@ public class CategoryService {
     }
 
     /**
-     * 新增或者更新一个下载项
+     * 新增或者更新一个分类
      */
     public int save(CategorySaveReq req) {
-        Category res = CopyUtil.copy(req, Category.class);
+        Category category = CopyUtil.copy(req, Category.class);
 
         try {
-            // 如果是新增操作, 则令其 sort 字段的值作为 id;  如果是更新操作, 也要令其 sort == id, 需要先删除原来的记录, 再插入新的记录 (不能按照 id primary_key 更新)
+            // 是更新某个分类信息
             if (!ObjectUtils.isEmpty(req.getId())) {
-                LOG.info("need delete");
-                categoryMapper.deleteByPrimaryKey(req.getId());
+                return categoryMapper.updateByPrimaryKeySelective(category);
             }
 
-            res.setId(Long.valueOf(req.getSort()));
-            return categoryMapper.insert(res);
+            // 是新增某个分类
+            return categoryMapper.insertSelective(category);
         } catch (DataIntegrityViolationException e) {
-            LOG.info("错误: 插入或更新错误");
+            LOG.error("错误: 插入或更新错误", e);
             return -1;
         }
     }
 
     /**
-     * 删除 1 个目录项
+     * 删除某个分类, 及其所有一级子分类
      */
-    public int delete(Long id) {
-        int res = categoryMapper.deleteByPrimaryKey(id);
-        if (res != 1) {
-            LOG.info("删除 1 个目录项失败");
-            return 0;
-        } else {
-            return res;
+    public void delete(CommonResp resp, Integer id) {
+        try {
+            // 删除所有 parent == id 的分类
+            CategoryExample categoryExample = new CategoryExample();
+            CategoryExample.Criteria criteria = categoryExample.createCriteria();
+            criteria.andParentEqualTo(id);
+            categoryMapper.deleteByExample(categoryExample);
+
+            // 删除 id = id 的分类
+            categoryMapper.deleteByPrimaryKey(id);
+        } catch (RuntimeException e) {
+            resp.setMessage("删除分类失败");
         }
     }
 
     /**
      * 查询分类表的所有数据, 不带分页功能, 并按 sort 字段排序
      */
-    public List<CategoryQueryResp> selectAllOBSort() {
+    public List<CategoryQueryResp> selectAllOBSort(Integer type) {
         CategoryExample categoryExample = new CategoryExample();
-        categoryExample.setOrderByClause("sort asc");                                   //  按 sort 这个字段, asc
+        CategoryExample.Criteria criteria = categoryExample.createCriteria();
+        if (type != -1) {
+            criteria.andTypeEqualTo(type);
+        }
         List<Category> categorys = categoryMapper.selectByExample(categoryExample);
 
         return CopyUtil.copyList(categorys, CategoryQueryResp.class);
     }
 
-    public List<CategoryQueryResp> selectPracticeOBSort() {
+    public List<CategoryQueryResp> selectPracticeOBSort(Integer level) {
         CategoryExample categoryExample = new CategoryExample();
         CategoryExample.Criteria criteria = categoryExample.createCriteria();
-        criteria.andSortGreaterThan(999);
-        categoryExample.setOrderByClause("sort asc");                                   //  按 sort 这个字段, asc
+        if (level != -1) {
+            criteria.andLevelEqualTo(level);
+        }
         List<Category> categorys = categoryMapper.selectByExample(categoryExample);
 
         return CopyUtil.copyList(categorys, CategoryQueryResp.class);

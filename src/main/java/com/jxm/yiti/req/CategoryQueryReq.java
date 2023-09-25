@@ -2,16 +2,16 @@ package com.jxm.yiti.req;
 
 public class CategoryQueryReq extends PageReq {
 
-    private Long id;
-
     private String name;
 
-    public Long getId() {
-        return id;
+    private Integer type;
+
+    public Integer getType() {
+        return type;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public String getName() {
@@ -22,12 +22,11 @@ public class CategoryQueryReq extends PageReq {
         this.name = name;
     }
 
-
     @Override
     public String toString() {
         return "CategoryQueryReq{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
+                ", type=" + type +
                 "} " + super.toString();
     }
 }

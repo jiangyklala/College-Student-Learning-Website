@@ -3,7 +3,7 @@ package com.jxm.yiti.req;
 public class WxQuestionQueryReq extends PageReq {
     private String title;
 
-    private Long categoryId;
+    private Integer categoryId;
 
     private Integer like;
 
@@ -23,11 +23,11 @@ public class WxQuestionQueryReq extends PageReq {
         this.title = title;
     }
 
-    public Long getCategoryId() {
+    public Integer getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(Long categoryId) {
+    public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
     }
 

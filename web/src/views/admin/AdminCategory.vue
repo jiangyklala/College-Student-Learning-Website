@@ -64,9 +64,6 @@
           </a-select-option>
         </a-select>
       </a-form-item>
-      <a-form-item label="排序">
-        <a-input v-model:value="category.sort"/>
-      </a-form-item>
     </a-form>
   </a-modal>
 </template>
@@ -89,16 +86,6 @@ export default defineComponent({
         width: '40%',
       },
 	    {
-		    title: '父分类',
-		    dataIndex: 'parent',
-		    width: '15%',
-	    },
-	    {
-		    title: '排序',
-		    dataIndex: 'sort',
-		    width: '15%',
-	    },
-	    {
 		    title: '总数',
 		    dataIndex: 'total',
 		    width: '10%',
@@ -118,20 +105,21 @@ export default defineComponent({
     const tableData = ref();
 
     /**
-     * 分类数据查询
+     * 总分类数据查询
      */
     const categoryAllOBSortQuery = () => {
       loading.value = true;
-      axios.get("/category/selectAllOBSort").then((response) => {
-
-        if (response.data.success) {  // 判断后端接口返回是否出错
-          loading.value = false;
-          // tableData.value = [];
-          tableData.value = Tool.array2Tree(response.data.content, 0)
-
-        } else {
-          message.error(response.data.message);
-        }
+	    axios.get("/category/selectAllOBSort/1").then((response) => {
+		    
+		    if (response.data.success) {
+			    loading.value = false;
+			    // tableData.value = [];
+			    tableData.value = Tool.array2Tree(response.data.content, 0)
+			    console.log(tableData.value);
+			    
+		    } else {
+			    message.error(response.data.message);
+		    }
       });
     }
 
@@ -143,6 +131,7 @@ export default defineComponent({
      */
     const addCategoryItem = () => {
       category.value = {};  // 清空当前的数据信息
+	    // category.value.level = 0;   // 显示新增表单是, 默认层级为 0
       modalVisible.value = true;
     };
 
@@ -169,26 +158,31 @@ export default defineComponent({
     };
 
     //-------------表单--------------
-    const category = ref({});
-    const modalVisible = ref(false);
+	  const category = ref();
+	  const modalVisible = ref(false);
     const modalLoading = ref(false);
 
     /**
      * 表单确认按钮
      */
     const handleModalOk = () => {
-      modalLoading.value = true;
-
-      axios.post("/category/save", category.value).then((response) => {
-        // console.log(response);
-        const data = response.data;
-        modalLoading.value = false;
-
-
-        if (data.success) {
-          modalVisible.value = false;
-
-          // 重新加载列表
+	    modalLoading.value = true;
+	    
+	    category.value.type = 1;   // 设置为, 添加到微信小程序的分类
+	    if (category.value.parent != 0) {
+		    category.value.level = 1;
+	    }
+	    console.log(category.value);
+	    axios.post("/category/save", category.value).then((response) => {
+		    // console.log(response);
+		    const data = response.data;
+		    modalLoading.value = false;
+		    
+		    
+		    if (data.success) {
+			    modalVisible.value = false;
+			    
+			    // 重新加载列表
           categoryAllOBSortQuery();
         } else {
           message.error(response.data.message);

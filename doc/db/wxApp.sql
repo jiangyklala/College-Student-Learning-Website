@@ -39,6 +39,10 @@ CREATE TABLE `wx_question`
 ) ENGINE = innodb
   DEFAULT CHARSET = utf8mb4 COMMENT = '题库表';
 
+alter table wx_question
+    change column category_id
+        category_id int not null;
+
 # 题目答案表
 DROP TABLE IF EXISTS `wx_question_answer`;
 

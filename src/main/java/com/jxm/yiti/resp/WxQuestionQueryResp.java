@@ -5,7 +5,7 @@ public class WxQuestionQueryResp {
 
     private String title;
 
-    private Long categoryId;
+    private Integer categoryId;
 
     private Integer like;
 
@@ -25,11 +25,11 @@ public class WxQuestionQueryResp {
         this.title = title;
     }
 
-    public Long getCategoryId() {
+    public Integer getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(Long categoryId) {
+    public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
     }
 

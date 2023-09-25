@@ -1,29 +1,31 @@
 package com.jxm.yiti.domain;
 
 public class Category {
-    private Long id;
+    private Integer id;
 
-    private Long parent;
+    private Integer parent;
 
     private String name;
 
-    private Integer sort;
+    private Integer level;
+
+    private Integer type;
 
     private Integer total;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public Long getParent() {
+    public Integer getParent() {
         return parent;
     }
 
-    public void setParent(Long parent) {
+    public void setParent(Integer parent) {
         this.parent = parent;
     }
 
@@ -35,12 +37,20 @@ public class Category {
         this.name = name;
     }
 
-    public Integer getSort() {
-        return sort;
+    public Integer getLevel() {
+        return level;
     }
 
-    public void setSort(Integer sort) {
-        this.sort = sort;
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public Integer getTotal() {
@@ -60,7 +70,8 @@ public class Category {
         sb.append(", id=").append(id);
         sb.append(", parent=").append(parent);
         sb.append(", name=").append(name);
-        sb.append(", sort=").append(sort);
+        sb.append(", level=").append(level);
+        sb.append(", type=").append(type);
         sb.append(", total=").append(total);
         sb.append("]");
         return sb.toString();

@@ -5,7 +5,7 @@ public class WxQuestion {
 
     private String title;
 
-    private Long categoryId;
+    private Integer categoryId;
 
     private Long answerId;
 
@@ -33,11 +33,11 @@ public class WxQuestion {
         this.title = title;
     }
 
-    public Long getCategoryId() {
+    public Integer getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(Long categoryId) {
+    public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
     }
 

@@ -7,7 +7,6 @@ import com.jxm.yiti.resp.CommonResp;
 import com.jxm.yiti.resp.PageResp;
 import com.jxm.yiti.service.CategoryService;
 import jakarta.annotation.Resource;
-import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +26,7 @@ public class CategoryController {
      */
     @GetMapping("/selectAll")
     @ResponseBody
-    public CommonResp list(@Valid CategoryQueryReq req) {
+    public CommonResp list(CategoryQueryReq req) {
         CommonResp<PageResp<CategoryQueryResp>> resp = new CommonResp<>();
 
         PageResp<CategoryQueryResp> list = categoryService.selectAll(req);
@@ -37,28 +36,32 @@ public class CategoryController {
     }
 
     /**
-     * 查询分类列表的所有分类, 并根据 sort 字段排序
+     * 查询分类列表 type == type 的所有分类
+     *
+     * @param type 全部分类 == -1; 微信分类 == 1
      */
-    @GetMapping("/selectAllOBSort")
+    @GetMapping("/selectAllOBSort/{type}")
     @ResponseBody
-    public CommonResp selectAllOBSort() {
+    public CommonResp selectAllOBSort(@PathVariable Integer type) {
         CommonResp<List<CategoryQueryResp>> resp = new CommonResp<>();
 
-        List<CategoryQueryResp> list = categoryService.selectAllOBSort();
+        List<CategoryQueryResp> list = categoryService.selectAllOBSort(type);
 
         resp.setContent(list);
         return resp;
     }
 
     /**
-     * 查询分类列表关于刷题的分类, 并根据 sort 字段排序
+     * 查询微信小程序的分类
+     *
+     * @param level -1 -- 查全部; n -- 查某级
      */
-    @GetMapping("/selectPracticeOBSort")
+    @GetMapping("/selectPracticeOBSort/{level}")
     @ResponseBody
-    public CommonResp selectPracticeOBSort() {
+    public CommonResp selectPracticeOBSort(@PathVariable Integer level) {
         CommonResp<List<CategoryQueryResp>> resp = new CommonResp<>();
 
-        List<CategoryQueryResp> list = categoryService.selectPracticeOBSort();
+        List<CategoryQueryResp> list = categoryService.selectPracticeOBSort(level);
 
         resp.setContent(list);
         return resp;
@@ -72,7 +75,7 @@ public class CategoryController {
      */
     @PostMapping("/save")
     @ResponseBody
-    public CommonResp save(@RequestBody @Valid CategorySaveReq req) {  // 以 json 方式提交
+    public CommonResp save(@RequestBody CategorySaveReq req) {  // 以 json 方式提交
         CommonResp resp = new CommonResp();
 
         if (categoryService.save(req) != 1) {
@@ -84,20 +87,17 @@ public class CategoryController {
     }
 
     /**
-     * 删除一个下载项
+     * 删除某个分类, 及其所有一级子分类
      *
      * @param id 所删除下载项的 id
      * @return CommonResp
      */
     @DeleteMapping("/delete/{id}")
     @ResponseBody
-    public CommonResp delete(@PathVariable Long id) {  // 拿到 "/delete/{id}" 里的 id
+    public CommonResp delete(@PathVariable Integer id) {  // 拿到 "/delete/{id}" 里的 id
         CommonResp resp = new CommonResp();
 
-        if (categoryService.delete(id) != 1) {
-            resp.setSuccess(false);
-            resp.setMessage("删除下载项失败");
-        }
+        categoryService.delete(resp, id);
 
         return resp;
     }

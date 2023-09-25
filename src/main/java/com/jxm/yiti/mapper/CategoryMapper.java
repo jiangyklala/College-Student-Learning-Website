@@ -11,7 +11,7 @@ public interface CategoryMapper {
 
     int deleteByExample(CategoryExample example);
 
-    int deleteByPrimaryKey(Long id);
+    int deleteByPrimaryKey(Integer id);
 
     int insert(Category record);
 
@@ -19,7 +19,7 @@ public interface CategoryMapper {
 
     List<Category> selectByExample(CategoryExample example);
 
-    Category selectByPrimaryKey(Long id);
+    Category selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") Category record, @Param("example") CategoryExample example);
 

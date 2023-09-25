@@ -61,44 +61,15 @@ values (6, '资料6', 000, 0, '1.00MB');
 drop table if exists `category`;
 create table `category`
 (
-    `id`     bigint      not null comment 'id',
-    `parent` bigint      not null default 0 comment '父id',
-    `name`   varchar(50) not null comment '名称',
-    `sort`   int comment '顺序',
+    `id`     int auto_increment not null comment 'id',
+    `parent` int                not null default 0 comment '父id',
+    `name`   varchar(50)        not null comment '名称',
+    `level`  int                         default 0 comment '层级',
+    `type`   int                not null comment '分类的类型, 小程序专用的, 网站专用的',
+    `total`  int                         default 0 comment '该分类下的题目总数',
     primary key (`id`)
 ) engine = innodb
   default charset = utf8mb4 comment ='分类';
-
-insert into `category` (id, parent, name, sort)
-values (100, 000, '前端开发', 100);
-insert into `category` (id, parent, name, sort)
-values (103, 100, 'Vue', 103);
-insert into `category` (id, parent, name, sort)
-values (102, 100, 'HTML & CSS', 102);
-insert into `category` (id, parent, name, sort)
-values (200, 000, 'Java', 200);
-insert into `category` (id, parent, name, sort)
-values (201, 200, '基础应用', 201);
-insert into `category` (id, parent, name, sort)
-values (202, 200, '框架应用', 202);
-insert into `category` (id, parent, name, sort)
-values (300, 000, 'Python', 300);
-insert into `category` (id, parent, name, sort)
-values (301, 300, '基础应用', 301);
-insert into `category` (id, parent, name, sort)
-values (302, 300, '进阶方向应用', 302);
-insert into `category` (id, parent, name, sort)
-values (400, 000, '数据库', 400);
-insert into `category` (id, parent, name, sort)
-values (401, 400, 'Mysql', 401);
-insert into `category` (id, parent, name, sort)
-values (500, 000, '其它', 500);
-insert into `category` (id, parent, name, sort)
-values (501, 500, '服务器', 501);
-insert into `category` (id, parent, name, sort)
-values (502, 500, '开发工具', 502);
-insert into `category` (id, parent, name, sort)
-values (503, 500, '热门服务端语言', 503);
 
 # 增加 total 列
 ALTER TABLE category
@@ -522,6 +493,7 @@ CREATE TABLE `practice_user`
   DEFAULT CHARSET = utf8mb4 COMMENT = '用户刷题信息记录表';
 
 
+EXPLAIN
 select *
 from question_detail
 where id not in (3072529551851520)

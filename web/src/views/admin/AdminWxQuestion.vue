@@ -25,8 +25,8 @@
 			<template v-slot:bodyCell="{ column, record, index }">
 				<template v-if="column.dataIndex === 'category'">
 					<span>{{
-							getCategoryNameById(record.categoryId)
-					      }} / {{ getCategoryNameById(record.categoryId - (record.categoryId % 1000)) }}</span>
+							getParentCategoryNameById(record.categoryId)
+					      }} / {{ getCategoryNameById(record.categoryId) }}</span>
 				</template>
 				
 				<template v-if="column.dataIndex === 'action'">
@@ -187,10 +187,11 @@ export default defineComponent({
 		 */
 		let categorys: any;
 		const handleQueryCategory = () => {
-			axios.get("/category/selectPracticeOBSort").then((response) => {
+			axios.get("/category/selectPracticeOBSort/-1").then((response) => {
 				if (response.data.success) {  // 判断后端接口返回是否出错
 					categorys = response.data.content;
 					categoryTree.value = Tool.array2Tree(response.data.content, 0);
+					console.log(categoryTree.value);
 					
 					
 					QuestionListALlQuery({   // 下载列表的显示需要用到分类的信息, 由于 axios 是异步的, 所以必须在分类查询完成后再进行下载列表的查询显示
@@ -229,7 +230,7 @@ export default defineComponent({
 			
 			// 编辑时表单的分类显示需要再从 question 中提取出来
 			let categoryId = question.value.categoryId;
-			categoryIds.value = [categoryId - (categoryId % 1000), categoryId];
+			categoryIds.value = [getParentCategoryNameById(categoryId), getCategoryNameById(categoryId)];
 			
 			// 查找题目对应的答案
 			axios.get("/wxQuestion/selectAnswer", {
@@ -365,6 +366,20 @@ export default defineComponent({
 			return result;
 		}
 		
+		/**
+		 * 根据目录id返回具体的父分类名称
+		 */
+		const getParentCategoryNameById = (cid: number) => {
+			let result = "";
+			categorys.forEach((item: any) => {
+				if (item.id === cid) {
+					// 这里直接 return item.name 不起作用
+					result = getCategoryNameById(item.parent);
+				}
+			});
+			return result;
+		}
+		
 		
 		onMounted(() => {
 			handleQueryCategory();
@@ -377,6 +392,7 @@ export default defineComponent({
 			columns,
 			handleTableChange,
 			getCategoryNameById,
+			getParentCategoryNameById,
 			
 			buttonEdit,
 			addQuestionItem,
@@ -402,6 +418,6 @@ export default defineComponent({
 
 <style scoped>
 .layout-content {
-	padding: 70px 250px 0;
+	padding: 70px 80px 0;
 }
 </style>
