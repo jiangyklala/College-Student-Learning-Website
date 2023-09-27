@@ -54,16 +54,22 @@
             v-model:value="category.parent"
         >
           <a-select-option value="0">
-            无
+	          无
           </a-select-option>
-          <a-select-option v-for="i in tableData"
-                           :key="i.id"
-                           :value="i.id"
-                           :disabled="category.id === i.id">
-            {{ i.name }}
-          </a-select-option>
+	        <a-select-option v-for="i in tableData"
+	                         :key="i.id"
+	                         :value="i.id"
+	                         :disabled="category.id === i.id">
+		        {{ i.name }}
+	        </a-select-option>
         </a-select>
       </a-form-item>
+	    <a-form-item label="图片链接">
+		    <a-textarea
+				    v-model:value="category.avatarLink"
+				    :auto-size="{ minRows: 2, maxRows: 5 }"
+		    />
+	    </a-form-item>
     </a-form>
   </a-modal>
 </template>
@@ -220,6 +226,6 @@ export default defineComponent({
 
 <style scoped>
 .layout-content {
-  padding: 70px 0px 250px
+	padding: 70px 50px 250px
 }
 </style>

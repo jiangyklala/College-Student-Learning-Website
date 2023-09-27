@@ -71,9 +71,9 @@ create table `category`
 ) engine = innodb
   default charset = utf8mb4 comment ='分类';
 
-# 增加 total 列
+# 增加 avatar_link 列
 ALTER TABLE category
-    ADD total int default 0 COMMENT '该分类下的题目总数';
+    ADD avatar_link varchar(100) default '' COMMENT '该分类对应的图片';
 
 # 课程目录表
 drop table if exists `course_list`;

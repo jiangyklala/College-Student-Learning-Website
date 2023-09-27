@@ -473,6 +473,76 @@ public class CategoryExample {
             addCriterion("total not between", value1, value2, "total");
             return (Criteria) this;
         }
+
+        public Criteria andAvatarLinkIsNull() {
+            addCriterion("avatar_link is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAvatarLinkIsNotNull() {
+            addCriterion("avatar_link is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAvatarLinkEqualTo(String value) {
+            addCriterion("avatar_link =", value, "avatarLink");
+            return (Criteria) this;
+        }
+
+        public Criteria andAvatarLinkNotEqualTo(String value) {
+            addCriterion("avatar_link <>", value, "avatarLink");
+            return (Criteria) this;
+        }
+
+        public Criteria andAvatarLinkGreaterThan(String value) {
+            addCriterion("avatar_link >", value, "avatarLink");
+            return (Criteria) this;
+        }
+
+        public Criteria andAvatarLinkGreaterThanOrEqualTo(String value) {
+            addCriterion("avatar_link >=", value, "avatarLink");
+            return (Criteria) this;
+        }
+
+        public Criteria andAvatarLinkLessThan(String value) {
+            addCriterion("avatar_link <", value, "avatarLink");
+            return (Criteria) this;
+        }
+
+        public Criteria andAvatarLinkLessThanOrEqualTo(String value) {
+            addCriterion("avatar_link <=", value, "avatarLink");
+            return (Criteria) this;
+        }
+
+        public Criteria andAvatarLinkLike(String value) {
+            addCriterion("avatar_link like", value, "avatarLink");
+            return (Criteria) this;
+        }
+
+        public Criteria andAvatarLinkNotLike(String value) {
+            addCriterion("avatar_link not like", value, "avatarLink");
+            return (Criteria) this;
+        }
+
+        public Criteria andAvatarLinkIn(List<String> values) {
+            addCriterion("avatar_link in", values, "avatarLink");
+            return (Criteria) this;
+        }
+
+        public Criteria andAvatarLinkNotIn(List<String> values) {
+            addCriterion("avatar_link not in", values, "avatarLink");
+            return (Criteria) this;
+        }
+
+        public Criteria andAvatarLinkBetween(String value1, String value2) {
+            addCriterion("avatar_link between", value1, value2, "avatarLink");
+            return (Criteria) this;
+        }
+
+        public Criteria andAvatarLinkNotBetween(String value1, String value2) {
+            addCriterion("avatar_link not between", value1, value2, "avatarLink");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

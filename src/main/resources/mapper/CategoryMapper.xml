@@ -8,6 +8,7 @@
         <result column="level" jdbcType="INTEGER" property="level"/>
         <result column="type" jdbcType="INTEGER" property="type"/>
         <result column="total" jdbcType="INTEGER" property="total"/>
+        <result column="avatar_link" jdbcType="VARCHAR" property="avatarLink"/>
     </resultMap>
     <sql id="Example_Where_Clause">
         <where>
@@ -71,7 +72,7 @@
     </sql>
     <sql id="Base_Column_List">
         id
-        , parent, `name`, `level`, `type`, total
+        , parent, `name`, `level`, `type`, total, avatar_link
     </sql>
     <select id="selectByExample" parameterType="com.jxm.yiti.domain.CategoryExample" resultMap="BaseResultMap">
         select
@@ -106,9 +107,11 @@
     </delete>
     <insert id="insert" parameterType="com.jxm.yiti.domain.Category">
         insert into category (id, parent, `name`,
-                              `level`, `type`, total)
+                              `level`, `type`, total,
+                              avatar_link)
         values (#{id,jdbcType=INTEGER}, #{parent,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
-                #{level,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{total,jdbcType=INTEGER})
+                #{level,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{total,jdbcType=INTEGER},
+                #{avatarLink,jdbcType=VARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.jxm.yiti.domain.Category">
         insert into category
@@ -131,6 +134,9 @@
             <if test="total != null">
                 total,
             </if>
+            <if test="avatarLink != null">
+                avatar_link,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -150,6 +156,9 @@
             </if>
             <if test="total != null">
                 #{total,jdbcType=INTEGER},
+            </if>
+            <if test="avatarLink != null">
+                #{avatarLink,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -180,6 +189,9 @@
             <if test="record.total != null">
                 total = #{record.total,jdbcType=INTEGER},
             </if>
+            <if test="record.avatarLink != null">
+                avatar_link = #{record.avatarLink,jdbcType=VARCHAR},
+            </if>
         </set>
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
@@ -192,7 +204,8 @@
         `name` = #{record.name,jdbcType=VARCHAR},
         `level` = #{record.level,jdbcType=INTEGER},
         `type` = #{record.type,jdbcType=INTEGER},
-        total = #{record.total,jdbcType=INTEGER}
+        total = #{record.total,jdbcType=INTEGER},
+        avatar_link = #{record.avatarLink,jdbcType=VARCHAR}
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
         </if>
@@ -215,16 +228,20 @@
             <if test="total != null">
                 total = #{total,jdbcType=INTEGER},
             </if>
+            <if test="avatarLink != null">
+                avatar_link = #{avatarLink,jdbcType=VARCHAR},
+            </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.jxm.yiti.domain.Category">
         update category
-        set parent  = #{parent,jdbcType=INTEGER},
-            `name`  = #{name,jdbcType=VARCHAR},
-            `level` = #{level,jdbcType=INTEGER},
-            `type`  = #{type,jdbcType=INTEGER},
-            total   = #{total,jdbcType=INTEGER}
+        set parent      = #{parent,jdbcType=INTEGER},
+            `name`      = #{name,jdbcType=VARCHAR},
+            `level`     = #{level,jdbcType=INTEGER},
+            `type`      = #{type,jdbcType=INTEGER},
+            total       = #{total,jdbcType=INTEGER},
+            avatar_link = #{avatarLink,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
 </mapper>

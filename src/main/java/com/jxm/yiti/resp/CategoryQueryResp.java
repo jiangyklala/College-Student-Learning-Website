@@ -11,12 +11,22 @@ public class CategoryQueryResp {
 
     private Integer total;
 
+    private String avatarLink;
+
     public Integer getParent() {
         return parent;
     }
 
     public void setParent(Integer parent) {
         this.parent = parent;
+    }
+
+    public String getAvatarLink() {
+        return avatarLink;
+    }
+
+    public void setAvatarLink(String avatarLink) {
+        this.avatarLink = avatarLink;
     }
 
     public String getName() {
@@ -59,6 +69,7 @@ public class CategoryQueryResp {
                 ", name='" + name + '\'' +
                 ", level=" + level +
                 ", total=" + total +
+                ", avatarLink='" + avatarLink + '\'' +
                 '}';
     }
 }

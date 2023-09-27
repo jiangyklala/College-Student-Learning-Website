@@ -11,6 +11,8 @@ public class CategorySaveReq {
 
     private Integer type;
 
+    private String avatarLink;
+
     public Integer getParent() {
         return parent;
     }
@@ -21,6 +23,14 @@ public class CategorySaveReq {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public String getAvatarLink() {
+        return avatarLink;
+    }
+
+    public void setAvatarLink(String avatarLink) {
+        this.avatarLink = avatarLink;
     }
 
     public Integer getId() {
@@ -59,6 +69,7 @@ public class CategorySaveReq {
                 ", name='" + name + '\'' +
                 ", level=" + level +
                 ", type=" + type +
+                ", avatarLink='" + avatarLink + '\'' +
                 '}';
     }
 }

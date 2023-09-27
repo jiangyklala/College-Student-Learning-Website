@@ -13,6 +13,8 @@ public class Category {
 
     private Integer total;
 
+    private String avatarLink;
+
     public Integer getId() {
         return id;
     }
@@ -61,6 +63,14 @@ public class Category {
         this.total = total;
     }
 
+    public String getAvatarLink() {
+        return avatarLink;
+    }
+
+    public void setAvatarLink(String avatarLink) {
+        this.avatarLink = avatarLink;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -73,6 +83,7 @@ public class Category {
         sb.append(", level=").append(level);
         sb.append(", type=").append(type);
         sb.append(", total=").append(total);
+        sb.append(", avatarLink=").append(avatarLink);
         sb.append("]");
         return sb.toString();
     }
