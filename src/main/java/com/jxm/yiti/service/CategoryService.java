@@ -106,11 +106,14 @@ public class CategoryService {
         return CopyUtil.copyList(categorys, CategoryQueryResp.class);
     }
 
-    public List<CategoryQueryResp> selectPracticeOBSort(Integer level) {
+    public List<CategoryQueryResp> selectByTypeAndLevel(Integer type, Integer level) {
         CategoryExample categoryExample = new CategoryExample();
         CategoryExample.Criteria criteria = categoryExample.createCriteria();
+        if (type != -1) {
+            criteria.andTypeEqualTo(type);
+        }
         if (level != -1) {
-            criteria.andLevelEqualTo(level);
+            criteria.andLevelEqualTo(type);
         }
         List<Category> categorys = categoryMapper.selectByExample(categoryExample);
 

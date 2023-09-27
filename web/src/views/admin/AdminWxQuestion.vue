@@ -187,7 +187,7 @@ export default defineComponent({
 		 */
 		let categorys: any;
 		const handleQueryCategory = () => {
-			axios.get("/category/selectPracticeOBSort/-1").then((response) => {
+			axios.get("/category/selectByTypeAndLevel/-1/-1").then((response) => {
 				if (response.data.success) {  // 判断后端接口返回是否出错
 					categorys = response.data.content;
 					categoryTree.value = Tool.array2Tree(response.data.content, 0);

@@ -36,7 +36,7 @@ public class CategoryController {
     }
 
     /**
-     * 查询分类列表 type == type 的所有分类
+     * 查询分类列表某个模块的所有分类
      *
      * @param type 全部分类 == -1; 微信分类 == 1
      */
@@ -52,16 +52,17 @@ public class CategoryController {
     }
 
     /**
-     * 查询微信小程序的分类
+     * 查询所有分类中, 某个模块下的, 某个层级的所有分类
      *
+     * @param type  -1 -- 全部分类; 1 -- 微信小程序普通面试题分类; 2 -- 微信小程序大厂面经分类
      * @param level -1 -- 查全部; n -- 查某级
      */
-    @GetMapping("/selectPracticeOBSort/{level}")
+    @GetMapping("/selectByTypeAndLevel/{type}/{level}")
     @ResponseBody
-    public CommonResp selectPracticeOBSort(@PathVariable Integer level) {
+    public CommonResp selectByTypeAndLevel(@PathVariable Integer type, @PathVariable Integer level) {
         CommonResp<List<CategoryQueryResp>> resp = new CommonResp<>();
 
-        List<CategoryQueryResp> list = categoryService.selectPracticeOBSort(level);
+        List<CategoryQueryResp> list = categoryService.selectByTypeAndLevel(type, level);
 
         resp.setContent(list);
         return resp;
