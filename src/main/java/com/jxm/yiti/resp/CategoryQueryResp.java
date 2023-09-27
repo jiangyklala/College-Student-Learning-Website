@@ -13,6 +13,16 @@ public class CategoryQueryResp {
 
     private String avatarLink;
 
+    private Integer type;
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
     public Integer getParent() {
         return parent;
     }
@@ -70,6 +80,7 @@ public class CategoryQueryResp {
                 ", level=" + level +
                 ", total=" + total +
                 ", avatarLink='" + avatarLink + '\'' +
+                ", type=" + type +
                 '}';
     }
 }
