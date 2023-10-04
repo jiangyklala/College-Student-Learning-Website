@@ -113,7 +113,7 @@ public class CategoryService {
             criteria.andTypeEqualTo(type);
         }
         if (level != -1) {
-            criteria.andLevelEqualTo(type);
+            criteria.andLevelEqualTo(level);
         }
         List<Category> categorys = categoryMapper.selectByExample(categoryExample);
 

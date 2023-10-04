@@ -25,8 +25,8 @@
 			<template v-slot:bodyCell="{ column, record, index }">
 				<template v-if="column.dataIndex === 'category'">
 					<span>{{
-							getParentCategoryNameById(record.categoryId)
-					      }} / {{ getCategoryNameById(record.categoryId) }}</span>
+							getParentCategoryNameById(record.categoryId) == "" ? "" : getParentCategoryNameById(record.categoryId) + " / "
+					      }}{{ getCategoryNameById(record.categoryId) }}</span>
 				</template>
 				
 				<template v-if="column.dataIndex === 'action'">
@@ -187,7 +187,8 @@ export default defineComponent({
 				if (response.data.success) {  // 判断后端接口返回是否出错
 					categorys = response.data.content;
 					categoryTree.value = Tool.array2Tree(response.data.content, 0);
-					console.log(categoryTree.value);
+					nonChildrenDisabled();
+					// console.log(categoryTree.value);
 					
 					
 					QuestionListALlQuery({   // 下载列表的显示需要用到分类的信息, 由于 axios 是异步的, 所以必须在分类查询完成后再进行下载列表的查询显示
@@ -374,6 +375,15 @@ export default defineComponent({
 				}
 			});
 			return result;
+		}
+		
+		// 将没有子分类的一级分类设置上 disabled : true
+		const nonChildrenDisabled = () => {
+			categoryTree.value.forEach((item: any) => {
+				if (Tool.isEmpty(item.children)) {
+					item.disabled = true;
+				}
+			})
 		}
 		
 		
