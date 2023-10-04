@@ -364,63 +364,63 @@ public class WxUserInfoExample {
             return (Criteria) this;
         }
 
-        public Criteria andOther2IsNull() {
-            addCriterion("other_2 is null");
+        public Criteria andTypeIsNull() {
+            addCriterion("`type` is null");
             return (Criteria) this;
         }
 
-        public Criteria andOther2IsNotNull() {
-            addCriterion("other_2 is not null");
+        public Criteria andTypeIsNotNull() {
+            addCriterion("`type` is not null");
             return (Criteria) this;
         }
 
-        public Criteria andOther2EqualTo(Integer value) {
-            addCriterion("other_2 =", value, "other2");
+        public Criteria andTypeEqualTo(Integer value) {
+            addCriterion("`type` =", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andOther2NotEqualTo(Integer value) {
-            addCriterion("other_2 <>", value, "other2");
+        public Criteria andTypeNotEqualTo(Integer value) {
+            addCriterion("`type` <>", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andOther2GreaterThan(Integer value) {
-            addCriterion("other_2 >", value, "other2");
+        public Criteria andTypeGreaterThan(Integer value) {
+            addCriterion("`type` >", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andOther2GreaterThanOrEqualTo(Integer value) {
-            addCriterion("other_2 >=", value, "other2");
+        public Criteria andTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("`type` >=", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andOther2LessThan(Integer value) {
-            addCriterion("other_2 <", value, "other2");
+        public Criteria andTypeLessThan(Integer value) {
+            addCriterion("`type` <", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andOther2LessThanOrEqualTo(Integer value) {
-            addCriterion("other_2 <=", value, "other2");
+        public Criteria andTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("`type` <=", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andOther2In(List<Integer> values) {
-            addCriterion("other_2 in", values, "other2");
+        public Criteria andTypeIn(List<Integer> values) {
+            addCriterion("`type` in", values, "type");
             return (Criteria) this;
         }
 
-        public Criteria andOther2NotIn(List<Integer> values) {
-            addCriterion("other_2 not in", values, "other2");
+        public Criteria andTypeNotIn(List<Integer> values) {
+            addCriterion("`type` not in", values, "type");
             return (Criteria) this;
         }
 
-        public Criteria andOther2Between(Integer value1, Integer value2) {
-            addCriterion("other_2 between", value1, value2, "other2");
+        public Criteria andTypeBetween(Integer value1, Integer value2) {
+            addCriterion("`type` between", value1, value2, "type");
             return (Criteria) this;
         }
 
-        public Criteria andOther2NotBetween(Integer value1, Integer value2) {
-            addCriterion("other_2 not between", value1, value2, "other2");
+        public Criteria andTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("`type` not between", value1, value2, "type");
             return (Criteria) this;
         }
     }

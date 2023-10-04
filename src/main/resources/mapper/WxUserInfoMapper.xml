@@ -6,7 +6,7 @@
         <result column="open_id" jdbcType="VARCHAR" property="openId"/>
         <result column="points" jdbcType="INTEGER" property="points"/>
         <result column="other_1" jdbcType="VARCHAR" property="other1"/>
-        <result column="other_2" jdbcType="INTEGER" property="other2"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
     </resultMap>
     <sql id="Example_Where_Clause">
         <where>
@@ -70,7 +70,7 @@
     </sql>
     <sql id="Base_Column_List">
         id
-        , open_id, points, other_1, other_2
+        , open_id, points, other_1, `type`
     </sql>
     <select id="selectByExample" parameterType="com.jxm.yiti.domain.WxUserInfoExample" resultMap="BaseResultMap">
         select
@@ -105,9 +105,9 @@
     </delete>
     <insert id="insert" parameterType="com.jxm.yiti.domain.WxUserInfo">
         insert into wx_user_info (id, open_id, points,
-                                  other_1, other_2)
+                                  other_1, `type`)
         values (#{id,jdbcType=INTEGER}, #{openId,jdbcType=VARCHAR}, #{points,jdbcType=INTEGER},
-                #{other1,jdbcType=VARCHAR}, #{other2,jdbcType=INTEGER})
+                #{other1,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER})
     </insert>
     <insert id="insertSelective" parameterType="com.jxm.yiti.domain.WxUserInfo">
         insert into wx_user_info
@@ -124,8 +124,8 @@
             <if test="other1 != null">
                 other_1,
             </if>
-            <if test="other2 != null">
-                other_2,
+            <if test="type != null">
+                `type`,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -141,8 +141,8 @@
             <if test="other1 != null">
                 #{other1,jdbcType=VARCHAR},
             </if>
-            <if test="other2 != null">
-                #{other2,jdbcType=INTEGER},
+            <if test="type != null">
+                #{type,jdbcType=INTEGER},
             </if>
         </trim>
     </insert>
@@ -167,8 +167,8 @@
             <if test="record.other1 != null">
                 other_1 = #{record.other1,jdbcType=VARCHAR},
             </if>
-            <if test="record.other2 != null">
-                other_2 = #{record.other2,jdbcType=INTEGER},
+            <if test="record.type != null">
+                `type` = #{record.type,jdbcType=INTEGER},
             </if>
         </set>
         <if test="_parameter != null">
@@ -181,7 +181,7 @@
         open_id = #{record.openId,jdbcType=VARCHAR},
         points = #{record.points,jdbcType=INTEGER},
         other_1 = #{record.other1,jdbcType=VARCHAR},
-        other_2 = #{record.other2,jdbcType=INTEGER}
+        `type` = #{record.type,jdbcType=INTEGER}
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
         </if>
@@ -198,8 +198,8 @@
             <if test="other1 != null">
                 other_1 = #{other1,jdbcType=VARCHAR},
             </if>
-            <if test="other2 != null">
-                other_2 = #{other2,jdbcType=INTEGER},
+            <if test="type != null">
+                `type` = #{type,jdbcType=INTEGER},
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
@@ -209,7 +209,7 @@
         set open_id = #{openId,jdbcType=VARCHAR},
             points  = #{points,jdbcType=INTEGER},
             other_1 = #{other1,jdbcType=VARCHAR},
-            other_2 = #{other2,jdbcType=INTEGER}
+            `type`  = #{type,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
     </update>
 </mapper>

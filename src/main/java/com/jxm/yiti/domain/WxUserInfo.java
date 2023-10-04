@@ -9,7 +9,7 @@ public class WxUserInfo {
 
     private String other1;
 
-    private Integer other2;
+    private Integer type;
 
     public Integer getId() {
         return id;
@@ -43,12 +43,12 @@ public class WxUserInfo {
         this.other1 = other1;
     }
 
-    public Integer getOther2() {
-        return other2;
+    public Integer getType() {
+        return type;
     }
 
-    public void setOther2(Integer other2) {
-        this.other2 = other2;
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     @Override
@@ -61,7 +61,7 @@ public class WxUserInfo {
         sb.append(", openId=").append(openId);
         sb.append(", points=").append(points);
         sb.append(", other1=").append(other1);
-        sb.append(", other2=").append(other2);
+        sb.append(", type=").append(type);
         sb.append("]");
         return sb.toString();
     }

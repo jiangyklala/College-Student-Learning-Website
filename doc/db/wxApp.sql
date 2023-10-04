@@ -12,6 +12,9 @@ CREATE TABLE `wx_user_info`
 ) ENGINE = innodb
   DEFAULT CHARSET = utf8mb4 COMMENT = '微信用户记录表';
 
+ALTER TABLE wx_user_info
+    CHANGE other_2 type int DEFAULT 0 NOT NULL COMMENT '用户类型';
+
 # 检查某个列的某个字段是否存在的高性能写法
 SELECT 1
 FROM wx_user_info
