@@ -163,7 +163,7 @@ export default defineComponent({
 				
 				if (response.data.success) {  // 判断后端接口返回是否出错
 					loading.value = false;
-					listData.value = response.data.content.list.reverse();  // 显示内容(反转)
+					listData.value = response.data.content.list;  // 显示内容(反转)
 					// console.log(listData.value[0]);
 					// listData.value[0].content = JSON.parse(listData.value[0].content);
 					// console.log(listData.value[0]);

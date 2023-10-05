@@ -44,11 +44,16 @@ public class WxQuestionService {
     @Resource
     SnowFlakeIdWorker snowFlakeIdWorker;
 
-    public PageResp<WxQuestionQueryResp> selectAll(WxQuestionQueryReq req) {
+    public PageResp<WxQuestionQueryResp> selectAll(WxQuestionQueryReq req, boolean ifDescSort) {
         WxQuestionExample wxQuestionExample = new WxQuestionExample();
         WxQuestionExample.Criteria criteria = wxQuestionExample.createCriteria();
-        if (!ObjectUtils.isEmpty(req.getTitle())) {                                      // 动态 SQL
-            criteria.andTitleLike("%" + req.getTitle() + "%");                            // 模糊匹配条件
+        // 是否按 id 倒序
+        if (ifDescSort) {
+            wxQuestionExample.setOrderByClause("id desc");
+        }
+        // 是否查询某个题目
+        if (!ObjectUtils.isEmpty(req.getTitle())) {
+            criteria.andTitleLike("%" + req.getTitle() + "%");
         }
 
         PageHelper.startPage(req.getPage(), req.getSize(), true);

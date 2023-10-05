@@ -31,7 +31,7 @@ public class WxQuestionController {
     public CommonResp<PageResp<WxQuestionQueryResp>> list(@Valid WxQuestionQueryReq req) {
         CommonResp<PageResp<WxQuestionQueryResp>> resp = new CommonResp<>();
 
-        PageResp<WxQuestionQueryResp> list = wxQuestionService.selectAll(req);
+        PageResp<WxQuestionQueryResp> list = wxQuestionService.selectAll(req, false);
 
         resp.setContent(list);
         return resp;
@@ -47,7 +47,7 @@ public class WxQuestionController {
     public CommonResp<PageResp<WxQuestionQueryResp>> selectAllAdmin(@Valid WxQuestionQueryReq req) {
         CommonResp<PageResp<WxQuestionQueryResp>> resp = new CommonResp<>();
 
-        PageResp<WxQuestionQueryResp> list = wxQuestionService.selectAll(req);
+        PageResp<WxQuestionQueryResp> list = wxQuestionService.selectAll(req, true);
 
         resp.setContent(list);
         return resp;
