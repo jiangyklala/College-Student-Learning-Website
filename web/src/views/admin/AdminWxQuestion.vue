@@ -227,7 +227,7 @@ export default defineComponent({
 			
 			// 编辑时表单的分类显示需要再从 question 中提取出来
 			let categoryId = question.value.categoryId;
-			categoryIds.value = [getParentCategoryNameById(categoryId), getCategoryNameById(categoryId)];
+			categoryIds.value = [getParentCategoryIdById(categoryId), categoryId];
 			
 			// 查找题目对应的答案
 			axios.get("/wxQuestion/selectAnswer", {
@@ -372,6 +372,20 @@ export default defineComponent({
 				if (item.id === cid) {
 					// 这里直接 return item.name 不起作用
 					result = getCategoryNameById(item.parent);
+				}
+			});
+			return result;
+		}
+		
+		/**
+		 * 根据目录id返回具体的父分类id
+		 */
+		const getParentCategoryIdById = (cid: number) => {
+			let result = "";
+			categorys.forEach((item: any) => {
+				if (item.id === cid) {
+					// 这里直接 return item.name 不起作用
+					result = item.parent;
 				}
 			});
 			return result;
