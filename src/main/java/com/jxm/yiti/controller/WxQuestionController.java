@@ -1,5 +1,7 @@
 package com.jxm.yiti.controller;
 
+import com.jxm.yiti.annotation.AccessLimit;
+import com.jxm.yiti.enums.WxUserConst;
 import com.jxm.yiti.req.WxQuestionDelReq;
 import com.jxm.yiti.req.WxQuestionQueryReq;
 import com.jxm.yiti.req.WxQuestionSaveReq;
@@ -68,8 +70,27 @@ public class WxQuestionController {
     }
 
     /**
+     * 根据某个题目的答案 id 查该题的答案 Admin
+     */
+    @GetMapping("/selectAnswerAdmin")
+    @ResponseBody
+    public CommonResp selectAnswerAdmin(@RequestParam("answerId") Long answerId) {
+        CommonResp<String> resp = new CommonResp<>();
+
+        String answer = wxQuestionService.selectAnswer(answerId);
+        if (answer == null) {
+            resp.setSuccess(false);
+            resp.setMessage("查找问题答案失败");
+        }
+
+        resp.setContent(answer);
+        return resp;
+    }
+
+    /**
      * 根据某个题目的答案 id 查该题的答案
      */
+    @AccessLimit(type = {WxUserConst.NORMAL_VIP, WxUserConst.SPECIAL_VIP, WxUserConst.SUPER})
     @GetMapping("/selectAnswer")
     @ResponseBody
     public CommonResp selectAnswer(@RequestParam("answerId") Long answerId) {

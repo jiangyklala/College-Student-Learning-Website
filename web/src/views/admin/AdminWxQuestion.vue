@@ -230,7 +230,7 @@ export default defineComponent({
 			categoryIds.value = [getParentCategoryIdById(categoryId), categoryId];
 			
 			// 查找题目对应的答案
-			axios.get("/wxQuestion/selectAnswer", {
+			axios.get("/wxQuestion/selectAnswerAdmin", {
 				params: {
 					answerId: record.answerId,
 				}

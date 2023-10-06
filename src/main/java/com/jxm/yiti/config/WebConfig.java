@@ -22,6 +22,6 @@ public class WebConfig implements WebMvcConfigurer {
                         "/wxQuestion/save",
                         "/wxQuestion/selectAllAdmin",
                         "/wxQuestion/delete/**",
-                        "/wxQuestion/selectAnswer");
+                        "/wxQuestion/selectAnswerAdmin");
     }
 }

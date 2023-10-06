@@ -105,6 +105,7 @@ public class WxUserService {
             // 设置 auth_token 加密信息
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("user_id", wxUserInfo.getId());
+            jsonObject.put("user_type", wxUserInfo.getType());  // 用于直接在拦截器中拦截部分请求
             String encryptUserInfo = jsonObject.toString();
             // 生成 auth_token
             wxLoginResp.setAuthToken(TokenUtil.wxAppAuthToken(encryptUserInfo, loginSecret, Duration.ofDays(30)));
