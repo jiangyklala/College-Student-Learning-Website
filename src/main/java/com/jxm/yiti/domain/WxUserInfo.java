@@ -7,7 +7,7 @@ public class WxUserInfo {
 
     private Integer points;
 
-    private String other1;
+    private String name;
 
     private Integer type;
 
@@ -35,12 +35,12 @@ public class WxUserInfo {
         this.points = points;
     }
 
-    public String getOther1() {
-        return other1;
+    public String getName() {
+        return name;
     }
 
-    public void setOther1(String other1) {
-        this.other1 = other1;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Integer getType() {
@@ -60,7 +60,7 @@ public class WxUserInfo {
         sb.append(", id=").append(id);
         sb.append(", openId=").append(openId);
         sb.append(", points=").append(points);
-        sb.append(", other1=").append(other1);
+        sb.append(", name=").append(name);
         sb.append(", type=").append(type);
         sb.append("]");
         return sb.toString();

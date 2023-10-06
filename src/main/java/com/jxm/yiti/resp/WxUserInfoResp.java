@@ -4,7 +4,7 @@ public class WxUserInfoResp {
 
     private Integer points;
 
-    private String other1;
+    private String name;
 
     private Integer type;
 
@@ -16,12 +16,12 @@ public class WxUserInfoResp {
         this.points = points;
     }
 
-    public String getOther1() {
-        return other1;
+    public String getName() {
+        return name;
     }
 
-    public void setOther1(String other1) {
-        this.other1 = other1;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Integer getType() {
@@ -39,7 +39,7 @@ public class WxUserInfoResp {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", points=").append(points);
-        sb.append(", other1=").append(other1);
+        sb.append(", other1=").append(name);
         sb.append(", other2=").append(type);
         sb.append("]");
         return sb.toString();

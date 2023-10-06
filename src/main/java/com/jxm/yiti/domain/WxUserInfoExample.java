@@ -294,73 +294,73 @@ public class WxUserInfoExample {
             return (Criteria) this;
         }
 
-        public Criteria andOther1IsNull() {
-            addCriterion("other_1 is null");
+        public Criteria andNameIsNull() {
+            addCriterion("`name` is null");
             return (Criteria) this;
         }
 
-        public Criteria andOther1IsNotNull() {
-            addCriterion("other_1 is not null");
+        public Criteria andNameIsNotNull() {
+            addCriterion("`name` is not null");
             return (Criteria) this;
         }
 
-        public Criteria andOther1EqualTo(String value) {
-            addCriterion("other_1 =", value, "other1");
+        public Criteria andNameEqualTo(String value) {
+            addCriterion("`name` =", value, "name");
             return (Criteria) this;
         }
 
-        public Criteria andOther1NotEqualTo(String value) {
-            addCriterion("other_1 <>", value, "other1");
+        public Criteria andNameNotEqualTo(String value) {
+            addCriterion("`name` <>", value, "name");
             return (Criteria) this;
         }
 
-        public Criteria andOther1GreaterThan(String value) {
-            addCriterion("other_1 >", value, "other1");
+        public Criteria andNameGreaterThan(String value) {
+            addCriterion("`name` >", value, "name");
             return (Criteria) this;
         }
 
-        public Criteria andOther1GreaterThanOrEqualTo(String value) {
-            addCriterion("other_1 >=", value, "other1");
+        public Criteria andNameGreaterThanOrEqualTo(String value) {
+            addCriterion("`name` >=", value, "name");
             return (Criteria) this;
         }
 
-        public Criteria andOther1LessThan(String value) {
-            addCriterion("other_1 <", value, "other1");
+        public Criteria andNameLessThan(String value) {
+            addCriterion("`name` <", value, "name");
             return (Criteria) this;
         }
 
-        public Criteria andOther1LessThanOrEqualTo(String value) {
-            addCriterion("other_1 <=", value, "other1");
+        public Criteria andNameLessThanOrEqualTo(String value) {
+            addCriterion("`name` <=", value, "name");
             return (Criteria) this;
         }
 
-        public Criteria andOther1Like(String value) {
-            addCriterion("other_1 like", value, "other1");
+        public Criteria andNameLike(String value) {
+            addCriterion("`name` like", value, "name");
             return (Criteria) this;
         }
 
-        public Criteria andOther1NotLike(String value) {
-            addCriterion("other_1 not like", value, "other1");
+        public Criteria andNameNotLike(String value) {
+            addCriterion("`name` not like", value, "name");
             return (Criteria) this;
         }
 
-        public Criteria andOther1In(List<String> values) {
-            addCriterion("other_1 in", values, "other1");
+        public Criteria andNameIn(List<String> values) {
+            addCriterion("`name` in", values, "name");
             return (Criteria) this;
         }
 
-        public Criteria andOther1NotIn(List<String> values) {
-            addCriterion("other_1 not in", values, "other1");
+        public Criteria andNameNotIn(List<String> values) {
+            addCriterion("`name` not in", values, "name");
             return (Criteria) this;
         }
 
-        public Criteria andOther1Between(String value1, String value2) {
-            addCriterion("other_1 between", value1, value2, "other1");
+        public Criteria andNameBetween(String value1, String value2) {
+            addCriterion("`name` between", value1, value2, "name");
             return (Criteria) this;
         }
 
-        public Criteria andOther1NotBetween(String value1, String value2) {
-            addCriterion("other_1 not between", value1, value2, "other1");
+        public Criteria andNameNotBetween(String value1, String value2) {
+            addCriterion("`name` not between", value1, value2, "name");
             return (Criteria) this;
         }
 
