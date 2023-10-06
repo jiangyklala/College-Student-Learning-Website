@@ -9,10 +9,12 @@ import com.jxm.yiti.mapper.WxUserInfoMapper;
 import com.jxm.yiti.mapper.cust.QuestionUserInfoMapperCust;
 import com.jxm.yiti.mapper.cust.WxUserInfoMapperCust;
 import com.jxm.yiti.req.PaymentReq;
+import com.jxm.yiti.req.WxOnePaymentReq;
 import com.jxm.yiti.resp.CommonResp2;
 import com.jxm.yiti.resp.WxLoginResp;
 import com.jxm.yiti.resp.WxUserInfoResp;
 import com.jxm.yiti.utils.CopyUtil;
+import com.jxm.yiti.utils.SnowFlakeIdWorker;
 import com.jxm.yiti.utils.TokenUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -93,7 +95,8 @@ public class WxUserService {
                 // 用户未注册, 进行注册步骤
                 WxUserInfo newUser = new WxUserInfo();
                 newUser.setOpenId(open_id);
-                newUser.setPoints(100);  // 初始 100 积分
+                newUser.setPoints(500);  // 初始 100 积分
+                newUser.setName("微信用户" + new SnowFlakeIdWorker().nextId());
                 wxUserInfoMapper.insertSelective(newUser);
 
                 wxUserInfo = wxUserInfoMapperCust.selectAllByOpenId(open_id);
@@ -187,5 +190,25 @@ public class WxUserService {
         questionUserInfo.setMarkedIdSet(JSON.toJSONBytes(markedIdSet));
 
         questionUserInfoMapper.insert(questionUserInfo);
+    }
+
+    public void payOneQuestion(CommonResp2 commonResp, WxOnePaymentReq wxOnePaymentReq, Integer wxUserId) {
+        try {
+            // 验证积分
+            Integer userPoints = wxUserInfoMapperCust.selectPointsById(wxUserId);
+            if (userPoints < wxOnePaymentReq.getPoints()) {
+                commonResp.setCode(410);
+                commonResp.setMessage("积分不足");
+                return;
+            }
+
+            // 扣除积分
+            wxUserInfoMapperCust.payWithPoints(wxUserId, wxOnePaymentReq.getPoints());
+        } catch (RuntimeException e) {
+            log.error("积分扣除失败", e);
+            commonResp.setSuccess(false);
+            commonResp.setCode(420);
+            commonResp.setMessage("程序出错!");
+        }
     }
 }

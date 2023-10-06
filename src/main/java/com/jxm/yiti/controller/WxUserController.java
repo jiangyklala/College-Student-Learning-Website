@@ -3,6 +3,7 @@ package com.jxm.yiti.controller;
 import com.jxm.yiti.interceptor.WxAppInterceptor;
 import com.jxm.yiti.req.PaymentReq;
 import com.jxm.yiti.req.WxLoginReq;
+import com.jxm.yiti.req.WxOnePaymentReq;
 import com.jxm.yiti.resp.CommonResp2;
 import com.jxm.yiti.resp.WxLoginResp;
 import com.jxm.yiti.resp.WxUserInfoResp;
@@ -43,6 +44,18 @@ public class WxUserController {
     public CommonResp2 payForQuestion(@RequestBody PaymentReq paymentReq) {
         CommonResp2 commonResp = new CommonResp2<>();
         wxUserService.payForQuestion(commonResp, paymentReq, WxAppInterceptor.getWxUserId());
+
+        return commonResp;
+    }
+
+    /**
+     * 购买某道面试题, 扣除 10 积分
+     */
+    @PostMapping("/payOneQuestion")
+    @ResponseBody
+    public CommonResp2 payOneQuestion(@RequestBody WxOnePaymentReq wxOnePaymentReq) {
+        CommonResp2 commonResp = new CommonResp2<>();
+        wxUserService.payOneQuestion(commonResp, wxOnePaymentReq, WxAppInterceptor.getWxUserId());
 
         return commonResp;
     }

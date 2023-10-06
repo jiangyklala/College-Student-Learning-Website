@@ -86,6 +86,10 @@ public class WxAppInterceptor implements HandlerInterceptor {
      * 是否没有权限
      */
     private boolean ifNoAccess(HttpServletRequest request, HttpServletResponse response, Object handler) {
+//        log.info(handler.toString());
+//        if (!(handler instanceof HandlerMethod)) {
+//            return false;
+//        }
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         Method method = handlerMethod.getMethod();
 
