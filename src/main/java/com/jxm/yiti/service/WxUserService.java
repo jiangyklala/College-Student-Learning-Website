@@ -4,6 +4,7 @@ import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.jxm.yiti.domain.QuestionUserInfo;
 import com.jxm.yiti.domain.WxUserInfo;
+import com.jxm.yiti.enums.WxUserConst;
 import com.jxm.yiti.mapper.QuestionUserInfoMapper;
 import com.jxm.yiti.mapper.WxUserInfoMapper;
 import com.jxm.yiti.mapper.cust.QuestionUserInfoMapperCust;
@@ -14,6 +15,7 @@ import com.jxm.yiti.resp.CommonResp2;
 import com.jxm.yiti.resp.WxLoginResp;
 import com.jxm.yiti.resp.WxUserInfoResp;
 import com.jxm.yiti.utils.CopyUtil;
+import com.jxm.yiti.utils.InviteCodeGenerate;
 import com.jxm.yiti.utils.SnowFlakeIdWorker;
 import com.jxm.yiti.utils.TokenUtil;
 import jakarta.annotation.Resource;
@@ -26,11 +28,13 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import redis.clients.jedis.Jedis;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -210,5 +214,55 @@ public class WxUserService {
             commonResp.setCode(420);
             commonResp.setMessage("程序出错!");
         }
+    }
+
+    public ArrayList<String> getNVCDKeyWithNumAndTime(Integer option, Integer num, Integer time) {
+        switch (option) {
+            case 1 -> {
+                return getCodeWithNumAndTime("yt:wa:cd:nv:", num, time);
+            }
+            case 2 -> {
+                return getCodeWithNumAndTime("yt:wa:cd:sv:", num, time);
+            }
+        }
+
+        return null;
+    }
+
+    public ArrayList<String> getCodeWithNumAndTime(String keyName, Integer num, Integer time) {
+        ArrayList<String> codes = new ArrayList<>(num);
+        try (Jedis jedis = UserService.jedisPool.getResource()) {
+            for (int i = 0; i < num; ++i) {
+                String code = InviteCodeGenerate.next();
+                jedis.setex(keyName + code, time * 60, "");   // yiti:wxapp:code:normal_vip
+
+                codes.add(code);
+            }
+        }
+        return codes;
+    }
+
+    public void isCDKeyValid(CommonResp2 resp, String cdKey, Integer wxUserId) {
+        try (Jedis jedis = UserService.jedisPool.getResource()) {
+            log.info("yt:wa:cd:nv:" + cdKey);
+            if (jedis.exists("yt:wa:cd:nv:" + cdKey)) {
+                jedis.del("yt:wa:cd:nv:" + cdKey);
+                wxUserInfoMapperCust.switchUserTypeByCDKey(wxUserId, WxUserConst.NORMAL_VIP.getType());
+                return;
+            }
+
+            if (jedis.exists("yt:wa:cd:sv:" + cdKey)) {
+                jedis.del("yt:wa:cd:sv:" + cdKey);
+                wxUserInfoMapperCust.switchUserTypeByCDKey(wxUserId, WxUserConst.SPECIAL_VIP.getType());
+                return;
+            }
+        } catch (RuntimeException e) {
+            resp.setCode(420);
+            resp.setMessage("兑换失败!");
+            return;
+        }
+
+        resp.setSuccess(false);
+        resp.setMessage("兑换码不存在!");
     }
 }

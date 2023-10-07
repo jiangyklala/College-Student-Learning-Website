@@ -9,4 +9,6 @@ public interface WxUserInfoMapperCust {
     Integer selectPointsById(@Param("userId") Integer userId);
 
     Integer payWithPoints(@Param("userId") Integer userId, @Param("points") Integer points);
+
+    Integer switchUserTypeByCDKey(@Param("userId") Integer userId, @Param("type") Integer type);
 }

@@ -1,6 +1,7 @@
 package com.jxm.yiti.controller;
 
 import com.jxm.yiti.interceptor.WxAppInterceptor;
+import com.jxm.yiti.req.CDKeyReq;
 import com.jxm.yiti.req.PaymentReq;
 import com.jxm.yiti.req.WxLoginReq;
 import com.jxm.yiti.req.WxOnePaymentReq;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/wxUser")
@@ -73,14 +75,32 @@ public class WxUserController {
         return commonResp;
     }
 
-    @GetMapping("/test")
+    /**
+     * 生成升级为普通会员/训练营会员的激活码
+     *
+     * @param option 1 -- 升级为普通会员, 2 -- 升级为训练营会员
+     * @param num    激活码的数量
+     * @param time   激活码的持续时间(分钟),
+     * @return 激活码列表
+     * @throws IOException IOException
+     */
+    @GetMapping("/getNSVCDKey/{option}/{num}/{time}")
     @ResponseBody
-    public String test() {
-
-        System.out.println("lala");
-
-        return "";
+    public String getNVCDKeyWithNumAndTime(@PathVariable Integer option, @PathVariable Integer num, @PathVariable Integer time) throws IOException {
+        ArrayList<String> inviteCode = wxUserService.getNVCDKeyWithNumAndTime(option, num, time);
+        return inviteCode.toString();
     }
 
+    /**
+     * 判断兑换码是否有效
+     */
+    @PostMapping("/isCDKeyValid")
+    @ResponseBody
+    public CommonResp2 isCDKeyValid(@RequestBody CDKeyReq cdKeyReq) {
+        CommonResp2 resp = new CommonResp2();
+
+        wxUserService.isCDKeyValid(resp, cdKeyReq.getCdKey(), WxAppInterceptor.getWxUserId());
+        return resp;
+    }
 
 }

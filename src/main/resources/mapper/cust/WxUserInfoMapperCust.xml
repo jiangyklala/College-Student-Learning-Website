@@ -27,4 +27,9 @@
         SET points = points - #{points}
         WHERE id = #{userId};
     </update>
+    <update id="switchUserTypeByCDKey" parameterType="java.lang.Integer">
+        UPDATE wx_user_info
+        SET type = #{type}
+        WHERE id = #{userId};
+    </update>
 </mapper>
