@@ -265,4 +265,18 @@ public class WxUserService {
         resp.setSuccess(false);
         resp.setMessage("兑换码不存在!");
     }
+
+    public String switchUserType(String name, Integer option) {
+        if (option >= 0 && option <= 3) {
+            try {
+                wxUserInfoMapperCust.switchUserTypeByName(name, option);
+            } catch (RuntimeException e) {
+                return "数据库错误!";
+            }
+        } else {
+            return "option 参数错误";
+        }
+
+        return "设置成功";
+    }
 }

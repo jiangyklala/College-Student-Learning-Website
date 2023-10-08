@@ -32,4 +32,9 @@
         SET type = #{type}
         WHERE id = #{userId};
     </update>
+    <update id="switchUserTypeByName">
+        UPDATE wx_user_info
+        SET type = #{type}
+        WHERE name = #{name};
+    </update>
 </mapper>

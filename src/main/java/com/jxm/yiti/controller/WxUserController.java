@@ -92,6 +92,18 @@ public class WxUserController {
     }
 
     /**
+     * 切换小程序用户的用户类型
+     *
+     * @param name   用户名
+     * @param option 0 -- 普通用户, 1 -- 普通会员, 2 -- 训练营会员, 3 -- 超级会员
+     */
+    @GetMapping("/switchUserType/{name}/{option}")
+    @ResponseBody
+    public String switchUserType(@PathVariable String name, @PathVariable Integer option) {
+        return wxUserService.switchUserType(name, option);
+    }
+
+    /**
      * 判断兑换码是否有效
      */
     @PostMapping("/isCDKeyValid")
