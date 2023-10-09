@@ -109,13 +109,8 @@ public class WxUserService {
                 initQuestionUserInfo(wxUserInfo.getId());
             }
 
-            // 设置 auth_token 加密信息
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("user_id", wxUserInfo.getId());
-            jsonObject.put("user_type", wxUserInfo.getType());  // 用于直接在拦截器中拦截部分请求
-            String encryptUserInfo = jsonObject.toString();
             // 生成 auth_token
-            wxLoginResp.setAuthToken(TokenUtil.wxAppAuthToken(encryptUserInfo, loginSecret, Duration.ofDays(30)));
+            wxLoginResp.setAuthToken(generateAuthToken(wxUserInfo.getId(), wxUserInfo.getType(), Duration.ofDays(30)));
             // 设置返回的用户信息
             wxLoginResp.setWxUserInfoResp(CopyUtil.copy(wxUserInfo, WxUserInfoResp.class));
 
@@ -131,6 +126,18 @@ public class WxUserService {
         commonResp.setMessage("登录成功");
 //        GenerateTokenUtil.decryptToken(wxLoginResp.getAuthToken(), loginSecret);
 //        GenerateTokenUtil.checkIfExpired(wxLoginResp.getAuthToken(), loginSecret);
+    }
+
+    /**
+     * 生成 auth_token
+     */
+    private String generateAuthToken(Integer userId, Integer userType, Duration expired) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("user_id", userId);
+        jsonObject.put("user_type", userType);  // 用于直接在拦截器中拦截部分请求
+        String encryptUserInfo = jsonObject.toString();
+
+        return TokenUtil.wxAppAuthToken(encryptUserInfo, loginSecret, expired);
     }
 
     public void payForQuestion(CommonResp2 commonResp, PaymentReq paymentReq, Integer wxUserId) {
@@ -242,18 +249,22 @@ public class WxUserService {
         return codes;
     }
 
-    public void isCDKeyValid(CommonResp2 resp, String cdKey, Integer wxUserId) {
+    public void isCDKeyValid(CommonResp2<String> resp, String cdKey, Integer wxUserId) {
         try (Jedis jedis = UserService.jedisPool.getResource()) {
             log.info("yt:wa:cd:nv:" + cdKey);
             if (jedis.exists("yt:wa:cd:nv:" + cdKey)) {
                 jedis.del("yt:wa:cd:nv:" + cdKey);
+
+                // 切换用户类型后, 需要重新签发 token
                 wxUserInfoMapperCust.switchUserTypeByCDKey(wxUserId, WxUserConst.NORMAL_VIP.getType());
+                resp.setContent(generateAuthToken(wxUserId, WxUserConst.NORMAL_VIP.getType(), Duration.ofDays(30)));
                 return;
             }
 
             if (jedis.exists("yt:wa:cd:sv:" + cdKey)) {
                 jedis.del("yt:wa:cd:sv:" + cdKey);
                 wxUserInfoMapperCust.switchUserTypeByCDKey(wxUserId, WxUserConst.SPECIAL_VIP.getType());
+                resp.setContent(generateAuthToken(wxUserId, WxUserConst.SPECIAL_VIP.getType(), Duration.ofDays(30)));
                 return;
             }
         } catch (RuntimeException e) {

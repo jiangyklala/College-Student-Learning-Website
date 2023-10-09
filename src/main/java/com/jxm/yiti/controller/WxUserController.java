@@ -104,12 +104,12 @@ public class WxUserController {
     }
 
     /**
-     * 判断兑换码是否有效
+     * 判断兑换码是否有效, 并重新生成 auth_token
      */
     @PostMapping("/isCDKeyValid")
     @ResponseBody
-    public CommonResp2 isCDKeyValid(@RequestBody CDKeyReq cdKeyReq) {
-        CommonResp2 resp = new CommonResp2();
+    public CommonResp2<String> isCDKeyValid(@RequestBody CDKeyReq cdKeyReq) {
+        CommonResp2<String> resp = new CommonResp2<>();
 
         wxUserService.isCDKeyValid(resp, cdKeyReq.getCdKey(), WxAppInterceptor.getWxUserId());
         return resp;
