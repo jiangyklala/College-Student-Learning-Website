@@ -1,20 +1,14 @@
 package com.jxm.yiti.service;
 
-import com.jxm.yiti.domain.EmailActive;
 import com.jxm.yiti.domain.MailObject;
 import com.jxm.yiti.mapper.EmailActiveMapper;
 import jakarta.annotation.Resource;
-import jakarta.mail.internet.AddressException;
-import jakarta.mail.internet.InternetAddress;
-import jakarta.mail.internet.MimeUtility;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 @Service
@@ -85,6 +79,7 @@ public class MailService {
     public boolean simpleSend(String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);                            // 设置收件人邮箱
+        message.setFrom("GPTalk<13837774652@163.com>");
         message.setSubject(subject);                  // 设置邮件主题
         message.setText(text);                        // 设置邮件文本内容
         message.setSentDate(new Date());              // 设置邮件发送时间

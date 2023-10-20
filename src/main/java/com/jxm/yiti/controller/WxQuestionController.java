@@ -3,6 +3,7 @@ package com.jxm.yiti.controller;
 import com.jxm.yiti.annotation.AccessLimit;
 import com.jxm.yiti.enums.WxUserConst;
 import com.jxm.yiti.req.WxQuestionDelReq;
+import com.jxm.yiti.req.WxQuestionFeedbackReq;
 import com.jxm.yiti.req.WxQuestionQueryReq;
 import com.jxm.yiti.req.WxQuestionSaveReq;
 import com.jxm.yiti.resp.CommonResp;
@@ -21,7 +22,6 @@ public class WxQuestionController {
 
     @Resource
     WxQuestionService wxQuestionService;
-
 
     /**
      * 查询题库中的所有题目, 拦截器中拦截
@@ -138,6 +138,22 @@ public class WxQuestionController {
         CommonResp2 resp = new CommonResp2();
 
         wxQuestionService.delete(resp, req);
+
+        return resp;
+    }
+
+
+    /**
+     * 新增或者更新一个题目
+     *
+     * @param req 保存参数
+     */
+    @PostMapping("/feedback")
+    @ResponseBody
+    public CommonResp feedback(@RequestBody @Valid WxQuestionFeedbackReq req) {  // 以 json 方式提交
+        CommonResp2 resp = new CommonResp2();
+
+        wxQuestionService.feedback(req, resp);
 
         return resp;
     }

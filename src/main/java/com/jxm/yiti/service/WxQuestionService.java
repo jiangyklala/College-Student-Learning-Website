@@ -5,11 +5,13 @@ import com.github.pagehelper.PageInfo;
 import com.jxm.yiti.domain.WxQuestion;
 import com.jxm.yiti.domain.WxQuestionAnswer;
 import com.jxm.yiti.domain.WxQuestionExample;
+import com.jxm.yiti.interceptor.WxAppInterceptor;
 import com.jxm.yiti.mapper.QuestionUserInfoMapper;
 import com.jxm.yiti.mapper.WxQuestionAnswerMapper;
 import com.jxm.yiti.mapper.WxQuestionMapper;
 import com.jxm.yiti.mapper.cust.QuestionUserInfoMapperCust;
 import com.jxm.yiti.req.WxQuestionDelReq;
+import com.jxm.yiti.req.WxQuestionFeedbackReq;
 import com.jxm.yiti.req.WxQuestionQueryReq;
 import com.jxm.yiti.req.WxQuestionSaveReq;
 import com.jxm.yiti.resp.CommonResp2;
@@ -40,6 +42,9 @@ public class WxQuestionService {
 
     @Resource
     QuestionUserInfoMapperCust questionUserInfoMapperCust;
+
+    @Resource
+    private MailService mailService;
 
     @Resource
     SnowFlakeIdWorker snowFlakeIdWorker;
@@ -150,6 +155,20 @@ public class WxQuestionService {
         } catch (RuntimeException e) {
             resp.setCode(420);
             e.printStackTrace();
+        }
+    }
+
+    public void feedback(WxQuestionFeedbackReq req, CommonResp2 resp) {
+        log.info("wxUserId({}) send a feedback", WxAppInterceptor.getWxUserId());
+        try {
+            mailService.simpleSend("jiangykmm@gmail.com",
+                    "校招八股文小程序问题反馈",
+                    "题目名称: " + req.getQuestionTitle() + "\n\n" +
+                            "反馈内容: " + req.getFeedbackContent() + "\n\n" +
+                            "用户邮箱: " + req.getUserEmail());
+        } catch (RuntimeException e) {
+            resp.setSuccess(false);
+            resp.setCode(421);
         }
     }
 }
