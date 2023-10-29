@@ -101,3 +101,7 @@ END;
 DELIMITER ;
 
 SHOW TRIGGERS FROM yiti_dev;
+
+UPDATE wx_question
+SET points = 30
+WHERE category_id BETWEEN 5 AND 79;

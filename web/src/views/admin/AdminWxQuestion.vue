@@ -92,7 +92,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, ref} from "vue";
+import {defineComponent, onMounted, ref, watch} from "vue";
 import {message} from 'ant-design-vue';
 import axios from 'axios';
 import {Tool} from "@/utils/tool";
@@ -384,7 +384,6 @@ export default defineComponent({
 			let result = "";
 			categorys.forEach((item: any) => {
 				if (item.id === cid) {
-					// 这里直接 return item.name 不起作用
 					result = item.parent;
 				}
 			});
@@ -399,6 +398,17 @@ export default defineComponent({
 				}
 			})
 		}
+		
+		//-------------其它--------------
+		// 监听新增题目时, 题目所属模块的变化
+		watch(categoryIds, () => {
+			categorys.forEach((item: any) => {
+				if (item.id === categoryIds.value[0]) {
+					// 如果所属模块为 大厂面经, 默认需要积分改为 30
+					if (item.type === 2) question.value.points = 30;
+				}
+			});
+		});
 		
 		
 		onMounted(() => {
