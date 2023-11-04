@@ -1,5 +1,15 @@
 package com.jxm.yiti.controller;
 
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.jxm.yiti.annotation.AccessLimit;
 import com.jxm.yiti.enums.WxUserConst;
 import com.jxm.yiti.req.WxQuestionDelReq;
@@ -11,11 +21,12 @@ import com.jxm.yiti.resp.CommonResp2;
 import com.jxm.yiti.resp.PageResp;
 import com.jxm.yiti.resp.WxQuestionQueryResp;
 import com.jxm.yiti.service.WxQuestionService;
+
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 @RequestMapping("/wxQuestion")
 public class WxQuestionController {
@@ -28,6 +39,7 @@ public class WxQuestionController {
      *
      * @param req 查询参数
      */
+    @Cacheable(cacheNames = "wxQuestion/selectAll", keyGenerator = "myKeyGenerator")
     @GetMapping("/selectAll")
     @ResponseBody
     public CommonResp<PageResp<WxQuestionQueryResp>> list(@Valid WxQuestionQueryReq req) {
@@ -36,6 +48,7 @@ public class WxQuestionController {
         PageResp<WxQuestionQueryResp> list = wxQuestionService.selectAll(req, false);
 
         resp.setContent(list);
+        log.info("没有获取到缓存, 更新缓存");
         return resp;
     }
 
@@ -58,6 +71,7 @@ public class WxQuestionController {
     /**
      * 根据所属目录 id 查该目录下的所有题目列表
      */
+    @Cacheable(cacheNames = "wxQuestion/selectByCategoryId", keyGenerator = "myKeyGenerator")
     @GetMapping("/selectByCategoryId")
     @ResponseBody
     public CommonResp<PageResp<WxQuestionQueryResp>> selectByCategoryId(@Valid WxQuestionQueryReq req) {
@@ -66,6 +80,7 @@ public class WxQuestionController {
         PageResp<WxQuestionQueryResp> list = wxQuestionService.selectByCategoryId(req);
 
         resp.setContent(list);
+        log.info("没有获取到缓存, 更新缓存");
         return resp;
     }
 
@@ -90,6 +105,7 @@ public class WxQuestionController {
     /**
      * 根据某个题目的答案 id 查该题的答案
      */
+    @Cacheable(cacheNames = "wxQuestion/selectAnswer", keyGenerator = "myKeyGenerator")
     @AccessLimit(type = {WxUserConst.NORMAL_VIP, WxUserConst.SPECIAL_VIP, WxUserConst.SUPER})
     @GetMapping("/selectAnswer")
     @ResponseBody
@@ -103,6 +119,7 @@ public class WxQuestionController {
         }
 
         resp.setContent(answer);
+        log.info("没有获取到缓存, 更新缓存");
         return resp;
     }
 

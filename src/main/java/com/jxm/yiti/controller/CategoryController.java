@@ -1,17 +1,28 @@
 package com.jxm.yiti.controller;
 
+import java.util.List;
+
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.jxm.yiti.req.CategoryQueryReq;
 import com.jxm.yiti.req.CategorySaveReq;
 import com.jxm.yiti.resp.CategoryQueryResp;
 import com.jxm.yiti.resp.CommonResp;
 import com.jxm.yiti.resp.PageResp;
 import com.jxm.yiti.service.CategoryService;
+
 import jakarta.annotation.Resource;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import lombok.extern.slf4j.Slf4j;
 
-import java.util.List;
-
+@Slf4j
 @Controller
 @RequestMapping("/category")
 public class CategoryController {
@@ -57,6 +68,7 @@ public class CategoryController {
      * @param type  -1 -- 全部分类; 1 -- 微信小程序普通面试题分类; 2 -- 微信小程序大厂面经分类
      * @param level -1 -- 查全部; n -- 查某级
      */
+    @Cacheable(cacheNames = "category/selectByTypeAndLevel", keyGenerator = "myKeyGenerator")
     @GetMapping("/selectByTypeAndLevel/{type}/{level}")
     @ResponseBody
     public CommonResp selectByTypeAndLevel(@PathVariable Integer type, @PathVariable Integer level) {
@@ -65,6 +77,7 @@ public class CategoryController {
         List<CategoryQueryResp> list = categoryService.selectByTypeAndLevel(type, level);
 
         resp.setContent(list);
+        log.info("没有获取到缓存, 更新缓存");
         return resp;
     }
 
