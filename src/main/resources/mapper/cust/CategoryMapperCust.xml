@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jxm.yiti.mapper.cust.CategoryMapperCust">
+    <resultMap id="BaseResultMap" type="com.jxm.yiti.domain.Category">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="parent" jdbcType="INTEGER" property="parent"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="level" jdbcType="INTEGER" property="level"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="total" jdbcType="INTEGER" property="total"/>
+        <result column="avatar_link" jdbcType="VARCHAR" property="avatarLink"/>
+    </resultMap>
+
+    <update id="resetCount">
+        UPDATE category
+        SET total = (SELECT COUNT(*)
+                     FROM wx_question
+                     WHERE category_id = category.id);
+    </update>
+
+</mapper>

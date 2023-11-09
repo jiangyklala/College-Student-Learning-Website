@@ -90,9 +90,7 @@ public class CategoryController {
      * @return CommonResp
      */
     @Caching(evict = {
-            @CacheEvict(cacheNames = "category/selectByTypeAndLevel", key = "'selectByTypeAndLevel[[-1, -1]]'"),
-            @CacheEvict(cacheNames = "category/selectByTypeAndLevel", key = "'selectByTypeAndLevel[[2, -1]]'"),
-            @CacheEvict(cacheNames = "category/selectByTypeAndLevel", key = "'selectByTypeAndLevel[[1, -1]]'"),
+            @CacheEvict(cacheNames = "category/selectByTypeAndLevel", allEntries = true)
     })
     @PostMapping("/save")
     @ResponseBody
@@ -108,15 +106,29 @@ public class CategoryController {
     }
 
     /**
+     * 重置所有题目的 题目总数
+     */
+    @Caching(evict = {
+            @CacheEvict(cacheNames = "category/selectByTypeAndLevel", allEntries = true)
+    })
+    @GetMapping("/resetCount")
+    @ResponseBody
+    public CommonResp resetCount() {
+        CommonResp resp = new CommonResp();
+
+        categoryService.resetCount();
+
+        return resp;
+    }
+
+    /**
      * 删除某个分类, 及其所有一级子分类
      *
      * @param id 所删除下载项的 id
      * @return CommonResp
      */
     @Caching(evict = {
-            @CacheEvict(cacheNames = "category/selectByTypeAndLevel", key = "'selectByTypeAndLevel[[-1, -1]]'"),
-            @CacheEvict(cacheNames = "category/selectByTypeAndLevel", key = "'selectByTypeAndLevel[[2, -1]]'"),
-            @CacheEvict(cacheNames = "category/selectByTypeAndLevel", key = "'selectByTypeAndLevel[[1, -1]]'"),
+            @CacheEvict(cacheNames = "category/selectByTypeAndLevel", allEntries = true)
     })
     @DeleteMapping("/delete/{id}")
     @ResponseBody

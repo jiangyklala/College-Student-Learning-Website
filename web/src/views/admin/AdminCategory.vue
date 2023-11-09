@@ -2,9 +2,12 @@
   <a-layout-content class="layout-content">
     <div class="body">
       <a-space direction="horizontal" size="large">
-        <a-button type="primary" @click="addCategoryItem">
-          新增
-        </a-button>
+	      <a-button type="primary" @click="addCategoryItem">
+		      新增
+	      </a-button>
+	      <a-button type="primary" @click="resetCount">
+		      重置分类对应的题目总数
+	      </a-button>
       </a-space>
     </div>
     <a-table
@@ -163,26 +166,39 @@ export default defineComponent({
     }
 
     //-------------表格--------------
-
-    /**
-     * 新增按钮
-     * 注: 这里不需要写具体的新增逻辑, 已经在对话框的"确认"按钮的逻辑中写过了
-     */
-    const addCategoryItem = () => {
-      category.value = {};  // 清空当前的数据信息
-	    // category.value.type = 1;   // 设置为, 添加到微信小程序的分类
-      modalVisible.value = true;
-    };
-
-    /**
-     * 表格的编辑按钮
-     */
-    const buttonEdit = (record: any) => {
-      modalVisible.value = true;
-      category.value = Tool.copy(record);
-    };
-
-    /**
+	  
+	  /**
+	   * 新增按钮
+	   * 注: 这里不需要写具体的新增逻辑, 已经在对话框的"确认"按钮的逻辑中写过了
+	   */
+	  const addCategoryItem = () => {
+		  category.value = {};  // 清空当前的数据信息
+		  // category.value.type = 1;   // 设置为, 添加到微信小程序的分类
+		  modalVisible.value = true;
+	  };
+	  
+	  const resetCount = () => {
+		  axios.get("/category/resetCount").then((response) => {
+			  
+			  if (response.data.success) {
+				  // 重新加载列表
+				  categoryAllOBSortQuery();
+				  message.success("reset success!");
+			  } else {
+				  message.error(response.data.message);
+			  }
+		  });
+	  }
+	  
+	  /**
+	   * 表格的编辑按钮
+	   */
+	  const buttonEdit = (record: any) => {
+		  modalVisible.value = true;
+		  category.value = Tool.copy(record);
+	  };
+	  
+	  /**
      * 表格的删除按钮
      */
     const buttonDelete = (id: number) => {
@@ -250,11 +266,12 @@ export default defineComponent({
 	  return {
 		  loading,
 		  tableData,
-      listData,
+		  listData,
 		  columns,
 		  
 		  buttonEdit,
 		  addCategoryItem,
+		  resetCount,
 		  buttonDelete,
 		  
 		  category,

@@ -1,30 +1,38 @@
 package com.jxm.yiti.service;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.jxm.yiti.domain.Category;
-import com.jxm.yiti.domain.CategoryExample;
-import com.jxm.yiti.mapper.CategoryMapper;
-import com.jxm.yiti.req.CategoryQueryReq;
-import com.jxm.yiti.req.CategorySaveReq;
-import com.jxm.yiti.resp.CategoryQueryResp;
-import com.jxm.yiti.resp.CommonResp;
-import com.jxm.yiti.resp.PageResp;
-import com.jxm.yiti.utils.CopyUtil;
-import jakarta.annotation.Resource;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
-import java.util.List;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.jxm.yiti.domain.Category;
+import com.jxm.yiti.domain.CategoryExample;
+import com.jxm.yiti.mapper.CategoryMapper;
+import com.jxm.yiti.mapper.cust.CategoryMapperCust;
+import com.jxm.yiti.req.CategoryQueryReq;
+import com.jxm.yiti.req.CategorySaveReq;
+import com.jxm.yiti.resp.CategoryQueryResp;
+import com.jxm.yiti.resp.CommonResp;
+import com.jxm.yiti.resp.PageResp;
+import com.jxm.yiti.utils.CopyUtil;
 
+import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class CategoryService {
 
     @Resource
     private CategoryMapper categoryMapper;
+
+    @Resource
+    private CategoryMapperCust categoryMapperCust;
 
     private static final Logger LOG = LoggerFactory.getLogger(CategoryService.class);
 
@@ -118,5 +126,13 @@ public class CategoryService {
         List<Category> categorys = categoryMapper.selectByExample(categoryExample);
 
         return CopyUtil.copyList(categorys, CategoryQueryResp.class);
+    }
+
+    public void resetCount() {
+        try {
+            categoryMapperCust.resetCount();
+        } catch (RuntimeException e) {
+            log.error("reset count failed", e);
+        }
     }
 }

@@ -80,6 +80,13 @@ SET level = 0
 WHERE parent = 0;
 
 
+
+UPDATE category
+SET total = (SELECT COUNT(*)
+             FROM wx_question
+             WHERE category_id = category.id);
+
+
 # 课程目录表
 drop table if exists `course_list`;
 create table `course_list`
