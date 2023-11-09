@@ -75,6 +75,11 @@ create table `category`
 ALTER TABLE category
     ADD avatar_link varchar(100) default '' COMMENT '该分类对应的图片';
 
+UPDATE category
+SET level = 0
+WHERE parent = 0;
+
+
 # 课程目录表
 drop table if exists `course_list`;
 create table `course_list`

@@ -1,6 +1,8 @@
 package com.jxm.yiti.controller;
 
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -129,6 +131,12 @@ public class WxQuestionController {
      *
      * @param req 保存参数
      */
+    @Caching(evict = {
+            @CacheEvict(cacheNames = "wxQuestion/selectAnswer", allEntries = true),
+            @CacheEvict(cacheNames = "wxQuestion/selectAll", allEntries = true),
+            @CacheEvict(cacheNames = "wxQuestion/selectByCategoryId", allEntries = true)
+
+    })
     @PostMapping("/save")
     @ResponseBody
     public CommonResp save(@RequestBody @Valid WxQuestionSaveReq req) {  // 以 json 方式提交
@@ -149,6 +157,12 @@ public class WxQuestionController {
      * @param id 所删除题目的 id
      * @return CommonResp
      */
+    @Caching(evict = {
+            @CacheEvict(cacheNames = "wxQuestion/selectAnswer", allEntries = true),
+            @CacheEvict(cacheNames = "wxQuestion/selectAll", allEntries = true),
+            @CacheEvict(cacheNames = "wxQuestion/selectByCategoryId", allEntries = true)
+
+    })
     @DeleteMapping("/delete")
     @ResponseBody
     public CommonResp delete(@RequestBody WxQuestionDelReq req) {  // 拿到 "/delete/{id}" 里的 id
@@ -165,6 +179,12 @@ public class WxQuestionController {
      *
      * @param req 保存参数
      */
+    @Caching(evict = {
+            @CacheEvict(cacheNames = "wxQuestion/selectAnswer", allEntries = true),
+            @CacheEvict(cacheNames = "wxQuestion/selectAll", allEntries = true),
+            @CacheEvict(cacheNames = "wxQuestion/selectByCategoryId", allEntries = true)
+
+    })
     @PostMapping("/feedback")
     @ResponseBody
     public CommonResp feedback(@RequestBody @Valid WxQuestionFeedbackReq req) {  // 以 json 方式提交

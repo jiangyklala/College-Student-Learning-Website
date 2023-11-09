@@ -2,7 +2,9 @@ package com.jxm.yiti.controller;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -87,6 +89,11 @@ public class CategoryController {
      * @param req 保存参数
      * @return CommonResp
      */
+    @Caching(evict = {
+            @CacheEvict(cacheNames = "category/selectByTypeAndLevel", key = "'selectByTypeAndLevel[[-1, -1]]'"),
+            @CacheEvict(cacheNames = "category/selectByTypeAndLevel", key = "'selectByTypeAndLevel[[2, -1]]'"),
+            @CacheEvict(cacheNames = "category/selectByTypeAndLevel", key = "'selectByTypeAndLevel[[1, -1]]'"),
+    })
     @PostMapping("/save")
     @ResponseBody
     public CommonResp save(@RequestBody CategorySaveReq req) {  // 以 json 方式提交
@@ -106,6 +113,11 @@ public class CategoryController {
      * @param id 所删除下载项的 id
      * @return CommonResp
      */
+    @Caching(evict = {
+            @CacheEvict(cacheNames = "category/selectByTypeAndLevel", key = "'selectByTypeAndLevel[[-1, -1]]'"),
+            @CacheEvict(cacheNames = "category/selectByTypeAndLevel", key = "'selectByTypeAndLevel[[2, -1]]'"),
+            @CacheEvict(cacheNames = "category/selectByTypeAndLevel", key = "'selectByTypeAndLevel[[1, -1]]'"),
+    })
     @DeleteMapping("/delete/{id}")
     @ResponseBody
     public CommonResp delete(@PathVariable Integer id) {  // 拿到 "/delete/{id}" 里的 id

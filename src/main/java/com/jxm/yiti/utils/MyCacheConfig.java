@@ -12,13 +12,19 @@ import org.springframework.context.annotation.Configuration;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Configuration
 @EnableCaching
+@Slf4j
 public class MyCacheConfig {
 
     @Bean("myKeyGenerator")
     public KeyGenerator keyGenerator() {
-        return (target, method, params) -> method.getName() + "[" + Arrays.asList(params).toString() + "]";
+        return (target, method, params) -> {
+//            log.info(method.getName() + "[" + Arrays.asList(params).toString() + "]");
+            return method.getName() + "[" + Arrays.asList(params).toString() + "]";
+        };
     }
 
     @Bean
