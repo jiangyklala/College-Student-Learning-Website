@@ -247,6 +247,11 @@ ALTER TABLE user
 ALTER TABLE user
     DROP invite_balance;
 
+# UPDATE wx_user_info
+#     SET name = SUBSTRING(wx_user_info.name, 5);
+
+UPDATE wx_user_info
+SET wx_user_info.name = CONCAT('微信用户', wx_user_info.name);
 
 #
 # -- 用户表

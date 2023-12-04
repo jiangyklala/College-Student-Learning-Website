@@ -1,5 +1,23 @@
 package com.jxm.yiti.service;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
+import org.apache.hc.core5.net.URIBuilder;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.jxm.yiti.domain.QuestionUserInfo;
@@ -18,26 +36,10 @@ import com.jxm.yiti.utils.CopyUtil;
 import com.jxm.yiti.utils.InviteCodeGenerate;
 import com.jxm.yiti.utils.SnowFlakeIdWorker;
 import com.jxm.yiti.utils.TokenUtil;
+
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.hc.core5.net.URIBuilder;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
-
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 @Slf4j
 @Service
@@ -100,7 +102,7 @@ public class WxUserService {
                 WxUserInfo newUser = new WxUserInfo();
                 newUser.setOpenId(open_id);
                 newUser.setPoints(500);  // 初始 100 积分
-                newUser.setName("微信用户" + new SnowFlakeIdWorker().nextId());
+                newUser.setName(String.valueOf(new SnowFlakeIdWorker().nextId()));
                 wxUserInfoMapper.insertSelective(newUser);
 
                 wxUserInfo = wxUserInfoMapperCust.selectAllByOpenId(open_id);
