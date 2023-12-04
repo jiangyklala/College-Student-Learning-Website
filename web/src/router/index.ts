@@ -2,6 +2,7 @@ import {createRouter, createWebHistory, NavigationGuardNext, RouteLocationNormal
 import Home from "@/views/Home.vue";
 import Chatgpt from "@/views/chatgpt/Chatgpt.vue";
 import Image from "@/views/chatgpt/Image.vue";
+import OnlineTable from "@/views/others/online-table/OnlineTable.vue";
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -131,6 +132,12 @@ const routes: Array<RouteRecordRaw> = [
         name: 'DoExam',
         component: () => import('../views/online-problems/DoExam.vue')
 
+    },
+    {
+        path: '/others/online-table',
+        name: 'OnlineTable',
+        component: OnlineTable,
+        meta: {exclude: true} // 添加一个 meta 字段表示这个组件应该被排除
     }
 ]
 
