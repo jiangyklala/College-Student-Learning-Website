@@ -100,7 +100,7 @@ END;
 //
 DELIMITER ;
 
-SHOW TRIGGERS FROM yiti_dev;
+SHOW TRIGGERS FROM yiti_dev_101;
 
 UPDATE wx_question
 SET points = 30
