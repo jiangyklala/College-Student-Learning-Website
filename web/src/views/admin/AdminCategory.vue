@@ -231,10 +231,10 @@ export default defineComponent({
     const handleModalOk = () => {
 	    modalLoading.value = true;
 	    
-	    console.log(category.value.parent);
-	    console.log(category.value.parent != "0");
-	    console.log(category.value.parent != '0');
-	    console.log(category.value.parent != 0);
+	    // console.log(category.value.parent);
+	    // console.log(category.value.parent != "0");
+	    // console.log(category.value.parent != '0');
+	    // console.log(category.value.parent != 0);
 	    if (category.value.parent != 0) {
 		    category.value.level = 1;
 	    }

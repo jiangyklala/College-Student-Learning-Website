@@ -86,6 +86,7 @@ UPDATE category
 SET level = 0
 WHERE parent = 0;
 
+-- 以下两个 SQL 是重置 total 数
 UPDATE category
 SET total = (SELECT COUNT(*)
              FROM wx_question
