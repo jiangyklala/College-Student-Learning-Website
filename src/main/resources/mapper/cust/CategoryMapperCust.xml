@@ -11,11 +11,23 @@
         <result column="avatar_link" jdbcType="VARCHAR" property="avatarLink"/>
     </resultMap>
 
-    <update id="resetCount">
+    <update id="resetSecondCount">
         UPDATE category
         SET total = (SELECT COUNT(*)
                      FROM wx_question
                      WHERE category_id = category.id);
+    </update>
+
+    <update id="resetFirstCount">
+        UPDATE category as c1
+        SET total = COALESCE(
+                (SELECT SUM(c2.total)
+                 FROM (SELECT * FROM category) as c2
+                 WHERE c2.level = 1
+                   AND c2.parent = c1.id),
+                0
+            )
+        WHERE c1.level = 0;
     </update>
 
 </mapper>

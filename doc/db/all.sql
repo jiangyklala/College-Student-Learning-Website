@@ -75,16 +75,36 @@ create table `category`
 ALTER TABLE category
     ADD avatar_link varchar(100) default '' COMMENT '该分类对应的图片';
 
+# 增加 sort 列
+ALTER TABLE category
+    ADD sort int DEFAULT 0 COMMENT '排序字段, 与业务无关';
+
+ALTER TABLE category
+    DROP COLUMN sort;
+
 UPDATE category
 SET level = 0
 WHERE parent = 0;
 
-
-
 UPDATE category
 SET total = (SELECT COUNT(*)
              FROM wx_question
-             WHERE category_id = category.id);
+             WHERE category_id = category.id)
+WHERE level = 1;
+
+UPDATE category as c1
+SET total = COALESCE(
+        (SELECT SUM(c2.total)
+         FROM (SELECT * FROM category) as c2
+         WHERE c2.level = 1
+           AND c2.parent = c1.id),
+        0
+    )
+WHERE c1.level = 0;
+
+SELECT MAX(sort)
+FROM category
+WHERE level = 0;
 
 
 # 课程目录表

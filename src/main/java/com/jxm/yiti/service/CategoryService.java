@@ -130,7 +130,8 @@ public class CategoryService {
 
     public void resetCount() {
         try {
-            categoryMapperCust.resetCount();
+            categoryMapperCust.resetFirstCount();
+            categoryMapperCust.resetSecondCount();
         } catch (RuntimeException e) {
             log.error("reset count failed", e);
         }
