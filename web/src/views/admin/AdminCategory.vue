@@ -237,6 +237,8 @@ export default defineComponent({
 	    // console.log(category.value.parent != 0);
 	    if (category.value.parent != 0) {
 		    category.value.level = 1;
+	    } else {
+		    category.value.level = 0;
 	    }
 	    console.log(category.value);
 	    axios.post("/category/save", category.value).then((response) => {
