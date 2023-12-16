@@ -104,8 +104,21 @@ WHERE c1.level = 0;
 
 SELECT MAX(sort)
 FROM category
+WHERE level = 1
+  and parent = 5;
+
+-- 使 所有 level = 0 的行 sort 从 0 开始以步长为 5 递增。
+SET @row_number = -1;
+UPDATE category
+SET sort = 5 * (@row_number := @row_number + 1)
 WHERE level = 0;
 
+-- 使所有 level = 1，且 parent 相同的行，也从 0 开始以步长为 5 递增。
+UPDATE category c1
+    JOIN (SELECT id, parent, ROW_NUMBER() OVER (PARTITION BY parent ORDER BY id) - 1 as row_num
+          FROM category
+          WHERE level = 1) c2 ON c1.parent = c2.parent AND c1.id = c2.id
+SET c1.sort = c2.row_num * 5;
 
 # 课程目录表
 drop table if exists `course_list`;

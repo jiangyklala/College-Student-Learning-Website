@@ -87,6 +87,9 @@
 				    :auto-size="{ minRows: 2, maxRows: 5 }"
 		    />
 	    </a-form-item>
+	    <a-form-item label="排序字段">
+		    <a-input placeholder="新增时可以不填, 会自动累加" v-model:value="category.sort"/>
+	    </a-form-item>
 	    <a-form-item label="题目所属模块">
 		    <a-select
 				    v-model:value="category.type"
@@ -130,6 +133,11 @@ export default defineComponent({
 	    {
 		    title: '总数',
 		    dataIndex: 'total',
+		    width: '10%',
+	    },
+	    {
+		    title: 'sort',
+		    dataIndex: 'sort',
 		    width: '10%',
 	    },
 	    {

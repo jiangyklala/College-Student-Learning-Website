@@ -15,6 +15,8 @@ public class Category {
 
     private String avatarLink;
 
+    private Integer sort;
+
     public Integer getId() {
         return id;
     }
@@ -71,6 +73,14 @@ public class Category {
         this.avatarLink = avatarLink;
     }
 
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -84,6 +94,7 @@ public class Category {
         sb.append(", type=").append(type);
         sb.append(", total=").append(total);
         sb.append(", avatarLink=").append(avatarLink);
+        sb.append(", sort=").append(sort);
         sb.append("]");
         return sb.toString();
     }

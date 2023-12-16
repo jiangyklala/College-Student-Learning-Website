@@ -11,6 +11,8 @@ public class CategorySaveReq {
 
     private Integer type;
 
+    private Integer sort;
+
     private String avatarLink;
 
     public Integer getParent() {
@@ -57,6 +59,14 @@ public class CategorySaveReq {
         return level;
     }
 
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
+
     public void setLevel(Integer level) {
         this.level = level;
     }
@@ -69,6 +79,7 @@ public class CategorySaveReq {
                 ", name='" + name + '\'' +
                 ", level=" + level +
                 ", type=" + type +
+                ", sort=" + sort +
                 ", avatarLink='" + avatarLink + '\'' +
                 '}';
     }

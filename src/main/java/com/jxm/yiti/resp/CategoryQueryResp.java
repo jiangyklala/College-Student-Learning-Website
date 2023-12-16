@@ -11,9 +11,19 @@ public class CategoryQueryResp {
 
     private Integer total;
 
+    private Integer sort;
+
     private String avatarLink;
 
     private Integer type;
+
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
 
     public Integer getType() {
         return type;
@@ -79,6 +89,7 @@ public class CategoryQueryResp {
                 ", name='" + name + '\'' +
                 ", level=" + level +
                 ", total=" + total +
+                ", sort=" + sort +
                 ", avatarLink='" + avatarLink + '\'' +
                 ", type=" + type +
                 '}';

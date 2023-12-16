@@ -30,4 +30,11 @@
         WHERE c1.level = 0;
     </update>
 
+    <select id="findSortMax" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT MAX(sort)
+        FROM category
+        WHERE level = #{level}
+          and parent = #{parent};
+    </select>
+
 </mapper>
