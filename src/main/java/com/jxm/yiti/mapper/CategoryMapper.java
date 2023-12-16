@@ -1,10 +1,11 @@
 package com.jxm.yiti.mapper;
 
-import com.jxm.yiti.domain.Category;
-import com.jxm.yiti.domain.CategoryExample;
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
+import com.jxm.yiti.domain.Category;
+import com.jxm.yiti.domain.CategoryExample;
 
 public interface CategoryMapper {
     long countByExample(CategoryExample example);

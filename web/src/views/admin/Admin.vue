@@ -1,25 +1,25 @@
 <template>
 	<a-layout-content class="layout-content">
 		<div v-if="showAll">
-			<a-button>
-				<router-link to="/admin/AdminDownload">下载管理</router-link>
-			</a-button>
-			<br><br>
-			<a-button>
-				<router-link to="/admin/AdminCourse">课程及视频管理</router-link>
-			</a-button>
-			<br><br>
+			<!--			<a-button>-->
+			<!--				<router-link to="/admin/AdminDownload">下载管理</router-link>-->
+			<!--			</a-button>-->
+			<!--			<br><br>-->
+			<!--			<a-button>-->
+			<!--				<router-link to="/admin/AdminCourse">课程及视频管理</router-link>-->
+			<!--			</a-button>-->
+			<!--			<br><br>-->
 			<a-button>
 				<router-link to="/admin/AdminCategory">分类管理</router-link>
 			</a-button>
-			<br><br>
-			<a-button>
-				<router-link to="/admin/AdminColumn">专栏管理</router-link>
-			</a-button>
-			<br><br>
-			<a-button>
-				<router-link to="/admin/AdminQuestion">刷题管理</router-link>
-			</a-button>
+			<!--			<br><br>-->
+			<!--			<a-button>-->
+			<!--				<router-link to="/admin/AdminColumn">专栏管理</router-link>-->
+			<!--			</a-button>-->
+			<!--			<br><br>-->
+			<!--			<a-button>-->
+			<!--				<router-link to="/admin/AdminQuestion">刷题管理</router-link>-->
+			<!--			</a-button>-->
 			<br><br>
 			<a-button>
 				<router-link to="/admin/AdminWxQuestion">微信题目管理</router-link>
