@@ -1,10 +1,12 @@
 package com.jxm.yiti.config;
 
-import com.jxm.yiti.interceptor.WxAppInterceptor;
-import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import com.jxm.yiti.interceptor.WxAppInterceptor;
+
+import jakarta.annotation.Resource;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
@@ -21,6 +23,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/wxUser/login",
                         "/wxUser/getNSVCDKey/**",
                         "/wxUser/switchUserType/**",
+                        "/wxUser/notifyAfter/**",
                         "/wxQuestion/save",
                         "/wxQuestion/selectAllAdmin",
                         "/wxQuestion/delete/**",
