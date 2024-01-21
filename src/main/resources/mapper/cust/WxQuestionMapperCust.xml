@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jxm.yiti.mapper.cust.WxQuestionMapperCust">
+
+    <resultMap id="BaseResultMap" type="com.jxm.yiti.domain.WxQuestion">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="category_id" jdbcType="INTEGER" property="categoryId"/>
+        <result column="answer_id" jdbcType="BIGINT" property="answerId"/>
+        <result column="like" jdbcType="INTEGER" property="like"/>
+        <result column="collect" jdbcType="INTEGER" property="collect"/>
+        <result column="points" jdbcType="INTEGER" property="points"/>
+        <result column="importance_level" jdbcType="INTEGER" property="importanceLevel"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id
+        , title, category_id, answer_id, `like`, `collect`, points, importance_level
+    </sql>
+    <select id="selectUserMarked" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from wx_question
+        where answer_id in (
+        <foreach collection="answerIdSet" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
+</mapper>

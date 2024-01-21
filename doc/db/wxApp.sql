@@ -105,3 +105,38 @@ SHOW TRIGGERS FROM yiti_dev_101;
 UPDATE wx_question
 SET points = 30
 WHERE category_id BETWEEN 5 AND 79;
+
+# 支付信息表
+DROP TABLE IF EXISTS `app_pay_info`;
+
+CREATE TABLE `app_pay_info`
+(
+    `id`             int AUTO_INCREMENT NOT NULL,
+    `user_id`        int                NOT NULL COMMENT '用户ID',
+    `result_code`    varchar(50),
+    `transaction_id` varchar(100) COMMENT '官方订单号',
+    `app_id`         varchar(50),
+    `open_id`        varchar(50),
+    `total_fee`      int                NOT NULL,
+    `out_trade_no`   varchar(100)       NOT NULL COMMENT '自己生成的订单号',
+    `sub_mch_id`     varchar(50)        NOT NULL COMMENT '商户码',
+    `create_time`    datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time`    datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    UNIQUE KEY `uqe_tx_id` (`transaction_id`),
+    UNIQUE KEY `uqe_otn` (`out_trade_no`),
+    PRIMARY KEY (`id`)
+) ENGINE = innodb
+  DEFAULT CHARSET = utf8mb4 COMMENT = '支付信息表';
+
+# 收藏题目表
+DROP TABLE IF EXISTS `wx_collect`;
+
+CREATE TABLE `wx_collect`
+(
+    `id`             int AUTO_INCREMENT NOT NULL,
+    `user_id`        int                NOT NULL COMMENT '用户ID',
+    `collect_id_set` BLOB               NOT NULL COMMENT '收藏题目集合',
+    UNIQUE KEY `uqe_uid` (`user_id`),
+    PRIMARY KEY (`id`)
+) ENGINE = innodb
+  DEFAULT CHARSET = utf8mb4 COMMENT = '支付信息表';
