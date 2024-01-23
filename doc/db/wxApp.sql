@@ -139,4 +139,4 @@ CREATE TABLE `wx_collect`
     UNIQUE KEY `uqe_uid` (`user_id`),
     PRIMARY KEY (`id`)
 ) ENGINE = innodb
-  DEFAULT CHARSET = utf8mb4 COMMENT = '支付信息表';
+  DEFAULT CHARSET = utf8mb4 COMMENT = '收藏题目集合';
