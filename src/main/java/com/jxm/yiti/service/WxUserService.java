@@ -66,6 +66,8 @@ public class WxUserService {
     @Resource
     private WxUserInfoMapper wxUserInfoMapper;
 
+    private final static Integer INIT_POINTS = 150;
+
     // 登录接口
     public void login(CommonResp2<WxLoginResp> commonResp, String code) throws IOException, URISyntaxException {
         WxLoginResp wxLoginResp = new WxLoginResp();
@@ -101,7 +103,7 @@ public class WxUserService {
                 // 用户未注册, 进行注册步骤
                 WxUserInfo newUser = new WxUserInfo();
                 newUser.setOpenId(open_id);
-                newUser.setPoints(500);  // 初始 100 积分
+                newUser.setPoints(INIT_POINTS);  // 初始积分
                 newUser.setName(String.valueOf(new SnowFlakeIdWorker().nextId()));
                 wxUserInfoMapper.insertSelective(newUser);
 
