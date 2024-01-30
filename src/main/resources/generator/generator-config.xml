@@ -40,7 +40,7 @@
                              targetPackage="com.jxm.yiti.mapper"
                              type="XMLMAPPER"/>
 
-        <table tableName="category"/>
+        <table tableName="wx_collect"/>
 
     </context>
 </generatorConfiguration>

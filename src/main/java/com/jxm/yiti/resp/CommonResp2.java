@@ -1,8 +1,10 @@
 package com.jxm.yiti.resp;
 
+import static com.jxm.yiti.enums.StatusCode.SUCCESS;
+
 public class CommonResp2<T> extends CommonResp<T> {
 
-    private Integer code = 200;
+    private Integer code = SUCCESS.code;
 
     public Integer getCode() {
         return code;

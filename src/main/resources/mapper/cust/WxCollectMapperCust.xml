@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jxm.yiti.mapper.cust.WxCollectMapperCust">
+    <resultMap id="BaseResultMap" type="com.jxm.yiti.domain.WxCollect">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.jxm.yiti.domain.WxCollect">
+        <result column="collect_id_set" jdbcType="LONGVARBINARY" property="collectIdSet"/>
+    </resultMap>
+    <resultMap type="com.jxm.yiti.domain.cust.WxCollectBLOB" id="ResultMapWithBLOBSingle">
+        <result column="collect_id_set" jdbcType="LONGVARBINARY" property="collectIdSet"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id
+        , user_id
+    </sql>
+    <sql id="Blob_Column_List">
+        collect_id_set
+    </sql>
+
+    <select id="selectByUserIdWithBLOBsSingle" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBSingle">
+        select
+        <include refid="Blob_Column_List"/>
+        from wx_collect
+        where user_id = #{userId}
+    </select>
+
+    <select id="selectByUserIdWithBLOBs" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from wx_collect
+        where user_id = #{userId}
+    </select>
+
+    <update id="updateByUserIdWithBLOBs" parameterType="com.jxm.yiti.domain.WxCollect">
+        update wx_collect
+        set collect_id_set = #{record.collectIdSet,jdbcType=LONGVARBINARY}
+        where user_id = #{record.userId,jdbcType=INTEGER}
+    </update>
+</mapper>

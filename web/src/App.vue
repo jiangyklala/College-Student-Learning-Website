@@ -1,17 +1,15 @@
 <template>
   <a-layout class="layout">
-    <the-header></the-header>
-      <router-view/>
-    <the-footer></the-footer>
+	  <the-header v-if="$route.meta.exclude !== true"></the-header>
+	  <router-view/>
+	  <the-footer v-if="$route.meta.exclude !== true"></the-footer>
   </a-layout>
 </template>
 
 <script lang="ts">
-import {defineComponent, ref} from 'vue';
+import {defineComponent} from 'vue';
 import theHeader from "@/components/the-header.vue";
 import theFooter from "@/components/the-footer.vue";
-import axios from "axios";
-import {message} from "ant-design-vue";
 
 export default defineComponent({
   name: 'App',

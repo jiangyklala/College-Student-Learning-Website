@@ -75,6 +75,10 @@ create table `category`
 ALTER TABLE category
     ADD avatar_link varchar(100) default '' COMMENT '该分类对应的图片';
 
+# 增加 name 列的唯一索引
+ALTER TABLE category
+    ADD UNIQUE INDEX uidx_name (name);
+
 # 增加 sort 列
 ALTER TABLE category
     ADD sort int DEFAULT 0 COMMENT '排序字段, 与业务无关';
@@ -281,8 +285,8 @@ ALTER TABLE user
 ALTER TABLE user
     DROP invite_balance;
 
-# UPDATE wx_user_info
-#     SET name = SUBSTRING(wx_user_info.name, 5);
+UPDATE wx_user_info
+SET name = SUBSTRING(wx_user_info.name, 5);
 
 UPDATE wx_user_info
 SET wx_user_info.name = CONCAT('微信用户', wx_user_info.name);
@@ -552,4 +556,4 @@ limit 4;
 
 SELECT COUNT(*)
 FROM user
-WHERE balance < 0; # 9.11 - 65 条
+WHERE balance < 0; # 9.11 - 65 条  12.8 65 条

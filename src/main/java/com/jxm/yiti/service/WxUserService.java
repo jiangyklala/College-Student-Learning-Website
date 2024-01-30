@@ -71,6 +71,8 @@ public class WxUserService {
     @Resource
     private WxUserInfoMapper wxUserInfoMapper;
 
+    private final static Integer INIT_POINTS = 150;
+
     @Resource
     AppPayInfoMapper appPayInfoMapper;
 
@@ -109,7 +111,7 @@ public class WxUserService {
                 // 用户未注册, 进行注册步骤
                 WxUserInfo newUser = new WxUserInfo();
                 newUser.setOpenId(open_id);
-                newUser.setPoints(500);  // 初始 100 积分
+                newUser.setPoints(INIT_POINTS);  // 初始积分
                 newUser.setName(String.valueOf(new SnowFlakeIdWorker().nextId()));
                 wxUserInfoMapper.insertSelective(newUser);
 

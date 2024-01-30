@@ -1,5 +1,24 @@
 package com.jxm.yiti.service;
 
+import static com.jxm.yiti.utils.plainUtil.getTodayRemainSec;
+
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+import java.util.TimeZone;
+import java.util.regex.Pattern;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.stereotype.Service;
+
 import com.github.pagehelper.PageHelper;
 import com.jxm.yiti.domain.ChatRecordInfo;
 import com.jxm.yiti.domain.ChatRecordInfoExample;
@@ -11,29 +30,22 @@ import com.jxm.yiti.mapper.cust.UserMapperCust;
 import com.jxm.yiti.req.UserQueryReq;
 import com.jxm.yiti.resp.CommonResp;
 import com.jxm.yiti.resp.UserQueryResp;
-import com.jxm.yiti.utils.*;
+import com.jxm.yiti.utils.CopyUtil;
+import com.jxm.yiti.utils.InviteCodeGenerate;
+import com.jxm.yiti.utils.JedisUtil;
+import com.jxm.yiti.utils.Md5Encrypt;
+import com.jxm.yiti.utils.PasswordLimit;
+import com.jxm.yiti.utils.SnowFlakeIdWorker;
+import com.jxm.yiti.utils.UserAccountLimit;
+
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.dao.DuplicateKeyException;
-import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.params.SetParams;
-
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.util.*;
-import java.util.regex.Pattern;
-
-import static com.jxm.yiti.utils.plainUtil.getTodayRemainSec;
 
 @Service
 public class UserService {
@@ -135,23 +147,26 @@ public class UserService {
      * 设置用户登录凭证
      */
     public void setOnlyLoginCert(Long userID, HttpServletResponse response) throws IOException {
-        String onlyLoginCert = Long.toString(snowFlakeIdWorker.nextId());           // 生成唯一登录凭证
+        // 唯一登录凭证理论上是一个随机不重复的数值, 但 2024.1.29 地哥需要取消这个 唯一登录 的特性, 于是
+        // 就把这个唯一登录凭证改成一个对用户账号来说的固定值
+        String onlyLoginCert = "Hello_World";
+//        String onlyLoginCert = Long.toString(snowFlakeIdWorker.nextId());           // 生成唯一登录凭证
 
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Allow-Origin", myAddr);
 
         Cookie cookieLoginCert = new Cookie("yiti_loginCert", onlyLoginCert);       // 增加本地唯一登录凭证 Cookie
-        cookieLoginCert.setMaxAge(60 * 60 * 24 * 15);                               // 设置 cookie 有效期
+        cookieLoginCert.setMaxAge(60 * 60 * 24 * 720);                               // 设置 cookie 有效期
         cookieLoginCert.setPath("/");
         response.addCookie(cookieLoginCert);
 
         Cookie cookieUserID = new Cookie("yiti_userID", Long.toString(userID));     // 增加本地自动登录账号信息 Cookie
-        cookieUserID.setMaxAge(60 * 60 * 24 * 15);
+        cookieUserID.setMaxAge(60 * 60 * 24 * 720);
         cookieUserID.setPath("/");
         response.addCookie(cookieUserID);
 
         try (Jedis jedis = jedisPool.getResource()) {                               // Redis 中存储 string 类型 yiti:lc:userID=onlyLoginCert
-            jedis.set("yt:lc:" + userID, onlyLoginCert);
+            jedis.setex("yt:lc:" + userID, 60 * 60 * 24 * 720, onlyLoginCert);
         } catch (Exception e) {
             e.printStackTrace();
         }

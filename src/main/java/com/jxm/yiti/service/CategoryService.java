@@ -36,7 +36,7 @@ public class CategoryService {
 
     private static final Logger LOG = LoggerFactory.getLogger(CategoryService.class);
 
-    private final Integer START_NUMBER = 0;
+    private final Integer INCREMENT = 10;
 
     /**
      * 查询下载列表的所有数据, 带有模糊匹配功能
@@ -78,12 +78,9 @@ public class CategoryService {
 
             // 是新增某个分类
             Integer sortMax = categoryMapperCust.findSortMax(category.getLevel(), category.getParent());
-            if (sortMax == null) {
-                category.setSort(START_NUMBER);
-            } else {
-                category.setSort(sortMax + 10 - (sortMax + 10) % 5);   // sort 自增为 5 的倍数
-            }
-
+            if (null == sortMax) sortMax = 0;
+            log.info("category.getLevel:{}, category.getParent:{}, sortMax: {}", category.getLevel(), category.getParent(), sortMax);
+            category.setSort(sortMax + 10 - (sortMax + 10) % 5);   // sort 自增为 5 的倍数
             return categoryMapper.insertSelective(category);
         } catch (DataIntegrityViolationException e) {
             LOG.error("错误: 插入或更新错误", e);
@@ -141,8 +138,8 @@ public class CategoryService {
 
     public void resetCount() {
         try {
-            categoryMapperCust.resetSecondCount();
             categoryMapperCust.resetFirstCount();
+            categoryMapperCust.resetSecondCount();
         } catch (RuntimeException e) {
             log.error("reset count failed", e);
         }

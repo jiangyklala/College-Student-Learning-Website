@@ -19,6 +19,7 @@ public class WebConfig implements WebMvcConfigurer {
 
         registry.addInterceptor(wxAppInterceptor)
                 .addPathPatterns("/wxUser/**",
+                        "/wxCollect/**",
                         "/wxQuestion/**")
                 .excludePathPatterns("/wxUser/login",
                         "/wxUser/getNSVCDKey/**",
