@@ -78,7 +78,8 @@ public class CategoryService {
 
             // 是新增某个分类
             Integer sortMax = categoryMapperCust.findSortMax(category.getLevel(), category.getParent());
-            log.info("sortMax: {}", sortMax);
+            if (null == sortMax) sortMax = 0;
+            log.info("category.getLevel:{}, category.getParent:{}, sortMax: {}", category.getLevel(), category.getParent(), sortMax);
             category.setSort(sortMax + 10 - (sortMax + 10) % 5);   // sort 自增为 5 的倍数
             return categoryMapper.insertSelective(category);
         } catch (DataIntegrityViolationException e) {
