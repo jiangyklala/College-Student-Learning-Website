@@ -140,3 +140,13 @@ CREATE TABLE `wx_collect`
     PRIMARY KEY (`id`)
 ) ENGINE = innodb
   DEFAULT CHARSET = utf8mb4 COMMENT = '收藏题目集合';
+
+UPDATE wx_user_info
+SET points = 0
+WHERE points = 150
+  AND type = 0;
+
+SELECT COUNT(*)
+FROM wx_user_info
+WHERE points >= 400
+  AND type = 0;

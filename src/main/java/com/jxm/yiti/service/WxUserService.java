@@ -66,7 +66,7 @@ public class WxUserService {
     @Resource
     private WxUserInfoMapper wxUserInfoMapper;
 
-    private final static Integer INIT_POINTS = 150;
+    private final static Integer INIT_POINTS = 0;
 
     // 登录接口
     public void login(CommonResp2<WxLoginResp> commonResp, String code) throws IOException, URISyntaxException {
