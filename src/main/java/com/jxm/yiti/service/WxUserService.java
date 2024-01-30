@@ -330,7 +330,16 @@ public class WxUserService {
         }
     }
 
-    public void makeOrder(AppPayInfoReq req, Integer wxUserId) {
+    public void makeOrder(AppPayInfoReq req, Integer wxUserId, CommonResp2<String> resp) {
+        // 判断是否已经是会员
+        Integer userType = wxUserInfoMapperCust.selectTypeByUserId(wxUserId);
+        if (userType == null || userType != 0) {
+            log.debug("userId: {}, userType: {}", wxUserId, userType);
+            resp.setSuccess(false);
+            resp.setMessage("已经是会员了喔~");
+            return;
+        }
+
         log.debug("makeOrder Req: {}", req.toString());
         AppPayInfo appPayInfo = CopyUtil.copy(req, AppPayInfo.class);
         appPayInfo.setUserId(wxUserId);

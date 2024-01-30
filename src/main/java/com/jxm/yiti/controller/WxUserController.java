@@ -140,11 +140,12 @@ public class WxUserController {
      */
     @PostMapping("/makeOrder")
     @ResponseBody
-    public void makeOrder(@RequestBody AppPayInfoReq req) {
+    public CommonResp2<String> makeOrder(@RequestBody AppPayInfoReq req) {
 
-        wxUserService.makeOrder(req, WxAppInterceptor.getWxUserId());
+        CommonResp2<String> resp = new CommonResp2<>();
+        wxUserService.makeOrder(req, WxAppInterceptor.getWxUserId(), resp);
 
-        return;
+        return resp;
     }
 
 }
