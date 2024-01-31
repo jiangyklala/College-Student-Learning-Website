@@ -141,6 +141,7 @@ CREATE TABLE `wx_collect`
 ) ENGINE = innodb
   DEFAULT CHARSET = utf8mb4 COMMENT = '收藏题目集合';
 
+# 更新现有用户积分
 UPDATE wx_user_info
 SET points = 0
 WHERE points = 150
