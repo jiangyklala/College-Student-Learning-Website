@@ -15,7 +15,8 @@
         UPDATE category
         SET total = (SELECT COUNT(*)
                      FROM wx_question
-                     WHERE category_id = category.id);
+                     WHERE category_id = category.id)
+        WHERE level = 1;
     </update>
 
     <update id="resetFirstCount">

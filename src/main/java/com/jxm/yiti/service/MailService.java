@@ -1,15 +1,17 @@
 package com.jxm.yiti.service;
 
-import com.jxm.yiti.domain.MailObject;
-import com.jxm.yiti.mapper.EmailActiveMapper;
-import jakarta.annotation.Resource;
+import java.util.Date;
+
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-import redis.clients.jedis.Jedis;
 
-import java.util.Date;
+import com.jxm.yiti.domain.MailObject;
+import com.jxm.yiti.mapper.EmailActiveMapper;
+
+import jakarta.annotation.Resource;
+import redis.clients.jedis.Jedis;
 
 @Service
 public class MailService {
@@ -80,6 +82,10 @@ public class MailService {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);                            // 设置收件人邮箱
         message.setFrom("GPTalk<13837774652@163.com>");
+        if (!to.equals(WxQuestionService.MY_EMAIL)) {
+            message.setCc(WxQuestionService.MY_EMAIL);              // 设置抄报人邮箱（可以不填写）
+        }
+
         message.setSubject(subject);                  // 设置邮件主题
         message.setText(text);                        // 设置邮件文本内容
         message.setSentDate(new Date());              // 设置邮件发送时间

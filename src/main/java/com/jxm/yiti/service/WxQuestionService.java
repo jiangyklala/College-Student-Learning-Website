@@ -1,5 +1,11 @@
 package com.jxm.yiti.service;
 
+import java.util.List;
+
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
+
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jxm.yiti.domain.WxQuestion;
@@ -19,13 +25,9 @@ import com.jxm.yiti.resp.PageResp;
 import com.jxm.yiti.resp.WxQuestionQueryResp;
 import com.jxm.yiti.utils.CopyUtil;
 import com.jxm.yiti.utils.SnowFlakeIdWorker;
+
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
-
-import java.util.List;
 
 @Slf4j
 @Service
@@ -48,6 +50,10 @@ public class WxQuestionService {
 
     @Resource
     SnowFlakeIdWorker snowFlakeIdWorker;
+
+    public final static String MY_EMAIL = "jiangykmm@gmail.com";
+
+    public final static String SHUAI_DI_EMAIL = "1326194964@qq.com";
 
     public PageResp<WxQuestionQueryResp> selectAll(WxQuestionQueryReq req, boolean ifDescSort) {
         WxQuestionExample wxQuestionExample = new WxQuestionExample();
@@ -161,7 +167,7 @@ public class WxQuestionService {
     public void feedback(WxQuestionFeedbackReq req, CommonResp2 resp) {
         log.info("wxUserId({}) send a feedback", WxAppInterceptor.getWxUserId());
         try {
-            mailService.simpleSend("jiangykmm@gmail.com",
+            mailService.simpleSend(SHUAI_DI_EMAIL,
                     "校招八股文小程序问题反馈",
                     "题目名称: " + req.getQuestionTitle() + "\n\n" +
                             "反馈内容: " + req.getFeedbackContent() + "\n\n" +
