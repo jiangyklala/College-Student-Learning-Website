@@ -7,6 +7,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson2.JSON;
 import com.jxm.yiti.domain.MailObject;
 import com.jxm.yiti.interceptor.WxAppInterceptor;
 import com.jxm.yiti.mapper.EmailActiveMapper;
@@ -89,7 +90,8 @@ public class MailService {
         message.setText(text);                        // 设置邮件文本内容
         message.setSentDate(new Date());              // 设置邮件发送时间
 
-        log.info("wxUserId({}) send a feedback", WxAppInterceptor.getWxUserId());
+        log.info("wxUserId:{} send a feedback, message:{}",
+                WxAppInterceptor.getWxUserId(), JSON.toJSON(message));
 
         try {
             //发送
