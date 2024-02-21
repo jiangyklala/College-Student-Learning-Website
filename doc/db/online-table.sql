@@ -1,4 +1,5 @@
-# 招聘信息表
+#
+招聘信息表
 DROP TABLE IF EXISTS `recruit_info`;
 
 CREATE TABLE `recruit_info`

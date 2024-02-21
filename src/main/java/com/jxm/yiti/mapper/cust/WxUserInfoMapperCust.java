@@ -1,10 +1,13 @@
 package com.jxm.yiti.mapper.cust;
 
-import com.jxm.yiti.domain.WxUserInfo;
 import org.apache.ibatis.annotations.Param;
+
+import com.jxm.yiti.domain.WxUserInfo;
 
 public interface WxUserInfoMapperCust {
     WxUserInfo selectAllByOpenId(@Param("openId") String openId);
+
+    Integer selectTypeByUserId(@Param("userId") Integer userId);
 
     Integer selectPointsById(@Param("userId") Integer userId);
 

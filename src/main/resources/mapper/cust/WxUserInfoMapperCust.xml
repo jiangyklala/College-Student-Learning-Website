@@ -15,6 +15,11 @@
         WHERE open_id = #{openId}
     </select>
 
+    <select id="selectTypeByUserId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        SELECT type
+        FROM wx_user_info
+        WHERE id = #{userId}
+    </select>
 
     <select id="selectPointsById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         SELECT points

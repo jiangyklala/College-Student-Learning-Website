@@ -46,6 +46,12 @@ const routes: Array<RouteRecordRaw> = [
 
     },
     {
+        path: '/admin/AdminWxSpecialPage',
+        name: 'AdminWxSpecialPage',
+        component: () => import('../views/admin/AdminWxSpecialPage.vue')
+
+    },
+    {
         path: '/course/Course',
         name: 'Course',
         component: () => import('../views/course/Course.vue')
@@ -146,27 +152,25 @@ const router = createRouter({
     routes
 })
 
+const adminPages = ["AdminDownload", "AdminCourse", "AdminCategory",
+    "AdminColumn", "AdminQuestion", "AdminWxQuestion", "AdminWxSpecialPage"];
+
 router.beforeEach((to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
+    // 支付页面
     if (to.name === 'Paying' && from.name !== 'Pay') {
         // 如果目标页面是TargetPage，但来源页面不是SourcePage，则重定向到来源页面
         next({name: 'Pay'});
-    } else if (to.name === 'AdminDownload' && from.name !== 'Admin') {
-        console.log(from);
-        next({name: 'Admin'});
-    } else if (to.name === 'AdminCourse' && from.name !== 'Admin') {
-        next({name: 'Admin'});
-    } else if (to.name === 'AdminCategory' && from.name !== 'Admin') {
-        next({name: 'Admin'});
-    } else if (to.name === 'AdminColumn' && from.name !== 'Admin') {
-        next({name: 'Admin'});
-    } else if (to.name === 'AdminQuestion' && from.name !== 'Admin') {
-        next({name: 'Admin'});
-    } else if (to.name === 'AdminWxQuestion' && from.name !== 'Admin') {
-        next({name: 'Admin'});
-    } else {
-        // 其他情况继续导航
-        next();
+        return;
     }
+
+    // 管理页面
+    if (adminPages.includes(String(to.name)) && from.name === 'Admin' && from.name === to.name) {
+        next();
+        return;
+    }
+
+    // 其他页面通通放行
+    next();
 });
 
 export default router

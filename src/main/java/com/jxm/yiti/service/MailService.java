@@ -29,8 +29,6 @@ public class MailService {
     private EmailActiveMapper emailActiveMapper;
 
 
-    public final String MY_EMAIL = "jiangykmm@gmail.com";
-
     public boolean simpleSend(MailObject mailObject) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(mailObject.getTo());                  // 设置收件人邮箱  //"GPTalk<13837774652@163.com>"

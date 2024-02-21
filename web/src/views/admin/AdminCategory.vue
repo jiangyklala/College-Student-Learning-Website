@@ -1,35 +1,37 @@
 <template>
   <a-layout-content class="layout-content">
-    <div class="body">
-      <a-space direction="horizontal" size="large">
-	      <a-button type="primary" @click="addCategoryItem">
-		      新增
-	      </a-button>
-	      <a-button type="primary" @click="resetCount">
-		      重置分类对应的题目总数
-	      </a-button>
-      </a-space>
-    </div>
-    <a-table
-        :columns="columns"
-        :data-source="tableData"
-        :row-key="record => record.id"
-        :loading="loading"
-        :pagination="false"
-        bordered>
-      <template v-slot:bodyCell="{ column, record, index }">
-	      <!--	      分类图标显示-->
-	      <template v-if="column.dataIndex === 'avatar'">
-		      <a-image
-				      :width="40"
-				      :src="record.avatarLink"
-		      />
-	      </template>
-	      
-	      <!--	      模块分类显示列-->
-	      <template v-if="column.dataIndex === 'type'">
-		      <span>{{ getCategoryModalName(record.type) }}</span>
-	      </template>
+	  <div class="body">
+		  <a-space direction="horizontal" size="large">
+			  <a-button type="primary" @click="addCategoryItem">
+				  新增
+			  </a-button>
+			  <a-button type="primary" @click="resetCount">
+				  重置分类对应的题目总数
+			  </a-button>
+		  </a-space>
+	  </div>
+	  <br/>
+	  
+	  <a-table
+			  :columns="columns"
+			  :data-source="tableData"
+			  :row-key="record => record.id"
+			  :loading="loading"
+			  :pagination="false"
+			  bordered>
+		  <template v-slot:bodyCell="{ column, record, index }">
+			  <!--	      分类图标显示-->
+			  <template v-if="column.dataIndex === 'avatar'">
+				  <a-image
+						  :width="40"
+						  :src="record.avatarLink"
+				  />
+			  </template>
+			  
+			  <!--	      模块分类显示列-->
+			  <template v-if="column.dataIndex === 'type'">
+				  <span>{{ getCategoryModalName(record.type) }}</span>
+			  </template>
 	      
 	      <!--	      操作列-->
 	      <template v-if="column.dataIndex === 'action'">

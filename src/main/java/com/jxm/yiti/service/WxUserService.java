@@ -6,6 +6,7 @@ import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -20,13 +21,18 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
+import com.jxm.yiti.domain.AppPayInfo;
+import com.jxm.yiti.domain.AppPayInfoExample;
 import com.jxm.yiti.domain.QuestionUserInfo;
 import com.jxm.yiti.domain.WxUserInfo;
 import com.jxm.yiti.enums.WxUserConst;
+import com.jxm.yiti.interceptor.WxAppInterceptor;
+import com.jxm.yiti.mapper.AppPayInfoMapper;
 import com.jxm.yiti.mapper.QuestionUserInfoMapper;
 import com.jxm.yiti.mapper.WxUserInfoMapper;
 import com.jxm.yiti.mapper.cust.QuestionUserInfoMapperCust;
 import com.jxm.yiti.mapper.cust.WxUserInfoMapperCust;
+import com.jxm.yiti.req.AppPayInfoReq;
 import com.jxm.yiti.req.PaymentReq;
 import com.jxm.yiti.req.WxOnePaymentReq;
 import com.jxm.yiti.resp.CommonResp2;
@@ -67,6 +73,9 @@ public class WxUserService {
     private WxUserInfoMapper wxUserInfoMapper;
 
     private final static Integer INIT_POINTS = 0;
+
+    @Resource
+    AppPayInfoMapper appPayInfoMapper;
 
     // 登录接口
     public void login(CommonResp2<WxLoginResp> commonResp, String code) throws IOException, URISyntaxException {
@@ -293,5 +302,52 @@ public class WxUserService {
         }
 
         return "设置成功";
+    }
+
+    public void payAsyncNotifyAfter(AppPayInfoReq notifyData) {
+        log.debug("notifyData: {}", notifyData.toString());
+        AppPayInfo appPayInfo = CopyUtil.copy(notifyData, AppPayInfo.class);
+        AppPayInfoExample appPayInfoExample = new AppPayInfoExample();
+        AppPayInfoExample.Criteria criteria = appPayInfoExample.createCriteria();
+        criteria.andOutTradeNoEqualTo(notifyData.getOutTradeNo());
+
+        try {
+            List<AppPayInfo> appPayInfos = appPayInfoMapper.selectByExample(appPayInfoExample);
+            if (appPayInfos.isEmpty()) {
+                throw new Exception("selected appPayInfos is empty, trade_no is : {} " + notifyData.getOutTradeNo());
+            }
+
+            appPayInfo.setId(appPayInfos.get(0).getId());
+            appPayInfo.setResultCode(notifyData.getResultCode());
+            appPayInfo.setAppId(notifyData.getAppId());
+            appPayInfo.setOpenId(notifyData.getOpenId());
+            appPayInfo.setTransactionId(notifyData.getTransactionId());
+            log.debug("appPayInfo: {}", appPayInfo.toString());
+
+            appPayInfoMapper.updateByPrimaryKeySelective(appPayInfo);
+            wxUserInfoMapperCust.switchUserTypeByCDKey(appPayInfos.get(0).getUserId(), WxUserConst.NORMAL_VIP.getType());
+        } catch (Exception e) {
+            log.error("wxApp pay notify error. appPayInfo:{}", appPayInfo, e);
+        }
+    }
+
+    public void makeOrder(AppPayInfoReq req, Integer wxUserId, CommonResp2<String> resp) {
+        // 判断是否已经是会员
+        if (WxAppInterceptor.getWxUserType() != WxUserConst.NORMAL_USER) {
+            log.debug("userId: {}, userType: {}", wxUserId, WxAppInterceptor.getWxUserType());
+            resp.setSuccess(false);
+            resp.setMessage("已经是会员了喔~");
+        }
+
+        log.debug("makeOrder Req: {}", req.toString());
+        AppPayInfo appPayInfo = CopyUtil.copy(req, AppPayInfo.class);
+        appPayInfo.setUserId(wxUserId);
+        log.debug("appPayInfo: {}", appPayInfo.toString());
+
+        try {
+            appPayInfoMapper.insertSelective(appPayInfo);
+        } catch (Exception e) {
+            log.error("wxApp make order error. appPayInfo:{}", appPayInfo, e);
+        }
     }
 }

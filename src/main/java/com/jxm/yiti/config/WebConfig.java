@@ -20,13 +20,17 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(wxAppInterceptor)
                 .addPathPatterns("/wxUser/**",
                         "/wxCollect/**",
-                        "/wxQuestion/**")
+                        "/wxQuestion/**",
+                        "wxSpecial")
                 .excludePathPatterns("/wxUser/login",
                         "/wxUser/getNSVCDKey/**",
                         "/wxUser/switchUserType/**",
+                        "/wxUser/notifyAfter/**",
                         "/wxQuestion/save",
                         "/wxQuestion/selectAllAdmin",
                         "/wxQuestion/delete/**",
-                        "/wxQuestion/selectAnswerAdmin");
+                        "/wxQuestion/selectAnswerAdmin",
+                        "/wxSpecial/selectAllAdmin",
+                        "/wxSpecial/save");
     }
 }
