@@ -29,6 +29,8 @@ public class MailService {
     private EmailActiveMapper emailActiveMapper;
 
 
+    public final String MY_EMAIL = "jiangykmm@gmail.com";
+
     public boolean simpleSend(MailObject mailObject) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(mailObject.getTo());                  // 设置收件人邮箱  //"GPTalk<13837774652@163.com>"
@@ -86,6 +88,10 @@ public class MailService {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);                            // 设置收件人邮箱
         message.setFrom("GPTalk<13837774652@163.com>");
+        if (!to.equals(WxQuestionService.MY_EMAIL)) {
+            message.setCc(WxQuestionService.MY_EMAIL);              // 设置抄报人邮箱（可以不填写）
+        }
+
         message.setSubject(subject);                  // 设置邮件主题
         message.setText(text);                        // 设置邮件文本内容
         message.setSentDate(new Date());              // 设置邮件发送时间

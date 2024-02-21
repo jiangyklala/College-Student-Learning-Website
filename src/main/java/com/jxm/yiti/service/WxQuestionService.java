@@ -47,6 +47,10 @@ public class WxQuestionService {
     @Resource
     private MailService mailService;
 
+    public static final String MY_EMAIL = "jiangykmm@gmail.com";
+
+    public static final String DI_EMAIL = "1326194964@qq.com";
+
     @Resource
     SnowFlakeIdWorker snowFlakeIdWorker;
 
@@ -161,7 +165,7 @@ public class WxQuestionService {
 
     public void feedback(WxQuestionFeedbackReq req, CommonResp2 resp) {
         try {
-            mailService.simpleSend("jiangykmm@gmail.com",
+            mailService.simpleSend(DI_EMAIL,
                     "校招八股文小程序问题反馈",
                     "题目名称: " + req.getQuestionTitle() + "\n\n" +
                             "反馈内容: " + req.getFeedbackContent() + "\n\n" +
