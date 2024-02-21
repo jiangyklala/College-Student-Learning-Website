@@ -13,6 +13,7 @@
 				</a-button>
 			</a-space>
 		</div>
+		<br/>
 		
 		<!--    管理表格-->
 		<a-table
@@ -29,16 +30,6 @@
 						<a-button type="link" @click="buttonEdit(record)">
 							编辑
 						</a-button>
-						<a-popconfirm
-								title="确认删除吗, 删除之后用户对这道题花的积分就无意义了"
-								ok-text="确认"
-								cancel-text="取消"
-								@confirm="buttonDelete(record)"
-						>
-							<a-button type="link">
-								删除
-							</a-button>
-						</a-popconfirm>
 					</a-space>
 				</template>
 			</template>
@@ -57,30 +48,17 @@
 				:model="question"
 				:label-col="{ span : 4 }"
 		>
-			<a-form-item label="题目描述">
+			<a-form-item label="页面标题  ">
 				<a-textarea
 						v-model:value="question.title"
 						:auto-size="{ minRows: 2, maxRows: 5 }"
 				/>
 			</a-form-item>
-			<a-form-item label="分类">
-				<!--        级联选择-->
-				<a-cascader
-						v-model:value="categoryIds"
-						:field-names="{ label: 'name', value: 'id', children: 'children' }"
-						:options="categoryTree"/>
-			</a-form-item>
-			<a-form-item label="文章答案(.md)">
+			<a-form-item label="页面内容(.md)">
 				<a-textarea
 						v-model:value="question.answer"
-						:auto-size="{ minRows: 5, maxRows: 10 }"
+						:auto-size="{ minRows: 5, maxRows: 30 }"
 				/>
-			</a-form-item>
-			<a-form-item label="所需积分">
-				<a-input-number v-model:value="question.points" :min="1" :max="50"/>
-			</a-form-item>
-			<a-form-item label="重要程度">
-				<a-input-number v-model:value="question.importanceLevel" :min="1" :max="5"/>
 			</a-form-item>
 		</a-form>
 	</a-modal>
@@ -94,46 +72,20 @@ import {Tool} from "@/utils/tool";
 
 export default defineComponent({
 	components: {},
-	name: "AdminWxQuestion",
+	name: "AdminWxSpecialPage",
 	setup: function () {
 		
 		
 		const columns = [
 			{
-				title: '题目描述',
+				title: '页面标题',
 				dataIndex: 'title',
 				width: '30%',
 			},
 			{
-				title: '分类',
-				// slots: {customRender: 'category'},
-				dataIndex: 'category',
-				width: '20%',
-			},
-			{
-				title: '点赞数',
-				dataIndex: 'like',
-				width: '9%',
-			},
-			{
-				title: '收藏数',
-				dataIndex: 'collect',
-				width: '9%',
-			},
-			{
-				title: '所需积分',
-				dataIndex: 'points',
-				width: '12%',
-			},
-			{
-				title: '重要程度',
-				dataIndex: 'importanceLevel',
-				width: '12%',
-			},
-			{
 				title: '操作',
 				dataIndex: 'action',
-				width: '15%',
+				width: '1%',
 			},
 		];
 		
@@ -157,7 +109,7 @@ export default defineComponent({
 				
 				if (response.data.success) {  // 判断后端接口返回是否出错
 					loading.value = false;
-					listData.value = response.data.content.list;  // 显示内容(反转)
+					listData.value = response.data.content.list;
 					
 					// 重置分页按钮
 					pagination.value.current = p.current;

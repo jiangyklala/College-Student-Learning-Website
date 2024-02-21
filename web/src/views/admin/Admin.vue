@@ -22,7 +22,11 @@
 			<!--			</a-button>-->
 			<br><br>
 			<a-button>
-				<router-link to="/admin/AdminWxQuestion">微信题目管理</router-link>
+				<router-link to="/admin/AdminWxQuestion">小程序题目管理</router-link>
+			</a-button>
+			<br><br>
+			<a-button>
+				<router-link to="/admin/AdminWxSpecialPage">小程序特殊页面管理</router-link>
 			</a-button>
 			<br><br>
 		</div>

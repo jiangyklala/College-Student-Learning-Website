@@ -26,6 +26,7 @@ import com.jxm.yiti.domain.AppPayInfoExample;
 import com.jxm.yiti.domain.QuestionUserInfo;
 import com.jxm.yiti.domain.WxUserInfo;
 import com.jxm.yiti.enums.WxUserConst;
+import com.jxm.yiti.interceptor.WxAppInterceptor;
 import com.jxm.yiti.mapper.AppPayInfoMapper;
 import com.jxm.yiti.mapper.QuestionUserInfoMapper;
 import com.jxm.yiti.mapper.WxUserInfoMapper;
@@ -332,12 +333,10 @@ public class WxUserService {
 
     public void makeOrder(AppPayInfoReq req, Integer wxUserId, CommonResp2<String> resp) {
         // 判断是否已经是会员
-        Integer userType = wxUserInfoMapperCust.selectTypeByUserId(wxUserId);
-        if (userType == null || userType != 0) {
-            log.debug("userId: {}, userType: {}", wxUserId, userType);
+        if (WxAppInterceptor.getWxUserType() != WxUserConst.NORMAL_USER) {
+            log.debug("userId: {}, userType: {}", wxUserId, WxAppInterceptor.getWxUserType());
             resp.setSuccess(false);
             resp.setMessage("已经是会员了喔~");
-            return;
         }
 
         log.debug("makeOrder Req: {}", req.toString());

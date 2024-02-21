@@ -1,7 +1,5 @@
 package com.jxm.yiti.controller;
 
-import java.util.List;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,10 +41,21 @@ public class WxSpecialPageController {
         return resp;
     }
 
+    @GetMapping("/selectAllAdmin")
+    @ResponseBody
+    public CommonResp2<PageResp<WxSpecialPageResp>> selectAllAdmin(@Valid WxSpecialPageQueryReq req) {
+        CommonResp2<PageResp<WxSpecialPageResp>> resp = new CommonResp2<>();
+
+        PageResp<WxSpecialPageResp> list = wxSpecialPageService.selectAll(req);
+
+        resp.setContent(list);
+        return resp;
+    }
+
     @GetMapping("/selectOne")
     @ResponseBody
-    public CommonResp2<List<WxSpecialPageResp>> selectOne(@Valid WxSpecialPageQueryReq req) {
-        CommonResp2<List<WxSpecialPageResp>> resp = new CommonResp2<>();
+    public CommonResp2<WxSpecialPageResp> selectOne(@Valid WxSpecialPageQueryReq req) {
+        CommonResp2<WxSpecialPageResp> resp = new CommonResp2<>();
 
         wxSpecialPageService.selectOne(req, resp);
 

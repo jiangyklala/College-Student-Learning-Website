@@ -41,8 +41,7 @@ public class WxSpecialPageService {
         }
 
         PageHelper.startPage(req.getPage(), req.getSize(), true);
-        List<WxSpecialPage> wxSpecialPageList = wxSpecialPageMapper.selectByExample(wxSpecialPageExample);
-
+        List<WxSpecialPage> wxSpecialPageList = wxSpecialPageMapper.selectByExampleWithBLOBs(wxSpecialPageExample);
         PageInfo<WxSpecialPage> wxSpecialPagePageInfo = new PageInfo<>(wxSpecialPageList);
         log.debug("当前页: " + wxSpecialPagePageInfo.getPageNum()
                 + ", 总页数: " + wxSpecialPagePageInfo.getPages()
@@ -55,18 +54,17 @@ public class WxSpecialPageService {
         return resp;
     }
 
-    public void selectOne(WxSpecialPageQueryReq req, CommonResp2<List<WxSpecialPageResp>> resp) {
+    public void selectOne(WxSpecialPageQueryReq req, CommonResp2<WxSpecialPageResp> resp) {
         WxSpecialPageExample wxSpecialPageExample = new WxSpecialPageExample();
         WxSpecialPageExample.Criteria criteria = wxSpecialPageExample.createCriteria();
-        criteria.andIdEqualTo(req.getId());
         // 是否查询某个题目
         if (!ObjectUtils.isEmpty(req.getTitle())) {
             criteria.andTitleLike("%" + req.getTitle() + "%");
         }
 
         try {
-            List<WxSpecialPage> wxSpecialPageList = wxSpecialPageMapper.selectByExample(wxSpecialPageExample);
-            resp.setContent(CopyUtil.copyList(wxSpecialPageList, WxSpecialPageResp.class));
+            List<WxSpecialPage> wxSpecialPageList = wxSpecialPageMapper.selectByExampleWithBLOBs(wxSpecialPageExample);
+            resp.setContent(CopyUtil.copy(wxSpecialPageList.get(0), WxSpecialPageResp.class));
         } catch (RuntimeException e) {
             resp.setCode(420);
             log.error("specialPage error, wxUserId:" + WxAppInterceptor.getWxUserId());
