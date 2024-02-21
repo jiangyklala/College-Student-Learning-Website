@@ -54,7 +54,7 @@ public class WxSpecialPageController {
         return resp;
     }
 
-    @AccessLimit(type = {WxUserConst.NORMAL_VIP, WxUserConst.SPECIAL_VIP, WxUserConst.SUPER})
+    @AccessLimit(type = {WxUserConst.NORMAL_USER, WxUserConst.NORMAL_VIP, WxUserConst.SPECIAL_VIP, WxUserConst.SUPER})
     @GetMapping("/selectOne")
     @ResponseBody
     public CommonResp2<WxSpecialPageResp> selectOne(@Valid WxSpecialPageQueryReq req) {
