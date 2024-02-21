@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.jxm.yiti.annotation.AccessLimit;
+import com.jxm.yiti.enums.WxUserConst;
 import com.jxm.yiti.req.WxSpecialPageQueryReq;
 import com.jxm.yiti.req.WxSpecialPageSaveReq;
 import com.jxm.yiti.resp.CommonResp2;
@@ -52,6 +54,7 @@ public class WxSpecialPageController {
         return resp;
     }
 
+    @AccessLimit(type = {WxUserConst.NORMAL_VIP, WxUserConst.SPECIAL_VIP, WxUserConst.SUPER})
     @GetMapping("/selectOne")
     @ResponseBody
     public CommonResp2<WxSpecialPageResp> selectOne(@Valid WxSpecialPageQueryReq req) {

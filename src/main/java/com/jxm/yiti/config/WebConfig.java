@@ -21,7 +21,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/wxUser/**",
                         "/wxCollect/**",
                         "/wxQuestion/**",
-                        "wxSpecial")
+                        "/wxSpecial/**")
                 .excludePathPatterns("/wxUser/login",
                         "/wxUser/getNSVCDKey/**",
                         "/wxUser/switchUserType/**",
