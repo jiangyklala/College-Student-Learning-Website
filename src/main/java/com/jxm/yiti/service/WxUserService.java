@@ -313,7 +313,7 @@ public class WxUserService {
         try {
             List<AppPayInfo> appPayInfos = appPayInfoMapper.selectByExample(appPayInfoExample);
             if (appPayInfos.isEmpty()) {
-                throw new Exception("appPayInfos is empty");
+                throw new Exception("selected appPayInfos is empty, trade_no is : {} " + notifyData.getOutTradeNo());
             }
 
             appPayInfo.setId(appPayInfos.get(0).getId());

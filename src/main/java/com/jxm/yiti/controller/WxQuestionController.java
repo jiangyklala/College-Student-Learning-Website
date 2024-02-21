@@ -173,21 +173,12 @@ public class WxQuestionController {
         return resp;
     }
 
-
     /**
-     * 新增或者更新一个题目
-     *
-     * @param req 保存参数
+     * 反馈
      */
-    @Caching(evict = {
-            @CacheEvict(cacheNames = "wxQuestion/selectAnswer", allEntries = true),
-            @CacheEvict(cacheNames = "wxQuestion/selectAll", allEntries = true),
-            @CacheEvict(cacheNames = "wxQuestion/selectByCategoryId", allEntries = true)
-
-    })
     @PostMapping("/feedback")
     @ResponseBody
-    public CommonResp feedback(@RequestBody @Valid WxQuestionFeedbackReq req) {  // 以 json 方式提交
+    public CommonResp2 feedback(@RequestBody @Valid WxQuestionFeedbackReq req) {  // 以 json 方式提交
         CommonResp2 resp = new CommonResp2();
 
         wxQuestionService.feedback(req, resp);

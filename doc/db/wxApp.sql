@@ -151,3 +151,15 @@ SELECT COUNT(*)
 FROM wx_user_info
 WHERE points >= 400
   AND type = 0;
+
+# 特殊展示页面
+DROP TABLE IF EXISTS `wx_special_page`;
+
+CREATE TABLE `wx_special_page`
+(
+    `id`     int AUTO_INCREMENT NOT NULL,
+    `title`  varchar(128)       NOT NULL COMMENT '页面标识',
+    `answer` mediumtext         NOT NULL COMMENT '答案',
+    PRIMARY KEY (`id`)
+) ENGINE = innodb
+  DEFAULT CHARSET = utf8mb4 COMMENT = '特殊展示页面';

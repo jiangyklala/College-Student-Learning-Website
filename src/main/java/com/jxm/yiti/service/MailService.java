@@ -11,8 +11,10 @@ import com.jxm.yiti.domain.MailObject;
 import com.jxm.yiti.mapper.EmailActiveMapper;
 
 import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.Jedis;
 
+@Slf4j
 @Service
 public class MailService {
 
