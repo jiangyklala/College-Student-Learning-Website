@@ -163,3 +163,8 @@ CREATE TABLE `wx_special_page`
     PRIMARY KEY (`id`)
 ) ENGINE = innodb
   DEFAULT CHARSET = utf8mb4 COMMENT = '特殊展示页面';
+
+# 增加 config 列
+ALTER TABLE wx_special_page
+    ADD config mediumtext COMMENT 'json配置';
+

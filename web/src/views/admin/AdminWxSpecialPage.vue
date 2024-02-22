@@ -60,6 +60,12 @@
 						:auto-size="{ minRows: 5, maxRows: 30 }"
 				/>
 			</a-form-item>
+			<a-form-item label="config(json)">
+				<a-textarea
+						v-model:value="question.config"
+						:auto-size="{ minRows: 5, maxRows: 30 }"
+				/>
+			</a-form-item>
 		</a-form>
 	</a-modal>
 </template>

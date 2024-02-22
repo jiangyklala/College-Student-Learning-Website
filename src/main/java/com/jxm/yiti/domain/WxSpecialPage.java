@@ -7,6 +7,8 @@ public class WxSpecialPage {
 
     private String answer;
 
+    private String config;
+
     public Integer getId() {
         return id;
     }
@@ -31,6 +33,14 @@ public class WxSpecialPage {
         this.answer = answer;
     }
 
+    public String getConfig() {
+        return config;
+    }
+
+    public void setConfig(String config) {
+        this.config = config;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -40,6 +50,7 @@ public class WxSpecialPage {
         sb.append(", id=").append(id);
         sb.append(", title=").append(title);
         sb.append(", answer=").append(answer);
+        sb.append(", config=").append(config);
         sb.append("]");
         return sb.toString();
     }
