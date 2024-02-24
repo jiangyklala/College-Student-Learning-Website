@@ -14,6 +14,7 @@ import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.TypeReference;
 import com.jxm.yiti.domain.WxCollect;
 import com.jxm.yiti.domain.WxQuestion;
+import com.jxm.yiti.domain.cust.WxCollectBLOB;
 import com.jxm.yiti.mapper.WxCollectMapper;
 import com.jxm.yiti.mapper.cust.WxCollectMapperCust;
 import com.jxm.yiti.mapper.cust.WxQuestionMapperCust;
@@ -71,7 +72,8 @@ public class WxCollectService {
 
     @Nullable
     private Set<Long> selectAnswerIdSetByUserId(Integer wxUserId) {
-        byte[] collectBlobs = wxCollectMapperCust.selectByUserIdWithBLOBsSingle(wxUserId).getCollectIdSet();
+        WxCollectBLOB wxCollectBLOB = wxCollectMapperCust.selectByUserIdWithBLOBsSingle(wxUserId);
+        byte[] collectBlobs = (wxCollectBLOB != null) ? wxCollectBLOB.getCollectIdSet() : null;
 
         if (ObjectUtils.isEmpty(collectBlobs)) {
             // 该用户无记录, 添加新记录

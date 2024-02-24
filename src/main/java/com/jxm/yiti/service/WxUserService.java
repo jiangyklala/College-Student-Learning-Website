@@ -123,7 +123,7 @@ public class WxUserService {
             }
 
             // 生成 auth_token
-            wxLoginResp.setAuthToken(generateAuthToken(wxUserInfo.getId(), wxUserInfo.getType(), Duration.ofDays(30)));
+            wxLoginResp.setAuthToken(generateAuthToken(wxUserInfo.getId(), wxUserInfo.getType(), Duration.ofDays(360)));
             // 设置返回的用户信息
             wxLoginResp.setWxUserInfoResp(CopyUtil.copy(wxUserInfo, WxUserInfoResp.class));
 
@@ -270,14 +270,14 @@ public class WxUserService {
 
                 // 切换用户类型后, 需要重新签发 token
                 wxUserInfoMapperCust.switchUserTypeByCDKey(wxUserId, WxUserConst.NORMAL_VIP.getType());
-                resp.setContent(generateAuthToken(wxUserId, WxUserConst.NORMAL_VIP.getType(), Duration.ofDays(30)));
+                resp.setContent(generateAuthToken(wxUserId, WxUserConst.NORMAL_VIP.getType(), Duration.ofDays(360)));
                 return;
             }
 
             if (jedis.exists("yt:wa:cd:sv:" + cdKey)) {
                 jedis.del("yt:wa:cd:sv:" + cdKey);
                 wxUserInfoMapperCust.switchUserTypeByCDKey(wxUserId, WxUserConst.SPECIAL_VIP.getType());
-                resp.setContent(generateAuthToken(wxUserId, WxUserConst.SPECIAL_VIP.getType(), Duration.ofDays(30)));
+                resp.setContent(generateAuthToken(wxUserId, WxUserConst.SPECIAL_VIP.getType(), Duration.ofDays(360)));
                 return;
             }
         } catch (RuntimeException e) {
@@ -348,6 +348,18 @@ public class WxUserService {
             appPayInfoMapper.insertSelective(appPayInfo);
         } catch (Exception e) {
             log.error("wxApp make order error. appPayInfo:{}", appPayInfo, e);
+        }
+    }
+
+    public void refreshAuthToken(Integer wxUserId, CommonResp2<String> resp) {
+        try {
+            Integer userType = wxUserInfoMapperCust.selectTypeByUserId(wxUserId);
+            String authToken = generateAuthToken(wxUserId, userType, Duration.ofDays(360));
+            resp.setContent(authToken);
+            log.debug("userId:{} refreshed token: {}", wxUserId, authToken);
+        } catch (RuntimeException e) {
+            resp.setCode(420);
+            resp.setMessage("refresh token failed!");
         }
     }
 }

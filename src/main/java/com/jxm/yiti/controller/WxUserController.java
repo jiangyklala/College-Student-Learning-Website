@@ -84,6 +84,19 @@ public class WxUserController {
     }
 
     /**
+     * 刷新用户积分等信息
+     */
+    @PostMapping("/refreshAuthToken")
+    @ResponseBody
+    public CommonResp2<String> refreshAuthToken() {
+        CommonResp2<String> resp = new CommonResp2<>();
+
+        wxUserService.refreshAuthToken(WxAppInterceptor.getWxUserId(), resp);
+
+        return resp;
+    }
+
+    /**
      * 生成升级为普通会员/训练营会员的激活码
      *
      * @param option 1 -- 升级为普通会员, 2 -- 升级为训练营会员
