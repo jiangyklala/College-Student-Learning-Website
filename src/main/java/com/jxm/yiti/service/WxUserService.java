@@ -72,7 +72,7 @@ public class WxUserService {
     @Resource
     private WxUserInfoMapper wxUserInfoMapper;
 
-    private final static Integer INIT_POINTS = 0;
+    private final static Integer INIT_POINTS = 50;
 
     @Resource
     AppPayInfoMapper appPayInfoMapper;
