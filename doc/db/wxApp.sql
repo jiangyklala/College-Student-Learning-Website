@@ -168,3 +168,4 @@ CREATE TABLE `wx_special_page`
 ALTER TABLE wx_special_page
     ADD config mediumtext COMMENT 'json配置';
 
+# test
