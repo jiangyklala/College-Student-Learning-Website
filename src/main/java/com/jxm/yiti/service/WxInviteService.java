@@ -74,7 +74,7 @@ public class WxInviteService {
         resp.setContent(CopyUtil.copy(existInviteCode, WxInviteCodeResp.class));
     }
 
-    private WxInviter addInviter(Integer wxUserId, CommonResp2<WxInviterResp> resp) {
+    public WxInviter addInviter(Integer wxUserId, CommonResp2 resp) {
         WxInviter wxInviter = new WxInviter();
         wxInviter.setInviterId(wxUserId);
         wxInviter.setEarnings(BigDecimal.valueOf(0));

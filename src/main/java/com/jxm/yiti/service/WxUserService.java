@@ -86,6 +86,9 @@ public class WxUserService {
     @Resource
     private WxUserInfoMapper wxUserInfoMapper;
 
+    @Resource
+    WxInviteService wxInviteService;
+
     private final static Integer INIT_POINTS = 50;
 
     @Resource
@@ -406,7 +409,12 @@ public class WxUserService {
                 return;
             }
 
-            WxInviter wxInviter = wxInviterMapper.selectByPrimaryKey(wxUserInfos.get(0).getId());
+            Integer inviteUserId = wxUserInfos.get(0).getId();
+            WxInviter wxInviter = wxInviterMapper.selectByPrimaryKey(inviteUserId);
+            if (wxInviter == null) {
+                wxInviter = wxInviteService.addInviter(inviteUserId, resp);
+            }
+
             resp.setContent(CopyUtil.copy(wxInviter, WxInviterLimitsResp.class));
         } catch (RuntimeException e) {
             resp.setCode(StatusCode.DB_ERROR.code);
