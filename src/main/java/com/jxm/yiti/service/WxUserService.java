@@ -365,16 +365,16 @@ public class WxUserService {
     public void makeOrder(AppPayInfoReq req, Integer wxUserId, CommonResp2<String> resp) {
         // 判断是否已经是会员
         if (WxAppInterceptor.getWxUserType() != WxUserConst.NORMAL_USER) {
-            log.debug("userId: {}, userType: {}", wxUserId, WxAppInterceptor.getWxUserType());
+            log.info("userId: {}, userType: {}", wxUserId, WxAppInterceptor.getWxUserType());
             resp.setSuccess(false);
             resp.setMessage("已经是会员了喔~");
             return;
         }
 
-        log.debug("makeOrder Req: {}", req.toString());
+        log.info("makeOrder Req: {}", req.toString());
         AppPayInfo appPayInfo = CopyUtil.copy(req, AppPayInfo.class);
         appPayInfo.setUserId(wxUserId);
-        log.debug("appPayInfo: {}", appPayInfo.toString());
+        log.info("appPayInfo: {}", appPayInfo.toString());
 
         try {
             appPayInfoMapper.insertSelective(appPayInfo);
