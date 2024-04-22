@@ -1,6 +1,8 @@
 package com.jxm.yiti.service;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
@@ -365,8 +367,9 @@ public class WxUserService {
 
         // 增加收益
         WxInviter wxInviter = wxInviterMapper.selectByPrimaryKey(appPayInfo.getInviterId());
-        int count = (appPayInfo.getTotalFee() * wxInviter.getEarnRate()) / 10000;
-        wxInviterMapperCust.addUserEarnings(wxInviter.getInviterId(), count);
+        BigDecimal earnRate = new BigDecimal(wxInviter.getEarnRate()).divide(new BigDecimal(100), 2, RoundingMode.HALF_UP);
+        BigDecimal count = new BigDecimal(appPayInfo.getTotalFee()).divide(new BigDecimal(100), 2, RoundingMode.HALF_UP);
+        wxInviterMapperCust.addUserEarnings(wxInviter.getInviterId(), count.multiply(earnRate));
 
         WxInvitee wxInvitee = new WxInvitee();
         wxInvitee.setInviteeId(appPayInfo.getUserId());
