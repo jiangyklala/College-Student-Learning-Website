@@ -366,7 +366,7 @@ public class WxUserService {
         // 增加收益
         WxInviter wxInviter = wxInviterMapper.selectByPrimaryKey(appPayInfo.getInviterId());
         int count = (appPayInfo.getTotalFee() * wxInviter.getEarnRate()) / 100;
-        wxInviterMapperCust.addUserEarnings(appPayInfo.getUserId(), count);
+        wxInviterMapperCust.addUserEarnings(wxInviter.getInviterId(), count);
 
         WxInvitee wxInvitee = new WxInvitee();
         wxInvitee.setInviteeId(appPayInfo.getUserId());
