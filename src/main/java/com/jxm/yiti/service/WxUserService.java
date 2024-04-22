@@ -6,6 +6,7 @@ import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -24,6 +25,7 @@ import com.alibaba.fastjson2.JSONObject;
 import com.jxm.yiti.domain.AppPayInfo;
 import com.jxm.yiti.domain.AppPayInfoExample;
 import com.jxm.yiti.domain.QuestionUserInfo;
+import com.jxm.yiti.domain.WxInvitee;
 import com.jxm.yiti.domain.WxInviter;
 import com.jxm.yiti.domain.WxUserInfo;
 import com.jxm.yiti.domain.WxUserInfoExample;
@@ -32,6 +34,7 @@ import com.jxm.yiti.enums.WxUserConst;
 import com.jxm.yiti.interceptor.WxAppInterceptor;
 import com.jxm.yiti.mapper.AppPayInfoMapper;
 import com.jxm.yiti.mapper.QuestionUserInfoMapper;
+import com.jxm.yiti.mapper.WxInviteeMapper;
 import com.jxm.yiti.mapper.WxInviterMapper;
 import com.jxm.yiti.mapper.WxUserInfoMapper;
 import com.jxm.yiti.mapper.cust.QuestionUserInfoMapperCust;
@@ -85,6 +88,9 @@ public class WxUserService {
 
     @Resource
     private WxUserInfoMapper wxUserInfoMapper;
+
+    @Resource
+    private WxInviteeMapper wxInviteeMapper;
 
     @Resource
     WxInviteService wxInviteService;
@@ -359,7 +365,16 @@ public class WxUserService {
 
         // 增加收益
         WxInviter wxInviter = wxInviterMapper.selectByPrimaryKey(appPayInfo.getInviterId());
-        wxInviterMapperCust.addUserEarnings(appPayInfo.getUserId(), (appPayInfo.getTotalFee() * wxInviter.getEarnRate()) / 100);
+        int count = (appPayInfo.getTotalFee() * wxInviter.getEarnRate()) / 100;
+        wxInviterMapperCust.addUserEarnings(appPayInfo.getUserId(), count);
+
+        WxInvitee wxInvitee = new WxInvitee();
+        wxInvitee.setInviteeId(appPayInfo.getUserId());
+        wxInvitee.setInviterId(wxInvitee.getInviterId());
+        wxInvitee.setCount(String.valueOf(count));
+        wxInvitee.setCreateTime(new Date());
+
+        wxInviteeMapper.insertSelective(wxInvitee);
     }
 
     public void makeOrder(AppPayInfoReq req, Integer wxUserId, CommonResp2<String> resp) {
