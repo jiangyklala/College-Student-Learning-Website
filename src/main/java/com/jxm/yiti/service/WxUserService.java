@@ -370,7 +370,7 @@ public class WxUserService {
 
         WxInvitee wxInvitee = new WxInvitee();
         wxInvitee.setInviteeId(appPayInfo.getUserId());
-        wxInvitee.setInviterId(wxInvitee.getInviterId());
+        wxInvitee.setInviterId(wxInviter.getInviterId());
         wxInvitee.setCount(String.valueOf(count));
         wxInvitee.setCreateTime(new Date());
 
