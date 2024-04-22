@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jxm.yiti.mapper.WxInviterMapper">
+    <resultMap id="BaseResultMap" type="com.jxm.yiti.domain.WxInviter">
+        <id column="inviter_id" jdbcType="INTEGER" property="inviterId"/>
+        <result column="invited_count" jdbcType="INTEGER" property="invitedCount"/>
+        <result column="invite_balance" jdbcType="DECIMAL" property="inviteBalance"/>
+        <result column="earn_rate" jdbcType="INTEGER" property="earnRate"/>
+        <result column="earnings" jdbcType="DECIMAL" property="earnings"/>
+        <result column="is_accessible" jdbcType="BIT" property="isAccessible"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        inviter_id
+        , invited_count, invite_balance, earn_rate, earnings, is_accessible
+    </sql>
+    <select id="selectByExample" parameterType="com.jxm.yiti.domain.WxInviterExample" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from wx_inviter
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from wx_inviter
+        where inviter_id = #{inviterId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from wx_inviter
+        where inviter_id = #{inviterId,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.jxm.yiti.domain.WxInviterExample">
+        delete from wx_inviter
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.jxm.yiti.domain.WxInviter">
+        insert into wx_inviter (inviter_id, invited_count, invite_balance,
+                                earn_rate, earnings, is_accessible)
+        values (#{inviterId,jdbcType=INTEGER}, #{invitedCount,jdbcType=INTEGER}, #{inviteBalance,jdbcType=DECIMAL},
+                #{earnRate,jdbcType=INTEGER}, #{earnings,jdbcType=DECIMAL}, #{isAccessible,jdbcType=BIT})
+    </insert>
+    <insert id="insertSelective" parameterType="com.jxm.yiti.domain.WxInviter">
+        insert into wx_inviter
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="inviterId != null">
+                inviter_id,
+            </if>
+            <if test="invitedCount != null">
+                invited_count,
+            </if>
+            <if test="inviteBalance != null">
+                invite_balance,
+            </if>
+            <if test="earnRate != null">
+                earn_rate,
+            </if>
+            <if test="earnings != null">
+                earnings,
+            </if>
+            <if test="isAccessible != null">
+                is_accessible,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="inviterId != null">
+                #{inviterId,jdbcType=INTEGER},
+            </if>
+            <if test="invitedCount != null">
+                #{invitedCount,jdbcType=INTEGER},
+            </if>
+            <if test="inviteBalance != null">
+                #{inviteBalance,jdbcType=DECIMAL},
+            </if>
+            <if test="earnRate != null">
+                #{earnRate,jdbcType=INTEGER},
+            </if>
+            <if test="earnings != null">
+                #{earnings,jdbcType=DECIMAL},
+            </if>
+            <if test="isAccessible != null">
+                #{isAccessible,jdbcType=BIT},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.jxm.yiti.domain.WxInviterExample" resultType="java.lang.Long">
+        select count(*) from wx_inviter
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update wx_inviter
+        <set>
+            <if test="record.inviterId != null">
+                inviter_id = #{record.inviterId,jdbcType=INTEGER},
+            </if>
+            <if test="record.invitedCount != null">
+                invited_count = #{record.invitedCount,jdbcType=INTEGER},
+            </if>
+            <if test="record.inviteBalance != null">
+                invite_balance = #{record.inviteBalance,jdbcType=DECIMAL},
+            </if>
+            <if test="record.earnRate != null">
+                earn_rate = #{record.earnRate,jdbcType=INTEGER},
+            </if>
+            <if test="record.earnings != null">
+                earnings = #{record.earnings,jdbcType=DECIMAL},
+            </if>
+            <if test="record.isAccessible != null">
+                is_accessible = #{record.isAccessible,jdbcType=BIT},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update wx_inviter
+        set inviter_id = #{record.inviterId,jdbcType=INTEGER},
+        invited_count = #{record.invitedCount,jdbcType=INTEGER},
+        invite_balance = #{record.inviteBalance,jdbcType=DECIMAL},
+        earn_rate = #{record.earnRate,jdbcType=INTEGER},
+        earnings = #{record.earnings,jdbcType=DECIMAL},
+        is_accessible = #{record.isAccessible,jdbcType=BIT}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.jxm.yiti.domain.WxInviter">
+        update wx_inviter
+        <set>
+            <if test="invitedCount != null">
+                invited_count = #{invitedCount,jdbcType=INTEGER},
+            </if>
+            <if test="inviteBalance != null">
+                invite_balance = #{inviteBalance,jdbcType=DECIMAL},
+            </if>
+            <if test="earnRate != null">
+                earn_rate = #{earnRate,jdbcType=INTEGER},
+            </if>
+            <if test="earnings != null">
+                earnings = #{earnings,jdbcType=DECIMAL},
+            </if>
+            <if test="isAccessible != null">
+                is_accessible = #{isAccessible,jdbcType=BIT},
+            </if>
+        </set>
+        where inviter_id = #{inviterId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.jxm.yiti.domain.WxInviter">
+        update wx_inviter
+        set invited_count  = #{invitedCount,jdbcType=INTEGER},
+            invite_balance = #{inviteBalance,jdbcType=DECIMAL},
+            earn_rate      = #{earnRate,jdbcType=INTEGER},
+            earnings       = #{earnings,jdbcType=DECIMAL},
+            is_accessible  = #{isAccessible,jdbcType=BIT}
+        where inviter_id = #{inviterId,jdbcType=INTEGER}
+    </update>
+</mapper>

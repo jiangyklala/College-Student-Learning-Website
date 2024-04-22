@@ -2,12 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jxm.yiti.mapper.WxSpecialPageMapper">
   <resultMap id="BaseResultMap" type="com.jxm.yiti.domain.WxSpecialPage">
-    <id column="id" jdbcType="INTEGER" property="id"/>
-    <result column="title" jdbcType="VARCHAR" property="title"/>
+      <id column="id" jdbcType="INTEGER" property="id"/>
+      <result column="title" jdbcType="VARCHAR" property="title"/>
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.jxm.yiti.domain.WxSpecialPage">
-    <result column="answer" jdbcType="LONGVARCHAR" property="answer"/>
-    <result column="config" jdbcType="LONGVARCHAR" property="config"/>
+      <result column="answer" jdbcType="LONGVARCHAR" property="answer"/>
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -68,25 +67,24 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id
-    , title
+      id
+      , title
   </sql>
   <sql id="Blob_Column_List">
     answer
-    , config
   </sql>
-  <select id="selectByExampleWithBLOBs" parameterType="com.jxm.yiti.domain.WxSpecialPageExample"
-          resultMap="ResultMapWithBLOBs">
-    select
-    <if test="distinct">
-      distinct
-    </if>
-    <include refid="Base_Column_List"/>
-    ,
-    <include refid="Blob_Column_List"/>
-    from wx_special_page
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause"/>
+    <select id="selectByExampleWithBLOBs" parameterType="com.jxm.yiti.domain.WxSpecialPageExample"
+            resultMap="ResultMapWithBLOBs">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from wx_special_page
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
     </if>
     <if test="orderByClause != null">
       order by ${orderByClause}
@@ -97,39 +95,37 @@
     <if test="distinct">
       distinct
     </if>
-    <include refid="Base_Column_List"/>
+      <include refid="Base_Column_List"/>
     from wx_special_page
     <if test="_parameter != null">
-      <include refid="Example_Where_Clause"/>
+        <include refid="Example_Where_Clause"/>
     </if>
     <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
-    select
-    <include refid="Base_Column_List"/>
-    ,
-    <include refid="Blob_Column_List"/>
-    from wx_special_page
-    where id = #{id,jdbcType=INTEGER}
-  </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from wx_special_page
+        where id = #{id,jdbcType=INTEGER}
+    </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete
-    from wx_special_page
-    where id = #{id,jdbcType=INTEGER}
+      delete
+      from wx_special_page
+      where id = #{id,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByExample" parameterType="com.jxm.yiti.domain.WxSpecialPageExample">
     delete from wx_special_page
     <if test="_parameter != null">
-      <include refid="Example_Where_Clause"/>
+        <include refid="Example_Where_Clause"/>
     </if>
   </delete>
   <insert id="insert" parameterType="com.jxm.yiti.domain.WxSpecialPage">
-    insert into wx_special_page (id, title, answer,
-                                 config)
-    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{answer,jdbcType=LONGVARCHAR},
-            #{config,jdbcType=LONGVARCHAR})
+      insert into wx_special_page (id, title, answer)
+      values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{answer,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.jxm.yiti.domain.WxSpecialPage">
     insert into wx_special_page
@@ -143,9 +139,6 @@
       <if test="answer != null">
         answer,
       </if>
-      <if test="config != null">
-        config,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -157,15 +150,12 @@
       <if test="answer != null">
         #{answer,jdbcType=LONGVARCHAR},
       </if>
-      <if test="config != null">
-        #{config,jdbcType=LONGVARCHAR},
-      </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.jxm.yiti.domain.WxSpecialPageExample" resultType="java.lang.Long">
     select count(*) from wx_special_page
     <if test="_parameter != null">
-      <include refid="Example_Where_Clause"/>
+        <include refid="Example_Where_Clause"/>
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
@@ -180,30 +170,26 @@
       <if test="record.answer != null">
         answer = #{record.answer,jdbcType=LONGVARCHAR},
       </if>
-      <if test="record.config != null">
-        config = #{record.config,jdbcType=LONGVARCHAR},
-      </if>
     </set>
     <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause"/>
+        <include refid="Update_By_Example_Where_Clause"/>
     </if>
   </update>
   <update id="updateByExampleWithBLOBs" parameterType="map">
-    update wx_special_page
-    set id = #{record.id,jdbcType=INTEGER},
-    title = #{record.title,jdbcType=VARCHAR},
-    answer = #{record.answer,jdbcType=LONGVARCHAR},
-    config = #{record.config,jdbcType=LONGVARCHAR}
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause"/>
+      update wx_special_page
+      set id = #{record.id,jdbcType=INTEGER},
+      title = #{record.title,jdbcType=VARCHAR},
+      answer = #{record.answer,jdbcType=LONGVARCHAR}
+      <if test="_parameter != null">
+          <include refid="Update_By_Example_Where_Clause"/>
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update wx_special_page
-    set id = #{record.id,jdbcType=INTEGER},
-    title = #{record.title,jdbcType=VARCHAR}
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause"/>
+      update wx_special_page
+      set id = #{record.id,jdbcType=INTEGER},
+      title = #{record.title,jdbcType=VARCHAR}
+      <if test="_parameter != null">
+          <include refid="Update_By_Example_Where_Clause"/>
     </if>
   </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.jxm.yiti.domain.WxSpecialPage">
@@ -215,18 +201,14 @@
       <if test="answer != null">
         answer = #{answer,jdbcType=LONGVARCHAR},
       </if>
-      <if test="config != null">
-        config = #{config,jdbcType=LONGVARCHAR},
-      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.jxm.yiti.domain.WxSpecialPage">
-    update wx_special_page
-    set title  = #{title,jdbcType=VARCHAR},
-        answer = #{answer,jdbcType=LONGVARCHAR},
-        config = #{config,jdbcType=LONGVARCHAR}
-    where id = #{id,jdbcType=INTEGER}
+      update wx_special_page
+      set title  = #{title,jdbcType=VARCHAR},
+          answer = #{answer,jdbcType=LONGVARCHAR}
+      where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.jxm.yiti.domain.WxSpecialPage">
     update wx_special_page

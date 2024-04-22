@@ -25,6 +25,8 @@ public class AppPayInfo {
 
     private Date updateTime;
 
+    private Integer inviterId;
+
     public Integer getId() {
         return id;
     }
@@ -113,6 +115,14 @@ public class AppPayInfo {
         this.updateTime = updateTime;
     }
 
+    public Integer getInviterId() {
+        return inviterId;
+    }
+
+    public void setInviterId(Integer inviterId) {
+        this.inviterId = inviterId;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -130,6 +140,7 @@ public class AppPayInfo {
         sb.append(", subMchId=").append(subMchId);
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);
+        sb.append(", inviterId=").append(inviterId);
         sb.append("]");
         return sb.toString();
     }

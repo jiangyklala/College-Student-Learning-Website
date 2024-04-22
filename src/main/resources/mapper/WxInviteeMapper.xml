@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jxm.yiti.mapper.WxInviteeMapper">
+    <resultMap id="BaseResultMap" type="com.jxm.yiti.domain.WxInvitee">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="invitee_id" jdbcType="INTEGER" property="inviteeId"/>
+        <result column="inviter_id" jdbcType="INTEGER" property="inviterId"/>
+        <result column="inviter_name" jdbcType="VARCHAR" property="inviterName"/>
+        <result column="kind" jdbcType="INTEGER" property="kind"/>
+        <result column="count" jdbcType="VARCHAR" property="count"/>
+        <result column="create_time" jdbcType="DATE" property="createTime"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        id
+        , invitee_id, inviter_id, inviter_name, kind, `count`, create_time
+    </sql>
+    <select id="selectByExample" parameterType="com.jxm.yiti.domain.WxInviteeExample" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from wx_invitee
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from wx_invitee
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from wx_invitee
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.jxm.yiti.domain.WxInviteeExample">
+        delete from wx_invitee
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.jxm.yiti.domain.WxInvitee">
+        insert into wx_invitee (id, invitee_id, inviter_id,
+                                inviter_name, kind, `count`,
+                                create_time)
+        values (#{id,jdbcType=INTEGER}, #{inviteeId,jdbcType=INTEGER}, #{inviterId,jdbcType=INTEGER},
+                #{inviterName,jdbcType=VARCHAR}, #{kind,jdbcType=INTEGER}, #{count,jdbcType=VARCHAR},
+                #{createTime,jdbcType=DATE})
+    </insert>
+    <insert id="insertSelective" parameterType="com.jxm.yiti.domain.WxInvitee">
+        insert into wx_invitee
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="inviteeId != null">
+                invitee_id,
+            </if>
+            <if test="inviterId != null">
+                inviter_id,
+            </if>
+            <if test="inviterName != null">
+                inviter_name,
+            </if>
+            <if test="kind != null">
+                kind,
+            </if>
+            <if test="count != null">
+                `count`,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="inviteeId != null">
+                #{inviteeId,jdbcType=INTEGER},
+            </if>
+            <if test="inviterId != null">
+                #{inviterId,jdbcType=INTEGER},
+            </if>
+            <if test="inviterName != null">
+                #{inviterName,jdbcType=VARCHAR},
+            </if>
+            <if test="kind != null">
+                #{kind,jdbcType=INTEGER},
+            </if>
+            <if test="count != null">
+                #{count,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=DATE},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.jxm.yiti.domain.WxInviteeExample" resultType="java.lang.Long">
+        select count(*) from wx_invitee
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update wx_invitee
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.inviteeId != null">
+                invitee_id = #{record.inviteeId,jdbcType=INTEGER},
+            </if>
+            <if test="record.inviterId != null">
+                inviter_id = #{record.inviterId,jdbcType=INTEGER},
+            </if>
+            <if test="record.inviterName != null">
+                inviter_name = #{record.inviterName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.kind != null">
+                kind = #{record.kind,jdbcType=INTEGER},
+            </if>
+            <if test="record.count != null">
+                `count` = #{record.count,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime,jdbcType=DATE},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update wx_invitee
+        set id = #{record.id,jdbcType=INTEGER},
+        invitee_id = #{record.inviteeId,jdbcType=INTEGER},
+        inviter_id = #{record.inviterId,jdbcType=INTEGER},
+        inviter_name = #{record.inviterName,jdbcType=VARCHAR},
+        kind = #{record.kind,jdbcType=INTEGER},
+        `count` = #{record.count,jdbcType=VARCHAR},
+        create_time = #{record.createTime,jdbcType=DATE}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.jxm.yiti.domain.WxInvitee">
+        update wx_invitee
+        <set>
+            <if test="inviteeId != null">
+                invitee_id = #{inviteeId,jdbcType=INTEGER},
+            </if>
+            <if test="inviterId != null">
+                inviter_id = #{inviterId,jdbcType=INTEGER},
+            </if>
+            <if test="inviterName != null">
+                inviter_name = #{inviterName,jdbcType=VARCHAR},
+            </if>
+            <if test="kind != null">
+                kind = #{kind,jdbcType=INTEGER},
+            </if>
+            <if test="count != null">
+                `count` = #{count,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=DATE},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.jxm.yiti.domain.WxInvitee">
+        update wx_invitee
+        set invitee_id   = #{inviteeId,jdbcType=INTEGER},
+            inviter_id   = #{inviterId,jdbcType=INTEGER},
+            inviter_name = #{inviterName,jdbcType=VARCHAR},
+            kind         = #{kind,jdbcType=INTEGER},
+            `count`      = #{count,jdbcType=VARCHAR},
+            create_time  = #{createTime,jdbcType=DATE}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

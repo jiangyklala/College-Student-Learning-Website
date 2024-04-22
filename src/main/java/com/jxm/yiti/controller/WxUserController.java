@@ -16,9 +16,12 @@ import com.jxm.yiti.interceptor.WxAppInterceptor;
 import com.jxm.yiti.req.AppPayInfoReq;
 import com.jxm.yiti.req.CDKeyReq;
 import com.jxm.yiti.req.PaymentReq;
+import com.jxm.yiti.req.SearchLimitsReq;
 import com.jxm.yiti.req.WxLoginReq;
 import com.jxm.yiti.req.WxOnePaymentReq;
 import com.jxm.yiti.resp.CommonResp2;
+import com.jxm.yiti.resp.WxInviterLimitsReq;
+import com.jxm.yiti.resp.WxInviterLimitsResp;
 import com.jxm.yiti.resp.WxLoginResp;
 import com.jxm.yiti.resp.WxUserInfoResp;
 import com.jxm.yiti.service.WxUserService;
@@ -84,7 +87,7 @@ public class WxUserController {
     }
 
     /**
-     * 刷新用户积分等信息
+     * 刷新认证token
      */
     @PostMapping("/refreshAuthToken")
     @ResponseBody
@@ -161,4 +164,29 @@ public class WxUserController {
         return resp;
     }
 
+    /**
+     * 人员权限查找
+     */
+    @PostMapping("/searchLimits")
+    @ResponseBody
+    public CommonResp2<WxInviterLimitsResp> searchLimits(@RequestBody SearchLimitsReq req) {
+
+        CommonResp2<WxInviterLimitsResp> resp = new CommonResp2<>();
+        wxUserService.searchLimits(req, resp);
+
+        return resp;
+    }
+
+    /**
+     * 人员权限提交
+     */
+    @PostMapping("/searchLimitsSubmit")
+    @ResponseBody
+    public CommonResp2<WxInviterLimitsResp> searchLimitsSubmit(@RequestBody WxInviterLimitsReq req) {
+
+        CommonResp2<WxInviterLimitsResp> resp = new CommonResp2<>();
+        wxUserService.searchLimitsSubmit(req, resp);
+
+        return resp;
+    }
 }

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jxm.yiti.mapper.cust.WxInviterMapperCust">
+    <resultMap id="BaseResultMap" type="com.jxm.yiti.domain.WxInviter">
+        <id column="inviter_id" jdbcType="INTEGER" property="inviterId"/>
+        <result column="invited_count" jdbcType="INTEGER" property="invitedCount"/>
+        <result column="invite_balance" jdbcType="DECIMAL" property="inviteBalance"/>
+        <result column="earn_rate" jdbcType="INTEGER" property="earnRate"/>
+        <result column="earnings" jdbcType="DECIMAL" property="earnings"/>
+    </resultMap>
+
+    <update id="addUserEarnings">
+        UPDATE wx_inviter
+        SET invite_balance = invite_balance + #{increment}
+        WHERE id = #{userId};
+    </update>
+</mapper>

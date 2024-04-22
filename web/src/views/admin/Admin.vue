@@ -10,6 +10,10 @@
 			<!--			</a-button>-->
 			<!--			<br><br>-->
 			<a-button>
+				<a href="http://101.34.84.186:8119/yiti-api.html">GPTalk 后台接口</a>
+			</a-button>
+			<br><br>
+			<a-button>
 				<router-link to="/admin/AdminCategory">分类管理</router-link>
 			</a-button>
 			<!--			<br><br>-->
@@ -27,6 +31,14 @@
 			<br><br>
 			<a-button>
 				<router-link to="/admin/AdminWxSpecialPage">小程序特殊页面管理</router-link>
+			</a-button>
+			<br><br>
+			<a-button>
+				<router-link to="/admin/AdminUsers">小程序人员权限管理</router-link>
+			</a-button>
+			<br><br>
+			<a-button>
+				<router-link to="/admin/AdminConfig">动态配置项管理</router-link>
 			</a-button>
 			<br><br>
 		</div>

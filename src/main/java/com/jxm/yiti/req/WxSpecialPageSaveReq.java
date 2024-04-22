@@ -11,5 +11,4 @@ public class WxSpecialPageSaveReq {
     private Integer id;
     private String title;
     private String answer;
-    private String config;
 }

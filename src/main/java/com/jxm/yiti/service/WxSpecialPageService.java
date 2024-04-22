@@ -7,16 +7,20 @@ import org.springframework.util.ObjectUtils;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.jxm.yiti.config.RedisKeyAliasName;
 import com.jxm.yiti.domain.WxSpecialPage;
 import com.jxm.yiti.domain.WxSpecialPageExample;
+import com.jxm.yiti.enums.StatusCode;
 import com.jxm.yiti.interceptor.WxAppInterceptor;
 import com.jxm.yiti.mapper.WxSpecialPageMapper;
 import com.jxm.yiti.req.WxSpecialPageQueryReq;
 import com.jxm.yiti.req.WxSpecialPageSaveReq;
 import com.jxm.yiti.resp.CommonResp2;
+import com.jxm.yiti.resp.DynamicConfigResp;
 import com.jxm.yiti.resp.PageResp;
 import com.jxm.yiti.resp.WxSpecialPageResp;
 import com.jxm.yiti.utils.CopyUtil;
+import com.jxm.yiti.utils.JSONUtils;
 
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -64,12 +68,21 @@ public class WxSpecialPageService {
 
         try {
             List<WxSpecialPage> wxSpecialPageList = wxSpecialPageMapper.selectByExampleWithBLOBs(wxSpecialPageExample);
-            resp.setContent(CopyUtil.copy(wxSpecialPageList.get(0), WxSpecialPageResp.class));
+            WxSpecialPageResp wxSpecialPageResp = CopyUtil.copy(wxSpecialPageList.get(0), WxSpecialPageResp.class);
+
+            // 动态配置添加
+            wxSpecialPageResp.setDynamicConfigResp(
+                    new DynamicConfigResp(
+                            JSONUtils.addConfig(resp,
+                                    RedisKeyAliasName.WXAPP_VIP_PRICE.getKeyName(),
+                                    RedisKeyAliasName.WXAPP_PAY_PAGE_SHOW.getKeyName(),
+                                    RedisKeyAliasName.WXAPP_INVITE_DISCOUNT.getKeyName())));
+
+            resp.setContent(wxSpecialPageResp);
         } catch (RuntimeException e) {
-            resp.setCode(420);
+            resp.setCode(StatusCode.DB_ERROR.code);
             log.error("specialPage error, wxUserId:" + WxAppInterceptor.getWxUserId());
         }
-
     }
 
     public void save(WxSpecialPageSaveReq req, CommonResp2 resp) {
@@ -85,7 +98,7 @@ public class WxSpecialPageService {
             }
         } catch (RuntimeException e) {
             log.error("specialPage error, wxUserId:" + WxAppInterceptor.getWxUserId());
-            resp.setCode(420);
+            resp.setCode(StatusCode.DB_ERROR.code);
         }
     }
 }

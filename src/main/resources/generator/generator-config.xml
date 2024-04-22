@@ -40,7 +40,9 @@
                              targetPackage="com.jxm.yiti.mapper"
                              type="XMLMAPPER"/>
 
+<!--        <table tableName="app_pay_info"/>-->
         <table tableName="wx_special_page"/>
+        <!--        <table tableName="wx_invite_code"/>-->
 
     </context>
 </generatorConfiguration>

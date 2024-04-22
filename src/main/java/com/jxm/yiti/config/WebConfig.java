@@ -21,11 +21,14 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/wxUser/**",
                         "/wxCollect/**",
                         "/wxQuestion/**",
-                        "/wxSpecial/**")
+                        "/wxSpecial/**",
+                        "/wxInvite/**")
                 .excludePathPatterns("/wxUser/login",
                         "/wxUser/getNSVCDKey/**",
                         "/wxUser/switchUserType/**",
                         "/wxUser/notifyAfter/**",
+                        "/wxUser/searchLimits/**",
+                        "/wxUser/searchLimitsSubmit/**",
                         "/wxQuestion/save",
                         "/wxQuestion/selectAllAdmin",
                         "/wxQuestion/delete/**",

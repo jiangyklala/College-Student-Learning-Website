@@ -824,6 +824,66 @@ public class AppPayInfoExample {
             addCriterion("update_time not between", value1, value2, "updateTime");
             return (Criteria) this;
         }
+
+        public Criteria andInviterIdIsNull() {
+            addCriterion("inviter_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterIdIsNotNull() {
+            addCriterion("inviter_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterIdEqualTo(Integer value) {
+            addCriterion("inviter_id =", value, "inviterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterIdNotEqualTo(Integer value) {
+            addCriterion("inviter_id <>", value, "inviterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterIdGreaterThan(Integer value) {
+            addCriterion("inviter_id >", value, "inviterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("inviter_id >=", value, "inviterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterIdLessThan(Integer value) {
+            addCriterion("inviter_id <", value, "inviterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterIdLessThanOrEqualTo(Integer value) {
+            addCriterion("inviter_id <=", value, "inviterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterIdIn(List<Integer> values) {
+            addCriterion("inviter_id in", values, "inviterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterIdNotIn(List<Integer> values) {
+            addCriterion("inviter_id not in", values, "inviterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterIdBetween(Integer value1, Integer value2) {
+            addCriterion("inviter_id between", value1, value2, "inviterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("inviter_id not between", value1, value2, "inviterId");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

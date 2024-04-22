@@ -24,18 +24,26 @@ import com.alibaba.fastjson2.JSONObject;
 import com.jxm.yiti.domain.AppPayInfo;
 import com.jxm.yiti.domain.AppPayInfoExample;
 import com.jxm.yiti.domain.QuestionUserInfo;
+import com.jxm.yiti.domain.WxInviter;
 import com.jxm.yiti.domain.WxUserInfo;
+import com.jxm.yiti.domain.WxUserInfoExample;
+import com.jxm.yiti.enums.StatusCode;
 import com.jxm.yiti.enums.WxUserConst;
 import com.jxm.yiti.interceptor.WxAppInterceptor;
 import com.jxm.yiti.mapper.AppPayInfoMapper;
 import com.jxm.yiti.mapper.QuestionUserInfoMapper;
+import com.jxm.yiti.mapper.WxInviterMapper;
 import com.jxm.yiti.mapper.WxUserInfoMapper;
 import com.jxm.yiti.mapper.cust.QuestionUserInfoMapperCust;
+import com.jxm.yiti.mapper.cust.WxInviterMapperCust;
 import com.jxm.yiti.mapper.cust.WxUserInfoMapperCust;
 import com.jxm.yiti.req.AppPayInfoReq;
 import com.jxm.yiti.req.PaymentReq;
+import com.jxm.yiti.req.SearchLimitsReq;
 import com.jxm.yiti.req.WxOnePaymentReq;
 import com.jxm.yiti.resp.CommonResp2;
+import com.jxm.yiti.resp.WxInviterLimitsReq;
+import com.jxm.yiti.resp.WxInviterLimitsResp;
 import com.jxm.yiti.resp.WxLoginResp;
 import com.jxm.yiti.resp.WxUserInfoResp;
 import com.jxm.yiti.utils.CopyUtil;
@@ -68,6 +76,12 @@ public class WxUserService {
 
     @Resource
     private WxUserInfoMapperCust wxUserInfoMapperCust;
+
+    @Resource
+    private WxInviterMapperCust wxInviterMapperCust;
+
+    @Resource
+    private WxInviterMapper wxInviterMapper;
 
     @Resource
     private WxUserInfoMapper wxUserInfoMapper;
@@ -314,7 +328,7 @@ public class WxUserService {
         try {
             List<AppPayInfo> appPayInfos = appPayInfoMapper.selectByExample(appPayInfoExample);
             if (appPayInfos.isEmpty()) {
-                throw new Exception("selected appPayInfos is empty, trade_no is : {} " + notifyData.getOutTradeNo());
+                throw new RuntimeException("selected appPayInfos is empty, trade_no is : {} " + notifyData.getOutTradeNo());
             }
 
             appPayInfo.setId(appPayInfos.get(0).getId());
@@ -326,9 +340,23 @@ public class WxUserService {
 
             appPayInfoMapper.updateByPrimaryKeySelective(appPayInfo);
             wxUserInfoMapperCust.switchUserTypeByCDKey(appPayInfos.get(0).getUserId(), WxUserConst.NORMAL_VIP.getType());
-        } catch (Exception e) {
+
+            // 邀请逻辑
+            solveInvite(appPayInfos.get(0));
+
+        } catch (RuntimeException e) {
             log.error("wxApp pay notify error. appPayInfo:{}", appPayInfo, e);
         }
+    }
+
+    private void solveInvite(AppPayInfo appPayInfo) throws RuntimeException {
+        if (appPayInfo.getInviterId() == null) {
+            return;
+        }
+
+        // 增加收益
+        WxInviter wxInviter = wxInviterMapper.selectByPrimaryKey(appPayInfo.getInviterId());
+        wxInviterMapperCust.addUserEarnings(appPayInfo.getUserId(), (appPayInfo.getTotalFee() * wxInviter.getEarnRate()) / 100);
     }
 
     public void makeOrder(AppPayInfoReq req, Integer wxUserId, CommonResp2<String> resp) {
@@ -337,6 +365,7 @@ public class WxUserService {
             log.debug("userId: {}, userType: {}", wxUserId, WxAppInterceptor.getWxUserType());
             resp.setSuccess(false);
             resp.setMessage("已经是会员了喔~");
+            return;
         }
 
         log.debug("makeOrder Req: {}", req.toString());
@@ -359,6 +388,38 @@ public class WxUserService {
             log.debug("userId:{} refreshed token: {}", wxUserId, authToken);
         } catch (RuntimeException e) {
             resp.setCode(420);
+            resp.setMessage("refresh token failed!");
+        }
+    }
+
+    public void searchLimits(SearchLimitsReq req, CommonResp2<WxInviterLimitsResp> resp) {
+        try {
+            WxUserInfoExample wxUserInfoExample = new WxUserInfoExample();
+            WxUserInfoExample.Criteria criteria = wxUserInfoExample.createCriteria();
+            criteria.andNameEqualTo(req.getUserName());
+
+            List<WxUserInfo> wxUserInfos = wxUserInfoMapper.selectByExample(wxUserInfoExample);
+            if (wxUserInfos == null || wxUserInfos.isEmpty()) {
+                resp.setSuccess(false);
+                resp.setCode(StatusCode.BUSINESS_BUSY.code);
+                resp.setMessage("查找不到相应用户");
+                return;
+            }
+
+            WxInviter wxInviter = wxInviterMapper.selectByPrimaryKey(wxUserInfos.get(0).getId());
+            resp.setContent(CopyUtil.copy(wxInviter, WxInviterLimitsResp.class));
+        } catch (RuntimeException e) {
+            resp.setCode(StatusCode.DB_ERROR.code);
+            resp.setMessage("refresh token failed!");
+        }
+    }
+
+    public void searchLimitsSubmit(WxInviterLimitsReq req, CommonResp2<WxInviterLimitsResp> resp) {
+        try {
+            WxInviter wxInviter = CopyUtil.copy(req, WxInviter.class);
+            wxInviterMapper.updateByPrimaryKeySelective(wxInviter);
+        } catch (RuntimeException e) {
+            resp.setCode(StatusCode.DB_ERROR.code);
             resp.setMessage("refresh token failed!");
         }
     }

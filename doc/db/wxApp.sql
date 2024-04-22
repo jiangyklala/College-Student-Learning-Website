@@ -128,6 +128,10 @@ CREATE TABLE `app_pay_info`
 ) ENGINE = innodb
   DEFAULT CHARSET = utf8mb4 COMMENT = '支付信息表';
 
+# 增加 inviterId 列
+ALTER TABLE app_pay_info
+    ADD inviter_id int default null;
+
 # 收藏题目表
 DROP TABLE IF EXISTS `wx_collect`;
 
@@ -168,4 +172,56 @@ CREATE TABLE `wx_special_page`
 ALTER TABLE wx_special_page
     ADD config mediumtext COMMENT 'json配置';
 
-# lala
+# 增加 config 列
+ALTER TABLE wx_special_page
+    DROP config;
+
+
+# 邀请人总信息表
+DROP TABLE IF EXISTS `wx_inviter`;
+
+CREATE TABLE `wx_inviter`
+(
+    `inviter_id`     int NOT NULL,
+    `invited_count`  int            default 0,
+    `invite_balance` decimal(20, 2) default 0.00 COMMENT '待提现佣金',
+    `earn_rate`      int            default 20,
+    `earnings`       decimal(20, 2) default 0.00 COMMENT '已提现金额',
+    PRIMARY KEY (`inviter_id`)
+) engine = innodb
+  DEFAULT charset = utf8mb4 COMMENT = '邀请人总信息表';
+
+# 增加 是否具有分销权限 列
+ALTER TABLE wx_inviter
+    ADD is_accessible boolean COMMENT '是否具有分销权限' default false;
+
+# 邀请code表
+DROP TABLE IF EXISTS `wx_invite_code`;
+
+CREATE TABLE `wx_invite_code`
+(
+    `id`          int AUTO_INCREMENT NOT NULL,
+    `invite_code` varchar(10) DEFAULT (NULL),
+    `inviter_id`  int                NOT NULL,
+    `create_time` DATE,
+    FOREIGN KEY (`inviter_id`) REFERENCES wx_inviter (`inviter_id`),
+    PRIMARY KEY (`id`)
+) engine = innodb
+  DEFAULT charset = utf8mb4 COMMENT = '邀请code表';
+
+# 邀请对应表
+DROP TABLE IF EXISTS `wx_invitee`;
+
+CREATE TABLE `wx_invitee`
+(
+    `id`          int AUTO_INCREMENT NOT NULL,
+    `invitee_id`  int                NOT NULL,
+    `inviter_id`  int                NOT NULL,
+    inviter_name  varchar(32)        NOT NULL,
+    `kind`        int         DEFAULT 0,
+    `count`       varchar(10) default '0' COMMENT '数额',
+    `create_time` DATE,
+    FOREIGN KEY (`inviter_id`) REFERENCES wx_inviter (`inviter_id`),
+    PRIMARY KEY (`id`)
+) engine = innodb
+  DEFAULT charset = utf8mb4 COMMENT = '邀请对应表';

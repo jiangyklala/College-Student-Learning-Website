@@ -11,5 +11,6 @@ public class WxSpecialPageResp extends PageResp {
     private Integer id;
     private String title;
     private String answer;
-    private String config;
+
+    private DynamicConfigResp dynamicConfigResp;
 }

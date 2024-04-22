@@ -88,6 +88,18 @@ const routes: Array<RouteRecordRaw> = [
 
     },
     {
+        path: '/admin/AdminUsers',
+        name: 'AdminUsers',
+        component: () => import('../views/admin/AdminUsers.vue')
+
+    },
+    {
+        path: '/admin/AdminConfig',
+        name: 'AdminConfig',
+        component: () => import('../views/admin/AdminConfig.vue')
+
+    },
+    {
         path: '/admin/Admin',
         name: 'Admin',
         component: () => import('../views/admin/Admin.vue')
@@ -153,7 +165,7 @@ const router = createRouter({
 })
 
 const adminPages = ["AdminDownload", "AdminCourse", "AdminCategory",
-    "AdminColumn", "AdminQuestion", "AdminWxQuestion", "AdminWxSpecialPage"];
+    "AdminColumn", "AdminQuestion", "AdminWxQuestion", "AdminWxSpecialPage", "AdminUsers", "AdminConfig"];
 
 router.beforeEach((to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
     // 支付页面
