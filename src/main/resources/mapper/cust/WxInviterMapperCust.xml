@@ -12,6 +12,6 @@
     <update id="addUserEarnings">
         UPDATE wx_inviter
         SET invite_balance = invite_balance + #{increment}
-        WHERE id = #{userId};
+        WHERE inviter_id = #{userId};
     </update>
 </mapper>

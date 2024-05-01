@@ -217,7 +217,7 @@ CREATE TABLE `wx_invitee`
     `id`          int AUTO_INCREMENT NOT NULL,
     `invitee_id`  int                NOT NULL,
     `inviter_id`  int                NOT NULL,
-    inviter_name  varchar(32)        NOT NULL,
+    inviter_name  varchar(32),
     `kind`        int         DEFAULT 0,
     `count`       varchar(10) default '0' COMMENT '数额',
     `create_time` DATE,

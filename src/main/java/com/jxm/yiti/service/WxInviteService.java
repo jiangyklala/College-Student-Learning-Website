@@ -1,5 +1,6 @@
 package com.jxm.yiti.service;
 
+import com.alibaba.fastjson2.JSON;
 import com.jxm.yiti.domain.WxInviteCode;
 import com.jxm.yiti.domain.WxInviteCodeExample;
 import com.jxm.yiti.domain.WxInviter;
@@ -209,6 +210,7 @@ public class WxInviteService {
 
         WxInviteCode wxInviteCode = wxInviteCodes.get(0);
         WxInviter existInviter = isExistInviter(wxInviteCode.getInviterId());
+        log.info("wxInviteCode: {}, existInviter:{}", JSON.toJSONString(wxInviteCode), JSON.toJSONString(existInviter));
         // 检查被邀请人是否具有分销权限, 并且被邀请人不能是自己
         if (!existInviter.getIsAccessible() || Objects.equals(wxUserId, wxInviteCode.getInviterId())) {
             resp.setSuccess(false);
