@@ -1,32 +1,16 @@
 package com.jxm.yiti.controller;
 
+import com.jxm.yiti.interceptor.WxAppInterceptor;
+import com.jxm.yiti.req.*;
+import com.jxm.yiti.resp.*;
+import com.jxm.yiti.service.WxUserService;
+import jakarta.annotation.Resource;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.jxm.yiti.interceptor.WxAppInterceptor;
-import com.jxm.yiti.req.AppPayInfoReq;
-import com.jxm.yiti.req.CDKeyReq;
-import com.jxm.yiti.req.PaymentReq;
-import com.jxm.yiti.req.SearchLimitsReq;
-import com.jxm.yiti.req.WxLoginReq;
-import com.jxm.yiti.req.WxOnePaymentReq;
-import com.jxm.yiti.resp.CommonResp2;
-import com.jxm.yiti.resp.WxInviterLimitsReq;
-import com.jxm.yiti.resp.WxInviterLimitsResp;
-import com.jxm.yiti.resp.WxLoginResp;
-import com.jxm.yiti.resp.WxUserInfoResp;
-import com.jxm.yiti.service.WxUserService;
-
-import jakarta.annotation.Resource;
 
 @Controller
 @RequestMapping("/wxUser")
