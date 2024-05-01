@@ -1,12 +1,5 @@
 package com.jxm.yiti.service;
 
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-
-import org.springframework.stereotype.Service;
-
 import com.jxm.yiti.domain.WxInviteCode;
 import com.jxm.yiti.domain.WxInviteCodeExample;
 import com.jxm.yiti.domain.WxInviter;
@@ -22,9 +15,14 @@ import com.jxm.yiti.resp.WxInviteCodeResp;
 import com.jxm.yiti.resp.WxInviterResp;
 import com.jxm.yiti.utils.CopyUtil;
 import com.jxm.yiti.utils.InviteCodeGenerate;
-
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * @author jiangyunkai <jiangyunkai@kuaishou.com>
@@ -74,7 +72,7 @@ public class WxInviteService {
         resp.setContent(CopyUtil.copy(existInviteCode, WxInviteCodeResp.class));
     }
 
-    private WxInviter addInviter(Integer wxUserId, CommonResp2<WxInviterResp> resp) {
+    public WxInviter addInviter(Integer wxUserId, CommonResp2 resp) {
         WxInviter wxInviter = new WxInviter();
         wxInviter.setInviterId(wxUserId);
         wxInviter.setEarnings(BigDecimal.valueOf(0));
