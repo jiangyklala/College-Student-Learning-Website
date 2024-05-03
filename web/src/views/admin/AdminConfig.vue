@@ -1,15 +1,15 @@
 <template>
 	<a-layout-content class="layout-content">
 		<a-space direction="vertical">
-			会员价格(分)
+			会员购买价格(分)
 			<a-input v-model:value="configList.yt_wa_cf_vp"/>
 			<a-divider/>
 			
 			支付页面是否展示(0:不展示 1:展示)
 			<a-input v-model:value="configList.yt_wa_cf_pps"/>
 			<a-divider/>
-			
-			邀请码的优惠价格(元)
+
+      邀请码的优惠价格(分)
 			<a-input v-model:value="configList.yt_wa_cf_id"/>
 			<a-divider/>
 			

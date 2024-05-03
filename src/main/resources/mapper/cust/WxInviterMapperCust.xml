@@ -14,4 +14,10 @@
         SET invite_balance = invite_balance + #{increment}
         WHERE inviter_id = #{userId};
     </update>
+
+    <update id="incrInvitedCount">
+        UPDATE wx_inviter
+        SET invited_count = invited_count + 1
+        WHERE inviter_id = #{userId};
+    </update>
 </mapper>

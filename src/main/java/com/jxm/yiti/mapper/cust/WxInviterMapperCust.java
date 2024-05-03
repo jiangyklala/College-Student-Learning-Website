@@ -6,4 +6,6 @@ import java.math.BigDecimal;
 
 public interface WxInviterMapperCust {
     Integer addUserEarnings(@Param("userId") Integer userId, @Param("increment") BigDecimal increment);
+
+    Integer incrInvitedCount(@Param("userId") Integer userId);
 }

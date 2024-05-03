@@ -349,6 +349,7 @@ public class WxUserService {
         BigDecimal earnRate = new BigDecimal(wxInviter.getEarnRate()).divide(new BigDecimal(100), 2, RoundingMode.HALF_UP);
         BigDecimal count = new BigDecimal(appPayInfo.getTotalFee()).divide(new BigDecimal(100), 2, RoundingMode.HALF_UP);
         wxInviterMapperCust.addUserEarnings(wxInviter.getInviterId(), count.multiply(earnRate));
+        wxInviterMapperCust.incrInvitedCount(wxInviter.getInviterId());
 
         WxInvitee wxInvitee = new WxInvitee();
         wxInvitee.setInviteeId(appPayInfo.getUserId());
