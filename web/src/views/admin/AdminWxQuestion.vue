@@ -118,6 +118,7 @@ export default defineComponent({
         dataIndex: 'category',
         width: '20%',
         filters: categoryFilterArray.value,
+        filterSearch: true,
         onFilter: (value: number, record: any) => record.categoryId === value,
         sorter: (a: any, b: any) => a.name.length - b.name.length,
         sortDirections: ['descend'],
@@ -420,7 +421,7 @@ export default defineComponent({
         };
 
         itemJsonObject.value = item.id;
-        itemJsonObject.text = item.name;
+        itemJsonObject.text = getParentCategoryNameById(item.id) + "/" + item.name;
 
         categoryFilterArray.value.push(itemJsonObject);
       })
