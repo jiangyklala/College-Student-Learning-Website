@@ -20,7 +20,8 @@
         :columns="columns"
         :data-source="listData"
         :row-key="record => record.id"
-        :pagination="pagination" @change="handleTableChange"
+        :pagination="pagination"
+        @change="handleTableChange"
         :loading="loading"
         bordered>
       <template v-slot:bodyCell="{ column, record, index }">
@@ -120,8 +121,6 @@ export default defineComponent({
         filters: categoryFilterArray.value,
         filterSearch: true,
         onFilter: (value: number, record: any) => record.categoryId === value,
-        sorter: (a: any, b: any) => a.name.length - b.name.length,
-        sortDirections: ['descend'],
       },
       {
         title: '点赞数',
@@ -330,7 +329,7 @@ export default defineComponent({
 
     const pagination = ref({
       current: 1,
-      pageSize: 10,
+      pageSize: 20,
       total: 0
     });
 
@@ -338,12 +337,25 @@ export default defineComponent({
      * 分页的跳转页面处理
      * @param pagination
      */
-    const handleTableChange = (pagination: any) => {
-      // console.log("pagination:" + pagination);
-      QuestionListALlQuery({
-        current: pagination.current,
-        pageSize: pagination.pageSize,
-      });
+    const handleTableChange = (pagination: any, filters: any, sorter: any, others: any) => {
+      // console.log('Pagination:', pagination);
+      // console.log('Filters:', filters);
+      // console.log('others:', others);
+
+      // 通过 others 中的 action 属性区分操作的对象
+
+      if (others.action === "paginate") {
+        QuestionListALlQuery({
+          current: pagination.current,
+          pageSize: pagination.pageSize,
+        });
+        return;
+      }
+
+      // if (others.action === "filter") {
+      //
+      //   return;
+      // }
     };
 
 
