@@ -1,28 +1,20 @@
 package com.jxm.yiti.controller;
 
-import java.util.List;
-
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.jxm.yiti.req.CategoryQueryReq;
 import com.jxm.yiti.req.CategorySaveReq;
 import com.jxm.yiti.resp.CategoryQueryResp;
 import com.jxm.yiti.resp.CommonResp;
 import com.jxm.yiti.resp.PageResp;
 import com.jxm.yiti.service.CategoryService;
-
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -67,8 +59,12 @@ public class CategoryController {
     /**
      * 查询所有分类中, 某个模块下的, 某个层级的所有分类
      *
-     * @param type  -1 -- 全部分类; 1 -- 微信小程序普通面试题分类; 2 -- 微信小程序大厂面经分类
-     * @param level -1 -- 查全部; n -- 查某级
+     * @param type  -1 -- 全部分类;
+     *              1 -- 微信小程序普通面试题分类;
+     *              2 -- 微信小程序大厂面经分类;
+     *              3 -- 微信小程序场景题分类;
+     * @param level -1 -- 查全部;
+     *              n -- 查某级
      */
     @Cacheable(cacheNames = "category/selectByTypeAndLevel", keyGenerator = "myKeyGenerator")
     @GetMapping("/selectByTypeAndLevel/{type}/{level}")

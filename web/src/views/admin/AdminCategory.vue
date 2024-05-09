@@ -99,6 +99,7 @@
 		    >
 			    <a-select-option :value="1">普通面试题</a-select-option>
 			    <a-select-option :value="2">大厂面经</a-select-option>
+          <a-select-option :value="3">场景题</a-select-option>
 		    </a-select>
 	    </a-form-item>
     </a-form>
@@ -267,6 +268,8 @@ export default defineComponent({
 				  return "普通面试题";
 			  case 2:
 				  return "大厂面经";
+        case 3:
+          return "场景题";
 		  }
 	  }
 	  
