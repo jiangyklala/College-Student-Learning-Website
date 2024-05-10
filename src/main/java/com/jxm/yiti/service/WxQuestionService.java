@@ -1,11 +1,5 @@
 package com.jxm.yiti.service;
 
-import java.util.List;
-
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
-
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jxm.yiti.domain.WxQuestion;
@@ -24,9 +18,13 @@ import com.jxm.yiti.resp.PageResp;
 import com.jxm.yiti.resp.WxQuestionQueryResp;
 import com.jxm.yiti.utils.CopyUtil;
 import com.jxm.yiti.utils.SnowFlakeIdWorker;
-
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -61,6 +59,14 @@ public class WxQuestionService {
         if (ifDescSort) {
             wxQuestionExample.setOrderByClause("id desc");
         }
+
+        // 是否查 categoryIdList, 目前只有后台的 Admin 接口会诱导
+        List<Integer> categoryIdList = req.getCategoryIdList();
+        if (!ObjectUtils.isEmpty(categoryIdList)) {
+            criteria.andCategoryIdIn(categoryIdList);
+            wxQuestionExample.setOrderByClause("category_id desc");
+        }
+
         // 是否查询某个题目
         if (!ObjectUtils.isEmpty(req.getTitle())) {
             criteria.andTitleLike("%" + req.getTitle() + "%");

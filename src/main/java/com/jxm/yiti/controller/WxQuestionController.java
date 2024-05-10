@@ -1,17 +1,5 @@
 package com.jxm.yiti.controller;
 
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.jxm.yiti.annotation.AccessLimit;
 import com.jxm.yiti.enums.WxUserConst;
 import com.jxm.yiti.req.WxQuestionDelReq;
@@ -23,10 +11,14 @@ import com.jxm.yiti.resp.CommonResp2;
 import com.jxm.yiti.resp.PageResp;
 import com.jxm.yiti.resp.WxQuestionQueryResp;
 import com.jxm.yiti.service.WxQuestionService;
-
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @Controller
@@ -59,9 +51,9 @@ public class WxQuestionController {
      *
      * @param req 查询参数
      */
-    @GetMapping("/selectAllAdmin")
+    @PostMapping("/selectAllAdmin")
     @ResponseBody
-    public CommonResp<PageResp<WxQuestionQueryResp>> selectAllAdmin(@Valid WxQuestionQueryReq req) {
+    public CommonResp<PageResp<WxQuestionQueryResp>> selectAllAdmin(@RequestBody @Valid WxQuestionQueryReq req) {
         CommonResp<PageResp<WxQuestionQueryResp>> resp = new CommonResp<>();
 
         PageResp<WxQuestionQueryResp> list = wxQuestionService.selectAll(req, true);

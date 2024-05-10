@@ -120,7 +120,9 @@ export default defineComponent({
         width: '20%',
         filters: categoryFilterArray.value,
         filterSearch: true,
-        onFilter: (value: number, record: any) => record.categoryId === value,
+        onFilter: (value: number, record: any) => {
+          return record.categoryId === value;
+        },
       },
       {
         title: '点赞数',
@@ -160,12 +162,11 @@ export default defineComponent({
      * @param p
      */
     const QuestionListALlQuery = (p: any) => {
-      axios.get("/wxQuestion/selectAllAdmin", {
-        params: {
-          page: p.current,
-          size: p.pageSize,
-          title: p.title,
-        }
+      axios.post("/wxQuestion/selectAllAdmin", {
+        page: p.current,
+        size: p.pageSize,
+        title: p.title,
+        categoryIdList: p.categoryIdList,
       }).then((response) => {
 
         if (response.data.success) {  // 判断后端接口返回是否出错
@@ -341,21 +342,13 @@ export default defineComponent({
       // console.log('Pagination:', pagination);
       // console.log('Filters:', filters);
       // console.log('others:', others);
-
       // 通过 others 中的 action 属性区分操作的对象
 
-      if (others.action === "paginate") {
-        QuestionListALlQuery({
-          current: pagination.current,
-          pageSize: pagination.pageSize,
-        });
-        return;
-      }
-
-      // if (others.action === "filter") {
-      //
-      //   return;
-      // }
+      QuestionListALlQuery({
+        current: pagination.current,
+        pageSize: pagination.pageSize,
+        categoryIdList: filters.category,
+      })
     };
 
 
