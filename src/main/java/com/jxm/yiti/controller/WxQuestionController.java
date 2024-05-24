@@ -33,7 +33,7 @@ public class WxQuestionController {
      *
      * @param req 查询参数
      */
-    @Cacheable(cacheNames = "wxQuestion/selectAll", keyGenerator = "myKeyGenerator")
+    @Cacheable(cacheNames = "wxQuestion_selectAll_", key = "#req.categoryId + '_' + #req.categoryIdList")
     @GetMapping("/selectAll")
     @ResponseBody
     public CommonResp<PageResp<WxQuestionQueryResp>> list(@Valid WxQuestionQueryReq req) {
@@ -42,7 +42,8 @@ public class WxQuestionController {
         PageResp<WxQuestionQueryResp> list = wxQuestionService.selectAll(req, false);
 
         resp.setContent(list);
-        log.info("没有获取到缓存, 更新缓存");
+        log.info("WxQuestionController list, 没有获取到缓存, 更新缓存, key: {}",
+                "wxQuestion_selectAll_" + req.getCategoryId() + '_' + req.getCategoryIdList());
         return resp;
     }
 
@@ -65,7 +66,7 @@ public class WxQuestionController {
     /**
      * 根据所属目录 id 查该目录下的所有题目列表
      */
-    @Cacheable(cacheNames = "wxQuestion/selectByCategoryId", keyGenerator = "myKeyGenerator")
+    @Cacheable(cacheNames = "wxQuestion_selectByCategoryId_", key = "#req.categoryId")
     @GetMapping("/selectByCategoryId")
     @ResponseBody
     public CommonResp<PageResp<WxQuestionQueryResp>> selectByCategoryId(@Valid WxQuestionQueryReq req) {
@@ -74,7 +75,8 @@ public class WxQuestionController {
         PageResp<WxQuestionQueryResp> list = wxQuestionService.selectByCategoryId(req);
 
         resp.setContent(list);
-        log.info("没有获取到缓存, 更新缓存");
+        log.info("WxQuestionController selectByCategoryId, 没有获取到缓存, 更新缓存, key: {}",
+                "wxQuestion_selectByCategoryId_" + req.getCategoryId());
         return resp;
     }
 
@@ -99,7 +101,7 @@ public class WxQuestionController {
     /**
      * 根据某个题目的答案 id 查该题的答案
      */
-    @Cacheable(cacheNames = "wxQuestion/selectAnswer", keyGenerator = "myKeyGenerator")
+    @Cacheable(cacheNames = "wxQuestion_selectAnswer_", key = "#answerId")
     @AccessLimit(type = {WxUserConst.NORMAL_VIP, WxUserConst.SPECIAL_VIP, WxUserConst.SUPER})
     @GetMapping("/selectAnswer")
     @ResponseBody
@@ -113,7 +115,8 @@ public class WxQuestionController {
         }
 
         resp.setContent(answer);
-        log.info("没有获取到缓存, 更新缓存");
+        log.info("WxQuestionController selectAnswer, 没有获取到缓存, 更新缓存, key: {}",
+                "wxQuestion_selectAnswer_" + answerId);
         return resp;
     }
 
@@ -124,9 +127,9 @@ public class WxQuestionController {
      * @param req 保存参数
      */
     @Caching(evict = {
-            @CacheEvict(cacheNames = "wxQuestion/selectAnswer", allEntries = true),
-            @CacheEvict(cacheNames = "wxQuestion/selectAll", allEntries = true),
-            @CacheEvict(cacheNames = "wxQuestion/selectByCategoryId", allEntries = true)
+            @CacheEvict(cacheNames = "wxQuestion_selectAll_", allEntries = true),
+            @CacheEvict(cacheNames = "wxQuestion_selectByCategoryId_", allEntries = true),
+            @CacheEvict(cacheNames = "wxQuestion_selectAnswer_", allEntries = true)
 
     })
     @PostMapping("/save")
@@ -139,6 +142,7 @@ public class WxQuestionController {
             resp.setMessage("保存题目失败");
         }
 
+        log.info("WxQuestionController save, 删除所有缓存");
         return resp;
     }
 
@@ -150,10 +154,9 @@ public class WxQuestionController {
      * @return CommonResp
      */
     @Caching(evict = {
-            @CacheEvict(cacheNames = "wxQuestion/selectAnswer", allEntries = true),
-            @CacheEvict(cacheNames = "wxQuestion/selectAll", allEntries = true),
-            @CacheEvict(cacheNames = "wxQuestion/selectByCategoryId", allEntries = true)
-
+            @CacheEvict(cacheNames = "wxQuestion_selectAll_", allEntries = true),
+            @CacheEvict(cacheNames = "wxQuestion_selectByCategoryId_", allEntries = true),
+            @CacheEvict(cacheNames = "wxQuestion_selectAnswer_", allEntries = true)
     })
     @DeleteMapping("/delete")
     @ResponseBody
@@ -162,6 +165,7 @@ public class WxQuestionController {
 
         wxQuestionService.delete(resp, req);
 
+        log.info("WxQuestionController delete, 删除所有缓存");
         return resp;
     }
 
