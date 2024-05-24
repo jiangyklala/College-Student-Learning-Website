@@ -6,7 +6,7 @@ public class PageResp<T> {
 
     private long total;
 
-    private List<T> List;
+    private List<T> list;
 
     public long getTotal() {
         return total;
@@ -17,18 +17,18 @@ public class PageResp<T> {
     }
 
     public java.util.List<T> getList() {
-        return List;
+        return list;
     }
 
     public void setList(java.util.List<T> list) {
-        List = list;
+        this.list = list;
     }
 
     @Override
     public String toString() {
         return "PageResp{" +
                 "total=" + total +
-                ", List=" + List +
+                ", List=" + list +
                 '}';
     }
 }

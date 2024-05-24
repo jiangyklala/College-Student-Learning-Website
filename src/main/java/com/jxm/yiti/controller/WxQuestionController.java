@@ -35,7 +35,7 @@ public class WxQuestionController {
      */
     @Cacheable(cacheNames = "wxQuestion_selectAll_",
             key = "#req.categoryId + '_' + #req.categoryIdList",
-            unless = "#result == null")
+            unless = "#result == null or #result.content.list.isEmpty()")
     @GetMapping("/selectAll")
     @ResponseBody
     public CommonResp<PageResp<WxQuestionQueryResp>> list(@Valid WxQuestionQueryReq req) {
@@ -70,7 +70,7 @@ public class WxQuestionController {
      */
     @Cacheable(cacheNames = "wxQuestion_selectByCategoryId_",
             key = "#req.categoryId",
-            unless = "#result == null")
+            unless = "#result == null or #result.content.list.isEmpty()")
     @GetMapping("/selectByCategoryId")
     @ResponseBody
     public CommonResp<PageResp<WxQuestionQueryResp>> selectByCategoryId(@Valid WxQuestionQueryReq req) {
