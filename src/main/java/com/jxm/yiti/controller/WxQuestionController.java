@@ -33,7 +33,9 @@ public class WxQuestionController {
      *
      * @param req 查询参数
      */
-    @Cacheable(cacheNames = "wxQuestion_selectAll_", key = "#req.categoryId + '_' + #req.categoryIdList")
+    @Cacheable(cacheNames = "wxQuestion_selectAll_",
+            key = "#req.categoryId + '_' + #req.categoryIdList",
+            unless = "#result == null")
     @GetMapping("/selectAll")
     @ResponseBody
     public CommonResp<PageResp<WxQuestionQueryResp>> list(@Valid WxQuestionQueryReq req) {
@@ -66,7 +68,9 @@ public class WxQuestionController {
     /**
      * 根据所属目录 id 查该目录下的所有题目列表
      */
-    @Cacheable(cacheNames = "wxQuestion_selectByCategoryId_", key = "#req.categoryId")
+    @Cacheable(cacheNames = "wxQuestion_selectByCategoryId_",
+            key = "#req.categoryId",
+            unless = "#result == null")
     @GetMapping("/selectByCategoryId")
     @ResponseBody
     public CommonResp<PageResp<WxQuestionQueryResp>> selectByCategoryId(@Valid WxQuestionQueryReq req) {
@@ -101,7 +105,9 @@ public class WxQuestionController {
     /**
      * 根据某个题目的答案 id 查该题的答案
      */
-    @Cacheable(cacheNames = "wxQuestion_selectAnswer_", key = "#answerId")
+    @Cacheable(cacheNames = "wxQuestion_selectAnswer_",
+            key = "#answerId",
+            unless = "#result == null")
     @AccessLimit(type = {WxUserConst.NORMAL_VIP, WxUserConst.SPECIAL_VIP, WxUserConst.SUPER})
     @GetMapping("/selectAnswer")
     @ResponseBody
