@@ -1,6 +1,5 @@
 package com.jxm.yiti.controller;
 
-import com.alibaba.fastjson2.JSON;
 import com.jxm.yiti.annotation.AccessLimit;
 import com.jxm.yiti.enums.WxUserConst;
 import com.jxm.yiti.req.WxQuestionDelReq;
@@ -45,9 +44,8 @@ public class WxQuestionController {
         PageResp<WxQuestionQueryResp> list = wxQuestionService.selectAll(req, false);
 
         resp.setContent(list);
-        log.info("WxQuestionController list, 没有获取到缓存, 更新缓存, key: {} value: {}",
-                "wxQuestion_selectAll_" + req.getCategoryId() + '_' + req.getCategoryIdList(),
-                JSON.toJSONString(list));
+        log.info("WxQuestionController list, 没有获取到缓存, 更新缓存, key: {}",
+                "wxQuestion_selectAll_" + req.getCategoryId() + '_' + req.getCategoryIdList());
         return resp;
     }
 
@@ -81,8 +79,8 @@ public class WxQuestionController {
         PageResp<WxQuestionQueryResp> list = wxQuestionService.selectByCategoryId(req);
 
         resp.setContent(list);
-        log.info("WxQuestionController selectByCategoryId, 没有获取到缓存, 更新缓存, key: {} value:{}",
-                "wxQuestion_selectByCategoryId_" + req.getCategoryId(), JSON.toJSONString(list));
+        log.info("WxQuestionController selectByCategoryId, 没有获取到缓存, 更新缓存, key: {}",
+                "wxQuestion_selectByCategoryId_" + req.getCategoryId());
         return resp;
     }
 
@@ -123,8 +121,8 @@ public class WxQuestionController {
         }
 
         resp.setContent(answer);
-        log.info("WxQuestionController selectAnswer, 没有获取到缓存, 更新缓存, key: {}, value: {}",
-                "wxQuestion_selectAnswer_" + answerId, JSON.toJSONString(resp));
+        log.info("WxQuestionController selectAnswer, 没有获取到缓存, 更新缓存, key: {}",
+                "wxQuestion_selectAnswer_" + answerId);
         return resp;
     }
 

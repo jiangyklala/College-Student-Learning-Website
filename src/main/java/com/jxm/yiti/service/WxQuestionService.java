@@ -20,6 +20,7 @@ import com.jxm.yiti.utils.CopyUtil;
 import com.jxm.yiti.utils.SnowFlakeIdWorker;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -76,12 +77,10 @@ public class WxQuestionService {
         List<WxQuestion> wxQuestionList = wxQuestionMapper.selectByExample(wxQuestionExample);
 
         PageInfo<WxQuestion> wxQuestionPageInfo = new PageInfo<>(wxQuestionList);
-        log.info("当前页: " + wxQuestionPageInfo.getPageNum()
-                + ", 总页数: " + wxQuestionPageInfo.getPages()
-                + " , 总记录数: " + wxQuestionPageInfo.getTotal());
-
         PageResp<WxQuestionQueryResp> resp = new PageResp<>();
-        resp.setList(CopyUtil.copyList(wxQuestionList, WxQuestionQueryResp.class));
+        List<WxQuestionQueryResp> wxQuestionQueryResps = CopyUtil.copyList(wxQuestionList, WxQuestionQueryResp.class);
+        log.info("WxQuestionService selectAll, wxQuestionQueryResps size:{}", wxQuestionQueryResps.size());
+        resp.setList(wxQuestionQueryResps);
         resp.setTotal(wxQuestionPageInfo.getTotal());
 
         return resp;
@@ -96,12 +95,10 @@ public class WxQuestionService {
         List<WxQuestion> wxQuestionList = wxQuestionMapper.selectByExample(wxQuestionExample);
 
         PageInfo<WxQuestion> wxQuestionPageInfo = new PageInfo<>(wxQuestionList);
-        log.info("当前页: " + wxQuestionPageInfo.getPageNum()
-                + ", 总页数: " + wxQuestionPageInfo.getPages()
-                + " , 总记录数: " + wxQuestionPageInfo.getTotal());
-
         PageResp<WxQuestionQueryResp> resp = new PageResp<>();
-        resp.setList(CopyUtil.copyList(wxQuestionList, WxQuestionQueryResp.class));
+        List<WxQuestionQueryResp> wxQuestionQueryResps = CopyUtil.copyList(wxQuestionList, WxQuestionQueryResp.class);
+        log.info("WxQuestionService selectByCategoryId, wxQuestionQueryResps size:{}", wxQuestionQueryResps.size());
+        resp.setList(wxQuestionQueryResps);
         resp.setTotal(wxQuestionPageInfo.getTotal());
 
         return resp;
@@ -117,6 +114,13 @@ public class WxQuestionService {
             return null;
         }
 
+        if (wxQuestionAnswer == null) {
+            log.info("WxQuestionService selectAnswer, WxQuestionAnswer is null");
+            return StringUtils.EMPTY;
+        }
+
+        log.info("WxQuestionService selectAnswer, WxQuestionAnswer#answer isBlank:{}",
+                StringUtils.isBlank(wxQuestionAnswer.getAnswer()));
         return wxQuestionAnswer.getAnswer();
     }
 
