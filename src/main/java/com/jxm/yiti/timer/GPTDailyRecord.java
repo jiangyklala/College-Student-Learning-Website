@@ -13,7 +13,6 @@ import redis.clients.jedis.Jedis;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.TimeZone;
 
 @Component
@@ -29,7 +28,7 @@ public class GPTDailyRecord {
             havingValue = "true",
             matchIfMissing = false
     )
-    @Scheduled(cron = "* 1 0 * * ? ")
+    @Scheduled(cron = "0 1 * * *")
     public void timeAndTokenRecord() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT+8"));
