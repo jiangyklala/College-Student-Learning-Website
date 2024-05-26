@@ -1,4 +1,4 @@
-package com.jxm.yiti.controller;
+package com.jxm.yiti.controller.gpt;
 
 import com.jxm.yiti.req.CheckPayReq;
 import com.jxm.yiti.req.PayReq;

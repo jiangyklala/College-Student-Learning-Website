@@ -1,21 +1,15 @@
-package com.jxm.yiti.controller;
+package com.jxm.yiti.controller.gpt;
 
-import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONObject;
 import com.jxm.yiti.domain.ChatHistory;
-import com.jxm.yiti.mapper.cust.ChatHistoryMapperCust;
-import com.jxm.yiti.req.ChatCplQueryReq;
-import com.jxm.yiti.resp.ChatCplQueryResp;
 import com.jxm.yiti.resp.CommonResp;
 import com.jxm.yiti.service.GptService;
 import jakarta.annotation.Resource;
-import jakarta.validation.Valid;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller

@@ -1,10 +1,4 @@
-package com.jxm.yiti.controller;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+package com.jxm.yiti.controller.wxapp;
 
 import com.jxm.yiti.interceptor.WxAppInterceptor;
 import com.jxm.yiti.resp.CheckInviteCodeResp;
@@ -12,9 +6,13 @@ import com.jxm.yiti.resp.CommonResp2;
 import com.jxm.yiti.resp.WxInviteCodeResp;
 import com.jxm.yiti.resp.WxInviterResp;
 import com.jxm.yiti.service.WxInviteService;
-
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @author jiangyunkai <jiangyunkai@kuaishou.com>

@@ -1,10 +1,9 @@
-package com.jxm.yiti.controller;
+package com.jxm.yiti.controller.early;
 
 import com.jxm.yiti.req.ColumnListQueryReq;
 import com.jxm.yiti.req.ColumnListSaveReq;
-import com.jxm.yiti.resp.CommonResp;
 import com.jxm.yiti.resp.ColumnListQueryResp;
-import com.jxm.yiti.resp.CourseListQueryResp;
+import com.jxm.yiti.resp.CommonResp;
 import com.jxm.yiti.resp.PageResp;
 import com.jxm.yiti.service.ColumnListService;
 import jakarta.annotation.Resource;

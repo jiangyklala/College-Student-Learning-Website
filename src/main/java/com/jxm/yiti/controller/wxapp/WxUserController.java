@@ -1,4 +1,4 @@
-package com.jxm.yiti.controller;
+package com.jxm.yiti.controller.wxapp;
 
 import com.jxm.yiti.interceptor.WxAppInterceptor;
 import com.jxm.yiti.req.*;

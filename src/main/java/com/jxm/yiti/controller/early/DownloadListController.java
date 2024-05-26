@@ -1,4 +1,4 @@
-package com.jxm.yiti.controller;
+package com.jxm.yiti.controller.early;
 
 import com.jxm.yiti.req.DownloadListQueryReq;
 import com.jxm.yiti.req.DownloadListSaveReq;

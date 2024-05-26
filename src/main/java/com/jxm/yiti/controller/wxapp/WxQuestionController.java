@@ -1,4 +1,4 @@
-package com.jxm.yiti.controller;
+package com.jxm.yiti.controller.wxapp;
 
 import com.jxm.yiti.annotation.AccessLimit;
 import com.jxm.yiti.enums.WxUserConst;

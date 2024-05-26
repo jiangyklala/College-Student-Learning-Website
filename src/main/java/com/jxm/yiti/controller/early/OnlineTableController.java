@@ -1,19 +1,17 @@
-package com.jxm.yiti.controller;
+package com.jxm.yiti.controller.early;
 
-import java.util.List;
-
+import com.jxm.yiti.req.RecruitInfoReq;
+import com.jxm.yiti.resp.CommonResp2;
+import com.jxm.yiti.resp.RecruitInfoResp;
+import com.jxm.yiti.service.OnlineTableService;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.jxm.yiti.req.RecruitInfoReq;
-import com.jxm.yiti.resp.CommonResp2;
-import com.jxm.yiti.resp.RecruitInfoResp;
-import com.jxm.yiti.service.OnlineTableService;
-
-import jakarta.annotation.Resource;
+import java.util.List;
 
 @Controller
 @RequestMapping("/onlineTable")

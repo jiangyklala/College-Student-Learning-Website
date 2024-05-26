@@ -1,22 +1,20 @@
-package com.jxm.yiti.controller;
-
-import java.util.List;
-import java.util.Set;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+package com.jxm.yiti.controller.wxapp;
 
 import com.jxm.yiti.domain.WxQuestion;
 import com.jxm.yiti.interceptor.WxAppInterceptor;
 import com.jxm.yiti.req.WxCollectAddSingleOneReq;
 import com.jxm.yiti.resp.CommonResp2;
 import com.jxm.yiti.service.WxCollectService;
-
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Controller

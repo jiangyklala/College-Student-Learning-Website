@@ -1,6 +1,5 @@
-package com.jxm.yiti.controller;
+package com.jxm.yiti.controller.gpt;
 
-import com.jxm.yiti.domain.ChatHistory;
 import com.jxm.yiti.resp.CommonResp;
 import com.jxm.yiti.resp.GptInviteCodeResp;
 import com.jxm.yiti.resp.GptInviteeResp;
