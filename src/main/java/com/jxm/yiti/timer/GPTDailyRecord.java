@@ -28,7 +28,7 @@ public class GPTDailyRecord {
             havingValue = "true",
             matchIfMissing = false
     )
-    @Scheduled(cron = "0 1 * * *")
+    @Scheduled(cron = "0 0 1 * * ?")
     public void timeAndTokenRecord() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT+8"));
