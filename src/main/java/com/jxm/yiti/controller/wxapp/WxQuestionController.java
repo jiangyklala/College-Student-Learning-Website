@@ -35,7 +35,7 @@ public class WxQuestionController {
      */
     @Cacheable(cacheNames = "wxQuestion_selectAll_",
             key = "#req.categoryId + '_' + #req.categoryIdList",
-            unless = "#result == null or #result.content.list.isEmpty()")
+            unless = "#result == null or #result.content.list.isEmpty() or #req.title != null")
     @GetMapping("/selectAll")
     @ResponseBody
     public CommonResp<PageResp<WxQuestionQueryResp>> list(@Valid WxQuestionQueryReq req) {
