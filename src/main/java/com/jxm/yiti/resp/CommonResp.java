@@ -40,14 +40,4 @@ public class CommonResp<T> {
     public void setContent(T content) {
         this.content = content;
     }
-
-    @Override
-    public String toString() {
-        final StringBuffer sb = new StringBuffer("ResponseDto{");
-        sb.append("success=").append(success);
-        sb.append(", message='").append(message).append('\'');
-        sb.append(", content=").append(content);
-        sb.append('}');
-        return sb.toString();
-    }
 }

@@ -1,10 +1,13 @@
 package com.jxm.yiti.controller.wxapp;
 
+import com.alibaba.fastjson2.JSON;
+import com.jxm.yiti.enums.StatusCode;
 import com.jxm.yiti.interceptor.WxAppInterceptor;
 import com.jxm.yiti.req.*;
 import com.jxm.yiti.resp.*;
 import com.jxm.yiti.service.WxUserService;
 import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +15,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
+@Slf4j
 @Controller
 @RequestMapping("/wxUser")
 public class WxUserController {
@@ -170,6 +174,25 @@ public class WxUserController {
 
         CommonResp2<WxInviterLimitsResp> resp = new CommonResp2<>();
         wxUserService.searchLimitsSubmit(req, resp);
+
+        return resp;
+    }
+
+    /**
+     * 删除用户所有信息 (危险)
+     */
+    @PostMapping("deleteAllUser")
+    @ResponseBody
+    public CommonResp2<Boolean> deleteAllUserInfo(@RequestBody WxDelUserReq req) {
+        CommonResp2<Boolean> resp = new CommonResp2<>();
+        log.debug("WxUserController deleteAllUserInfo, req: {}", JSON.toJSONString(req));
+
+        try {
+            wxUserService.deleteAllUserInfo(req, resp);
+        } catch (Throwable e) {
+            log.error("WxUserController deleteAllUserInfo, error, req:{}", JSON.toJSONString(req), e);
+            return resp.buildFailure(StatusCode.SYSTEM_BUSY);
+        }
 
         return resp;
     }

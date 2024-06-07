@@ -10,10 +10,7 @@ import com.jxm.yiti.mapper.*;
 import com.jxm.yiti.mapper.cust.QuestionUserInfoMapperCust;
 import com.jxm.yiti.mapper.cust.WxInviterMapperCust;
 import com.jxm.yiti.mapper.cust.WxUserInfoMapperCust;
-import com.jxm.yiti.req.AppPayInfoReq;
-import com.jxm.yiti.req.PaymentReq;
-import com.jxm.yiti.req.SearchLimitsReq;
-import com.jxm.yiti.req.WxOnePaymentReq;
+import com.jxm.yiti.req.*;
 import com.jxm.yiti.resp.*;
 import com.jxm.yiti.utils.CopyUtil;
 import com.jxm.yiti.utils.InviteCodeGenerate;
@@ -29,6 +26,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import redis.clients.jedis.Jedis;
 
 import java.io.IOException;
@@ -428,5 +426,22 @@ public class WxUserService {
             resp.setCode(StatusCode.DB_ERROR.code);
             resp.setMessage("refresh token failed!");
         }
+    }
+
+    public void deleteAllUserInfo(WxDelUserReq req, CommonResp2<Boolean> resp) {
+        WxUserInfoExample wxUserInfoExample = new WxUserInfoExample();
+        WxUserInfoExample.Criteria criteria = wxUserInfoExample.createCriteria();
+        criteria.andNameEqualTo(req.getUserName());
+        List<WxUserInfo> wxUserInfos = wxUserInfoMapper.selectByExample(wxUserInfoExample);
+        log.debug("wxUserInfos: {}", JSON.toJSONString(wxUserInfos));
+        if (CollectionUtils.isEmpty(wxUserInfos)) {
+            resp.setFailure("用户不存在");
+            log.debug("resp: {}", JSON.toJSONString(resp));
+            return;
+        }
+
+        WxUserInfo wxUserInfo = wxUserInfos.get(0);
+        wxUserInfoMapper.deleteByPrimaryKey(wxUserInfo.getId());
+        resp.setMessage("删除成功");
     }
 }

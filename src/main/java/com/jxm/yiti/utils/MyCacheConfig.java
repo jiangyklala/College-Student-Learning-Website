@@ -22,7 +22,7 @@ public class MyCacheConfig {
     @Bean("myKeyGenerator")
     public KeyGenerator keyGenerator() {
         return (target, method, params) -> {
-            log.info(method.getName() + "[" + Arrays.asList(params).toString() + "]");
+            log.debug("{}[{}]", method.getName(), Arrays.asList(params).toString());
             return method.getName() + "[" + Arrays.asList(params).toString() + "]";
         };
     }

@@ -1,12 +1,10 @@
 package com.jxm.yiti.config;
 
+import com.jxm.yiti.interceptor.WxAppInterceptor;
+import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import com.jxm.yiti.interceptor.WxAppInterceptor;
-
-import jakarta.annotation.Resource;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
@@ -29,6 +27,7 @@ public class WebConfig implements WebMvcConfigurer {
                         "/wxUser/notifyAfter/**",
                         "/wxUser/searchLimits/**",
                         "/wxUser/searchLimitsSubmit/**",
+                        "/wxUser/deleteAllUser/**",
                         "/wxQuestion/save",
                         "/wxQuestion/selectAllAdmin",
                         "/wxQuestion/delete/**",
